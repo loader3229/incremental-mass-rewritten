@@ -111,9 +111,9 @@ const RANKS = {
             '15': "移除强化器效果的三重软上限。",
         },
         hex: {
-            '1': "remove mass gain softcap^1, Hydrogen-1 is better.",
+            '1': "移除质量获取速度的一重软上限，氢(1H)的效果变得更强。",
             '2': "Hardened Challenge scale 25% weaker.",
-            '3': "Lithium-3's Effect is powered by 1.5 before softcaps.",
+            '3': "锂(3Li)的效果变为原来的1.5次方（在软上限之前）。",
         },
     },
     effect: {
@@ -331,13 +331,13 @@ const PRESTIGES = {
             "28": `移除胶子升级4的所有软上限。`,
             "32": `使转生基础值的指数基于转生等级而增加。`,
             "40": `使铬(24Cr)的效果略微增加。`,
-            "42": `Unlock Hex.`,
-            "45": `Ultra Tetr scale 42% weaker.`,
-            "50": `The final 3 Atom upgrades can be bought outside Big Rips, are stronger, and costs are raised by 1/20000.`,
-            "51": `Mass gain softcap^2 is 50% weaker.`,
-            "53": `Meta-Rank starts 1.5x later.`,
-            "55": `Multiply Quantum Foam and Death Shard gain by your Prestige Level.`,
-            "58": `All rank scaling are 50% weaker.`,
+            "42": `解锁六重阶层。`,
+            "45": `使三重阶层的超究折算弱化42%。`,
+            "50": `使最后3个原子升级可以在大撕裂之外购买，并且变得更强，费用变为原来的20000次方根。`,
+            "51": `使质量获取速度的二重软上限弱化50%。`,
+            "53": `使级别的元折算延迟1.5倍出现。`,
+            "55": `使量子泡沫和死寂碎片获取速度乘以转生等级。`,
+            "58": `使级别的所有折算弱化50%。`,
         },
         {
             "1": `使所有星辰相关资源获取速度变为原来的2次方。`,
@@ -346,8 +346,8 @@ const PRESTIGES = {
             "4": `所有原基粒子获得5级免费等级。`,
             "5": `使五重阶层5的奖励基于转生基础值变得更强。`,
             "7": `使夸克获取速度基于荣耀的数值而增加。`,
-            "9": `Gain free levels of each Primordium Particle equals to your Honor.`,
-            "10": `Reach the current endgame.`,
+            "9": `所有原基粒子获得等同于荣耀的免费等级。`,
+            "10": `达到现在的残局。`,
         },
     ],
     rewardEff: [
@@ -367,7 +367,7 @@ const PRESTIGES = {
             "55": [_=>{
                 let x = player.prestiges[0].max(1)
                 return x
-            },x=>x.format()+"x"],
+            },x=>x.format()+"倍"],
             /*
             "1": [_=>{
                 let x = E(1)
