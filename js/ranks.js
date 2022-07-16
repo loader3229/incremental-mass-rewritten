@@ -114,6 +114,10 @@ const RANKS = {
             '1': "移除质量获取速度的一重软上限，氢(1H)的效果变得更强。",
             '2': "Hardened Challenge scale 25% weaker.",
             '3': "锂(3Li)的效果变为原来的1.5次方（在软上限之前）。",
+            '4': "remove mass gain softcap^2, Beryllium-4's Effect is powered by 1.05.",
+            '5': "Hex boost Prestige Base Exponent.",
+            '6': "Carbon-6's Effect boost Higgs Bosons.",
+            '7': "Nitrogen-7's Effect is better.",
         },
     },
     effect: {
@@ -208,6 +212,10 @@ const RANKS = {
             },
         },
         hex: {
+            '5'() {
+                let ret = player.ranks.hex.div(1000).toNumber()
+                return ret
+            },
         },
     },
     effDesc: {
@@ -239,6 +247,7 @@ const RANKS = {
             8(x) { return "延迟"+format(x)+"次方出现" },
         },
         hex: {
+            5(x) { return "+"+format(x)},
         },
     },
     fp: {
@@ -264,6 +273,7 @@ const PRESTIGES = {
         let x = 0
         if (hasElement(100)) x += tmp.elements.effect[100]
         if (hasPrestige(0,32)) x += prestigeEff(0,32,0)
+        if (player.ranks.hex.gte(5)) x += RANKS.effect.hex[5]();
         return x+1
     },
     base() {
@@ -338,6 +348,15 @@ const PRESTIGES = {
             "53": `使级别的元折算延迟1.5倍出现。`,
             "55": `使量子泡沫和死寂碎片获取速度乘以转生等级。`,
             "58": `使级别的所有折算弱化50%。`,
+            "60": `Prestige Mass and Pre-Quantum Global Speed boost each other.`,
+            "61": `Prestige Mass Effect is applied to Pre-Meta Pent and Supernova scalings.`,
+            "62": `Prestige Mass Effect is applied to Super Prestige Level scaling.`,
+            "64": `Prestige Mass Formula from Prestige Level is better.`,
+            "74": `Prestige Mass Formula from Honor is better.`,
+            "75": `Prestige Mass Effect is applied to Pre-Meta Tier scalings.`,
+            "77": `Prestige Mass Effect is applied to Pre-Meta Rank scalings and Super Honor scaling.`,
+            "79": `Prestige Mass Effect is applied to Pre-Meta Cosmic String scalings.`,
+            "80": "Mass gain softcap^3 is 10% weaker.",
         },
         {
             "1": `使所有星辰相关资源获取速度变为原来的2次方。`,
@@ -347,7 +366,9 @@ const PRESTIGES = {
             "5": `使五重阶层5的奖励基于转生基础值变得更强。`,
             "7": `使夸克获取速度基于荣耀的数值而增加。`,
             "9": `所有原基粒子获得等同于荣耀的免费等级。`,
-            "10": `达到现在的残局。`,
+            "10": `Unlock Prestige Mass.`,
+            "11": `Prestige Mass and Entropy boost each other.`,
+            "12": `达到现在的残局。`,
         },
     ],
     rewardEff: [
@@ -368,6 +389,9 @@ const PRESTIGES = {
                 let x = player.prestiges[0].max(1)
                 return x
             },x=>x.format()+"倍"],
+            "60": [_=>{
+                return [player.prestigeMass.add(1),(tmp.preQUGlobalSpeed||E(0)).add(1).log10().sqrt()];
+            },x=>x[0].format()+"x to Pre-Quantum Global Speed, "+x[1].format()+"x to Prestige Mass"],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -394,6 +418,9 @@ const PRESTIGES = {
                 let x = player.prestiges[1].max(1)
                 return x
             },x=>"+"+x.format()],
+            "11": [_=>{
+                return [player.prestigeMass.add(1).sqrt(),player.qu.en.amt.add(1).log10().sqrt()];
+            },x=>x[0].format()+"x to Entropy Gain, "+x[1].format()+"x to Prestige Mass"],
         },
     ],
     reset(i) {
@@ -469,6 +496,9 @@ function updateRanksTemp() {
             if (PRESTIGES.rewardEff[x][y]) tmp.prestiges.eff[x][y] = PRESTIGES.rewardEff[x][y][0]()
         }
     }
+	
+	tmp.prestigeMassGain = prestigeMassGain()
+	tmp.prestigeMassEffect = prestigeMassEffect()
 }
 
 function updateRanksHTML() {
@@ -530,5 +560,35 @@ function updateRanksHTML() {
                 tmp.el["pres_auto_"+x].setTxt(false?"ON":"OFF")
             }
         }
+		
+		if (player.prestiges[1].gte(10)){
+			tmp.el["pres_mass"].setDisplay(true);
+			tmp.el["pres_mass2"].setTxt(formatMass(player.prestigeMass,0)+" "+formatGain(player.prestigeMass, tmp.prestigeMassGain, true))
+			tmp.el["pres_mass3"].setTxt(format(E(1).sub(prestigeMassEffect()).mul(100))+"%");
+		}else{
+			tmp.el["pres_mass"].setDisplay(false);
+		}
     }
+}
+
+function prestigeMassGain(){
+	if(player.prestiges[1].lt(10)){
+		return E(0);
+	}
+	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0]).mul(player.prestiges[1].pow(2)).pow(player.prestiges[1].div(10)).div(400000);
+	if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[1]);
+	if (hasPrestige(0,64)) x = x.mul(player.prestiges[0].sqrt().pow(player.prestiges[1].div(10)));
+	if (hasPrestige(1,11)) x = x.mul(prestigeEff(1,11,[E(1),E(1)])[1]);
+	if (hasPrestige(0,74)) x = x.mul(player.prestiges[1].pow(player.prestiges[1].div(10)));
+    if (player.md.break.upgs[11].gte(1)) x = x.mul(tmp.bd.upgs[11].eff||1)
+    if (hasTree("pm1")) x = x.mul(tmp.supernova.tree_eff.pm1)
+	return x;
+}
+
+function prestigeMassEffect(){
+	return E(0.965).pow(player.prestigeMass.add(1).log10().sqrt());
+}
+
+function calcPrestigeMass(dt){
+	player.prestigeMass = player.prestigeMass.add(tmp.prestigeMassGain.mul(dt))
 }

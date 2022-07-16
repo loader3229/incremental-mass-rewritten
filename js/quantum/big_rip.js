@@ -16,6 +16,7 @@ const BIG_RIP = {
         if (hasTree('br1')) x = x.mul(treeEff('br1'))
         if (hasElement(90)) x = x.mul(tmp.elements.effect[90]||1)
         if (player.qu.rip.active && hasElement(94)) x = x.mul(tmp.elements.effect[94]||1)
+		else if (hasTree('br3') && hasElement(94)) x = x.mul(E(tmp.elements.effect[94]||1).pow(0.1))
         if (hasPrestige(0,2)) x = x.mul(4)
         if (player.md.break.upgs[6].gte(1)) x = x.mul(tmp.bd.upgs[6].eff?tmp.bd.upgs[6].eff[1]:1)
         if (hasUpgrade('br',13)) x = x.mul(upgEffect(4,13))

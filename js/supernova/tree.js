@@ -21,7 +21,7 @@ const TREE_IDS = [
         ['qu1','qu2','qu3'],
     ],[
         ['s2','m2','t1','d1','bh2','gr1','sn2'],
-        ['qol5','qol6','qol7','','','qu_qol7','',''],
+        ['qol5','qol6','qol7','','qu_qol7a','qu_qol7','',''],
         ['chal4','chal7a'],
         ['fn4','fn3','fn9','fn2','fn5','qf4','rad4','rad5'],
         ['prim3','prim2','prim1','qu4','qc1','qc2','qc3'],
@@ -34,15 +34,15 @@ const TREE_IDS = [
     ],[
         ['s4','sn5','sn4'],
         ['','','','qu_qol10','qu_qol11','qu_qol8a','qu_qol13','qu_qol12'],
-        ['chal9','chal10','chal11'],
+        ['chal9','chal10','chal11','chal12'],
         ['fn13','fn14','fn7','fn8','',''],
         ['prim5','qu6','qu7','qu8','qu9','qu10','qu11','qc5'],
     ],[
         [],
         [],
         [],
-        ['fn15'],
-        [],
+        ['fn16','fn17','fn15','pm1'],
+        ['prim6','br3','qc6'],
     ],
 ]
 
@@ -381,6 +381,13 @@ const TREE_UPGS = {
             desc: `Add 500 more C9-11 completions.`,
             cost: E(1e144),
         },
+        chal12: {
+			qf: true,
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["chal11"],
+            desc: `Add 1900 more C9 completions, and add 3500 more C10-11 completions.`,
+            cost: E(1e156),
+        },
         gr1: {
             branch: ["bh1"],
             desc: `BH Condensers power boost Cosmic Rays power.`,
@@ -541,6 +548,18 @@ const TREE_UPGS = {
             branch: ["fn14","fn8"],
             desc: `[Bottom], [Neut-Tau] Free Tiers from Epsilon Particles is unhardcapped.`,
             cost: E('1e9000000'),
+        },
+        fn16: {
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["fn14"],
+            desc: `Break [Neutrino] Max Tier.`,
+            cost: E('1e20000000'),
+        },
+        fn17: {
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["fn16"],
+            desc: `Break [Neut-Muon] Max Tier.`,
+            cost: E('1e32000000'),
         },
         d1: {
             unl() { return hasTree("fn6") },
@@ -794,6 +813,13 @@ const TREE_UPGS = {
             desc: `Keep U-Lepton Tiers on going Quantum.`,
             cost: E(4),
         },
+        qu_qol7a: {
+            qf: true,
+            branch: ["qu_qol7"],
+            unl() { return hasElement(118) },
+            desc: `You can now automatically complete Challenges 9-12 any Challenge.`,
+            cost: E(1e147),
+        },
         qu_qol7: {
             qf: true,
             branch: ["qu_qol3","qu_qol5"],
@@ -889,6 +915,13 @@ const TREE_UPGS = {
             desc: `You can't gain Omega Particles from Primordium Theorem now. Instead, Add Free Omega Particles equals to your total Primordium Theorems.`,
             cost: E(1e116),
         },
+        prim6: {
+            qf: true,
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["prim5"],
+            desc: `You can't gain Alpha Particles from Primordium Theorem now. Instead, Add Free Alpha Particles equals to your total Primordium Theorems.`,
+            cost: E(1e147),
+        },
         qc1: {
             qf: true,
             unl() { return hasTree("unl3") },
@@ -948,6 +981,18 @@ const TREE_UPGS = {
             },
             effDesc(x) { return format(x,0)+"x" },
         },
+        qc6: {
+            unl() { return player.atom.elements.includes(118) },
+            qf: true,
+            branch: ['qc5'],
+            desc: `Quantum Shard's base is increased by Prestige mass.`,
+            cost: E(1e158),
+            effect() {
+                let x = player.prestigeMass.add(1).log10().add(1).log10();
+                return x
+            },
+            effDesc(x) { return "+"+format(x) },
+        },
         en1: {
             unl() { return player.qu.rip.first },
             qf: true,
@@ -987,6 +1032,26 @@ const TREE_UPGS = {
             branch: ['br1'],
             desc: `All elements can be bought in Big Rip.`,
             cost: E(1e114),
+        },
+        br3: {
+            unl() { return hasElement(118) },
+            qf: true,
+            branch: ['qu11'],
+            req() { return player.supernova.times.gte(32) && player.qu.rip.active },
+            reqDesc() { return `Reach 32 Supernovas in Big Rip.` },
+            desc: `When outside Big Rips, Plutonium-94 works, but 90% weaker.`,
+            cost: E(1e157),
+        },
+        pm1: {
+            unl() { return hasPrestige(0,10) },
+            branch: [],
+            desc: `Neutron Star boost Prestige mass gain.`,
+            cost: E("1e300000000"),
+            effect() {
+                let x = player.supernova.stars.add(1).log10().add(1).log10();
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
         },
 
         // Other

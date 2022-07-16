@@ -20,6 +20,7 @@ const ENTROPY = {
         if (hasElement(93)) x = x.mul(tmp.elements.effect[93]||1)
         if (player.md.break.upgs[6].gte(1)) x = x.mul(tmp.bd.upgs[6].eff?tmp.bd.upgs[6].eff[0]:1)
         if (hasTree("en2")) x = x.mul(tmp.supernova.tree_eff.en2||1)
+		if (hasPrestige(1,11)) x = x.mul(prestigeEff(1,11,[E(1),E(1)])[0]);
         return x
     },
     cap() {

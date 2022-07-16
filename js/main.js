@@ -23,13 +23,13 @@ const FORMS = {
         if (quUnl()) x = x.mul(tmp.qu.bpEff)
         if (hasElement(103)) x = x.mul(tmp.elements.effect[103])
 		if(hasTree('qc5')) x = x.mul(treeEff('qc5'));
-
+		if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[0]);
+		
         if (player.mainUpg.br.includes(3)) x = x.pow(tmp.upgs.main[4][3].effect)
         if (hasPrestige(0,5)) x = x.pow(2)
 
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
-		
-        return x
+		return x
     },
     massGain() {
         let x = E(1)
@@ -64,9 +64,12 @@ const FORMS = {
         .softcap(tmp.massSoftGain3,tmp.massSoftPower3,0)
         .softcap(tmp.massSoftGain4,tmp.massSoftPower4,0)
         .softcap(tmp.massSoftGain5,tmp.massSoftPower5,0)
+        .softcap(tmp.massSoftGain6,tmp.massSoftPower6,0)
 
         if (hasElement(117)) x = x.pow(10)
 
+		//tmp.massOverflow = overflow(x,"e1e32",0.8).log(x);
+		//x = overflow(x,"e1e32",0.8);
         return x
     },
     massSoftGain() {
@@ -99,6 +102,7 @@ const FORMS = {
         return s.min(tmp.massSoftGain3||1/0)
     },
     massSoftPower2() {
+        if (player.ranks.hex.gte(4)) return E(1)
         let p = E(player.qu.rip.active ? 0.1 : 0.25)
         if (hasElement(51)) p = p.pow(0.9)
         if (player.prestiges[0].gte(51)) p = p.pow(0.5)
@@ -114,6 +118,7 @@ const FORMS = {
     massSoftPower3() {
         let p = E(player.qu.rip.active ? 0.1 : 0.2)
         if (hasElement(77)) p = p.pow(player.qu.rip.active?0.95:0.825)
+        if (hasPrestige(0,80)) p = p.pow(0.9)
         return p
     },
     massSoftGain4() {
@@ -136,6 +141,14 @@ const FORMS = {
     },
     massSoftPower5() {
         let p = E(0.05)
+        return p
+    },
+    massSoftGain6() {
+        let s = E("e1e29")
+        return s
+    },
+    massSoftPower6() {
+        let p = E(0.1)
         return p
     },
     tickspeed: {
@@ -265,7 +278,10 @@ const FORMS = {
 
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             if (player.md.active || CHALS.inChal(10) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
-            return x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
+            x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
+			//tmp.bhOverflow = overflow(x,"e1e32",0.8).log(x);
+		    //x = overflow(x,"e1e32",0.8);
+			return x
         },
         f() {
             let x = player.bh.mass.add(1).pow(tmp.bh.massPowerGain).softcap(tmp.bh.fSoftStart,tmp.bh.fSoftPower,2)

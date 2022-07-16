@@ -44,7 +44,9 @@ const MASS_DILATION = {
         if (hasElement(40)) x = x.mul(tmp.elements.effect[40])
         if (hasElement(32)) x = x.pow(1.05)
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
-        return x.softcap(mlt(1e12),0.5,0)
+		x = x.softcap(mlt(1e12),0.5,0);
+		tmp.dmOverflow = overflow(x,"e5e28",0.8).log(x);
+        return overflow(x,"e5e28",0.8);
     },
     mass_req() {
         let x = E(10).pow(player.md.particles.add(1).div(tmp.md.rp_mult_gain).root(tmp.md.rp_exp_gain).add(14).mul(40)).mul(1.50005e56)
@@ -297,7 +299,7 @@ const MASS_DILATION = {
                     bulk() { return player.md.break.mass.gte(uni(1e100))?E(1):E(0) },
                     effect(y) {
                         let x = (tmp.preQUGlobalSpeed||E(1)).add(1).root(10)
-
+						if(player.md.break.upgs[10].gte(1))x = x.pow(10)
                         return x
                     },
                     effDesc(x) { return format(x)+"倍" },
@@ -306,6 +308,23 @@ const MASS_DILATION = {
                     maxLvl: 1,
                     cost(x) { return uni(1e120) },
                     bulk() { return player.md.break.mass.gte(uni(1e120))?E(1):E(0) },
+                },{
+                    desc: `Break Dilation Upgrade 9's effect is powered by 10.`,
+					unl() {return hasElement(118)},
+                    maxLvl: 1,
+                    cost(x) { return uni("1e1680") },
+                    bulk() { return player.md.break.mass.gte(uni("1e1680"))?E(1):E(0) },
+                },{
+                    desc: `Relativistic mass boost Prestige mass gain.`,
+					unl() {return hasPrestige(1,10)},
+                    maxLvl: 1,
+                    cost(x) { return uni("1e2000") },
+                    bulk() { return player.md.break.mass.gte(uni("1e2000"))?E(1):E(0) },
+                    effect(y) {
+                        let x=player.md.break.mass.add(1).log10().add(1).log10().pow(2);
+						return x;
+                    },
+                    effDesc(x) { return format(x)+"x" },
                 },
             ],
         }
@@ -427,6 +446,8 @@ function updateMDHTML() {
 
     tmp.el.dmSoft1.setDisplay(player.md.mass.gte(mlt(1e12)))
     tmp.el.dmSoftStart1.setTxt(formatMass(mlt(1e12)))
+    tmp.el.dmOverflow.setDisplay(player.md.mass.gte("e5e28"));
+    tmp.el.dmOverflow2.setTxt(format(tmp.dmOverflow));
 }
 
 function updateBDHTML() {

@@ -86,7 +86,7 @@ function calc(dt, dt_offline) {
         }
         if (player.mainUpg.bh.includes(6) || player.mainUpg.atom.includes(6)) player.rp.points = player.rp.points.add(tmp.rp.gain.mul(du_gs))
         if (player.mainUpg.atom.includes(6)) player.bh.dm = player.bh.dm.add(tmp.bh.dm_gain.mul(du_gs))
-        if (hasElement(14)) player.atom.quarks = player.atom.quarks.add(tmp.atom.quarkGain.mul(du_gs*tmp.atom.quarkGainSec))
+        if (hasElement(14)) player.atom.quarks = player.atom.quarks.add(tmp.atom.quarkGain.mul(du_gs.mul(tmp.atom.quarkGainSec)))
         if (hasElement(24)) player.atom.points = player.atom.points.add(tmp.atom.gain.mul(du_gs))
         if (hasElement(30) && !(CHALS.inChal(9) || FERMIONS.onActive("12"))) for (let x = 0; x < 3; x++) player.atom.particles[x] = player.atom.particles[x].add(player.atom.quarks.mul(du_gs).div(10))
         if (hasElement(43)) for (let x = 0; x < MASS_DILATION.upgs.ids.length; x++) if ((hasTree("qol3") || player.md.upgs[x].gte(1)) && (MASS_DILATION.upgs.ids[x].unl?MASS_DILATION.upgs.ids[x].unl():true)) MASS_DILATION.upgs.buy(x)
@@ -96,7 +96,7 @@ function calc(dt, dt_offline) {
             player.atom.atomic = player.atom.atomic.add(tmp.atom.atomicGain.mul(du_gs))
             for (let x = 0; x < 3; x++) player.atom.powers[x] = player.atom.powers[x].add(tmp.atom.particles[x].powerGain.mul(du_gs))
         }
-        if (hasTree("qol1")) for (let x = 1; x <= tmp.elements.unl_length; x++) if (x<=tmp.elements.upg_length && x !== 118) ELEMENTS.buyUpg(x)
+        if (hasTree("qol1")) for (let x = 1; x <= tmp.elements.unl_length; x++) if (x<=tmp.elements.upg_length) ELEMENTS.buyUpg(x)
         player.md.mass = player.md.mass.add(tmp.md.mass_gain.mul(du_gs))
         if (hasTree("qol3")) player.md.particles = player.md.particles.add(player.md.active ? tmp.md.rp_gain.mul(du_gs) : tmp.md.passive_rp_gain.mul(du_gs))
         if (hasTree("qol4")) STARS.generators.unl(true)
@@ -118,7 +118,10 @@ function calc(dt, dt_offline) {
     
             if (hasTree("qu_qol3")) for (let x = 1; x <= 4; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))
             if (hasTree("qu_qol5")) for (let x = 5; x <= 8; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))
+            if (hasTree("qu_qol7a")) for (let x = 9; x <= 12; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))
         }
+	
+		calcPrestigeMass(dt, dt_offline)
     }
 
     tmp.pass = true
@@ -149,6 +152,7 @@ function getPlayerData() {
             tier: false,
         },
         prestiges: [],
+        prestigeMass: E(0),
         auto_mainUpg: {
             
         },
@@ -463,14 +467,14 @@ function loadGame(start=true, gotNaN=false) {
         setInterval(updateStarsScreenHTML, 50)
         treeCanvas()
         setInterval(drawTreeHTML, 10)
-        setInterval(checkNaN,1000)
+        setInterval(checkNaN,1)
     }
 }
 
 function checkNaN() {
     if (findNaN(player)) {
         addNotify("Game Data got NaNed")
-
+		playerCopy = JSON.parse(JSON.stringify(player));
         resetTemp()
         loadGame(false, true)
     }
@@ -489,4 +493,14 @@ function findNaN(obj, str=false, data=getPlayerData()) {
         if (typeof obj[k] == "object") return findNaN(obj[k], str, data[k])
     }
     return false
+}
+
+function overflow(number, start, power){
+	if(isNaN(number.mag))return new Decimal(0);
+	start=E(start);
+	if(number.gte(start)){
+		number=number.log10().div(start.log10()).pow(power).mul(start.log10());
+		number=Decimal.pow(10,number);
+	}
+	return number;
 }

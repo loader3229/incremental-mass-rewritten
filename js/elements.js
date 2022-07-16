@@ -332,6 +332,8 @@ function updateBlackHoleHTML() {
 	tmp.el.massSoft2.setDisplay(tmp.bh.mass_gain.gte(tmp.bh.massSoftGain))
 	tmp.el.massSoftStart2.setTxt(formatMass(tmp.bh.massSoftGain))
 
+	tmp.el.bhOverflow.setDisplay(false)
+	//tmp.el.bhOverflow2.setTxt(format(tmp.bhOverflow))
 	tmp.el.bhEffect.setTxt(format(tmp.bh.effect))
 
 	tmp.el.bhCondenser_lvl.setTxt(format(player.bh.condenser,0)+(tmp.bh.condenser_bonus.gte(1)?" + "+format(tmp.bh.condenser_bonus,0):""))
@@ -386,9 +388,9 @@ function updateHTML() {
 				updateMassUpgradesHTML()
 				updateTickspeedHTML()
 				
-				tmp.el.massSoft1.setDisplay(tmp.massGain.gte(tmp.massSoftGain) && player.ranks.hex.eq(0))
+				tmp.el.massSoft1.setDisplay(tmp.massGain.gte(tmp.massSoftGain) && player.ranks.hex.lt(1))
 				tmp.el.massSoftStart1.setTxt(formatMass(tmp.massSoftGain))
-				tmp.el.massSoft3.setDisplay(tmp.massGain.gte(tmp.massSoftGain2))
+				tmp.el.massSoft3.setDisplay(tmp.massGain.gte(tmp.massSoftGain2) && player.ranks.hex.lt(4))
 				tmp.el.massSoftStart3.setTxt(formatMass(tmp.massSoftGain2))
 				tmp.el.massSoft4.setDisplay(tmp.massGain.gte(tmp.massSoftGain3))
 				tmp.el.massSoftStart4.setTxt(formatMass(tmp.massSoftGain3))
@@ -396,6 +398,12 @@ function updateHTML() {
 				tmp.el.massSoftStart5.setTxt(formatMass(tmp.massSoftGain4))
 				tmp.el.massSoft6.setDisplay(tmp.massGain.gte(tmp.massSoftGain5))
 				tmp.el.massSoftStart6.setTxt(formatMass(tmp.massSoftGain5))
+				tmp.el.massSoft7.setDisplay(tmp.massGain.gte(tmp.massSoftGain6))
+				tmp.el.massSoftStart7.setTxt(formatMass(tmp.massSoftGain6))
+				
+				
+				tmp.el.massOverflow.setDisplay(false)
+				//tmp.el.massOverflow2.setTxt(format(tmp.massOverflow))
 			}
 			if (tmp.stab[0] == 1) {
 				updateBlackHoleHTML()

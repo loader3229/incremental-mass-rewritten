@@ -269,6 +269,7 @@ const FERMIONS = {
                 cons: "You are trapped in Challenges 8-9",
             },{
                 maxTier() {
+                    if (hasTree("fn16")) return 1/0
                     let x = 15
                     if (hasTree("fn9")) x += 2
                     if (hasTree("fn11")) x += 5
@@ -296,6 +297,7 @@ const FERMIONS = {
                 cons: "Star generators are decreased to ^0.5",
             },{
                 maxTier() {
+                    if (hasTree("fn17")) return 1/0
                     let x = 25
                     if (hasTree("fn11")) x += 5
                     if (hasTree("fn14")) x += 69

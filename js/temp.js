@@ -126,6 +126,7 @@ function resetTemp() {
     for (let x = 0; x < MASS_DILATION.break.upgs.ids.length; x++) tmp.bd.upgs[x] = {}
     tmp.el = keep[0]
     tmp.prevSave = keep[1]
+	tmp.preQUGlobalSpeed = E(1)
 }
 
 resetTemp()
@@ -141,6 +142,8 @@ function updateMassTemp() {
     tmp.massSoftGain4 = FORMS.massSoftGain4()
     tmp.massSoftPower5 = FORMS.massSoftPower5()
     tmp.massSoftGain5 = FORMS.massSoftGain5()
+    tmp.massSoftPower6 = FORMS.massSoftPower6()
+    tmp.massSoftGain6 = FORMS.massSoftGain6()
     tmp.massGain = FORMS.massGain()
 }
 
@@ -187,6 +190,7 @@ function updateBlackHoleTemp() {
 }
 
 function updateTemp() {
+	
     tmp.offlineActive = player.offline.time > 1
     tmp.offlineMult = tmp.offlineActive?player.offline.time+1:1
 

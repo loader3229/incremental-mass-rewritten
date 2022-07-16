@@ -82,6 +82,11 @@ function giveRandomPParticles(v, max=false) {
 		PRIM.particle.total_w-=6;
 		calcPartChances();
 	}
+	if (hasTree('prim6') && PRIM.particle.weight[1]){
+		PRIM.particle.weight[1]=0;
+		PRIM.particle.total_w-=6;
+		calcPartChances();
+	}
     let s = max?tmp.prim.unspent:E(v)
     if (!max) s = s.min(tmp.prim.unspent)
 
@@ -122,6 +127,7 @@ function freePrimordiumParticles(id) {
 	let res = E(0)
 	if (hasTree('prim4') && id == 0) res = player.qu.prim.theorems,player.qu.prim.particles[0] = E(0)
 	if (hasTree('prim5') && id == 2) res = player.qu.prim.theorems,player.qu.prim.particles[2] = E(0)
+	if (hasTree('prim6') && id == 1) res = player.qu.prim.theorems,player.qu.prim.particles[1] = E(0)
 	if (hasPrestige(1,4)) res = res.add(5)
 	if (hasPrestige(1,9)) res = res.add(player.prestiges[1].max(1))
 	return res

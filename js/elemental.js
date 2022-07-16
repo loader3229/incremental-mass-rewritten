@@ -64,6 +64,7 @@ const ELEMENTS = {
             cost: E(2.5e16),
             effect() {
                 let x = player.atom?player.atom.powers[0].max(1).log10().pow(0.8).div(50).add(1):E(1)
+				if(player.ranks.hex.gte(4))x=x.pow(1.05);
                 return x
             },
             effDesc(x) { return format(x)+"x stronger" },

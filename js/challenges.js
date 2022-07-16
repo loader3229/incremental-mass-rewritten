@@ -131,6 +131,9 @@ const CHALS = {
         if (hasTree("chal11") && (i==9))  x = x.add(500)
         if (hasTree("chal11") && (i==10))  x = x.add(500)
         if (hasTree("chal11") && (i==11))  x = x.add(500)
+        if (hasTree("chal12") && (i==9))  x = x.add(1900)
+        if (hasTree("chal12") && (i==10))  x = x.add(3500)
+        if (hasTree("chal12") && (i==11))  x = x.add(3500)
         return x.floor()
     },
     getScaleName(i) {

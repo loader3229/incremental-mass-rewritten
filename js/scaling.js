@@ -286,13 +286,16 @@ function getScalingPower(type, name) {
 		if (name=="rank") {
 			if (player.mainUpg.rp.includes(10)) power = power.mul(0.8)
 			if (player.ranks.tetr.gte(4)) power = power.mul(RANKS.effect.tetr[4]())
+			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="tier") {
 			if (player.ranks.tetr.gte(4)) power = power.mul(0.8)
 			if (hasElement(37)) power = power.mul(tmp.elements.effect[37])
+			if (hasPrestige(0,75)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="tetr") {
 			if (hasElement(74)) power = power.mul(0.75)
+			if (player.prestiges[1].gte(10)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="massUpg") {
 			if (player.mainUpg.rp.includes(8)) power = power.mul(tmp.upgs.main?tmp.upgs.main[1][8].effect:1)
@@ -311,16 +314,31 @@ function getScalingPower(type, name) {
 		}
 		if (name=="cosmic_str") {
 			if (hasPrestige(0,24)) power = power.mul(0.8)
+			if (hasPrestige(0,79)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="pent") {
+			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="supernova") {
+			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="prestige0") {
+			if (hasPrestige(0,62)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="prestige1") {
+			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
 		}
 	}
 	if (type=="hyper") {
 		if (name=="rank") {
 			if (player.ranks.tetr.gte(1)) power = power.mul(0.85)
 			if (hasElement(27)) power = power.mul(0.75)
+			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="tier") {
 			if (player.ranks.tetr.gte(4)) power = power.mul(0.8)
 			if (hasElement(37)) power = power.mul(tmp.elements.effect[37])
+			if (hasPrestige(0,75)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="massUpg") {
 			if (player.mainUpg.rp.includes(8)) power = power.mul(tmp.upgs.main?tmp.upgs.main[1][8].effect:1)
@@ -335,18 +353,35 @@ function getScalingPower(type, name) {
 		if (name=='gamma_ray') {
 			if (hasElement(55)) power = power.mul(0.75)
 		}
+		if (name=="tetr") {
+			if (player.prestiges[1].gte(10)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="pent") {
+			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="supernova") {
+			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="cosmic_str") {
+			if (hasPrestige(0,79)) power = power.mul(tmp.prestigeMassEffect)
+		}
 	}
 	if (type=="ultra") {
 		if (name=="rank") {
 			if (hasElement(27)) power = power.mul(0.75)
 			if (hasElement(58)) power = power.mul(tmp.elements.effect[58])
+			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=='tickspeed') {
 			if (hasElement(27)) power = power.mul(0.75)
 			if (hasElement(58)) power = power.mul(tmp.elements.effect[58])
 		}
+		if (name=="tier") {
+			if (hasPrestige(0,75)) power = power.mul(tmp.prestigeMassEffect)
+		}
 		if (name=="tetr") {
 			if (player.prestiges[0].gte(45)) power = power.mul(0.58)
+			if (player.prestiges[1].gte(10)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=='bh_condenser') {
 			if (hasElement(55)) power = power.mul(0.75)
@@ -354,10 +389,22 @@ function getScalingPower(type, name) {
 		if (name=='gamma_ray') {
 			if (hasElement(55)) power = power.mul(0.75)
 		}
+		if (name=="pent") {
+			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="supernova") {
+			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="cosmic_str") {
+			if (hasPrestige(0,79)) power = power.mul(tmp.prestigeMassEffect)
+		}
 	}
 	if (type=="meta") {
 		if (name=='supernova') {
 			if (hasElement(78)) power = power.mul(0.8)
+		}
+		if (name=="rank") {
+			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
 		}
 	}
 	if (name=="rank" && hasPrestige(0,58)) power = power.mul(0.5)
