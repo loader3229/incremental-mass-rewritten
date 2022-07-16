@@ -24,36 +24,36 @@ const PRIM = {
 
         eff: [
             p=>{
-                let x = p.add(1).root(2)
+                let x = p.softcap(1000,1,0).add(1).root(2)
                 return x
             },
             p=>{
-                let x = [p.root(3).div(5).add(1),p.pow(1.25).add(1)]
+                let x = [p.softcap(1000,1,0).root(3).div(5).add(1),p.softcap(1000,1,0).pow(1.25).add(1)]
                 return x
             },
             p=>{
-                let x = [p.root(3).div(5).add(1),E(3).pow(p.pow(0.75))]
+                let x = [p.softcap(1000,1,0).root(3).div(5).add(1),E(3).pow(p.softcap(1000,1,0).pow(0.75))]
                 return x
             },
             p=>{
-                let x = [p.root(3).div(5).add(1),E(2).pow(p.pow(0.75))]
+                let x = [p.softcap(1000,1,0).root(3).div(5).add(1),E(2).pow(p.softcap(1000,1,0).pow(0.75))]
                 return x
             },
             p=>{
-                let x = p.add(1).root(10)
+                let x = p.softcap(1000,1,0).add(1).root(10)
                 return x
             },
             p=>{
-                let x = [p.root(3).div(10), p.root(3).pow(QCs.active()?2:1)]
+                let x = [p.softcap(1000,1,0).root(3).div(10), p.softcap(1000,1,0).root(3).pow((QCs.active()||hasTree('prim3a'))?2:1)]
                 return x
             },
             p=>{
-                let x = [E(5).pow(p.pow(0.75)), p.root(5).div(10).add(1)]
+                let x = [E(5).pow(p.softcap(1000,1,0).pow(0.75)), p.softcap(1000,1,0).root(5).div(10).add(1)]
                 return x
             },
             p=>{
                 if (hasElement(107)) p = p.mul(2)
-                let x = p.pow(0.9).mul(2)
+                let x = p.softcap(1000,1,0).pow(0.9).mul(2)
                 return x
             },
         ],
@@ -84,6 +84,11 @@ function giveRandomPParticles(v, max=false) {
 	}
 	if (hasTree('prim6') && PRIM.particle.weight[1]){
 		PRIM.particle.weight[1]=0;
+		PRIM.particle.total_w-=6;
+		calcPartChances();
+	}
+	if (hasTree('prim7') && PRIM.particle.weight[3]){
+		PRIM.particle.weight[3]=0;
 		PRIM.particle.total_w-=6;
 		calcPartChances();
 	}
@@ -128,6 +133,7 @@ function freePrimordiumParticles(id) {
 	if (hasTree('prim4') && id == 0) res = player.qu.prim.theorems,player.qu.prim.particles[0] = E(0)
 	if (hasTree('prim5') && id == 2) res = player.qu.prim.theorems,player.qu.prim.particles[2] = E(0)
 	if (hasTree('prim6') && id == 1) res = player.qu.prim.theorems,player.qu.prim.particles[1] = E(0)
+	if (hasTree('prim7') && id == 3) res = player.qu.prim.theorems,player.qu.prim.particles[3] = E(0)
 	if (hasPrestige(1,4)) res = res.add(5)
 	if (hasPrestige(1,9)) res = res.add(player.prestiges[1].max(1))
 	return res

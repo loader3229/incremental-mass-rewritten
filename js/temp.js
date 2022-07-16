@@ -144,6 +144,8 @@ function updateMassTemp() {
     tmp.massSoftGain5 = FORMS.massSoftGain5()
     tmp.massSoftPower6 = FORMS.massSoftPower6()
     tmp.massSoftGain6 = FORMS.massSoftGain6()
+    tmp.massSoftPower7 = FORMS.massSoftPower7()
+    tmp.massSoftGain7 = FORMS.massSoftGain7()
     tmp.massGain = FORMS.massGain()
 }
 

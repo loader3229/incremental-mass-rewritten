@@ -11,6 +11,7 @@ const QUANTUM = {
         if (hasTree("qf3")) x = x.mul(treeEff("qf3"))
         if (hasPrestige(0,2)) x = x.mul(4)
         if (hasPrestige(0,55)) x = x.mul(player.prestiges[0].max(1))
+        if (hasPrestige(0,89)) x = x.mul(prestigeEff(0,89,[E(1),E(1)])[0]);
         return x.floor()
     },
     gainTimes() {
@@ -111,10 +112,12 @@ const QUANTUM = {
         if (tmp.qu.mil_reached[5]) x = x.mul(tmp.preQUGlobalSpeed.root(2).softcap(1e50,0.95,2))
         if (hasTree('qu5')) x = x.mul(tmp.supernova.tree_eff.qu5)
         x = x.mul(tmp.qu.cosmic_str_eff.eff)
+        if (hasPrestige(0,88)) x = x.mul(prestigeEff(0,88,[E(1),E(1)])[0]);
         return x
     },
     bpEff() {
         let x = hasElement(101) ? player.qu.bp.add(1).log10().add(1).tetrate(hasUpgrade("br",15) ? 1.35 : 1.25) : player.qu.bp.add(1).log10().add(1).pow(1.5)
+		if(hasPrestige(0,100))x = x.pow(1.02)
         return x
     },
     cosmic_str: {

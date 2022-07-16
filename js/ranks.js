@@ -114,10 +114,14 @@ const RANKS = {
             '1': "移除质量获取速度的一重软上限，氢(1H)的效果变得更强。",
             '2': "Hardened Challenge scale 25% weaker.",
             '3': "锂(3Li)的效果变为原来的1.5次方（在软上限之前）。",
-            '4': "remove mass gain softcap^2, Beryllium-4's Effect is powered by 1.05.",
+            '4': "remove mass gain softcap^2, Beryllium-4's Effect is raised by 1.05.",
             '5': "Hex boost Prestige Base Exponent.",
             '6': "Carbon-6's Effect boost Higgs Bosons.",
             '7': "Nitrogen-7's Effect is better.",
+            '8': "remove mass gain softcap^3.",
+            '9': "The Tetr requirement is 15% weaker.",
+            '10': "3rd & 4th challenges' scaling is weakened.",
+            '11': "Sodium-11 works even with Francium-87 bought.",
         },
     },
     effect: {
@@ -268,7 +272,7 @@ const RANKS = {
 }
 
 const PRESTIGES = {
-    fullNames: ["转生等级", "荣耀"],
+    fullNames: ["转生等级", "荣耀", "Glory"],
     baseExponent() {
         let x = 0
         if (hasElement(100)) x += tmp.elements.effect[100]
@@ -296,6 +300,9 @@ const PRESTIGES = {
             case 1:
                 x = y.scaleEvery('prestige1').pow(1.25).mul(3).add(4)
                 break;
+            case 2:
+                x = y.scaleEvery('prestige2').pow(1.25).mul(3).add(12)
+                break;
             default:
                 x = EINF
                 break;
@@ -311,6 +318,9 @@ const PRESTIGES = {
             case 1:
                 if (y.gte(4)) x = y.sub(4).div(2).max(0).root(1.5).scaleEvery('prestige1',true).add(1)
                 break
+            case 2:
+                if (y.gte(12)) x = y.sub(12).div(2).max(0).root(1.5).scaleEvery('prestige2',true).add(1)
+                break
             default:
                 x = E(0)
                 break;
@@ -320,9 +330,11 @@ const PRESTIGES = {
     unl: [
         _=>true,
         _=>true,
+        _=>hasPrestige(1,12) || hasPrestige(2,1),
     ],
     noReset: [
         _=>hasUpgrade('br',11),
+        _=>false,
         _=>false,
     ],
     rewards: [
@@ -357,6 +369,17 @@ const PRESTIGES = {
             "77": `Prestige Mass Effect is applied to Pre-Meta Rank scalings and Super Honor scaling.`,
             "79": `Prestige Mass Effect is applied to Pre-Meta Cosmic String scalings.`,
             "80": "Mass gain softcap^3 is 10% weaker.",
+            "82": "Mass gain softcap^3 is 50% weaker.",
+            "88": `Prestige Mass and Blueprint Particles boost each other.`,
+            "89": `Prestige Mass and Quantum Foams boost each other.`,
+            "91": `Entropic Evaporation^2 is 20% weaker.`,
+            "93": `Prestige Mass Effect is applied to Meta Supernova scaling.`,
+            "98": `Prestige Mass and Death Shards boost each other.`,
+            "99": `QC Modifier 'Intense Catalyst' is 8% weaker.`,
+            "100": `Effect of Blueprint Particles is raised by ^1.02.`,
+            "101": `Effect of W- Bosons affects mass gain softcap ^3-^6.`,
+            "103": `Prestige Mass Formula from Prestige Level is better.`,
+            "105": `Super Honor is 3% weaker.`,
         },
         {
             "1": `使所有星辰相关资源获取速度变为原来的2次方。`,
@@ -368,8 +391,13 @@ const PRESTIGES = {
             "9": `所有原基粒子获得等同于荣耀的免费等级。`,
             "10": `Unlock Prestige Mass.`,
             "11": `Prestige Mass and Entropy boost each other.`,
-            "12": `达到现在的残局。`,
+            "12": `Unlock Glory.`,
+            "13": `Add 100 C12 Completions.`,
+            "14": `达到现在的残局。`,
         },
+		{
+            "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
+		},
     ],
     rewardEff: [
         {
@@ -392,6 +420,15 @@ const PRESTIGES = {
             "60": [_=>{
                 return [player.prestigeMass.add(1),(tmp.preQUGlobalSpeed||E(0)).add(1).log10().sqrt()];
             },x=>x[0].format()+"x to Pre-Quantum Global Speed, "+x[1].format()+"x to Prestige Mass"],
+            "88": [_=>{
+                return [player.prestigeMass.add(1),(player.qu.bp||E(0)).add(1).log10().sqrt()];
+            },x=>x[0].format()+"x to Blueprint Particles, "+x[1].format()+"x to Prestige Mass"],
+            "89": [_=>{
+                return [player.prestigeMass.add(1),(player.qu.points||E(0)).add(1).log10().sqrt()];
+            },x=>x[0].format()+"x to Quantum Foams, "+x[1].format()+"x to Prestige Mass"],
+            "98": [_=>{
+                return [player.prestigeMass.add(1).log10().pow(2),(player.qu.rip.amt||E(0)).add(1).log10().sqrt()];
+            },x=>x[0].format()+"x to Death Shards, "+x[1].format()+"x to Prestige Mass"],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -422,6 +459,8 @@ const PRESTIGES = {
                 return [player.prestigeMass.add(1).sqrt(),player.qu.en.amt.add(1).log10().sqrt()];
             },x=>x[0].format()+"x to Entropy Gain, "+x[1].format()+"x to Prestige Mass"],
         },
+		{
+		},
     ],
     reset(i) {
         if (i==0?tmp.prestiges.base.gte(tmp.prestiges.req[i]):player.prestiges[i-1].gte(tmp.prestiges.req[i])) {
@@ -465,6 +504,7 @@ function updateRanksTemp() {
     if (hasElement(9)) fp = fp.mul(1/0.85)
     if (player.ranks.pent.gte(1)) fp = fp.mul(1/0.85)
     if (hasElement(72)) fp = fp.mul(1/0.85)
+    if (player.ranks.hex.gte(9)) fp = fp.mul(1/0.85)
     tmp.ranks.tetr.req = player.ranks.tetr.div(fp2).scaleEvery('tetr').div(fp).pow(pow).mul(3).add(10).floor()
     tmp.ranks.tetr.bulk = player.ranks.tier.sub(10).div(3).max(0).root(pow).mul(fp).scaleEvery('tetr',true).mul(fp2).add(1).floor();
 
@@ -499,6 +539,10 @@ function updateRanksTemp() {
 	
 	tmp.prestigeMassGain = prestigeMassGain()
 	tmp.prestigeMassEffect = prestigeMassEffect()
+	
+	if(hasPrestige(2,1)){
+		player.prestiges[0] = player.prestiges[0].max(PRESTIGES.bulk(0));
+	}
 }
 
 function updateRanksHTML() {
@@ -565,6 +609,7 @@ function updateRanksHTML() {
 			tmp.el["pres_mass"].setDisplay(true);
 			tmp.el["pres_mass2"].setTxt(formatMass(player.prestigeMass,0)+" "+formatGain(player.prestigeMass, tmp.prestigeMassGain, true))
 			tmp.el["pres_mass3"].setTxt(format(E(1).sub(prestigeMassEffect()).mul(100))+"%");
+			tmp.el["pres_mass4"].setDisplay(hasPrestige(2,1));
 		}else{
 			tmp.el["pres_mass"].setDisplay(false);
 		}
@@ -575,13 +620,20 @@ function prestigeMassGain(){
 	if(player.prestiges[1].lt(10)){
 		return E(0);
 	}
-	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0]).mul(player.prestiges[1].pow(2)).pow(player.prestiges[1].div(10)).div(400000);
+	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0]).mul(player.prestiges[1].pow(2)).mul(player.prestiges[2].add(1)).pow(player.prestiges[1].div(10))
+	if (hasPrestige(2,1)) x = x.pow(player.prestiges[2].div(10).add(1));
+	x = x.div(400000);
 	if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[1]);
-	if (hasPrestige(0,64)) x = x.mul(player.prestiges[0].sqrt().pow(player.prestiges[1].div(10)));
+	if (hasPrestige(0,64)) x = x.mul(player.prestiges[0].sqrt().pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
+	if (hasPrestige(0,103)) x = x.mul(player.prestiges[0].pow(0.25).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
 	if (hasPrestige(1,11)) x = x.mul(prestigeEff(1,11,[E(1),E(1)])[1]);
-	if (hasPrestige(0,74)) x = x.mul(player.prestiges[1].pow(player.prestiges[1].div(10)));
+	if (hasPrestige(0,74)) x = x.mul(player.prestiges[1].pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
+    if (hasPrestige(0,88)) x = x.mul(prestigeEff(0,88,[E(1),E(1)])[1]);
+    if (hasPrestige(0,89)) x = x.mul(prestigeEff(0,89,[E(1),E(1)])[1]);
+    if (hasPrestige(0,98)) x = x.mul(prestigeEff(0,98,[E(1),E(1)])[1]);
     if (player.md.break.upgs[11].gte(1)) x = x.mul(tmp.bd.upgs[11].eff||1)
     if (hasTree("pm1")) x = x.mul(tmp.supernova.tree_eff.pm1)
+    if (hasTree("qc7")) x = x.mul(tmp.supernova.tree_eff.qc7)
 	return x;
 }
 

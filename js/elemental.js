@@ -91,7 +91,8 @@ const ELEMENTS = {
             cost: E(1e20),
             effect() {
                 let x = E(player.atom.elements.length+1)
-                if (hasElement(11) && !hasElement(87)) x = x.pow(2)
+				if (player.ranks.hex.gte(7))x = x.pow(1.1);
+                if (hasElement(11) && (!hasElement(87) || player.ranks.hex.gte(11))) x = x.pow(2);
                 return x
             },
             effDesc(x) { return format(x)+"x" },

@@ -21,6 +21,7 @@ const BIG_RIP = {
         if (player.md.break.upgs[6].gte(1)) x = x.mul(tmp.bd.upgs[6].eff?tmp.bd.upgs[6].eff[1]:1)
         if (hasUpgrade('br',13)) x = x.mul(upgEffect(4,13))
         if (hasPrestige(0,55)) x = x.mul(player.prestiges[0].max(1))
+		if (hasPrestige(0,98)) x = x.mul(prestigeEff(0,98,[E(1),E(1)])[0]);
         return x.floor()
     },
 }

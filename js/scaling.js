@@ -223,6 +223,7 @@ function getScalingStart(type, name) {
 		}
 		if (name=="prestige0") {
 			if (player.md.break.upgs[9].gte(1)) start = start.add(10)
+			if (hasPrestige(2,1)) start = start.add(5)
 		}
 	}
 	if (type=="hyper") {
@@ -327,6 +328,7 @@ function getScalingPower(type, name) {
 		}
 		if (name=="prestige1") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
+			if (hasPrestige(0,105)) power = power.mul(0.97)
 		}
 	}
 	if (type=="hyper") {
@@ -402,6 +404,7 @@ function getScalingPower(type, name) {
 	if (type=="meta") {
 		if (name=='supernova') {
 			if (hasElement(78)) power = power.mul(0.8)
+			if (hasPrestige(0,93)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="rank") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)

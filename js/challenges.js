@@ -134,6 +134,7 @@ const CHALS = {
         if (hasTree("chal12") && (i==9))  x = x.add(1900)
         if (hasTree("chal12") && (i==10))  x = x.add(3500)
         if (hasTree("chal12") && (i==11))  x = x.add(3500)
+        if (hasPrestige(1,13) && (i==12))  x = x.add(100)
         return x.floor()
     },
     getScaleName(i) {
@@ -171,6 +172,7 @@ const CHALS = {
         let s3 = 1000
         let pow = chal.pow
         if (hasElement(10) && (x==3||x==4)) pow = pow.mul(0.95)
+        if (player.ranks.hex.gte(10) && (x==3||x==4)) pow = pow.mul(0.95)
         chal.pow = chal.pow.max(1)
         let goal = chal.inc.pow(lvl.div(fp).pow(pow)).mul(chal.start)
         let bulk = res.div(chal.start).max(1).log(chal.inc).root(pow).mul(fp).add(1).floor()

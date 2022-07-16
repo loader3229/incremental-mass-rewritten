@@ -18,7 +18,7 @@ const TREE_IDS = [
         ['qol2','qol3','qol4','qu_qol2','qu_qol3','qu_qol4','qu_qol5','qu_qol6'],
         ['chal2','chal4a','chal4b','chal3'],
         ['bs5','bs2','fn1','bs3','qf2','qf3','rad2','rad3'],
-        ['qu1','qu2','qu3'],
+        ['prim3a','qu1','qu2','qu3',''],
     ],[
         ['s2','m2','t1','d1','bh2','gr1','sn2'],
         ['qol5','qol6','qol7','','qu_qol7a','qu_qol7','',''],
@@ -42,7 +42,7 @@ const TREE_IDS = [
         [],
         [],
         ['fn16','fn17','fn15','pm1'],
-        ['prim6','br3','qc6'],
+        ['prim6','prim7','br3','qc7','qc6'],
     ],
 ]
 
@@ -901,6 +901,13 @@ const TREE_UPGS = {
             desc: `Epsilon Particle’s second effect is now added, stronger if you are in Quantum Challenge.`,
             cost: E(1e16),
         },
+        prim3a: {
+            qf: true,
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["prim3"],
+            desc: `Epsilon Particle’s second effect is stronger if you are not in Quantum Challenge.`,
+            cost: E(1e200),
+        },
         prim4: {
             qf: true,
             unl() { return player.atom.elements.includes(118) },
@@ -921,6 +928,13 @@ const TREE_UPGS = {
             branch: ["prim5"],
             desc: `You can't gain Alpha Particles from Primordium Theorem now. Instead, Add Free Alpha Particles equals to your total Primordium Theorems.`,
             cost: E(1e147),
+        },
+        prim7: {
+            qf: true,
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["prim6"],
+            desc: `You can't gain Sigma Particles from Primordium Theorem now. Instead, Add Free Sigma Particles equals to your total Primordium Theorems.`,
+            cost: E(1e178),
         },
         qc1: {
             qf: true,
@@ -992,6 +1006,18 @@ const TREE_UPGS = {
                 return x
             },
             effDesc(x) { return "+"+format(x) },
+        },
+        qc7: {
+            unl() { return player.atom.elements.includes(118) },
+            qf: true,
+            branch: ['qc6'],
+            desc: `Quantum Shard boost Prestige mass gain.`,
+            cost: E(1e224),
+            effect() {
+                let x = Decimal.pow(player.qu.qc.shard+1,0.6);
+                return x
+            },
+            effDesc(x) { return format(x)+"x" },
         },
         en1: {
             unl() { return player.qu.rip.first },
