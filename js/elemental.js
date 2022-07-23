@@ -140,6 +140,7 @@ const ELEMENTS = {
             cost: E(5e38),
             effect() {
                 let x = player.atom.elements.length*0.02
+				if(player.ranks.hex.gte(16))x = player.atom.elements.length
                 return Number(x)
             },
             effDesc(x) { return "+"+format(x*100)+"%" },
@@ -153,6 +154,7 @@ const ELEMENTS = {
             cost: E(1e44),
             effect() {
                 let x = player.atom.gamma_ray.pow(0.35).mul(0.01).add(1)
+				if(player.ranks.hex.gte(18))x = player.atom.gamma_ray
                 return x
             },
             effDesc(x) { return "^"+format(x) },
@@ -174,6 +176,7 @@ const ELEMENTS = {
             cost: E(1e61),
             effect() {
                 let x = E(1.25).pow(player.tickspeed.pow(0.55))
+				if(player.ranks.hex.gte(22))x = E(10).pow(player.tickspeed)
                 return x
             },
             effDesc(x) { return format(x)+"x" },

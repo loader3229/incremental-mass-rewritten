@@ -189,10 +189,14 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = i.add(1).log10().pow(0.5).div(150).add(1).pow(t)
+					if(hasTree('fn18') && x.gte(500)){
+						x = x.log(500).mul(500);
+						return x;
+					}
                     return x.min(500)
                 },
                 desc(x) {
-                    return `Meta-Tickspeed starts ${format(x)}x later`+(x.gte(500)?" <span class='soft'>(hardcapped)</span>":"")
+                    return `Meta-Tickspeed starts ${format(x)}x later`+((x.gte(500)  && !hasTree('fn18'))?" <span class='soft'>(hardcapped)</span>":"")+((x.gte(500)  && hasTree('fn18'))?" <span class='soft'>(softcapped)</span>":"")
                 },
                 inc: "Tickspeed Effect",
                 cons: "Challenges are disabled",

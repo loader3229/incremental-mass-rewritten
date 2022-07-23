@@ -18,6 +18,7 @@ const SCALE_START = {
 		rank: E(120),
 		tier: E(200),
 		tetr: E(60),
+		pent: E(100),
 		massUpg: E(500),
 		tickspeed: E(250),
 		bh_condenser: E(300),
@@ -66,6 +67,7 @@ const SCALE_POWER= {
 		rank: 2.5,
 		tier: 2.5,
 		tetr: 3,
+		pent: 3,
 		massUpg: 5,
 		tickspeed: 4,
 		bh_condenser: 2,
@@ -87,6 +89,8 @@ const SCALE_POWER= {
 	},
 	meta: {
 		rank: 1.0025,
+		tier: 1.0025,
+		tetr: 1.0025,
 		tickspeed: 1.001,
 		bh_condenser: 1.001,
 		gamma_ray: 1.001,
@@ -225,6 +229,9 @@ function getScalingStart(type, name) {
 			if (player.md.break.upgs[9].gte(1)) start = start.add(10)
 			if (hasPrestige(2,1)) start = start.add(5)
 		}
+		if (name=="prestige1") {
+			if (hasPrestige(2,2)) start = start.add(1)
+		}
 	}
 	if (type=="hyper") {
 		if (name=="tickspeed") {
@@ -251,6 +258,7 @@ function getScalingStart(type, name) {
 			start = start.mul(tmp.radiation.bs.eff[14])
 			start = start.mul(tmp.bd.upgs[4].eff)
 			if (hasPrestige(0,53)) start = start.mul(1.5)
+			start = start.min(1e20)
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -306,9 +314,11 @@ function getScalingPower(type, name) {
 		}
 		if (name=='bh_condenser') {
 			if (hasElement(15)) power = power.mul(0.8)
+			if (player.ranks.hex.gte(15)) power = power.mul(0.8)
 		}
 		if (name=='gamma_ray') {
 			if (hasElement(15)) power = power.mul(0.8)
+			if (player.ranks.hex.gte(15)) power = power.mul(0.8)
 		}
 		if (name=="fTier") {
 			if (hasTree("fn3")) power = power.mul(0.925)
@@ -408,13 +418,16 @@ function getScalingPower(type, name) {
 		}
 		if (name=="rank") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
+			if (hasPrestige(0,107)) power = power.mul(1e-4)
+			if (hasPrestige(0,113)) power = power.mul(0.1)
 		}
 	}
 	if (name=="rank" && hasPrestige(0,58)) power = power.mul(0.5)
+	if (name=="rank" && hasPrestige(1,15)) power = power.mul(0.1)
 	if (hasUpgrade("atom",15) && name == "gamma_ray") power = power.mul(0.8)
 	if (hasUpgrade("atom",15) && name == "gamma_ray" && player.prestiges[0].gte(50)) power = power.mul(0.76/0.8)
 	if (hasElement(108) && ["rank","tier","tetr","pent"].includes(name)) power = power.mul(player.qu.rip.active?0.98:0.9)
 	if (QCs.active() && QCM8_SCALES.includes(name)) if (!tmp.scaling_qc8.includes(name)) power = power.mul(tmp.qu.qc_eff[7][1])
 	if (PreQ_SCALES.includes(name) && type != "meta")  power = power.mul(getEnRewardEff(5))
-	return power.max(type=="meta"?0.1:0)
+	return power.max(type=="meta"?1e-8:0)
 }

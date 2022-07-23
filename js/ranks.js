@@ -120,8 +120,18 @@ const RANKS = {
             '7': "Nitrogen-7's Effect is better.",
             '8': "remove mass gain softcap^3.",
             '9': "The Tetr requirement is 15% weaker.",
-            '10': "3rd & 4th challenges' scaling is weakened.",
+            '10': "Neon-10 is better.",
             '11': "Sodium-11 works even with Francium-87 bought.",
+            '12': "Magnesium-12 is better.",
+            '13': "remove mass gain softcap^4.",
+            '15': "Super BH Condenser & Cosmic Ray scales 20% weaker.",
+            '16': "Sulfur-16 now gives +100% per element.",
+            '17': "Raise Atom's gain by 1.1.",
+            '18': "Argon-18 is better.",
+            '19': "Potassium-19 is better.",
+            '20': "Add 1e5 more C7 completions.",
+            '21': "remove mass gain softcap^5.",
+            '22': "Titanium-22 is better.",
         },
     },
     effect: {
@@ -278,6 +288,7 @@ const PRESTIGES = {
         if (hasElement(100)) x += tmp.elements.effect[100]
         if (hasPrestige(0,32)) x += prestigeEff(0,32,0)
         if (player.ranks.hex.gte(5)) x += RANKS.effect.hex[5]();
+        if (hasTree('qc8')) x += treeEff('qc8',0)
         return x+1
     },
     base() {
@@ -334,7 +345,7 @@ const PRESTIGES = {
     ],
     noReset: [
         _=>hasUpgrade('br',11),
-        _=>false,
+        _=>hasPrestige(2,2),
         _=>false,
     ],
     rewards: [
@@ -380,6 +391,19 @@ const PRESTIGES = {
             "101": `Effect of W- Bosons affects mass gain softcap ^3-^6.`,
             "103": `Prestige Mass Formula from Prestige Level is better.`,
             "105": `Super Honor is 3% weaker.`,
+            "106": `Prestige Mass Formula from Prestige Level is better.`,
+            "107": `Meta-Rank is 99.99% weaker.`,
+            "110": `Boost Prestige Mass gain by Protons Powers.`,
+            "111": `Prestige Mass boost itself.`,
+            "113": `Meta-Rank is 90% weaker.`,
+            "115": `Entropic Evaporation^2 is 5% weaker.`,
+            "129": `Add 5000 C9-C11 Completions.`,
+            "130": `If you bought [prim8], levels of Epsilon/Theta/Beta Particles is 1 per 2.5 Primordium Theorem, instead of 3.`,
+            "131": `Entropic Evaporation^2 is 5% weaker.`,
+            "134": `QC Modifier 'Time Anomaly' is 3% weaker.`,
+            "135": `Multiply Honor 9 reward by log10(Prestige Level).`,
+            "140": `Effect of W- Bosons affects mass gain softcap ^7.`,
+            "141": `Entropic Evaporation^2 is 5% weaker.`,
         },
         {
             "1": `使所有星辰相关资源获取速度变为原来的2次方。`,
@@ -393,10 +417,11 @@ const PRESTIGES = {
             "11": `Prestige Mass and Entropy boost each other.`,
             "12": `Unlock Glory.`,
             "13": `Add 100 C12 Completions.`,
-            "14": `达到现在的残局。`,
+            "15": `All Rank Scalings are 90% weaker.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
+            "2": `Super Honor starts 1 later, and Honor resets nothing. Multiply Honor 9 reward by Glory.`,
 		},
     ],
     rewardEff: [
@@ -429,6 +454,14 @@ const PRESTIGES = {
             "98": [_=>{
                 return [player.prestigeMass.add(1).log10().pow(2),(player.qu.rip.amt||E(0)).add(1).log10().sqrt()];
             },x=>x[0].format()+"x to Death Shards, "+x[1].format()+"x to Prestige Mass"],
+			"110": [_=>{
+                let x = player.atom.powers[0].add(1).log10().add(1).log10();
+                return x
+            },x=>x.format()+"x"],
+			"111": [_=>{
+                let x = player.prestigeMass.add(1).log10();
+                return x
+            },x=>x.format()+"x"],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -453,6 +486,8 @@ const PRESTIGES = {
             },x=>""+x.format()+"次方"],
             "9": [_=>{
                 let x = player.prestiges[1].max(1)
+				if(hasPrestige(2,2))x = x.mul(player.prestiges[2].max(1));
+				if(hasPrestige(0,135))x = x.mul(player.prestiges[0].add(10).log10());
                 return x
             },x=>"+"+x.format()],
             "11": [_=>{
@@ -631,13 +666,17 @@ function prestigeMassGain(){
     if (hasPrestige(0,88)) x = x.mul(prestigeEff(0,88,[E(1),E(1)])[1]);
     if (hasPrestige(0,89)) x = x.mul(prestigeEff(0,89,[E(1),E(1)])[1]);
     if (hasPrestige(0,98)) x = x.mul(prestigeEff(0,98,[E(1),E(1)])[1]);
+	if (hasPrestige(0,106)) x = x.mul(player.prestiges[0].pow(0.1).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
     if (player.md.break.upgs[11].gte(1)) x = x.mul(tmp.bd.upgs[11].eff||1)
     if (hasTree("pm1")) x = x.mul(tmp.supernova.tree_eff.pm1)
     if (hasTree("qc7")) x = x.mul(tmp.supernova.tree_eff.qc7)
+    if (hasPrestige(0,110)) x = x.mul(prestigeEff(0,110));
+    if (hasPrestige(0,111)) x = x.mul(prestigeEff(0,111));
 	return x;
 }
 
 function prestigeMassEffect(){
+	if(hasTree("qu12"))return E(0.98).pow(player.prestigeMass.add(1).log10().pow(0.725));
 	return E(0.965).pow(player.prestigeMass.add(1).log10().sqrt());
 }
 

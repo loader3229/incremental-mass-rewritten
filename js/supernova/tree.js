@@ -18,7 +18,7 @@ const TREE_IDS = [
         ['qol2','qol3','qol4','qu_qol2','qu_qol3','qu_qol4','qu_qol5','qu_qol6'],
         ['chal2','chal4a','chal4b','chal3'],
         ['bs5','bs2','fn1','bs3','qf2','qf3','rad2','rad3'],
-        ['prim3a','qu1','qu2','qu3',''],
+        ['prim3a','qu1','qu2','qu3','qc8'],
     ],[
         ['s2','m2','t1','d1','bh2','gr1','sn2'],
         ['qol5','qol6','qol7','','qu_qol7a','qu_qol7','',''],
@@ -38,11 +38,11 @@ const TREE_IDS = [
         ['fn13','fn14','fn7','fn8','',''],
         ['prim5','qu6','qu7','qu8','qu9','qu10','qu11','qc5'],
     ],[
+        ['sn6'],
         [],
         [],
-        [],
-        ['fn16','fn17','fn15','pm1'],
-        ['prim6','prim7','br3','qc7','qc6'],
+        ['fn18','fn16','fn17','fn15','pm1'],
+        ['prim6','prim7','prim8','qu12','br3','qc7','qc6'],
     ],
 ]
 
@@ -114,9 +114,10 @@ const TREE_UPGS = {
             effect() {
                 let x = player.supernova.times.mul(0.1).softcap(1.5,0.75,0)
                 if (hasElement(112)) x = x.add(2)
+				if(hasTree('sn6'))x = Decimal.pow(10,player.supernova.times.pow(2));
                 return x
             },
-            effDesc(x) { return "增加"+format(x)+(x.gte(1.5)?"<span class='soft'>(softcapped)</span>":"") },
+            effDesc(x) { return "增加"+format(x)+((x.gte(1.5) && !hasTree('sn6'))?"<span class='soft'>(softcapped)</span>":"") },
         },
         sn5: {
             branch: ["sn4"],
@@ -128,6 +129,17 @@ const TREE_UPGS = {
                 return x
             },
             effDesc(x) { return format(x)+"倍" },
+        },
+        sn6: {
+            branch: ["sn4"],
+            desc: `Neutron Stars is raised to a power based on Supernovas, and [sn4]'s effect is better.`,
+            unl() { return hasElement(118) },
+            cost: E('e1.35e12'),
+            effect() {
+                let x = player.supernova.times.add(10).log10();
+                return x
+            },
+            effDesc(x) { return "^"+format(x) },
         },
         m1: {
             branch: ["c"],
@@ -561,6 +573,12 @@ const TREE_UPGS = {
             desc: `Break [Neut-Muon] Max Tier.`,
             cost: E('1e32000000'),
         },
+        fn18: {
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["fn13"],
+            desc: `[Bottom]'s Hardcap becomes a softcap.`,
+            cost: E('e2.5e13'),
+        },
         d1: {
             unl() { return hasTree("fn6") },
             branch: ["rp1"],
@@ -755,6 +773,15 @@ const TREE_UPGS = {
             desc: `Quantum Foams gain formula is better.`,
             cost: E(1e43),
         },
+        qu12: {
+            qf: true,
+            unl() { return hasElement(118) },
+            req() { return player.prestigeMass.gte(1.619e20) },
+            reqDesc: `Reach 1 MME of Prestige mass.`,
+            branch: ['br3'],
+            desc: `Effect of Prestige mass is better.`,
+            cost: E(1e237),
+        },
         qu_qol1: {
             qf: true,
             unl() { return quUnl() },
@@ -936,6 +963,13 @@ const TREE_UPGS = {
             desc: `You can't gain Sigma Particles from Primordium Theorem now. Instead, Add Free Sigma Particles equals to your total Primordium Theorems.`,
             cost: E(1e178),
         },
+        prim8: {
+            qf: true,
+            unl() { return player.atom.elements.includes(118) },
+            branch: ["prim7"],
+            desc: `Change the mechanics of Primordium.`,
+            cost: E(1e235),
+        },
         qc1: {
             qf: true,
             unl() { return hasTree("unl3") },
@@ -1018,6 +1052,20 @@ const TREE_UPGS = {
                 return x
             },
             effDesc(x) { return format(x)+"x" },
+        },
+        qc8: {
+            unl() { return player.atom.elements.includes(118) },
+            qf: true,
+            branch: ['qc3'],
+            req() { return player.qu.qc.shard >= 144 },
+            reqDesc() { return `Get 144 Quantum Shards.` },
+            desc: `Quantum Shard boost Prestige base exponent.`,
+            cost: E(1e269),
+            effect() {
+                let x = (player.qu.qc.shard**2)*4e-7;
+                return x
+            },
+            effDesc(x) { return "+"+format(x) },
         },
         en1: {
             unl() { return player.qu.rip.first },

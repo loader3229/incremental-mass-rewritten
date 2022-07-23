@@ -135,6 +135,8 @@ const CHALS = {
         if (hasTree("chal12") && (i==10))  x = x.add(3500)
         if (hasTree("chal12") && (i==11))  x = x.add(3500)
         if (hasPrestige(1,13) && (i==12))  x = x.add(100)
+        if (hasPrestige(0,129) && (i>=9 && i<=11))  x = x.add(5000)
+        if (player.ranks.hex.gte(20) && (i==7)) x = x.add(1e5)
         return x.floor()
     },
     getScaleName(i) {

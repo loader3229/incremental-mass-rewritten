@@ -2,12 +2,12 @@ const PRIM = {
     unl() { return hasTree('unl2') },
     getTheorems() {
         let b = tmp.prim.t_base
-        let x = player.qu.bp.max(1).log(b).mul(2).scale(150,2,true)
+        let x = player.qu.bp.max(1).log(b).mul(2)
         return x.floor()
     },
     getNextTheorem() {
         let b = tmp.prim.t_base
-        let x = E(b).pow(player.qu.prim.theorems.scale(150,2).div(2).add(1))
+        let x = E(b).pow(player.qu.prim.theorems.div(2).add(0.5))
 
         return x
     },
@@ -72,6 +72,7 @@ const PRIM = {
 
 function giveRandomPParticles(v, max=false) {
     if (!PRIM.unl()) return
+	if (hasTree('prim8'))return;
 	if (hasTree('prim4') && PRIM.particle.weight[0]){
 		PRIM.particle.weight[0]=0;
 		PRIM.particle.total_w-=6;
@@ -112,6 +113,7 @@ function giveRandomPParticles(v, max=false) {
 }
 
 function respecPParticles() {
+	if (hasTree('prim8'))return;
     if (confirm("您确定要返还所有粒子吗？")) {
         for (let i =0; i < 8; i++) player.qu.prim.particles[i] = E(0)
         QUANTUM.doReset()
@@ -134,8 +136,10 @@ function freePrimordiumParticles(id) {
 	if (hasTree('prim5') && id == 2) res = player.qu.prim.theorems,player.qu.prim.particles[2] = E(0)
 	if (hasTree('prim6') && id == 1) res = player.qu.prim.theorems,player.qu.prim.particles[1] = E(0)
 	if (hasTree('prim7') && id == 3) res = player.qu.prim.theorems,player.qu.prim.particles[3] = E(0)
+	if (hasTree('prim8') && id == 4) res = player.qu.prim.theorems,player.qu.prim.particles[4] = E(0)
+	if (hasTree('prim8') && id >= 5) res = player.qu.prim.theorems.div(hasPrestige(0,130)?2.5:3).floor(),player.qu.prim.particles[5] = E(0)
 	if (hasPrestige(1,4)) res = res.add(5)
-	if (hasPrestige(1,9)) res = res.add(player.prestiges[1].max(1))
+	if (hasPrestige(1,9)) res = res.add(prestigeEff(1,9,0))
 	return res
 }
 function updatePrimordiumTemp() {
@@ -145,8 +149,8 @@ function updatePrimordiumTemp() {
     tmp.prim.next_theorem = PRIM.getNextTheorem()
     tmp.prim.unspent = player.qu.prim.theorems.sub(PRIM.spentTheorems()).max(0)
     for (let i = 0; i < player.qu.prim.particles.length; i++) {
-        let pp = player.qu.prim.particles[i]
-		pp = pp.add(freePrimordiumParticles(i))
+        let pp = freePrimordiumParticles(i)
+		pp = pp.add(player.qu.prim.particles[i])
         if (player.qu.rip.active) pp = pp.mul(i==5?hasElement(95)?0.1:0:1/2)
         tmp.prim.eff[i] = PRIM.particle.eff[i](pp.softcap(100,0.75,0))
     }
@@ -154,9 +158,19 @@ function updatePrimordiumTemp() {
 
 function updatePrimordiumHTML() {
     tmp.el.prim_theorem.setTxt(format(player.qu.prim.theorems,0)+"原基定理，其中有"+format(tmp.prim.unspent,0))
+	if (hasTree('prim8')){
+		tmp.el.prim_theorem.setTxt(format(player.qu.prim.theorems,0)+"原基定理")
+		tmp.el.primordium_btn.setDisplay(false)
+	}
     tmp.el.prim_next_theorem.setTxt(format(tmp.prim.next_theorem,1)+"蓝图粒子，目前有"+format(player.qu.bp,1)+"蓝图粒子")
     for (let i = 0; i < player.qu.prim.particles.length; i++) {
-        tmp.el["prim_part"+i].setTxt(format(player.qu.prim.particles[i],0)+" + "+format(freePrimordiumParticles(i),0))
+        tmp.el["prim_part"+i].setTxt(format(player.qu.prim.particles[i],0))
+		if (freePrimordiumParticles(i).gt(0))tmp.el["prim_part"+i].setTxt(format(player.qu.prim.particles[i],0)+" + "+format(freePrimordiumParticles(i),0))
+			if (hasTree('prim8')){
+				let level=player.qu.prim.theorems;
+				if(i>=5)level=level.div(hasPrestige(0,130)?2.5:3).floor();
+				tmp.el["prim_part"+i].setTxt("Level "+format(level,0)+" + "+format(freePrimordiumParticles(i).sub(level),0))
+			}
         tmp.el["prim_part_eff"+i].setHTML(PRIM.particle.effDesc[i](tmp.prim.eff[i]))
     }
 }

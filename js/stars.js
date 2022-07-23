@@ -4,7 +4,9 @@ const STARS = {
         let x = player.stars.generators[0]
         if (player.md.upgs[8].gte(1)) x = x.mul(tmp.md.upgs[8].eff)
         if (hasPrestige(1,1)) x = x.pow(2)
-        return x.softcap(tmp.stars.softGain,tmp.stars.softPower,0)
+        x = x.softcap(tmp.stars.softGain,tmp.stars.softPower,0)
+		tmp.starOverflow = overflow(x,"e1e43",0.8).log(x);
+        return overflow(x,"e1e43",0.8);
     },
     softGain() {
         let s = E("e1000").pow(tmp.fermions.effs[1][0]||1)
@@ -20,12 +22,12 @@ const STARS = {
         if (hasElement(76)) [p, pp] = player.qu.rip.active?[p.mul(1.1), pp.mul(1.1)]:[p.mul(1.25), pp.mul(1.25)]
         let [s,r,t1,t2,t3] = [player.stars.points.mul(p)
             ,player.ranks.rank.softcap(2.5e6,0.25,0).mul(p)
-            ,player.ranks.tier.softcap(1.5e5,0.25,0).mul(p)
+            ,player.ranks.tier.softcap(1.5e5,0.25,0).softcap(1.3e6,0.25,0).mul(p)
             ,player.ranks.tetr.mul(p).softcap(5,hasTree("s2")?1.5:5,1).softcap(9,0.3,0)
             ,(hasElement(69)?player.ranks.pent.mul(pp):E(0)).softcap(9,0.5,0)]
         let x =
         s.max(1).log10().add(1).pow(r.mul(t1.pow(2)).add(1).pow(t2.add(1).pow(5/9).mul(0.25).mul(t3.pow(0.85).mul(0.0125).add(1))))
-        return x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2)
+        return x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2)
     },
     generators: {
         req: [E(1e225),E(1e280),E('e320'),E('e430'),E('e870')],
@@ -114,10 +116,14 @@ function updateStarsScreenHTML() {
     if ((!tmp.supernova.reached || player.supernova.post_10) && tmp.tab != 5) {
         let g = tmp.supernova.bulk.sub(player.supernova.times).max(0)
         let percent = 0
-        if (g.gte(1) && player.supernova.post_10) {
+        if (hasTree("qu_qol4")) {
             let d = SUPERNOVA.req(tmp.supernova.bulk).maxlimit
             let e = SUPERNOVA.req(tmp.supernova.bulk.sub(1)).maxlimit
-            percent = player.stars.points.div(e).max(1).log10().div(d.div(tmp.supernova.maxlimit).max(1).log10()).max(0).min(1).toNumber()
+            percent = player.stars.points.div(e).max(1).log10().div(d.div(e).max(1).log10()).max(0).min(1).toNumber()
+        }else if (g.gte(1) && player.supernova.post_10) {
+            let d = SUPERNOVA.req(tmp.supernova.bulk).maxlimit
+            let e = SUPERNOVA.req(tmp.supernova.bulk.sub(1)).maxlimit
+            percent = player.stars.points.div(e).max(1).log10().div(d.div(e).max(1).log10()).max(0).min(1).toNumber()
         }
         else percent = player.stars.points.max(1).log10().div(tmp.supernova.maxlimit.max(1).log10()).max(0).min(1).toNumber()
         let size = Math.min(window.innerWidth, window.innerHeight)*percent*0.9
@@ -135,6 +141,8 @@ function updateStarsScreenHTML() {
 function updateStarsHTML() {
     tmp.el.starSoft1.setDisplay(tmp.stars.gain.gte(tmp.stars.softGain))
 	tmp.el.starSoftStart1.setTxt(format(tmp.stars.softGain))
+    tmp.el.starOverflow.setDisplay(tmp.stars.gain.gte("e1e43"))
+	tmp.el.starOverflow1.setTxt(format(tmp.starOverflow))
     tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed))+"星辰，成为超新星需要"+format(tmp.supernova.maxlimit,2))
     tmp.el.stars_Eff.setTxt(format(tmp.stars.effect))
 

@@ -39,6 +39,12 @@ Decimal.prototype.scaleName = function (type, id, rev=false) {
     if (SCALE_START[type][id] && SCALE_POWER[type][id]) {
         let s = getScalingStart(type,id)
         let p = getScalingPower(type,id)
+		if(type=="meta"){
+			if (x.gte(s)) {
+				x = rev ? x.div(s).max(1).log(SCALE_POWER[type][id]).div(p).add(s).min(x) : Decimal.pow(SCALE_POWER[type][id],x.sub(s).mul(p)).mul(s).max(x)
+			}
+			return x
+		}
         let e = Decimal.pow(SCALE_POWER[type][id],p)
         
         x = x.scale(s,e,type=="meta"?1:0,rev)

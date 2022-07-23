@@ -7,6 +7,7 @@ const ATOM = {
         if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][15].effect:E(1))
         x = x.mul(tmp.bosons.upgs.gluon[0].effect)
         if (hasElement(17)) x = x.pow(1.1)
+        if (player.ranks.hex.gte(17)) x = x.pow(1.1)
         x = x.pow(tmp.prim.eff[3][0])
         if (hasElement(111)) x = x.pow(tmp.elements.effect[111])
 
@@ -126,6 +127,7 @@ const ATOM = {
             let p = player.atom.particles[i]
             let x = p.pow(2)
             if (hasElement(12)) x = p.pow(p.add(1).log10().add(1).root(4).pow(tmp.chal.eff[9]).softcap(40000,0.1,0))
+            if (player.ranks.hex.gte(12)) x = p.pow(p.add(1).log10().add(1).root(4).pow(tmp.chal.eff[9]).softcap(40000,0.99,0))
             x = x.softcap('e3.8e4',0.9,2).softcap('e1.6e5',0.9,2)
             if (hasElement(61)) x = x.mul(p.add(1).root(2))
             return x.softcap('ee11',0.9,2).softcap('ee13',0.9,2)
@@ -144,7 +146,9 @@ const ATOM = {
             },
             x=>{
                 let a = hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).pow(2)
-                let b = hasElement(19)
+                let b = player.ranks.hex.gte(19)
+                ?player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(2).mul(x.max(1).log(2)).root(2.1))
+                :hasElement(19)
                 ?player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(10).mul(x.max(1).log(10)).root(2.75))
                 :player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(100).mul(x.max(1).log(100)).root(3))
                 return {eff1: a, eff2: b}

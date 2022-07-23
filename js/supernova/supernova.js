@@ -68,6 +68,7 @@ const SUPERNOVA = {
         if (hasTree("sn5")) x = x.mul(tmp.supernova.tree_eff.sn5)
         if (tmp.qu.mil_reached[6]) x = x.mul(E(1.2).pow(player.qu.times).min(1e10))
         x = x.mul(tmp.radiation.bs.eff[11])
+        if (hasTree("sn6")) x = x.pow(tmp.supernova.tree_eff.sn6)
         return x
     },
     req(x=player.supernova.times) {

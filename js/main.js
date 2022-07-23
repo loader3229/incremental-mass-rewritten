@@ -66,6 +66,8 @@ const FORMS = {
         .softcap(tmp.massSoftGain5,tmp.massSoftPower5,0)
         .softcap(tmp.massSoftGain6,tmp.massSoftPower6,0)
         .softcap(tmp.massSoftGain7,tmp.massSoftPower7,0)
+        .softcap(tmp.massSoftGain8,tmp.massSoftPower8,0)
+        .softcap(tmp.massSoftGain9,tmp.massSoftPower9,0)
 
         if (hasElement(117)) x = x.pow(10)
 
@@ -135,6 +137,7 @@ const FORMS = {
         return s
     },
     massSoftPower4() {
+        if (player.ranks.hex.gte(13)) return E(1)
         let p = E(0.1)
         if (hasElement(100)) p = p.pow(player.qu.rip.active?0.8:0.5)
         return p
@@ -147,6 +150,7 @@ const FORMS = {
         return s
     },
     massSoftPower5() {
+        if (player.ranks.hex.gte(21)) return E(1)
         let p = E(0.05)
         return p
     },
@@ -161,9 +165,26 @@ const FORMS = {
     },
     massSoftGain7() {
         let s = E("e1e39")
+        if (hasPrestige(0,140)) s = s.pow(tmp.bosons.effect.neg_w[0])
         return s
     },
     massSoftPower7() {
+        let p = E(0.1)
+        return p
+    },
+    massSoftGain8() {
+        let s = E("e1e54")
+        return s
+    },
+    massSoftPower8() {
+        let p = E(0.1)
+        return p
+    },
+    massSoftGain9() {
+        let s = E("e1e69")
+        return s
+    },
+    massSoftPower9() {
         let p = E(0.1)
         return p
     },
@@ -344,7 +365,7 @@ const FORMS = {
             ?player.bh.mass.add(1).pow(1.25)
             :player.bh.mass.add(1).root(4)
             if (hasElement(89)) x = x.pow(tmp.elements.effect[89])
-            return x//.softcap("ee14",0.95,2)
+            return x
         },
         condenser: {
             autoSwitch() { player.bh.autoCondenser = !player.bh.autoCondenser },

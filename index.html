@@ -239,7 +239,9 @@
                     <span id="massSoft5" style="color: rgb(255, 94, 0)">After <b id="massSoftStart5">X</b> of mass gain will softcap^4 mass gain!</span><br>
                     <span id="massSoft6" style="color: rgb(255, 238, 0)">After <b id="massSoftStart6">X</b> of mass gain will softcap^5 mass gain!</span><br>
                     <span id="massSoft7" style="color: rgb(255, 0, 255)">After <b id="massSoftStart7">X</b> of mass gain will softcap^6 mass gain!</span><br>
-                    <span id="massSoft8" style="color: rgb(0, 255, 255)">After <b id="massSoftStart8">X</b> of mass gain will softcap^7 mass gain!</span>
+                    <span id="massSoft8" style="color: rgb(0, 255, 255)">After <b id="massSoftStart8">X</b> of mass gain will softcap^7 mass gain!</span><br>
+					<span id="massSoft9" style="color: rgb(255, 128, 128)">After <b id="massSoftStart9">X</b> of mass gain will softcap^8 mass gain!</span><br>
+					<span id="massSoft10" style="color: rgb(128, 255, 128)">After <b id="massSoftStart10">X</b> of mass gain will softcap^9 mass gain!</span>
 					<br>
 					<br>
 					
@@ -292,6 +294,8 @@
                 <button id="star_btn" class="btn" onclick="STARS.generators.unl()">X</button><br><br>
                 <div id="stars_table" class="table_center"></div><br><br>
                 <span id="starSoft1" class="red">After <b id="starSoftStart1">X</b> of collapsed stars gain will softcap collapsed stars gain!</span><br>
+				<span id="starOverflow" style="color: rgb(255, 255, 255)">Because of Star Overflow, your collapsed stars gain is raised by <b id="starOverflow1">X</b>!</span>
+
             </div><div id="stab_frame0_4">
                 You have <span id="bpAmt">0</span> Blueprint Particle<br>
                 <span class="green">Which increases pre-Quantum global speed by <span id="bpEff">1</span>倍</span><br><br>
@@ -416,10 +420,12 @@
             </div><div id="stab_frame6_3">
                 You have <span id="prim_theorem">0</span> Primordium Theorem (based on Blueprint Particles)<br>
                 (+1 at <span id="prim_next_theorem">X</span>)<br><br>
+				<div id="primordium_btn">
                 <button class="btn" onclick="giveRandomPParticles(1)">Give 1 random Particle</button>
                 <button class="btn" onclick="giveRandomPParticles(10)">Give 10 random Particles</button>
                 <button class="btn" onclick="giveRandomPParticles(1,true)">Give all random Particles</button>
                 <button class="btn" onclick="respecPParticles()">Respec all Particles</button><br><br>
+				</div>
                 <div id="primordium_table"></div>
             </div><div id="stab_frame6_4">
                 <div class="table_center" style="min-height: 250px">
