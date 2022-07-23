@@ -159,7 +159,7 @@ function updatePrimordiumTemp() {
 function updatePrimordiumHTML() {
     tmp.el.prim_theorem.setTxt(format(player.qu.prim.theorems,0)+"原基定理，其中有"+format(tmp.prim.unspent,0))
 	if (hasTree('prim8')){
-		tmp.el.prim_theorem.setTxt(format(player.qu.prim.theorems,0)+"原基定理")
+		tmp.el.prim_theorem.setTxt(format(player.qu.prim.theorems,0))
 		tmp.el.primordium_btn.setDisplay(false)
 	}
     tmp.el.prim_next_theorem.setTxt(format(tmp.prim.next_theorem,1)+"蓝图粒子，目前有"+format(player.qu.bp,1)+"蓝图粒子")
@@ -169,7 +169,7 @@ function updatePrimordiumHTML() {
 			if (hasTree('prim8')){
 				let level=player.qu.prim.theorems;
 				if(i>=5)level=level.div(hasPrestige(0,130)?2.5:3).floor();
-				tmp.el["prim_part"+i].setTxt("Level "+format(level,0)+" + "+format(freePrimordiumParticles(i).sub(level),0))
+				tmp.el["prim_part"+i].setTxt("等级 "+format(level,0)+" + "+format(freePrimordiumParticles(i).sub(level),0))
 			}
         tmp.el["prim_part_eff"+i].setHTML(PRIM.particle.effDesc[i](tmp.prim.eff[i]))
     }
