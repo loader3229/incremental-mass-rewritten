@@ -134,9 +134,12 @@ const CHALS = {
         if (hasTree("chal12") && (i==9))  x = x.add(1900)
         if (hasTree("chal12") && (i==10))  x = x.add(3500)
         if (hasTree("chal12") && (i==11))  x = x.add(3500)
+        if (hasTree("chal13") && (i>=9 && i<=11))  x = x.add(5000)
+        if (hasTree("chal14") && (i==12))  x = x.add(900)
         if (hasPrestige(1,13) && (i==12))  x = x.add(100)
         if (hasPrestige(0,129) && (i>=9 && i<=11))  x = x.add(5000)
         if (player.ranks.hex.gte(20) && (i==7)) x = x.add(1e5)
+        if (player.ranks.hex.gte(41) && (i==12)) x = x.add(500)
         return x.floor()
     },
     getScaleName(i) {
@@ -308,6 +311,7 @@ const CHALS = {
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
             let ret = x.root(1.5).mul(0.01).add(1)
+			if (player.ranks.hex.gte(39))return ret.softcap(3,0.26,0);
             return ret.softcap(3,0.25,0)
         },
         effDesc(x) { return "^"+format(x)+(x.gte(3)?"<span class='soft'>(softcapped)</span>":"") },

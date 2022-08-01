@@ -19,6 +19,7 @@ const STARS = {
     effect() {
         let [p, pp] = [E(1), E(1)]
         if (hasElement(48)) p = p.mul(1.1)
+        if (player.ranks.hex.gte(48)) p = p.mul(1.1)
         if (hasElement(76)) [p, pp] = player.qu.rip.active?[p.mul(1.1), pp.mul(1.1)]:[p.mul(1.25), pp.mul(1.25)]
         let [s,r,t1,t2,t3] = [player.stars.points.mul(p)
             ,player.ranks.rank.softcap(2.5e6,0.25,0).mul(p)
@@ -27,7 +28,8 @@ const STARS = {
             ,(hasElement(69)?player.ranks.pent.mul(pp):E(0)).softcap(9,0.5,0)]
         let x =
         s.max(1).log10().add(1).pow(r.mul(t1.pow(2)).add(1).pow(t2.add(1).pow(5/9).mul(0.25).mul(t3.pow(0.85).mul(0.0125).add(1))))
-        return x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2)
+		tmp.stars.effectPower = x.add(1).mul("ee145").log10().log10().div(145).sqrt()
+        return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");
     },
     generators: {
         req: [E(1e225),E(1e280),E('e320'),E('e430'),E('e870')],
@@ -42,6 +44,7 @@ const STARS = {
             if (FERMIONS.onActive("13")) pow = E(0.5)
             else {
                 if (hasElement(50)) pow = pow.mul(1.05)
+                if (player.ranks.hex.gte(50)) pow = pow.mul(1.05)
                 if (hasTree("s3")) pow = pow.mul(tmp.supernova.tree_eff.s3)
             }
             if (QCs.active() && pow.gte(1)) pow = pow.pow(tmp.qu.qc_eff[0][1])
@@ -141,11 +144,11 @@ function updateStarsScreenHTML() {
 function updateStarsHTML() {
     tmp.el.starSoft1.setDisplay(tmp.stars.gain.gte(tmp.stars.softGain))
 	tmp.el.starSoftStart1.setTxt(format(tmp.stars.softGain))
-    tmp.el.starOverflow.setDisplay(tmp.stars.gain.gte("e1e43"))
+    tmp.el.starOverflow.setDisplay(tmp.stars.gain.gte("ee43"))
 	tmp.el.starOverflow1.setTxt(format(tmp.starOverflow))
     tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed))+"星辰，成为超新星需要"+format(tmp.supernova.maxlimit,2))
-    tmp.el.stars_Eff.setTxt(format(tmp.stars.effect))
-
+    tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x")
+if (player.ranks.hex.gte(36))tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x, ^"+format(tmp.stars.effectPower))
     tmp.el.star_btn.setDisplay(hasTree("s4") || player.stars.unls < 5)
     tmp.el.star_btn.setHTML((player.stars.unls < 5 || !hasTree("s4"))
     ? `Unlock new type of Stars, require ${format(tmp.stars.generator_req)} Quark`

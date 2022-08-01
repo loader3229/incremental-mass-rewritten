@@ -355,6 +355,8 @@ function updateOptionsHTML() {
 		?quUnl()
 		:CONFIRMS[x] == "br"
 		?player.qu.rip.first
+		:CONFIRMS[x] == "inf"
+		?player.inf.times.gte(1)
 		:player[CONFIRMS[x]].unl
 
 		tmp.el["confirm_div_"+x].setDisplay(unl)
@@ -381,6 +383,7 @@ function updateHTML() {
 	updateTabsHTML()
 	if ((!tmp.supernova.reached || player.supernova.post_10) && tmp.tab != 5) {
 		updateUpperHTML()
+		updateInfinityHTML()
 		updateQuantumHTML()
 		if (tmp.tab == 0) {
 			if (tmp.stab[0] == 0) {
@@ -398,9 +401,9 @@ function updateHTML() {
 				tmp.el.massSoftStart5.setTxt(formatMass(tmp.massSoftGain4))
 				tmp.el.massSoft6.setDisplay(tmp.massGain.gte(tmp.massSoftGain5) && player.ranks.hex.lt(21))
 				tmp.el.massSoftStart6.setTxt(formatMass(tmp.massSoftGain5))
-				tmp.el.massSoft7.setDisplay(tmp.massGain.gte(tmp.massSoftGain6))
+				tmp.el.massSoft7.setDisplay(tmp.massGain.gte(tmp.massSoftGain6) && player.ranks.hex.lt(33))
 				tmp.el.massSoftStart7.setTxt(formatMass(tmp.massSoftGain6))
-				tmp.el.massSoft8.setDisplay(tmp.massGain.gte(tmp.massSoftGain7))
+				tmp.el.massSoft8.setDisplay(tmp.massGain.gte(tmp.massSoftGain7) && player.ranks.hex.lt(54))
 				tmp.el.massSoftStart8.setTxt(formatMass(tmp.massSoftGain7))
 				tmp.el.massSoft9.setDisplay(tmp.massGain.gte(tmp.massSoftGain8))
 				tmp.el.massSoftStart9.setTxt(formatMass(tmp.massSoftGain8))
@@ -408,8 +411,8 @@ function updateHTML() {
 				tmp.el.massSoftStart10.setTxt(formatMass(tmp.massSoftGain9))
 				
 				
-				tmp.el.massOverflow.setDisplay(false)
-				//tmp.el.massOverflow2.setTxt(format(tmp.massOverflow))
+				tmp.el.massOverflow.setDisplay(tmp.massGain.gte("ee84"))
+				tmp.el.massOverflow2.setTxt(format(tmp.massOverflow))
 			}
 			if (tmp.stab[0] == 1) {
 				updateBlackHoleHTML()

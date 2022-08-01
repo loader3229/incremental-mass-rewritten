@@ -128,6 +128,7 @@ function calc(dt, dt_offline) {
         }
 	
 		calcPrestigeMass(dt, dt_offline)
+        calcInfinity(dt, dt_offline)
     }
 
     tmp.pass = true
@@ -269,6 +270,11 @@ function getPlayerData() {
             time: 0,
         },
         time: 0,
+		inf: {
+			reached: false,
+			points: E(0),
+			times: E(0)
+		},
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {

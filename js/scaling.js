@@ -26,6 +26,7 @@ const SCALE_START = {
 		supernova: E(35),
 		fTier: E(50),
 		cosmic_str: E(90),
+		prestige0: E(160),
 	},
 	ultra: {
 		rank: E(600),
@@ -75,6 +76,7 @@ const SCALE_POWER= {
 		supernova: 3,
 		fTier: 4,
 		cosmic_str: 4,
+		prestige0: 2,
 	},
 	ultra: {
 		rank: 4,
@@ -258,7 +260,6 @@ function getScalingStart(type, name) {
 			start = start.mul(tmp.radiation.bs.eff[14])
 			start = start.mul(tmp.bd.upgs[4].eff)
 			if (hasPrestige(0,53)) start = start.mul(1.5)
-			start = start.min(1e20)
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -345,6 +346,7 @@ function getScalingPower(type, name) {
 		if (name=="rank") {
 			if (player.ranks.tetr.gte(1)) power = power.mul(0.85)
 			if (hasElement(27)) power = power.mul(0.75)
+			if (player.ranks.hex.gte(27)) power = power.mul(0.75)
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="tier") {
@@ -358,6 +360,7 @@ function getScalingPower(type, name) {
 		if (name=='tickspeed') {
 			if (player.mainUpg.bh.includes(12)) power = power.mul(0.85)
 			if (hasElement(27)) power = power.mul(0.75)
+			if (player.ranks.hex.gte(27)) power = power.mul(0.75)
 		}
 		if (name=='bh_condenser') {
 			if (hasElement(55)) power = power.mul(0.75)
@@ -377,15 +380,20 @@ function getScalingPower(type, name) {
 		if (name=="cosmic_str") {
 			if (hasPrestige(0,79)) power = power.mul(tmp.prestigeMassEffect)
 		}
+		if (name=="prestige0") {
+			if (hasPrestige(1,21)) power = power.mul(tmp.prestigeMassEffect)
+		}
 	}
 	if (type=="ultra") {
 		if (name=="rank") {
 			if (hasElement(27)) power = power.mul(0.75)
+			if (player.ranks.hex.gte(27)) power = power.mul(0.75)
 			if (hasElement(58)) power = power.mul(tmp.elements.effect[58])
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=='tickspeed') {
 			if (hasElement(27)) power = power.mul(0.75)
+			if (player.ranks.hex.gte(27)) power = power.mul(0.75)
 			if (hasElement(58)) power = power.mul(tmp.elements.effect[58])
 		}
 		if (name=="tier") {

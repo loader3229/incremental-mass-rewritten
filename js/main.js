@@ -14,7 +14,7 @@ const ST_NAMES = [
 		["","Hc","DHe","THt","TeH","PHc","HHe","HpH","OHt","EHc"]
 	]
 ]
-const CONFIRMS = ['rp', 'bh', 'atom', 'sn', 'qu', 'br']
+const CONFIRMS = ['rp', 'bh', 'atom', 'sn', 'qu', 'br', 'inf']
 
 const FORMS = {
     getPreQUGlobalSpeed() {
@@ -24,11 +24,13 @@ const FORMS = {
         if (hasElement(103)) x = x.mul(tmp.elements.effect[103])
 		if(hasTree('qc5')) x = x.mul(treeEff('qc5'));
 		if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[0]);
-		
+		if (hasUpgrade('inf',9)) x = x.mul(upgEffect(5,9));
+			
         if (player.mainUpg.br.includes(3)) x = x.pow(tmp.upgs.main[4][3].effect)
         if (hasPrestige(0,5)) x = x.pow(2)
 
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
+			
 		return x
     },
     massGain() {
@@ -45,7 +47,7 @@ const FORMS = {
         if (hasTree("m1")) x = x.mul(tmp.supernova.tree_eff.m1)
 
         x = x.mul(tmp.bosons.effect.pos_w[0])
-
+		
         if (!hasElement(105)) x = x.mul(tmp.atom.particles[0].powerEffect.eff1)
         else x = x.pow(tmp.atom.particles[0].powerEffect.eff1)
 
@@ -55,9 +57,12 @@ const FORMS = {
         if (player.md.active || CHALS.inChal(10) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) {
             x = expMult(x,tmp.md.pen)
             if (hasElement(28)) x = x.pow(1.5)
-        }
+        }else{
+            if (hasElement(28) && player.ranks.hex.gte(28)) x = x.pow(1.5)
+		}
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
-
+        if (player.ranks.hex.gte(36)) x = x.pow(tmp.stars.effectPower)
+			
         if (CHALS.inChal(9) || FERMIONS.onActive("12")) x = expMult(x,0.9)
         x = x.softcap(tmp.massSoftGain,tmp.massSoftPower,0)
         .softcap(tmp.massSoftGain2,tmp.massSoftPower2,0)
@@ -72,8 +77,8 @@ const FORMS = {
         if (hasElement(117)) x = x.pow(10)
 
 			
-		//tmp.massOverflow = overflow(x,"e1e32",0.8).log(x);
-		//x = overflow(x,"e1e32",0.8);
+		tmp.massOverflow = overflow(x,"ee84",0.8).log(x);
+		x = overflow(x,"ee84",0.8);
         return x
     },
     massSoftGain() {
@@ -160,7 +165,9 @@ const FORMS = {
         return s
     },
     massSoftPower6() {
+        if (player.ranks.hex.gte(33)) return E(1)
         let p = E(0.1)
+		if (hasUpgrade("inf",6)) p = p.pow(0.5);
         return p
     },
     massSoftGain7() {
@@ -169,7 +176,9 @@ const FORMS = {
         return s
     },
     massSoftPower7() {
+        if (player.ranks.hex.gte(54)) return E(1)
         let p = E(0.1)
+		if (hasUpgrade("inf",6)) p = p.pow(0.5);
         return p
     },
     massSoftGain8() {
@@ -178,6 +187,8 @@ const FORMS = {
     },
     massSoftPower8() {
         let p = E(0.1)
+		if (hasUpgrade("inf",10)) p = p.pow(0.5);
+		if (hasUpgrade("inf",13)) p = p.pow(0.99);
         return p
     },
     massSoftGain9() {
@@ -186,6 +197,8 @@ const FORMS = {
     },
     massSoftPower9() {
         let p = E(0.1)
+		if (hasUpgrade("inf",13)) p = p.pow(0.99);
+        if (player.ranks.hex.gte(51)) p = p.pow(0.9);
         return p
     },
     tickspeed: {
@@ -308,12 +321,13 @@ const FORMS = {
             .mul(this.condenser.effect().eff)
             if (player.mainUpg.rp.includes(11)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][11].effect:E(1))
             if (player.mainUpg.bh.includes(14)) x = x.mul(tmp.upgs.main?tmp.upgs.main[2][14].effect:E(1))
-            if (hasElement(46)) x = x.mul(tmp.elements.effect[46])
+            if (hasElement(46) && !player.ranks.hex.gte(46)) x = x.mul(tmp.elements.effect[46])
             x = x.mul(tmp.bosons.upgs.photon[0].effect)
             if (CHALS.inChal(8) || CHALS.inChal(10) || FERMIONS.onActive("12")) x = x.root(8)
             x = x.pow(tmp.chal.eff[8])
 
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
+            if (hasElement(46) && player.ranks.hex.gte(46)) x = x.pow(tmp.elements.effect[46])
             if (player.md.active || CHALS.inChal(10) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
 			tmp.bhOverflow = overflow(x,"e1e34",0.8).log(x);
@@ -423,6 +437,10 @@ const FORMS = {
             }
             if (id=="qu") {
                 player.reset_msg = "需要质量超过"+formatMass(mlt(1e4))+"才能"+(QCs.active()?"完成量子挑战":"前往量子")
+                return
+            }
+            if (id=="infinity") {
+                player.reset_msg = "Require over "+format(E(Number.MAX_VALUE))+" of Quantum Foam to go Infinity"
                 return
             }
             player.reset_msg = this.msgs[id]

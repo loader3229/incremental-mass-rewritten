@@ -190,7 +190,8 @@ const ELEMENTS = {
             cost: E(1e75),
             effect() {
                 let x = hasPrestige(0,40) ? player.atom.atomic.max(1).log10().add(1).log10().add(1).root(2) : player.atom.atomic.max(1).log10().add(1).pow(0.4)
-                return x
+				if(player.ranks.hex.gte(24))x = x.pow(1.1)
+				return x
             },
             effDesc(x) { return hasPrestige(0,40) ? "^"+format(x) : format(x)+"x" },
         },
@@ -203,6 +204,7 @@ const ELEMENTS = {
             cost: E(1e85),
             effect() {
                 let x = E(0.99).pow(E(player.atom.elements.length).softcap(30,2/3,0)).max(0.5)
+				if(player.ranks.hex.gte(26))x = E(0.99).pow(E(player.atom.elements.length))
                 return x
             },
             effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
@@ -227,10 +229,10 @@ const ELEMENTS = {
             desc: `Dilated mass boost Relativistic particles gain.`,
             cost: E(1e130),
             effect() {
-                let x = player.md.mass.add(1).pow(0.0125)
+                let x = player.md.mass.add(1).log10().add(1).log10().add(1).pow(5);
                 return x
             },
-            effDesc(x) { return format(x)+"x" },
+            effDesc(x) { if(player.ranks.hex.gte(31))return "^"+format(x)+", "+format(player.md.mass.add(1).pow(0.0125))+"x";return format(player.md.mass.add(1).pow(0.0125))+"x" },
         },
         {
             desc: `Increase dilated mass gain exponent by 5%.`,
@@ -245,18 +247,20 @@ const ELEMENTS = {
             cost: E(1e175),
             effect() {
                 let x = player.rp.points.max(1).log10().add(1).pow(0.75)
+                if(player.ranks.hex.gte(34))x = player.rp.points.add(1).log10().add(1).log10().add(1).log10().add(1);
                 return x
             },
-            effDesc(x) { return format(x)+"x" },
+            effDesc(x) { if(player.ranks.hex.gte(34))return "^"+format(x);return format(x)+"x" },
         },
         {
             desc: `Mass from Black Hole boost dilated mass gain.`,
             cost: E(1e210),
             effect() {
                 let x = player.bh.mass.max(1).log10().add(1).pow(0.8)
+				if(player.ranks.hex.gte(35))x = player.bh.mass.add(1).log10().add(1).log10().add(1).log10().add(1).sqrt();
                 return x
             },
-            effDesc(x) { return format(x)+"x" },
+            effDesc(x) { if(player.ranks.hex.gte(35))return "^"+format(x);return format(x)+"x" },
         },
         {
             desc: `Unlock Stars.`,
@@ -266,6 +270,7 @@ const ELEMENTS = {
             desc: `Super Tier scale weaker based on Tetr.`,
             cost: E(1e245),
             effect() {
+				if(player.ranks.hex.gte(37))return E(0);
                 let x = E(0.9).pow(player.ranks.tetr.softcap(6,0.5,0))
                 return x
             },
@@ -277,6 +282,7 @@ const ELEMENTS = {
             effect() {
                 let x = tmp.atom?tmp.atom.atomicEff:E(0)
                 if (hasElement(82)) x = x.mul(3)
+                if (player.ranks.hex.gte(38)) x = x.mul(2)
                 return x.div(6).floor()
             },
             effDesc(x) { return "+"+format(x,0)+" to Rage Power Upgrade 7" },
@@ -290,6 +296,7 @@ const ELEMENTS = {
             cost: E(1e303),
             effect() {
                 let x = player.stars.points.add(1).pow(0.5)
+                if (player.ranks.hex.gte(40)) x = x.pow(2)
                 return x
             },
             effDesc(x) { return format(x)+"x" },
@@ -303,6 +310,7 @@ const ELEMENTS = {
             cost: E('e325'),
             effect() {
                 let x = player.stars.points.add(1).pow(1/3)
+                if (player.ranks.hex.gte(42)) x = x.pow(3)
                 return x
             },
             effDesc(x) { return format(x)+"x" },
@@ -320,21 +328,23 @@ const ELEMENTS = {
             cost: E('e420'),
             effect() {
                 let x = player.stars.points.add(1).pow(0.15).min(1e20)
+				if(player.ranks.hex.gte(45))x = player.stars.points.add(1).log10().add(1).log10().add(1).log10().add(1).sqrt();
                 return x
             },
-            effDesc(x) { return format(x)+"x" },
+            effDesc(x) { if(player.ranks.hex.gte(45))return "^"+format(x);return format(x)+"x" },
         },
         {
             desc: `Collapsed star's effect boost mass gain from the black hole at a reduced rate.`,
             cost: E('e510'),
             effect() {
                 let x = tmp.stars?tmp.stars.effect.add(1).pow(0.02):E(1)
+				if(player.ranks.hex.gte(46))x = tmp.stars?tmp.stars.effectPower:E(1)
                 return x
             },
-            effDesc(x) { return format(x)+"x" },
+            effDesc(x) { if(player.ranks.hex.gte(46))return "^"+format(x);return format(x)+"x" },
         },
         {
-            desc: `Quarks gain is raised to the 1.05th power.`,
+            desc: `Quarks gain is raised to the 1.1th power.`,
             cost: E('e610'),
         },
         {
@@ -346,6 +356,7 @@ const ELEMENTS = {
             cost: E('e1000'),
             effect() {
                 let x = player.stars.points.add(1).log10().add(1).pow(1.1)
+				if(player.ranks.hex.gte(49))x = player.stars.points
                 return x
             },
             effDesc(x) { return format(x)+"x" },
@@ -363,6 +374,7 @@ const ELEMENTS = {
             cost: E('e2800'),
             effect() {
                 let x = expMult(player.bh.mass.add(1),0.6)
+				if(player.ranks.hex.gte(52))x = expMult(player.bh.mass.add(1),0.95)
                 return x
             },
             effDesc(x) { return format(x)+"x" },

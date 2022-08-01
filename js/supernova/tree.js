@@ -35,13 +35,13 @@ const TREE_IDS = [
         ['s4','sn5','sn4'],
         ['','','','qu_qol10','qu_qol11','qu_qol8a','qu_qol13','qu_qol12'],
         ['chal9','chal10','chal11','chal12'],
-        ['fn13','fn14','fn7','fn8','',''],
+        ['fn13','fn14','fn7','fn8','pm1',''],
         ['prim5','qu6','qu7','qu8','qu9','qu10','qu11','qc5'],
     ],[
         ['sn6'],
         [],
-        [],
-        ['fn18','fn16','fn17','fn15','pm1'],
+        ['chal13','chal14'],
+        ['fn18','fn16','fn17','fn15','pm2',''],
         ['prim6','prim7','prim8','qu12','br3','qc7','qc6'],
     ],
 ]
@@ -399,6 +399,20 @@ const TREE_UPGS = {
             branch: ["chal11"],
             desc: `Add 1900 more C9 completions, and add 3500 more C10-11 completions.`,
             cost: E(1e156),
+        },
+        chal13: {
+			qf: true,
+            unl() { return player.inf.times.gte(1) },
+            branch: ["chal12"],
+            desc: `Add 5000 more C9-11 completions.`,
+            cost: E("1e411"),
+        },
+        chal14: {
+			qf: true,
+            unl() { return player.inf.times.gte(1) },
+            branch: ["chal13"],
+            desc: `Add 900 more C12 completions.`,
+            cost: E("1e471"),
         },
         gr1: {
             branch: ["bh1"],
@@ -1123,6 +1137,17 @@ const TREE_UPGS = {
             cost: E("1e300000000"),
             effect() {
                 let x = player.supernova.stars.add(1).log10().add(1).log10();
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        pm2: {
+            unl() { return hasPrestige(0,10) },
+            branch: ['pm1'],
+            desc: `Supernovas boost Prestige mass gain.`,
+            cost: E("e1e15"),
+            effect() {
+                let x = player.supernova.times.add(1).log10().add(1).log10().add(1).pow(3);
                 return x
             },
             effDesc(x) { return "x"+format(x) },

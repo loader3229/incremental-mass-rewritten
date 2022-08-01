@@ -21,10 +21,12 @@ const ENTROPY = {
         if (player.md.break.upgs[6].gte(1)) x = x.mul(tmp.bd.upgs[6].eff?tmp.bd.upgs[6].eff[0]:1)
         if (hasTree("en2")) x = x.mul(tmp.supernova.tree_eff.en2||1)
 		if (hasPrestige(1,11)) x = x.mul(prestigeEff(1,11,[E(1),E(1)])[0]);
+        if (hasUpgrade('inf',2)) x = x.mul(upgEffect(5,2).pow(0.1).mul(2))
         return x
     },
     cap() {
         let x = tmp.en.eff.hr
+        if (hasUpgrade('inf',2)) x = x.mul(upgEffect(5,2))
         return x
     },
     evaPow(i) {

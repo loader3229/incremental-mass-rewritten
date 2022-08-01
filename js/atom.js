@@ -29,6 +29,7 @@ const ATOM = {
         if (player.md.upgs[6].gte(1)) x = x.mul(tmp.md.upgs[6].eff)
         x = x.mul(tmp.md.upgs[9].eff)
         if (hasElement(47)) x = x.pow(1.1)
+        if (player.ranks.hex.gte(47)) x = x.pow(1.1)
         if (hasPrestige(1,7)) x = x.pow(prestigeEff(1,7))
         return x.floor();
     },
@@ -64,7 +65,7 @@ const ATOM = {
             return x
         },
         effect() {
-            let x = player.atom.atomic.max(1).log(hasElement(23)?1.5:1.75).pow(getEnRewardEff(1))
+            let x = player.atom.atomic.max(1).log(player.ranks.hex.gte(23)?1.2:hasElement(23)?1.5:1.75).pow(getEnRewardEff(1))
             if (!hasElement(75)) x = x.softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?6e5:5e4,0.75,0).softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?4.8e7:4e6,0.25,0)
             x = x.softcap(hasUpgrade("atom",13)?(player.prestiges[0].gte(50)?1.2e11:1e11):1e10,0.1,0)
             return x.floor()
@@ -142,6 +143,7 @@ const ATOM = {
             x=>{
                 let a = hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).pow(3)
                 let b = hasElement(29) ? x.add(1).log2().pow(1.25).mul(0.01) : x.add(1).pow(2.5).log2().mul(0.01)
+				if(player.ranks.hex.gte(29))b = x.add(1).log2().pow(2);
                 return {eff1: a, eff2: b}
             },
             x=>{
@@ -156,6 +158,7 @@ const ATOM = {
             x=>{
                 let a = hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1)
                 let b = hasElement(30) ? x.add(1).log2().pow(1.2).mul(0.01) : x.add(1).pow(2).log2().mul(0.01)
+				if(player.ranks.hex.gte(30))b = x.add(1).log2().pow(2);
                 return {eff1: a, eff2: b}
             },
         ],

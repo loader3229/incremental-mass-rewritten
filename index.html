@@ -21,7 +21,9 @@
     <script src="js/other.js"></script>
     <script src="js/saves.js"></script>
     <script src="js/challenges.js"></script>
-    
+	
+    <script src="js/infinity/infinity.js"></script>
+	
     <script src="js/quantum/big_rip.js"></script>
     <script src="js/quantum/entropy.js"></script>
     <script src="js/quantum/qc.js"></script>
@@ -193,6 +195,9 @@
                     </div><div class="resources sml light_red" id="br_div">
                         <div tooltip="死寂碎片" t-size="small"><img class="res_img" src="images/br.png" onclick="BIG_RIP.rip()" onmousemove="FORMS.reset_msg.set('br')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="brAmt">X</span>
+                    </div><div class="resources sml" id="infinity_div">
+                        <div tooltip="Infinity Mass" t-size="small"><img class="res_img" src="images/inf.png" onclick="INFINITY_LAYER.enter()" onmousemove="FORMS.reset_msg.set('infinity')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
+                        <span style="margin-left: 5px; text-align: left;" id="infAmt">X</span>
                     </div>
                 </div>
             </div>
@@ -290,7 +295,7 @@
                 </div>
             </div><div id="stab_frame0_3">
                 You collapsed <span id="stars_Amt">X</span> stars, which makes mass gain is multiplied based on every type of Ranks<br>
-                <span class="green">Currently: <span id="stars_Eff">X</span>倍</span><br><br>
+                <span class="green">Currently: <span id="stars_Eff">X</span></span><br><br>
                 <button id="star_btn" class="btn" onclick="STARS.generators.unl()">X</button><br><br>
                 <div id="stars_table" class="table_center"></div><br><br>
                 <span id="starSoft1" class="red">After <b id="starSoftStart1">X</b> of collapsed stars gain will softcap collapsed stars gain!</span><br>

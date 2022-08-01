@@ -12,6 +12,7 @@ const QUANTUM = {
         if (hasPrestige(0,2)) x = x.mul(4)
         if (hasPrestige(0,55)) x = x.mul(player.prestiges[0].max(1))
         if (hasPrestige(0,89)) x = x.mul(prestigeEff(0,89,[E(1),E(1)])[0]);
+        if (hasUpgrade('inf',1)) x = x.mul(upgEffect(5,1))
         return x.floor()
     },
     gainTimes() {
@@ -19,6 +20,7 @@ const QUANTUM = {
         if (hasTree("qu7")) x = x.mul(treeEff("qu7"))
         if (hasTree("qu9")) x = x.mul(treeEff("qu9"))
         if (hasTree("qu_qol11")) x = x.mul(10)
+        if (hasUpgrade('inf',1)) x = x.mul(player.inf.times.add(200))
         return x
     },
     enter(auto=false,force=false,rip=false,bd=false) {
@@ -49,7 +51,7 @@ const QUANTUM = {
                     }
                     
                     player.qu.points = player.qu.points.add(tmp.qu.gain)
-                    player.qu.times = player.qu.times.add(1)
+                    player.qu.times = player.qu.times.add(tmp.qu.gainTimes)
 
                     updateQuantumTemp()
                     

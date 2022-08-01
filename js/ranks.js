@@ -132,6 +132,38 @@ const RANKS = {
             '20': "Add 1e5 more C7 completions.",
             '21': "remove mass gain softcap^5.",
             '22': "Titanium-22 is better.",
+            '23': "Vanadium-23 is better.",
+            '24': "Chromium-24 is better.",
+            '25': "Adds 1 base of Mass Dilation upgrade 1 effect.",
+            '26': "remove Iron-26's softcap and hardcap.",
+			'27': "Hyper/Ultra Rank & Tickspeed scales 25% weaker.",
+            '28': "Nickel-28 is applied outside mass dilation.",
+            '29': "Copper-29 is better.",
+            '30': "Zinc-30 is better.",
+            '31': "Gallium-31 is better.",
+            '32': "Increase dilated mass gain exponent by 5%.",
+            '33': "remove mass gain softcap^6.",
+            '34': "Selenium-34 is better.",
+            '35': "Bromine-35 is better.",
+            '36': "stars provide exponential boost.",
+            '37': "Rubidium-37's effect is always 100%.",
+            '38': "Strontium-38's effect is doubled.",
+            '39': "softcap of C4 effect is weaker.",
+            '40': "Zirconium-40 is better.",
+            '41': "add 500 more C12 completions.",
+            '42': "Molybdenum-42 is better.",
+            '43': "broke the mass dilation penalty.",
+            '44': "The Tetr requirement is broken.",
+            '45': "Rhodium-45 is better.",
+            '46': "Palladium-46 is better.",
+			'47': "Quarks gain is raised to the 1.1th power.",
+			'48': "Collapsed stars effect is 10% stronger.",
+			'49': "Indium-49 is better.",
+			'50': "Star generator is now ^1.05 stronger.",
+			'51': "Mass gain softcap^9 is 10% weaker.",
+			'52': "Tellurium-52 is better.",
+			'53': "Mass Dilation upgrade 6 is 75% stronger.",
+            '54': "remove mass gain softcap^7.",
         },
     },
     effect: {
@@ -217,7 +249,7 @@ const RANKS = {
                 return ret
             },
             '5'() {
-                let ret = E(1.05).pow(player.ranks.pent)
+                let ret = overflow(E(1.05).pow(player.ranks.pent),1e10,0.1);
                 return ret
             },
             '8'() {
@@ -404,6 +436,7 @@ const PRESTIGES = {
             "135": `Multiply Honor 9 reward by log10(Prestige Level).`,
             "140": `Effect of W- Bosons affects mass gain softcap ^7.`,
             "141": `Entropic Evaporation^2 is 5% weaker.`,
+            "171": `Prestige Level boost Infinity Mass gain.`,
         },
         {
             "1": `使所有星辰相关资源获取速度变为原来的2次方。`,
@@ -418,10 +451,14 @@ const PRESTIGES = {
             "12": `Unlock Glory.`,
             "13": `Add 100 C12 Completions.`,
             "15": `All Rank Scalings are 90% weaker.`,
+            "18": `Honor boost Infinity Mass gain.`,
+            "21": `Prestige Mass Effect is applied to Hyper Prestige Level scaling.`,
+            "22": `Multiply Honor 9 reward by 2.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
             "2": `Super Honor starts 1 later, and Honor resets nothing. Multiply Honor 9 reward by Glory.`,
+            "3": `Glory boost Infinity Mass gain.`,
 		},
     ],
     rewardEff: [
@@ -462,6 +499,10 @@ const PRESTIGES = {
                 let x = player.prestigeMass.add(1).log10();
                 return x
             },x=>x.format()+"x"],
+			"171": [_=>{
+                let x = player.prestiges[0].add(1).log10().pow(1.5);
+                return x
+            },x=>x.format()+"x"],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -488,13 +529,22 @@ const PRESTIGES = {
                 let x = player.prestiges[1].max(1)
 				if(hasPrestige(2,2))x = x.mul(player.prestiges[2].max(1));
 				if(hasPrestige(0,135))x = x.mul(player.prestiges[0].add(10).log10());
+				if(hasPrestige(1,22))x = x.mul(2);
                 return x
             },x=>"+"+x.format()],
             "11": [_=>{
                 return [player.prestigeMass.add(1).sqrt(),player.qu.en.amt.add(1).log10().sqrt()];
             },x=>x[0].format()+"x to Entropy Gain, "+x[1].format()+"x to Prestige Mass"],
+            "18": [_=>{
+                let x = player.prestiges[1].add(1).root(4)
+                return x
+            },x=>"x"+x.format()],
         },
 		{
+            "3": [_=>{
+                let x = player.prestiges[2].add(1).root(2)
+                return x
+            },x=>"x"+x.format()],
 		},
     ],
     reset(i) {
@@ -536,6 +586,7 @@ function updateRanksTemp() {
     fp = E(1)
     let pow = 2
     if (hasElement(44)) pow = 1.75
+    if (player.ranks.hex.gte(44)) pow = 1.74
     if (hasElement(9)) fp = fp.mul(1/0.85)
     if (player.ranks.pent.gte(1)) fp = fp.mul(1/0.85)
     if (hasElement(72)) fp = fp.mul(1/0.85)
@@ -669,9 +720,11 @@ function prestigeMassGain(){
 	if (hasPrestige(0,106)) x = x.mul(player.prestiges[0].pow(0.1).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
     if (player.md.break.upgs[11].gte(1)) x = x.mul(tmp.bd.upgs[11].eff||1)
     if (hasTree("pm1")) x = x.mul(tmp.supernova.tree_eff.pm1)
+    if (hasTree("pm2")) x = x.mul(tmp.supernova.tree_eff.pm2)
     if (hasTree("qc7")) x = x.mul(tmp.supernova.tree_eff.qc7)
     if (hasPrestige(0,110)) x = x.mul(prestigeEff(0,110));
     if (hasPrestige(0,111)) x = x.mul(prestigeEff(0,111));
+    if (hasUpgrade('inf',5)) x = x.mul(upgEffect(5,5))
 	return x;
 }
 

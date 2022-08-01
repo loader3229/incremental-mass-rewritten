@@ -164,8 +164,8 @@ const UPGS = {
                 }
             }
         },
-        ids: [null, 'rp', 'bh', 'atom', 'br'],
-        cols: 4,
+        ids: [null, 'rp', 'bh', 'atom', 'br', 'inf'],
+        cols: 5,
         over(x,y) { player.main_upg_msg = [x,y] },
         reset() { player.main_upg_msg = [0,0] },
         1: {
@@ -676,6 +676,108 @@ const UPGS = {
                 unl() { return player.md.break.active },
                 desc: `Blueprint Particles give slightly more Pre-Quantum Global Speed.`,
                 cost: E(1e24),
+            },
+        },
+        5: {
+            title: "Infinity Upgrades",
+            res: "Infinity Mass",
+            getRes() { return player.inf.points },
+            unl() { return player.inf.times.gte(1) },
+            can(x) { return player.inf.points.gte(this[x].cost) && !player.mainUpg.inf.includes(x) },
+            buy(x) {
+                if (this.can(x)) {
+                    player.inf.points = player.inf.points.sub(this[x].cost)
+                    player.mainUpg.inf.push(x)
+                }
+            },
+            auto_unl() { return false },
+            lens: 13,
+            1: {
+                desc: `Multiply your quantum times gain by (200+Infinity times). Infinity Mass boost Quantum Foam gain. The actual cost of this upgrade is 100 mg of Infinity Mass.`,
+                cost: E(0.1),
+                effect() {
+                    let x = player.inf.points.add(1).pow(2);
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x) },
+            },
+            2: {
+                desc: `Keep your neutron tree when Infinity. Infinity Mass boost Entropy gain and cap.`,
+                cost: E(1),
+                effect() {
+                    let x = player.inf.points.mul(20).add(1);
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x.pow(0.1).mul(2))+" to gain, x"+format(x)+" to cap" },
+            },
+            3: {
+                desc: `Keep your upgrades and Quantum Shards when Infinity. Gain 200 Quantums when Infinity. Infinity Mass boost Death Shards gain.`,
+                cost: E(1),
+                effect() {
+                    let x = overflow(player.inf.points.add(1).pow(2),1e10,0.5);
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte(1e10)?" <span class='soft'>(softcapped)</span>":"") },
+            },
+            4: {
+                desc: `Infinity times boost Infinity Mass.`,
+                cost: E(2),
+                effect() {
+                    let x = player.inf.times.add(1);
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x) },
+            },
+            5: {
+                desc: `Keep your elements when Infinity. Infinity Mass boost Prestige Mass gain.`,
+                cost: E(5),
+                effect() {
+                    let x = player.inf.points.add(1).pow(0.5);
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x) },
+            },
+            6: {
+                desc: `Mass gain softcap^6-7 are 50% weaker.`,
+                cost: E(100),
+            },
+            7: {
+                desc: `Infinity Mass base formula is better.`,
+                cost: E(200),
+            },
+            8: {
+                desc: `Infinity Mass formula from normal mass is better.`,
+                cost: E(1000),
+            },
+            9: {
+                desc: `Infinity Mass formula from normal mass is better. Infinity Mass boost Pre-Quantum Global Speed.`,
+                cost: E(10000),
+                effect() {
+                    let x = player.inf.points.add(1).pow(0.4);
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x) },
+            },
+            10: {
+                desc: `Infinity Mass formula from Prestige mass is better. Mass gain softcap^8 is 50% weaker.`,
+                cost: E(10000000),
+            },
+            11: {
+                desc: `Gain 100% of Infinity Mass gain per second. Gain 1 Infinity count per second.`,
+                cost: E(300000000),
+            },
+            12: {
+                desc: `Infinity Mass Boost Infinity count gain.`,
+                cost: E(5e10),
+                effect() {
+                    let x = player.inf.points.add(1).log10();
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x) },
+            },
+            13: {
+                desc: `Mass gain softcap^8-9 are 1% weaker.`,
+                cost: E(2e12),
             },
         },
     },
