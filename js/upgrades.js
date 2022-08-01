@@ -702,16 +702,16 @@ const UPGS = {
                 effDesc(x=this.effect()) { return "x"+format(x) },
             },
             2: {
-                desc: `Keep your neutron tree when Infinity. Infinity Mass boost Entropy gain and cap.`,
+                desc: `无限时保留中子树。无限质量加成熵获取速度和上限。`,
                 cost: E(1),
                 effect() {
                     let x = player.inf.points.mul(20).add(1);
                     return x
                 },
-                effDesc(x=this.effect()) { return "x"+format(x.pow(0.1).mul(2))+" to gain, x"+format(x)+" to cap" },
+                effDesc(x=this.effect()) { return "熵获取速度变为"+format(x.pow(0.1).mul(2))+"倍，熵上限变为"+format(x)+"倍" },
             },
             3: {
-                desc: `Keep your upgrades and Quantum Shards when Infinity. Gain 200 Quantums when Infinity. Infinity Mass boost Death Shards gain.`,
+                desc: `无限时保留升级和量子碎片。无限时初始拥有200量子次数。无限质量加成死寂碎片获取速度。`,
                 cost: E(1),
                 effect() {
                     let x = overflow(player.inf.points.add(1).pow(2),1e10,0.5);
@@ -720,7 +720,7 @@ const UPGS = {
                 effDesc(x=this.effect()) { return "x"+format(x)+(x.gte(1e10)?" <span class='soft'>(softcapped)</span>":"") },
             },
             4: {
-                desc: `Infinity times boost Infinity Mass.`,
+                desc: `无限次数加成无限质量获取。`,
                 cost: E(2),
                 effect() {
                     let x = player.inf.times.add(1);
@@ -729,7 +729,7 @@ const UPGS = {
                 effDesc(x=this.effect()) { return "x"+format(x) },
             },
             5: {
-                desc: `Keep your elements when Infinity. Infinity Mass boost Prestige Mass gain.`,
+                desc: `无限时保留元素。无限质量加成转生质量获取速度。`,
                 cost: E(5),
                 effect() {
                     let x = player.inf.points.add(1).pow(0.5);
