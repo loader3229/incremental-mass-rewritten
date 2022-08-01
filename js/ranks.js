@@ -454,6 +454,7 @@ const PRESTIGES = {
             "18": `Honor boost Infinity Mass gain.`,
             "21": `Prestige Mass Effect is applied to Hyper Prestige Level scaling.`,
             "22": `Multiply Honor 9 reward by 2.`,
+            "23": `Lawrencium-103's effect is raised based on your Glory.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
@@ -539,6 +540,10 @@ const PRESTIGES = {
                 let x = player.prestiges[1].add(1).root(4)
                 return x
             },x=>"x"+x.format()],
+            "23": [_=>{
+                let x = player.prestiges[2].add(1).root(3)
+                return x
+            },x=>"^"+x.format()],
         },
 		{
             "3": [_=>{

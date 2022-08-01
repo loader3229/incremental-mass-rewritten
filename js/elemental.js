@@ -651,6 +651,7 @@ const ELEMENTS = {
             cost: E('e5e8'),
             effect() {
                 let x = E(2).pow(player.prestiges[1])
+				if(hasPrestige(1,23))x = x.pow(prestigeEff(1,23))
                 return x
             },
             effDesc(x) { return format(x)+"x" },

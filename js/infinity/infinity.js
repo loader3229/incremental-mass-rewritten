@@ -2,7 +2,10 @@ const INFINITY_LAYER = {
     gain() {
         let x = player.qu.points.add(1).log(Number.MAX_VALUE);
         if (x.lt(1)) return E(0)
-        x = x.pow(hasUpgrade('inf',7)?3:2).sub(1);
+		let power = E(2)
+		if (hasUpgrade('inf',7))power = power.add(1)
+		if (hasUpgrade('inf',14))power = power.add(2)
+        x = x.pow(power).sub(1);
 
 		let m = player.mass.add(1).log10().add(1).log10().add(1).sqrt();
 		x = x.mul(m);
@@ -103,5 +106,7 @@ function updateInfinityHTML() {
     let gain2 = hasUpgrade('inf',11)
     let unl = player.inf.reached
     tmp.el.infinity_div.setDisplay(unl)
+    tmp.el.eternity_div.setDisplay(hasUpgrade('inf',14))
+	tmp.el.etAmt.setHTML(formatMass(0,0)+"<br>(+"+formatMass(tmp.preQUGlobalSpeed.add(1).log("1e2000").max(1).pow(0.1).sub(1),0)+")");
     if (unl) tmp.el.infAmt.setHTML(formatMass(player.inf.points,0)+"<br>"+(gain2?player.inf.points.formatGain(tmp.inf.gain,1):"(+"+formatMass(tmp.inf.gain,0)+")"))
 }

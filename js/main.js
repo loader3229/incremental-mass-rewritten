@@ -429,6 +429,7 @@ const FORMS = {
             atom: "Require over 1e100 uni of black hole to reset all previous features for gain Atoms & Quarks",
             md: "Dilate mass, then cancel",
             br: "Big Rip the Dimension, then go back",
+            eternity: "Require over 1e2000 of Pre-Quantum Global Speed to become Eternal",
         },
         set(id) {
             if (id=="sn") {

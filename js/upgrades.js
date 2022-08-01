@@ -777,11 +777,11 @@ const UPGS = {
             },
             13: {
                 desc: `Mass gain softcap^8-9 are 1% weaker.`,
-                cost: E(2e12),
+                cost: E(1e12),
             },
             14: {
-                desc: `WIP`,
-                cost: E(8e12),
+                desc: `Infinity Mass base formula is better.`,
+                cost: E(6e12),
             },
         },
     },
