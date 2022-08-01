@@ -760,11 +760,11 @@ const UPGS = {
             },
             10: {
                 desc: `Infinity Mass formula from Prestige mass is better. Mass gain softcap^8 is 50% weaker.`,
-                cost: E(6000000),
+                cost: E(5000000),
             },
             11: {
                 desc: `Gain 100% of Infinity Mass gain per second. Gain 1 Infinity count per second.`,
-                cost: E(200000000),
+                cost: E(100000000),
             },
             12: {
                 desc: `Infinity Mass Boost Infinity count gain.`,
