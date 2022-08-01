@@ -429,7 +429,7 @@ const FORMS = {
             atom: "Require over 1e100 uni of black hole to reset all previous features for gain Atoms & Quarks",
             md: "Dilate mass, then cancel",
             br: "Big Rip the Dimension, then go back",
-            eternity: "Require over 1e2000 of Pre-Quantum Global Speed to become Eternal",
+            eternity: "需要量子之前所有资源获取速度超过1e2000才能永恒",
         },
         set(id) {
             if (id=="sn") {
@@ -441,7 +441,7 @@ const FORMS = {
                 return
             }
             if (id=="infinity") {
-                player.reset_msg = "Require over "+format(E(Number.MAX_VALUE))+" of Quantum Foam to go Infinity"
+                player.reset_msg = "需要量子泡沫超过"+format(E(Number.MAX_VALUE))+"才能无限"
                 return
             }
             player.reset_msg = this.msgs[id]
