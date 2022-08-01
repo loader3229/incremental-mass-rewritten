@@ -15,7 +15,7 @@ const INFINITY_LAYER = {
 		if (hasUpgrade('inf',7)) x = x.mul(2)
         if (hasPrestige(2,3)) x = x.mul(prestigeEff(2,3));
         if (hasPrestige(1,18)) x = x.mul(prestigeEff(1,18));
-        if (hasPrestige(0,171)) x = x.mul(prestigeEff(0,171));
+        if (hasPrestige(0,165)) x = x.mul(prestigeEff(0,165));
         return x
     },
     gainTimes() {
