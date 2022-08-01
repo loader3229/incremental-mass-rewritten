@@ -26,7 +26,7 @@ const INFINITY_LAYER = {
     enter() {
         let x = player.qu.points.add(1).log(Number.MAX_VALUE);
         if (x.lt(1)) return
-        if (player.confirms.inf) if (confirm("Are you sure to go Infinity? Going Infinity will reset all previous except QoL mechanicals and Prestiges")?!confirm("ARE YOU SURE ABOUT IT???"):true) return
+        if (player.confirms.inf) if (confirm("你确定要无限吗？除了部分qol升级和转生以外您将失去绝大部分进度")?!confirm("您真的确定了吗？？？"):true) return
 		INFINITY_LAYER.doReset()
     },
     doReset(force=false) {

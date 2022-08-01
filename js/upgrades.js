@@ -679,7 +679,7 @@ const UPGS = {
             },
         },
         5: {
-            title: "Infinity Upgrades",
+            title: "无限升级",
             res: "Infinity Mass",
             getRes() { return player.inf.points },
             unl() { return player.inf.times.gte(1) },
@@ -693,8 +693,8 @@ const UPGS = {
             auto_unl() { return false },
             lens: 13,
             1: {
-                desc: `Multiply your quantum times gain by (200+Infinity times). Infinity Mass boost Quantum Foam gain. The actual cost of this upgrade is 100 mg of Infinity Mass.`,
-                cost: E(0.1),
+                desc: `使量子次数乘以(200+无限次数)。无限质量加成量子泡沫获取速度。该升级只花费1毫克无限质量。`,
+                cost: E(1e-3),
                 effect() {
                     let x = player.inf.points.add(1).pow(2);
                     return x

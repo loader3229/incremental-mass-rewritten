@@ -956,6 +956,7 @@ var cnRegReplace = new Map([
     [/^Cost: (.+) Dark Matter$/, '花费：$1暗物质'], //升级等
     [/^Cost: (.+) Atom$/, '花费：$1原子'], //升级等
     [/^Cost: (.+) Death Shard$/, '花费：$1死寂碎片'], //升级等
+    [/^Cost: (.+) Infinity Mass$/, '花费：$1克无限质量'], //升级等
     [/^Currently: \+(.+) Musclers$/, '目前效果：增加$1锻体器'], //升级等
     [/^Currently: \+(.+) Boosters$/, '目前效果：增加$1助推器'], //升级等
     [/^Currently: \+(.+) Stronger$/, '目前效果：增加$1强化器'], //升级等
@@ -966,6 +967,7 @@ var cnRegReplace = new Map([
     [/^You have (.+) Dark Matter$/, '您拥有$1暗物质'], //升级等
     [/^You have (.+) Atom$/, '您拥有$1原子'], //升级等
     [/^You have (.+) Death Shard$/, '您拥有$1死寂碎片'], //升级等
+    [/^You have (.+) Infinity Mass$/, '您拥有$1克无限质量'], //升级等
     [/^(.+) Completions \(\+1 at (.+) of Black Hole$/, '本次挑战可增加$1次完成次数(下一个完成次数在$2黑洞质量'], //挑战等
     [/^(.+) Completions \(\+1 at\s*(.*)$/, '本次挑战可增加$1次完成次数(下一个完成次数在$2'], //挑战等
     [/^Finish Challenge for \+(.+) Completions$/, '完成挑战，使完成次数增加$1次'], //挑战等
