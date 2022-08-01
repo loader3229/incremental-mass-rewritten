@@ -314,7 +314,7 @@ const RANKS = {
 }
 
 const PRESTIGES = {
-    fullNames: ["转生等级", "荣耀", "Glory"],
+    fullNames: ["转生等级", "荣耀", "辉煌"],
     baseExponent() {
         let x = 0
         if (hasElement(100)) x += tmp.elements.effect[100]
