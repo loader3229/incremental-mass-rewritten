@@ -2,11 +2,24 @@ var ss = ["",""]
 const ssf = [
     x=>{
         ss[0] += x.toLowerCase()
-        if (!"shark".includes(ss[0]) && !"bandori".includes(ss[0]) && !"bangdream".includes(ss[0])) {
+        if (!"secretinvasion".includes(ss[0]) && !"shark".includes(ss[0]) && !"bangdream".includes(ss[0]) && !"hikari".includes(ss[0])) {
             ss[0] = ""
+        } else if (ss[0] == "secretinvasion") {
+            ss[0] = ""
+            addPopup({
+                html: `
+                    "Secret Invasion"?<br><br>好的，神秘代码是${ss[1]}<br><br>
+                    <b>将代码以存档的形式导入以开始。代码在下一个小时过期！</b>
+                `,
+                width: 400,
+                height: 150,
+                otherStyle: {
+                    'font-size': "14px",
+                },
+            })
         } else if (ss[0] == "shark") {
             ss[0] = ""
-            addNotify(`Shark!!1!<br><img style="width: 100%; height: 100%;" src="https://i.guim.co.uk/img/media/67451b4b5c64652f11eca069b85013f8b31a4244/1549_893_5174_3105/master/5174.jpg?width=465&quality=45&auto=format&fit=max&dpr=2&s=df139353776471381634b995733c9ebc">`)
+            addNotify(`Shark!!1!`)
         } else if (ss[0] == "bangdream") {
             ss[0] = ""
             addPopup({
@@ -25,40 +38,21 @@ const ssf = [
 					<br>
 					<a href="https://qq1010903229.github.io/bandoricharts" target="_blank">我的BanG Dream!自制谱列表</a>
 					<br>
-					<a href="https://bestdori.com/" target="_blank">Bestdori!</a>
+					<a href="https://bestdori.com/" target="_blank" style="color:yellow;">Bestdori!</a>
+					<br>
+					<span style="font-size:100%;color:#666666;">答案2是"KiraKiraDokiDoki"</span>
+					<br>
+					<img src="/incremental-mass-rewritten/images/kasumi.png">
                 `,
                 width: 500,
-                height: 200,
+                height: 400,
                 otherStyle: {
                     'font-size': "14px",
                 },
             })
-        } else if (ss[0] == "bando" || ss[0] == "bandor" || ss[0] == "bandori") {
+        } else if (ss[0] == "hikari") {
             ss[0] = ""
-            addPopup({
-                html: `
-                    我猜，你是想在元素周期表上输入“Bandori”。
-					<br>
-					我是一位BanG Dream!少女乐团派对的玩家。
-					<br>
-					我最喜欢的BanG Dream!乐队是Poppin'Party.
-					<br>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---loader3229
-					<br>
-					<a href="https://space.bilibili.com/111116729" target="_blank">我的Bilibili用户空间</a>
-					<br>
-					<a href="https://game.bilibili.com/bangdream" target="_blank">BanG Dream!国服官网</a>
-					<br>
-					<a href="https://qq1010903229.github.io/bandoricharts" target="_blank">我的BanG Dream!自制谱列表</a>
-					<br>
-					<a href="https://bestdori.com/" target="_blank">Bestdori!</a>
-                `,
-                width: 500,
-                height: 200,
-                otherStyle: {
-                    'font-size': "14px",
-                },
-            })
+            addNotify(`光！<br><img style="width: 300px;" src="/incremental-mass-rewritten/images/hikari.png">`)
         }
     },
     _=>{
@@ -68,7 +62,7 @@ const ssf = [
     x=>{
         if (x == ss[1]) {
             localStorage.setItem("imr_secret",ss[1])
-            window.open("https://qq1010903229.github.io/incremental-mass-rewritten/hidden.html","_self")
+            window.open("./hidden.html","_self")
             return true
         }
         return false

@@ -1,1 +1,45 @@
-<meta http-equiv="refresh" content="0;https://qq1010903229.github.io/incrementalgames">
+<html>
+<head>
+<title>Secret Invasion</title>
+<script src="sha512.js"></script>
+<script>
+setInterval(function(){
+var t = Math.floor(Date.now()/3600000)
+var c = Math.floor(t**(2*(Math.sin(t**3/Math.PI)+1))).toString(36)
+window.answer5 = sha512_256(c.replace(/\s/g, '').toUpperCase())
+},100);
+function check(a,b){
+	return sha512_256(document.getElementById(a).value.replace(/\s/g, '').toUpperCase()) == b;
+}
+function confirm(){
+	if(check("answer1","0e72e97ea635a6ea1d0ff3d91bb25dd35acacd28ee0490285d081de38165f164") && 
+	check("answer2","46ed09ab3e583bb39051bdeb0661510cc035d5f2dfe243b94a16fb274ef31045") && 
+	check("answer3","edc6b2b8094798a0debd69ea6559df17deb2633d956b979f435cf55028cc4fbf") && 
+	check("answer4","bf656aa9da302ddc9997c6bfe4db3ab0b9769397a52073fe2d04bf5e0eb6d6a2") &&
+	check("answer5",answer5)){
+		alert("答案正确！恭喜你在质量增量重制版 - loader3229的NG+里解锁了欧米伽徽章！")
+		localStorage.imr_secret_badge1="1";
+	}else{
+		alert("答案错误！请再试一次！")
+	}
+}
+</script>
+</head>
+<body>
+<a href="/incremental-mass-rewritten">返回至质量增量重制版 - loader3229的NG+</a><br>
+<a href="/">我的主页</a><br>
+<a href="/incrementalgames">我的增量游戏表</a><br>
+<a href=https://afdian.net/@loader3229/plan target=_blank>用爱发电</a><br>
+问题1：我有一个增量游戏，其中有一个节点有超过140个里程碑。答案是这个游戏的英文名。<br>
+问题2：使用"Secret Invasion"输入我喜欢的某一个音游名称。<br>
+问题3：Infinity, Eternity, ???? (在我的NG-4R里面) (答案是一个英文单词)<br>
+问题4：在Arcaea里面，哪个搭档出现在“Grievous Lady”的曲封里？ (答案是一个英文单词)<br>
+问题5：你在导入存档框里输入的神秘代码。<br>
+答案1：<input id="answer1"><br>
+答案2：<input id="answer2"><br>
+答案3：<input id="answer3"><br>
+答案4：<input id="answer4"><br>
+答案5：<input id="answer5"><br>
+<a href="javascript:confirm();">确认</a><br>
+</body>
+</html>
