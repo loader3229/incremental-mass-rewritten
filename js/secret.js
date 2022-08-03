@@ -32,11 +32,11 @@ const ssf = [
 					<br>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---loader3229
 					<br>
-					<a href="https://space.bilibili.com/111116729" target="_blank">我的Bilibili用户空间</a>
+					<a href="https://space.bilibili.com/111116729" target="_blank" style="color:yellow;">我的Bilibili用户空间</a>
 					<br>
-					<a href="https://game.bilibili.com/bangdream" target="_blank">BanG Dream!国服官网</a>
+					<a href="https://game.bilibili.com/bangdream" target="_blank" style="color:yellow;">BanG Dream!国服官网</a>
 					<br>
-					<a href="https://qq1010903229.github.io/bandoricharts" target="_blank">我的BanG Dream!自制谱列表</a>
+					<a href="https://qq1010903229.github.io/bandoricharts" target="_blank" style="color:yellow;">我的BanG Dream!自制谱列表</a>
 					<br>
 					<a href="https://bestdori.com/" target="_blank" style="color:yellow;">Bestdori!</a>
 					<br>
