@@ -23,7 +23,7 @@ const SUPERNOVA = {
         player.atom.atomic = E(0)
         player.atom.gamma_ray = E(0)
         
-        let list_keep = [2,5]
+        let list_keep = [2,5,16]
         if (hasTree("qol2")) list_keep.push(6)
         let keep = []
         for (let x = 0; x < player.mainUpg.atom.length; x++) if (list_keep.includes(player.mainUpg.atom[x])) keep.push(player.mainUpg.atom[x])

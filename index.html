@@ -199,7 +199,7 @@
                         <div tooltip="无限质量" t-size="small"><img class="res_img" src="images/inf.png" onclick="INFINITY_LAYER.enter()" onmousemove="FORMS.reset_msg.set('infinity')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="infAmt">X</span>
                     </div><div class="resources sml" id="eternity_div">
-                        <div tooltip="永恒质量" t-size="small"><img class="res_img" src="images/et.png" onclick="alert('Coming soon...')" onmousemove="FORMS.reset_msg.set('eternity')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
+                        <div tooltip="永恒质量" t-size="small"><img class="res_img" src="images/et.png" onclick="ETERNITY_LAYER.enter()" onmousemove="FORMS.reset_msg.set('eternity')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="etAmt">X</span>
                     </div>
                 </div>
@@ -250,7 +250,8 @@
                     <span id="massSoft8" style="color: rgb(0, 255, 255)">After <b id="massSoftStart8">X</b> of mass gain will softcap^7 mass gain!</span><br>
 					<span id="massSoft9" style="color: rgb(255, 128, 128)">After <b id="massSoftStart9">X</b> of mass gain will softcap^8 mass gain!</span><br>
 					<span id="massSoft10" style="color: rgb(128, 255, 128)">After <b id="massSoftStart10">X</b> of mass gain will softcap^9 mass gain!</span><br>
-                    <span id="massOverflow" style="color: rgb(255, 255, 255)">质量溢出使你的质量获取速度变为原来的<b id="massOverflow2">X</b>次方！</span>
+                    <span id="massOverflow" style="color: rgb(255, 255, 255)">质量溢出使你的质量获取速度变为原来的<b id="massOverflow2">X</b>次方！</span><br>
+					<span id="rankCollapse" style="color: rgb(255, 255, 255)">级别坍缩使级别的元折算的开始点变为原来的<b id="rankCollapse2">X</b>分之一！</span>
                 </div>
             </div><div id="stab_frame0_1">
                 You have <span id="bhMass2">X</span> of Black Hole<br>
@@ -316,6 +317,22 @@
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Cosmic Strings Power: <span id="cosmic_str_pow">X</span>倍<br>
                         Cosmic Strings Effect: <span id="cosmic_str_eff">X</span>倍
+                    </div>
+                </div>
+            </div><div id="stab_frame0_5">
+                You have <span id="shardsAmt">0</span> Timeshards<br>
+                <span class="green">Which increases pre-Quantum global speed by ^<span id="shardsEff">1</span> before division</span><br><br>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/shard_gen.png">
+                            <span style="margin-left: 5px; text-align: left;"><span id="shard_gen_scale"></span>Shard Generators [<span id="shard_gen_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="shard_gen_btn" class="btn" style="width: 200px;" onclick="ETERNITY_LAYER.shard_gen.buy()">Cost: <span id="shard_gen_cost">X</span> Eternity mass</button>
+                    <button class="btn" style="width: 120px;" onclick="ETERNITY_LAYER.shard_gen.buyMax()">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Shard Generators Power: <span id="shard_gen_pow">X</span>x<br>
+                        Shard Generators Effect: <span id="shard_gen_eff">X</span>x
                     </div>
                 </div>
             </div>
@@ -386,12 +403,15 @@
                 <button class="btn" onclick="player.atom.ratio = 0">+1</button><button class="btn"onclick="player.atom.ratio = 1">25%</button><button class="btn"onclick="player.atom.ratio = 2">100%</button><br><br>
                 <div id="particles_table" class="table_center" style="justify-content: space-evenly;"></div>
             </div><div id="stab_frame4_1">
-                <div id="elem_ch_div" style="min-height: 70px;">
-                    <span id="elem_desc" class='sky'>X</span><br>
-                    Cost: <span id="elem_cost">X</span><br>
-                    <span id="elem_eff" class='green'>X</span>
-                </div><br><div id="elements_table"></div>
-            </div><div id="stab_frame4_2">
+                    <div id="elemTierDiv">
+                        <button onclick="player.atom.elemTier = Math.max(1,player.atom.elemTier-1)" class="btn"><--</button><span id="elemTier" style="margin: 0px 10px">Element Tier 1</span><button onclick="player.atom.elemTier = Math.min(MAX_ELEM_TIERS,player.atom.elemTier+1)" class="btn">--></button><br><br>
+                    </div>
+                    <div id="elem_ch_div" style="min-height: 70px;">
+                        <span id="elem_desc" class='sky'>X</span><br>
+                        Cost: <span id="elem_cost">X</span><br>
+                        <span id="elem_eff" class='green'>X</span>
+                    </div><br><div id="elements_table"></div>
+                </div><div id="stab_frame4_2">
                 You have <span id="md_particles">X</span> Relativistic particles<br>
                 You have <span id="md_mass">X</span> of dilated mass, which makes Tickspeed <span id="md_eff">X</span> stronger<br><br>
                 <button onclick="MASS_DILATION.onactive()" id="md_btn" class="btn full md" tooltip="进行质量膨胀时将同时进行一次原子重置，质量膨胀时，所有原子之前的资源，及原子能量获取速度变为原来的0.8次方。">Dilate Mass</button><br><br>
@@ -466,8 +486,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.6.4c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的NG+, 汉化版) v0.6.4c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.7.0c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的NG+, 汉化版) v0.7.0c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

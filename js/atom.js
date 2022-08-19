@@ -31,6 +31,7 @@ const ATOM = {
         if (hasElement(47)) x = x.pow(1.1)
         if (player.ranks.hex.gte(47)) x = x.pow(1.1)
         if (hasPrestige(1,7)) x = x.pow(prestigeEff(1,7))
+        if (hasElement(67) && player.ranks.hex.gte(67)) x = x.pow(tmp.elements.effect[67])
         return x.floor();
     },
     canReset() { return tmp.atom.gain.gte(1) },
@@ -131,6 +132,7 @@ const ATOM = {
             if (player.ranks.hex.gte(12)) x = p.pow(p.add(1).log10().add(1).root(4).pow(tmp.chal.eff[9]).softcap(40000,0.99,0))
             x = x.softcap('e3.8e4',0.9,2).softcap('e1.6e5',0.9,2)
             if (hasElement(61)) x = x.mul(p.add(1).root(2))
+            if (player.ranks.hex.gte(61)) x = x.mul(p.add(1).root(2))
             return x.softcap('ee11',0.9,2).softcap('ee13',0.9,2)
         },
         gain(i) {

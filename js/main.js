@@ -14,7 +14,7 @@ const ST_NAMES = [
 		["","Hc","DHe","THt","TeH","PHc","HHe","HpH","OHt","EHc"]
 	]
 ]
-const CONFIRMS = ['rp', 'bh', 'atom', 'sn', 'qu', 'br', 'inf']
+const CONFIRMS = ['rp', 'bh', 'atom', 'sn', 'qu', 'br', 'inf', 'et']
 
 const FORMS = {
     getPreQUGlobalSpeed() {
@@ -28,7 +28,8 @@ const FORMS = {
 			
         if (player.mainUpg.br.includes(3)) x = x.pow(tmp.upgs.main[4][3].effect)
         if (hasPrestige(0,5)) x = x.pow(2)
-
+		x = x.pow(calcShardsEffect())
+	
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
 			
 		return x
@@ -186,6 +187,7 @@ const FORMS = {
         return s
     },
     massSoftPower8() {
+        if (player.ranks.hex.gte(64)) return E(1)
         let p = E(0.1)
 		if (hasUpgrade("inf",10)) p = p.pow(0.5);
 		if (hasUpgrade("inf",13)) p = p.pow(0.99);
@@ -196,6 +198,7 @@ const FORMS = {
         return s
     },
     massSoftPower9() {
+        if (player.ranks.hex.gte(75)) return E(1)
         let p = E(0.1)
 		if (hasUpgrade("inf",13)) p = p.pow(0.99);
         if (player.ranks.hex.gte(51)) p = p.pow(0.9);
@@ -219,6 +222,7 @@ const FORMS = {
         effect() {
             let t = player.tickspeed
             if (hasElement(63)) t = t.mul(25)
+            if (player.ranks.hex.gte(63)) t = t.mul(25)
             t = t.mul(tmp.prim.eff[1][1])
             t = t.mul(tmp.radiation.bs.eff[1])
             let bonus = E(0)
@@ -234,7 +238,7 @@ const FORMS = {
             step = tmp.md.bd3 ? step.pow(tmp.md.mass_eff) : step.mul(tmp.md.mass_eff)
             step = step.pow(tmp.qu.chroma_eff[0])
             if (hasTree("t1")) step = step.pow(1.15)
-
+			
             let ss = E(1e50).mul(tmp.radiation.bs.eff[13])
             let p = 0.1
             if (hasElement(86)) {
@@ -243,6 +247,7 @@ const FORMS = {
             }
             if (hasPrestige(0,6)) ss = ss.pow(100)
             if (hasElement(102)) ss = ss.pow(100)
+			if (hasUpgrade('rp',16)) ss = E(1/0)
             step = step.softcap(ss,p,0)
             
             let eff = step.pow(t.add(bonus).mul(hasElement(80)?25:1))
@@ -313,6 +318,7 @@ const FORMS = {
             let x = E(0.33)
             if (FERMIONS.onActive("11")) return E(-1)
             if (hasElement(59)) x = E(0.45)
+            if (player.ranks.hex.gte(59)) x = E(0.5)
             x = x.add(tmp.radiation.bs.eff[4])
             return x
         },
@@ -330,13 +336,15 @@ const FORMS = {
             if (hasElement(46) && player.ranks.hex.gte(46)) x = x.pow(tmp.elements.effect[46])
             if (player.md.active || CHALS.inChal(10) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
-			tmp.bhOverflow = overflow(x,"e1e34",0.8).log(x);
-		    x = overflow(x,"e1e34",0.8);
+			tmp.bhOverflowStart = E("e1e34")
+			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
+			tmp.bhOverflow = overflow(x,tmp.bhOverflowStart,0.8).log(x);
+		    x = overflow(x,tmp.bhOverflowStart,0.8);
 			return x
         },
         f() {
             let x = player.bh.mass.add(1).pow(tmp.bh.massPowerGain).softcap(tmp.bh.fSoftStart,tmp.bh.fSoftPower,2)
-            return x
+			return x
         },
         fSoftStart() {
             let x = uni("e3e9")
@@ -345,6 +353,7 @@ const FORMS = {
             return x
         },
         fSoftPower() {
+			if(hasUpgrade('bh',17)) return 1
             let x = 0.95
             if (hasTree("qu3")) x **= 0.7
             return x
@@ -355,8 +364,10 @@ const FORMS = {
             return s
         },
         massSoftPower() {
-            let p = E(1)
-            return E(1).div(p.add(1))
+            let p = E(0.5)
+			if(hasUpgrade('bh',17)) p = p.pow(0.9)
+			if(player.ranks.hex.gte(71)) p = p.pow(RANKS.effect.hex[71]())
+			return p
         },
         reset() {
             if (tmp.bh.dm_can) if (player.confirms.bh?confirm("您确定要重置吗？"):true) {

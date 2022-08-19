@@ -104,6 +104,9 @@ function resetTemp() {
         inf: {
             
         },
+        et: {
+            
+        },
         prevSave: "",
     }
     for (let x = 0; x < PRES_LEN; x++) tmp.prestiges.eff[x] = {}

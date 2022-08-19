@@ -164,6 +164,29 @@ const RANKS = {
 			'52': "Tellurium-52 is better.",
 			'53': "Mass Dilation upgrade 6 is 75% stronger.",
             '54': "remove mass gain softcap^7.",
+			'55': "Hyper/Ultra BH Condenser & Cosmic Ray scale 25% weaker.",
+			'56': "add 500 more C12 maximum completions.",
+			'57': "Raise Lanthanum-57 by 1.1.",
+            '58': "Cerium-58's effect is always 100%.",
+            '59': "Praseodymium's effect is 0.5.",
+			'60': "add 500 more C12 maximum completions.",
+			'61': "Multiply Particle Powers gain by ^0.5 of its Particle's amount after softcap.",
+			'62': "Meta-Rank scale later based on Supernovas.",
+			'63': "Non-bonus Tickspeed is 25x effective.",
+			'64': "remove mass gain softcap^8.",
+			'65': "add 1000 more C12 maximum completions.",
+			'66': "Raise Lanthanum-57 by 1.1.",
+			'67': "Holmium-67 is better.",
+			'68': `Meta-Tickspeed start 2x later.`,
+			'69': `Hex is now added in mass gain formula from collapsed stars.`,
+			'70': "add 1000 more C12 maximum completions.",
+			'71': "BH mass gain softcap is weaker based on Hex.",
+			'72': `Tetrs are 15% cheaper.`,
+			'73': "add 1000 more C12 maximum completions.",
+			'74': `Super Tetr scales 10% weaker.`,
+			'75': "remove mass gain softcap^9.",
+			'76': "Collapsed Star's effect is 25% stronger.",
+			'78': `Meta-Supernova scales 5% weaker.`,
         },
     },
     effect: {
@@ -262,6 +285,14 @@ const RANKS = {
                 let ret = player.ranks.hex.div(1000).toNumber()
                 return ret
             },
+            '62'() {
+                let ret = Decimal.pow(1.0001,player.supernova.times);
+                return ret
+            },
+            '71'() {
+                let ret = Decimal.pow(0.93,player.ranks.hex.sub(70));
+                return ret
+            },
         },
     },
     effDesc: {
@@ -294,6 +325,8 @@ const RANKS = {
         },
         hex: {
             5(x) { return "+"+format(x)},
+            62(x) { return format(x)+"x later" },
+            71(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
         },
     },
     fp: {
@@ -398,7 +431,7 @@ const PRESTIGES = {
             "40": `使铬(24Cr)的效果略微增加。`,
             "42": `解锁六重阶层。`,
             "45": `使三重阶层的超究折算弱化42%。`,
-            "50": `使最后3个原子升级可以在大撕裂之外购买，并且变得更强，费用变为原来的20000次方根。`,
+            "50": `使第13-15个原子升级可以在大撕裂之外购买，并且变得更强，费用变为原来的20000次方根。`,
             "51": `使质量获取速度的二重软上限弱化50%。`,
             "53": `使级别的元折算延迟1.5倍出现。`,
             "55": `使量子泡沫和死寂碎片获取速度乘以转生等级。`,
@@ -437,6 +470,7 @@ const PRESTIGES = {
             "140": `Effect of W- Bosons affects mass gain softcap ^7.`,
             "141": `Entropic Evaporation^2 is 5% weaker.`,
             "165": `Prestige Level boost Infinity Mass gain.`,
+            "250": `Prestige Level boost Eternal Mass gain.`,
         },
         {
             "1": `使所有星辰相关资源获取速度变为原来的2次方。`,
@@ -455,11 +489,15 @@ const PRESTIGES = {
             "21": `Prestige Mass Effect is applied to Hyper Prestige Level scaling.`,
             "22": `Multiply Honor 9 reward by 2.`,
             "23": `Lawrencium-103's effect is raised based on your Glory.`,
+            "24": `Unsoftcap the collapsed star's multiply effect, and its hardcap is raised by 1e10.`,
+            "25": `Uncap C1-C11 Completions.`,
+            "26": `Honor boost Eternal Mass gain.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
             "2": `Super Honor starts 1 later, and Honor resets nothing. Multiply Honor 9 reward by Glory.`,
             "3": `Glory boost Infinity Mass gain.`,
+            "4": `Glory boost Eternal Mass gain, and Glory 3's effect is squared.`,
 		},
     ],
     rewardEff: [
@@ -504,6 +542,10 @@ const PRESTIGES = {
                 let x = player.prestiges[0].add(1).log10().pow(1.5);
                 return x
             },x=>x.format()+"x"],
+			"250": [_=>{
+                let x = player.prestiges[0].add(1).log10().pow(1.5);
+                return x
+            },x=>x.format()+"x"],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -544,9 +586,18 @@ const PRESTIGES = {
                 let x = player.prestiges[2].add(1).root(3)
                 return x
             },x=>"^"+x.format()],
+            "26": [_=>{
+                let x = player.prestiges[1].add(1).root(4)
+                return x
+            },x=>"x"+x.format()],
         },
 		{
             "3": [_=>{
+                let x = player.prestiges[2].add(1).root(2)
+				if (hasPrestige(2,4)) x = player.prestiges[2].add(1)
+                return x
+            },x=>"x"+x.format()],
+            "4": [_=>{
                 let x = player.prestiges[2].add(1).root(2)
                 return x
             },x=>"x"+x.format()],
@@ -596,6 +647,7 @@ function updateRanksTemp() {
     if (player.ranks.pent.gte(1)) fp = fp.mul(1/0.85)
     if (hasElement(72)) fp = fp.mul(1/0.85)
     if (player.ranks.hex.gte(9)) fp = fp.mul(1/0.85)
+    if (player.ranks.hex.gte(72)) fp = fp.mul(1/0.85)
     tmp.ranks.tetr.req = player.ranks.tetr.div(fp2).scaleEvery('tetr').div(fp).pow(pow).mul(3).add(10).floor()
     tmp.ranks.tetr.bulk = player.ranks.tier.sub(10).div(3).max(0).root(pow).mul(fp).scaleEvery('tetr',true).mul(fp2).add(1).floor();
 

@@ -301,7 +301,7 @@ function updateMainUpgradesHTML() {
 	if (player.main_upg_msg[0] != 0) {
 		let upg1 = UPGS.main[player.main_upg_msg[0]]
 		let upg2 = UPGS.main[player.main_upg_msg[0]][player.main_upg_msg[1]]
-		let msg = "<span class='sky'>"+(typeof upg2.desc == "function" ? upg2.desc() : upg2.desc)+"</span><br><span>Cost: "+format(upg2.cost.pow(player.main_upg_msg[1] >= 13 && player.prestiges[0].gte(50) && upg1.res == "Atom"?1/20000:1),0)+" "+upg1.res+"</span>"
+		let msg = "<span class='sky'>"+(typeof upg2.desc == "function" ? upg2.desc() : upg2.desc)+"</span><br><span>Cost: "+format(upg2.cost.pow(player.main_upg_msg[1] >= 13 && player.main_upg_msg[1] <= 15 && player.prestiges[0].gte(50) && upg1.res == "Atom"?1/20000:1),0)+" "+upg1.res+"</span>"
 		if (upg2.effDesc !== undefined) msg += "<br><span class='green'>Currently: "+tmp.upgs.main[player.main_upg_msg[0]][player.main_upg_msg[1]].effDesc+"</span>"
 		tmp.el.main_upg_msg.setHTML(msg)
 	} else tmp.el.main_upg_msg.setTxt("")
@@ -327,12 +327,13 @@ function updateBlackHoleHTML() {
 	tmp.el.bhMass2.setHTML(formatMass(player.bh.mass)+formatGain(player.bh.mass, tmp.bh.mass_gain.mul(tmp.preQUGlobalSpeed), true))
 	tmp.el.bhMassPower.setTxt(format(tmp.bh.massPowerGain))
 	tmp.el.bhFSoft1.setDisplay(tmp.bh.f.gte(tmp.bh.fSoftStart))
+	if(hasUpgrade('bh',17))tmp.el.bhFSoft1.setDisplay(false)
 	tmp.el.bhFSoftStart1.setTxt(format(tmp.bh.fSoftStart))
 	tmp.el.bhMassPower2.setTxt(format(tmp.bh.massPowerGain))
 	tmp.el.massSoft2.setDisplay(tmp.bh.mass_gain.gte(tmp.bh.massSoftGain))
 	tmp.el.massSoftStart2.setTxt(formatMass(tmp.bh.massSoftGain))
 
-	tmp.el.bhOverflow.setDisplay(tmp.bh.mass_gain.gte("e1e34"))
+	tmp.el.bhOverflow.setDisplay(tmp.bh.mass_gain.gte(tmp.bhOverflowStart))
 	tmp.el.bhOverflow2.setTxt(format(tmp.bhOverflow))
 	tmp.el.bhEffect.setTxt(format(tmp.bh.effect))
 
@@ -405,14 +406,16 @@ function updateHTML() {
 				tmp.el.massSoftStart7.setTxt(formatMass(tmp.massSoftGain6))
 				tmp.el.massSoft8.setDisplay(tmp.massGain.gte(tmp.massSoftGain7) && player.ranks.hex.lt(54))
 				tmp.el.massSoftStart8.setTxt(formatMass(tmp.massSoftGain7))
-				tmp.el.massSoft9.setDisplay(tmp.massGain.gte(tmp.massSoftGain8))
+				tmp.el.massSoft9.setDisplay(tmp.massGain.gte(tmp.massSoftGain8) && player.ranks.hex.lt(64))
 				tmp.el.massSoftStart9.setTxt(formatMass(tmp.massSoftGain8))
-				tmp.el.massSoft10.setDisplay(tmp.massGain.gte(tmp.massSoftGain9))
+				tmp.el.massSoft10.setDisplay(tmp.massGain.gte(tmp.massSoftGain9) && player.ranks.hex.lt(75))
 				tmp.el.massSoftStart10.setTxt(formatMass(tmp.massSoftGain9))
 				
 				
 				tmp.el.massOverflow.setDisplay(tmp.massGain.gte("ee84"))
 				tmp.el.massOverflow2.setTxt(format(tmp.massOverflow))
+				tmp.el.rankCollapse.setDisplay(tmp.rankCollapse.gt(1))
+				tmp.el.rankCollapse2.setTxt(format(tmp.rankCollapse))
 			}
 			if (tmp.stab[0] == 1) {
 				updateBlackHoleHTML()

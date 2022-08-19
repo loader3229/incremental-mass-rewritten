@@ -102,7 +102,7 @@ function calc(dt, dt_offline) {
             player.atom.atomic = player.atom.atomic.add(tmp.atom.atomicGain.mul(du_gs))
             for (let x = 0; x < 3; x++) player.atom.powers[x] = player.atom.powers[x].add(tmp.atom.particles[x].powerGain.mul(du_gs))
         }
-        if (hasTree("qol1")) for (let x = 1; x <= tmp.elements.unl_length; x++) if (x<=tmp.elements.upg_length) ELEMENTS.buyUpg(x)
+        if (hasTree("qol1")) for (let x = 1; x <= tmp.elements.unl_length && x <= 118; x++) if (x<=tmp.elements.upg_length) ELEMENTS.buyUpg(x)
         player.md.mass = player.md.mass.add(tmp.md.mass_gain.mul(du_gs))
         if (hasTree("qol3")) player.md.particles = player.md.particles.add(player.md.active ? tmp.md.rp_gain.mul(du_gs) : tmp.md.passive_rp_gain.mul(du_gs))
         if (hasTree("qol4")) STARS.generators.unl(true)
@@ -275,6 +275,12 @@ function getPlayerData() {
 			points: E(0),
 			times: E(0)
 		},
+		et: {
+			points: E(0),
+			times: E(0),
+			shards: E(0),
+			shard_gen: E(0)
+		},
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {
@@ -306,6 +312,10 @@ function wipe(reload=false) {
 
 function loadPlayer(load) {
     const DATA = getPlayerData()
+	if(load.dim_shard>0){
+		alert("Saves from Incremental Mass Rewritten Vanilla 1.0 beta or above is not supported in this NG+ Version!");
+		return true;
+	}
     player = deepNaN(load, DATA)
     player = deepUndefinedAndDecimal(player, DATA)
     convertStringToDecimal()
@@ -369,9 +379,10 @@ function save(){
 
 function load(x){
     if(typeof x == "string" & x != ''){
-        loadPlayer(JSON.parse(atob(x)))
+        return loadPlayer(JSON.parse(atob(x)))
     } else {
         wipe()
+		return false
     }
 }
 
@@ -429,7 +440,7 @@ function importy() {
                     addNotify("Error Importing, because it got NaNed")
                     return
                 }
-                load(loadgame)
+                if(load(loadgame))return;
                 save()
                 resetTemp()
                 loadGame(false)

@@ -15,7 +15,8 @@ function updateChalHTML() {
             tmp.el["chal_div_"+x].setDisplay(unl)
             tmp.el["chal_btn_"+x].setClasses({img_chal: true, ch: CHALS.inChal(x), chal_comp: player.chal.comps[x].gte(tmp.chal.max[x])})
             if (unl) {
-                tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0)+"/"+format(tmp.chal.max[x],0))
+                tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0)+" / "+format(tmp.chal.max[x],0))
+				if(hasPrestige(1,25) && x <= 11)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
             }
         }
         tmp.el.chal_enter.setVisible(player.chal.active != player.chal.choosed)
@@ -140,6 +141,12 @@ const CHALS = {
         if (hasPrestige(0,129) && (i>=9 && i<=11))  x = x.add(5000)
         if (player.ranks.hex.gte(20) && (i==7)) x = x.add(1e5)
         if (player.ranks.hex.gte(41) && (i==12)) x = x.add(500)
+        if (player.ranks.hex.gte(56) && (i==12)) x = x.add(500)
+        if (player.ranks.hex.gte(60) && (i==12)) x = x.add(500)
+        if (player.ranks.hex.gte(65) && (i==12)) x = x.add(1000)
+        if (player.ranks.hex.gte(70) && (i==12)) x = x.add(1000)
+        if (player.ranks.hex.gte(73) && (i==12)) x = x.add(1000)
+        if (hasPrestige(1,25) && (i<=11))  x = x.add(1/0)
         return x.floor()
     },
     getScaleName(i) {
