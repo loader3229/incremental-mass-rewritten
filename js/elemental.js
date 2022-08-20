@@ -739,14 +739,14 @@ const ELEMENTS = {
             cost: E("e5e16"),
         },
         {
-            desc: `Unlock more Neutron Tree Upgrades. <span id="final_118" style="display:none;"></span>`,
+            desc: `解锁新的中子树升级。<span id="final_118" style="display:none;"></span>`,
             cost: E("e1.7e17"),
         },
 		
 		// extended element
 		
 		{
-			desc: `Infinity Mass Boost Timeshards.`,
+			desc: `无限质量加成时间碎片。`,
 			cost: E("5e13"),
 			effect() {
 				let x = player.inf.points.add(10).log10();
@@ -755,7 +755,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `Each bought element after Oganesson multiplies your Infinity mass gain and Infnity times gain by 2.`,
+			desc: `每一个已购买的编号大于118的元素使无限质量和无限次数的获取量翻倍。`,
 			cost: E("5e13"),
 			effect() {
 				let x = E(1)
@@ -765,7 +765,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `Infinity Mass Boost Eternity Mass gain.`,
+			desc: `无限质量加成永恒质量。`,
 			cost: E("1e15"),
 			effect() {
 				let x = player.inf.points.add(10).log10();
@@ -774,11 +774,11 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `Multiply Shard Generators Power by 1.5`,
+			desc: `使碎片产生器倍率乘以1.5。`,
 			cost: E("1e15"),
 		},
 		{
-			desc: `Multiply Infinity times and Eternal Mass gain by Eternity times.`,
+			desc: `永恒次数加成永恒质量和无限次数。`,
 			cost: E("5e4"),
 			et: true,
 			effect() {
@@ -788,7 +788,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `Multiply Infinity Mass gain by Eternity times.`,
+			desc: `永恒次数加成无限质量。`,
 			cost: E("1e6"),
 			et: true,
 			effect() {
@@ -798,7 +798,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `Multiply Entropy gain by Infinity times.`,
+			desc: `无限次数加成熵获取速度。`,
 			cost: E("1.6190000001e20"),
 			effect() {
 				let x = player.inf.times.add(1);
@@ -807,11 +807,11 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `All Fermion Tiers are Uncapped.`,
+			desc: `移除所有的费米子的阶层上限。`,
 			cost: E("1.6190000001e23"),
 		},
 		{
-			desc: `The 120th element boost Eternal mass at a reduced rate.`,
+			desc: `使120号元素可以加成永恒质量，只是效果倍率降低。`,
 			cost: E("2e7"),
 			et: true,
 			effect() {
@@ -821,7 +821,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `Eternal mass boost Infinity mass gain.`,
+			desc: `永恒质量加成无限质量。`,
 			cost: E("2e8"),
 			et: true,
 			effect() {
@@ -831,7 +831,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `QC Modifier 'Hypertiered' is 50% weaker in Big Rips.`,
+			desc: `在大撕裂中，使“时间异常”的效果变为原来的50%。`,
 			cost: E("5.9720000001e27"),
 		},
 		{
@@ -890,17 +890,7 @@ function getElementId(x) {
 }
 
 function getElementName(x) {
-    let log = Math.floor(Math.log10(x))
-    let listF = ["Nil", "Un", "Bi", "Tri", "Quad", "Pent", "Hex", "Sept", "Oct", "Enn"]
-    let list = ["nil", "un", "bi", "tri", "quad", "pent", "hex", "sept", "oct", "enn"]
-    let r = ""
-    for (var i = log; i >= 0; i--) {
-        let n = Math.floor(x / Math.pow(10, i)) % 10
-        if (r == "") r = listF[n]
-        else r += list[n]
-        if (i == 0) r += n != 2 && n != 3 ? "ium" : "um"
-    }
-    return r
+	return x+"号元素";
 }
 
 function WE(a,b) { return 2*(a**2-(a-b)**2) }
