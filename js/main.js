@@ -238,6 +238,7 @@ const FORMS = {
             step = tmp.md.bd3 ? step.pow(tmp.md.mass_eff) : step.mul(tmp.md.mass_eff)
             step = step.pow(tmp.qu.chroma_eff[0])
             if (hasTree("t1")) step = step.pow(1.15)
+            if (player.ranks.hex.gte(86)) step = step.pow(2)
 			
             let ss = E(1e50).mul(tmp.radiation.bs.eff[13])
             let p = 0.1
@@ -338,8 +339,8 @@ const FORMS = {
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
 			tmp.bhOverflowStart = E("e1e34")
 			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
-			tmp.bhOverflow = overflow(x,tmp.bhOverflowStart,0.8).log(x);
-		    x = overflow(x,tmp.bhOverflowStart,0.8);
+			tmp.bhOverflow = overflow(overflow(x,tmp.bhOverflowStart,0.8),"ee100",0.8).log(x);
+		    x = overflow(overflow(x,tmp.bhOverflowStart,0.8),"ee100",0.8);
 			return x
         },
         f() {

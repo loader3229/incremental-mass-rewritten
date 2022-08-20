@@ -123,6 +123,7 @@ const FERMIONS = {
                     if (hasTree("fn9")) x += 2
                     if (hasTree("fn11")) x += 5
                     if (hasTree("fn14")) x += 69
+					if (hasElement(126)) x = 1/0
                     return x
                 },
                 nextTierAt(x) {
@@ -149,6 +150,7 @@ const FERMIONS = {
                     let x = 30
                     if (hasTree("fn11")) x += 5
                     if (hasTree("fn14")) x += 69
+					if (hasElement(126)) x = 1/0
                     return x
                 },
                 nextTierAt(x) {
@@ -175,6 +177,7 @@ const FERMIONS = {
                 maxTier() {
                     let x = 10
                     if (hasTree("fn11")) x += 5
+					if (hasElement(126)) x = 1/0
                     return x
                 },
                 nextTierAt(x) {
@@ -208,6 +211,7 @@ const FERMIONS = {
                     if (hasTree("fn10")) return 1/0
                     let x = 15
                     if (hasTree("fn5")) x += 35
+					if (hasElement(126)) x = 1/0
                     return x
                 },
                 nextTierAt(x) {
@@ -278,6 +282,7 @@ const FERMIONS = {
                     if (hasTree("fn9")) x += 2
                     if (hasTree("fn11")) x += 5
                     if (hasTree("fn14")) x += 69
+					if (hasElement(126)) x = 1/0
                     return x
                 },
                 nextTierAt(x) {
@@ -305,6 +310,7 @@ const FERMIONS = {
                     let x = 25
                     if (hasTree("fn11")) x += 5
                     if (hasTree("fn14")) x += 69
+					if (hasElement(126)) x = 1/0
                     return x
                 },
                 nextTierAt(x) {
@@ -319,10 +325,13 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = E(0.95).pow(i.add(1).log10().mul(t).root(4).softcap(27,0.5,0)).max(hasTree('fn13')?0:2/3).toNumber()
+					if(player.qu.rip.active && x<=0.36){
+					if(player.ranks.hex.gte(73))x = (0.36**0.48)*(x**0.52);else x = (0.36*x)**0.5;
+					}
                     return x
                 },
                 desc(x) {
-                    return `Pre-Meta-Supernova Scalings are ${format(100-x*100)}% weaker`+((x<=2/3 && !hasTree('fn13'))?" <span class='soft'>(hardcapped)</span>":"")
+                    return `Pre-Meta-Supernova Scalings are ${format(100-x*100)}% weaker`+((x<=2/3 && !hasTree('fn13'))?" <span class='soft'>(hardcapped)</span>":"")+((x<=0.36 && player.qu.rip.active)?" <span class='soft'>(softcapped)</span>":"")
                 },
                 inc: "Atom",
                 cons: "U-Leptons, Z<sup>0</sup> bosons do nothing",

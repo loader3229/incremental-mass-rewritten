@@ -9,6 +9,7 @@ const RANKS = {
             if (type == "tier" && player.mainUpg.bh.includes(4)) reset = false
             if (type == "tetr" && hasTree("qol5")) reset = false
             if (type == "pent" && hasTree("qol8")) reset = false
+            if (type == "hex" && hasPrestige(1,27)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -21,6 +22,7 @@ const RANKS = {
             if (type == "tier" && player.mainUpg.bh.includes(4)) reset = false
             if (type == "tetr" && hasTree("qol5")) reset = false
             if (type == "pent" && hasTree("qol8")) reset = false
+            if (type == "hex" && hasPrestige(1,27)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -177,16 +179,31 @@ const RANKS = {
 			'65': "add 1000 more C12 maximum completions.",
 			'66': "Raise Lanthanum-57 by 1.1.",
 			'67': "Holmium-67 is better.",
-			'68': `Meta-Tickspeed start 2x later.`,
+			'68': "Meta-Tickspeed start 2x later.",
 			'69': `Hex is now added in mass gain formula from collapsed stars.`,
 			'70': "add 1000 more C12 maximum completions.",
 			'71': "BH mass gain softcap is weaker based on Hex.",
-			'72': `Tetrs are 15% cheaper.`,
-			'73': "add 1000 more C12 maximum completions.",
+			'72': `Tetrs are 15% cheaper. If you're in Big Rip or at least Hex 100, this effect is applied twice.`,
+			'73': "add 1000 more C12 maximum completions. The softcap of [Neut-Muon] in Big Rips is weaker.",
 			'74': `Super Tetr scales 10% weaker.`,
 			'75': "remove mass gain softcap^9.",
 			'76': "Collapsed Star's effect is 25% stronger.",
 			'78': `Meta-Supernova scales 5% weaker.`,
+			'80': "Disable Pre-Meta Rank & Tickspeed Scalings.",
+			'82': "Disable Pre-Meta BH Condenser & Cosmic Ray Scalings.",
+			'84': "Polonium-84's effect is always 100%.",
+			'86': "Tickspeed power is squared.",
+			'88': "Meta-Tickspeed start 100x later.",
+			'90': "Raise Thorium-90 by 1.1.",
+			'92': "Insane Challenges scale 25% weaker, except C9.",
+			'93': "Neptunium-93's base effect is 100%, instead of 66.7%.",
+			'95': "Disable Pre-Ultra Mass Upgrades & Tier Scalings.",
+			'97': `Increase Entropic Evaporation’s base by 0.1.`,
+			'98': "Disable Pre-Meta Supernova Scalings.",
+			'99': `Remove all softcaps from Photon Upgrade 3 effect.`,
+			'103': `Lawrencium-103's effect base is 2.1 instead of 2.`,
+			'104': "add 2000 more C12 maximum completions.",
+			'110': "add 2000 more C12 maximum completions.",
         },
     },
     effect: {
@@ -492,12 +509,15 @@ const PRESTIGES = {
             "24": `Unsoftcap the collapsed star's multiply effect, and its hardcap is raised by 1e10.`,
             "25": `Uncap C1-C11 Completions.`,
             "26": `Honor boost Eternal Mass gain.`,
+            "27": `Hex don't reset anything.`,
+            "28": `QC Modifier 'Intense Catalyst' is 8% weaker.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
             "2": `Super Honor starts 1 later, and Honor resets nothing. Multiply Honor 9 reward by Glory.`,
             "3": `Glory boost Infinity Mass gain.`,
             "4": `Glory boost Eternal Mass gain, and Glory 3's effect is squared.`,
+            "5": `Honor boost Entropy gain.`,
 		},
     ],
     rewardEff: [
@@ -601,6 +621,10 @@ const PRESTIGES = {
                 let x = player.prestiges[2].add(1).root(2)
                 return x
             },x=>"x"+x.format()],
+            "5": [_=>{
+                let x = E(2).pow(player.prestiges[1]);
+                return x
+            },x=>"x"+x.format()],
 		},
     ],
     reset(i) {
@@ -648,6 +672,7 @@ function updateRanksTemp() {
     if (hasElement(72)) fp = fp.mul(1/0.85)
     if (player.ranks.hex.gte(9)) fp = fp.mul(1/0.85)
     if (player.ranks.hex.gte(72)) fp = fp.mul(1/0.85)
+    if (player.ranks.hex.gte(72) && (player.qu.rip.active || player.ranks.hex.gte(100))) fp = fp.mul(1/0.85)
     tmp.ranks.tetr.req = player.ranks.tetr.div(fp2).scaleEvery('tetr').div(fp).pow(pow).mul(3).add(10).floor()
     tmp.ranks.tetr.bulk = player.ranks.tier.sub(10).div(3).max(0).root(pow).mul(fp).scaleEvery('tetr',true).mul(fp2).add(1).floor();
 

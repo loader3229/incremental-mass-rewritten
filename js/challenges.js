@@ -146,6 +146,8 @@ const CHALS = {
         if (player.ranks.hex.gte(65) && (i==12)) x = x.add(1000)
         if (player.ranks.hex.gte(70) && (i==12)) x = x.add(1000)
         if (player.ranks.hex.gte(73) && (i==12)) x = x.add(1000)
+        if (player.ranks.hex.gte(104) && (i==12)) x = x.add(2000)
+        if (player.ranks.hex.gte(110) && (i==12)) x = x.add(2000)
         if (hasPrestige(1,25) && (i<=11))  x = x.add(1/0)
         return x.floor()
     },
@@ -165,6 +167,7 @@ const CHALS = {
     getPower2(i) {
         let x = E(1)
         if (hasElement(92)) x = x.mul(0.75)
+        if (player.ranks.hex.gte(92) && (i<=8 || i>=10)) x = x.mul(0.75)
         return x
     },
     getPower3(i) {
@@ -210,7 +213,7 @@ const CHALS = {
             let start = E(s1);
             let exp = E(3).pow(this.getPower());
             let start2 = E(s2);
-            let exp2 = E(4.5).pow(this.getPower2())
+            let exp2 = E(4.5).pow(this.getPower2(x))
             goal =
             chal.inc.pow(
                     lvl.div(fp).pow(exp2).div(start2.pow(exp2.sub(1))).pow(exp).div(start.pow(exp.sub(1))).pow(pow)
@@ -231,7 +234,7 @@ const CHALS = {
             let start = E(s1);
             let exp = E(3).pow(this.getPower());
             let start2 = E(s2);
-            let exp2 = E(4.5).pow(this.getPower2())
+            let exp2 = E(4.5).pow(this.getPower2(x))
             let start3 = E(s3);
             let exp3 = E(1.001).pow(this.getPower3())
             goal =

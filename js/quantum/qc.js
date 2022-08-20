@@ -41,6 +41,7 @@ const QCs = {
             effDesc(x) { return `/${format(x,0)} to pre-Quantum global speed.` },
         },{
             eff(i) {
+                if (hasElement(129) && player.qu.rip.active) i *= 0.5
 				if(i>=30)return 10**i
 				if(i>=11)return i**3.5*0.0015+1
                 let x = i**1.5*0.15+1
@@ -59,6 +60,7 @@ const QCs = {
         },{
             eff(i) {
 				if(hasPrestige(0,99))i *= 0.92
+				if(hasPrestige(1,28))i *= 0.92
 				if(i>=30)return 0
 				if(i>=21)return 0.8**(i**6.25/800000)
 				if(i>=11)return 0.8**(i**3.25/100)

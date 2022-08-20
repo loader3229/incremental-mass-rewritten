@@ -22,6 +22,8 @@ const ENTROPY = {
         if (hasTree("en2")) x = x.mul(tmp.supernova.tree_eff.en2||1)
 		if (hasPrestige(1,11)) x = x.mul(prestigeEff(1,11,[E(1),E(1)])[0]);
         if (hasUpgrade('inf',2)) x = x.mul(upgEffect(5,2).pow(0.1).mul(2))
+        if (hasElement(125)) x = x.mul(tmp.elements.effect[125]||1)
+		if (hasPrestige(2,5)) x = x.mul(prestigeEff(2,5));
         return x
     },
     cap() {
@@ -82,6 +84,7 @@ const ENTROPY = {
             eff(i) {
                 let b = 3
                 if (hasElement(97)) b++
+                if (player.ranks.hex.gte(97)) b+=0.1
                 let x = Decimal.pow(b,i)
                 return x
             },

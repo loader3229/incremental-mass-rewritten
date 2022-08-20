@@ -114,7 +114,9 @@ const BOSONS = {
                 cost(x) { return E(5).pow(x.pow(1.25)).mul(1e5) },
                 bulk(x=player.supernova.bosons.photon) { return x.gte(1e5) ? x.div(1e5).max(1).log(5).root(1.25).add(1).floor() : E(0) },
                 effect(i) {
-                    let x = player.supernova.bosons.photon.add(1).log10().add(1).pow(i.softcap(8000,0.1,0).pow(tmp.fermions.effs[0][3]).mul(0.5)).softcap("ee11",0.8,2).softcap("e4e14",hasElement(99)?0.785:0.75,2)
+                    let x = player.supernova.bosons.photon.add(1).log10().add(1).pow(i.softcap(8000,0.1,0).pow(tmp.fermions.effs[0][3]).mul(0.5));
+					if (!player.ranks.hex.gte(99)) x = x.softcap("ee11",0.8,2)
+					if (!player.ranks.hex.gte(99)) x = x.softcap("e4e14",hasElement(99)?0.785:0.75,2)
                     if (!hasElement(99)) x = x.softcap("e4e15",0.5,2)
                     return x
                 },

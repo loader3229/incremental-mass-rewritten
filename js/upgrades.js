@@ -182,7 +182,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return player.mainUpg.bh.includes(5) },
-            lens: 17,
+            lens: 18,
             1: {
                 desc: "Boosters adds Musclers.",
                 cost: E(1),
@@ -316,6 +316,18 @@ const UPGS = {
                 desc: "The first Stronger Softcap is weaker.",
                 cost: E('e2e101'),
             },
+            18: {
+                unl() { return hasUpgrade('inf',15) },
+                desc() {return "Rage Power boost Infinity Mass."},
+                cost: E('e1e113'),
+                effect() {
+                    let ret = player.rp.points.add(1).log10().add(1).log10().sub(111).max(1).log2().add(1);
+                    return ret
+                },
+                effDesc(x=this.effect()) {
+                    return format(x)+"x"
+                },
+            },
         },
         2: {
             title: "Black Hole Upgrades",
@@ -330,7 +342,7 @@ const UPGS = {
                     player.mainUpg.bh.push(x)
                 }
             },
-            lens: 17,
+            lens: 18,
             1: {
                 desc: "Mass Upgardes no longer spends mass.",
                 cost: E(1),
@@ -463,8 +475,20 @@ const UPGS = {
             },
             17: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "Remove mass of Black Hole and formula softcap. Mass of Black Hole gain softcap is 10% weaker.",
+                desc: "Remove mass of Black Hole formula softcap. Mass of Black Hole gain softcap is 10% weaker.",
                 cost: E('e3e102'),
+            },
+            18: {
+                unl() { return hasUpgrade('inf',15) },
+                desc() {return "Dark Matter boost Infinity Mass."},
+                cost: E('e1e116'),
+                effect() {
+                    let ret = player.bh.dm.add(1).log10().add(1).log10().sub(113).max(1).log2().add(1);
+                    return ret
+                },
+                effDesc(x=this.effect()) {
+                    return format(x)+"x"
+                },
             },
         },
         3: {
@@ -489,7 +513,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return hasTree("qol1") },
-            lens: 17,
+            lens: 18,
             1: {
                 desc: "Start with Mass upgrades unlocked.",
                 cost: E(1),
@@ -607,6 +631,18 @@ const UPGS = {
                 desc() {return "Ultra Tier scaling is 20% weaker."},
                 cost: E('e5e89'),
             },
+            18: {
+                unl() { return hasUpgrade('inf',15) },
+                desc() {return "Atoms boost Infinity Mass."},
+                cost: E('e1e101'),
+                effect() {
+                    let ret = player.atom.points.add(1).log10().add(1).log10().sub(99).max(1).log2().add(1);
+                    return ret
+                },
+                effDesc(x=this.effect()) {
+                    return format(x)+"x"
+                },
+            },
         },
         4: {
             title: "Big Rip Upgrades",
@@ -621,7 +657,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 17,
+            lens: 18,
             1: {
                 desc: `Start with Hydrogen-1 unlocked in Big Rip.`,
                 cost: E(5),
@@ -718,6 +754,11 @@ const UPGS = {
                 desc: "Timeshard Effect is slightly stronger again.",
                 cost: E(1e232),
             },
+            18: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: "Timeshard Effect is slightly stronger again.",
+                cost: E(1e266),
+            },
         },
         5: {
             title: "无限升级",
@@ -732,7 +773,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 17,
+            lens: 18,
             1: {
                 desc: `使量子次数乘以(200+无限次数)。无限质量加成量子泡沫获取速度。该升级只花费1毫克无限质量。`,
                 cost: E(1e-3),
@@ -756,7 +797,7 @@ const UPGS = {
                 desc: `无限时保留升级和量子碎片。无限时初始拥有200量子次数。无限质量加成死寂碎片获取速度。`,
                 cost: E(1),
                 effect() {
-                    let x = overflow(player.inf.points.add(1).pow(2),1e10,0.5);
+                    let x = overflow(player.inf.points.add(1).pow(2),1e10,hasUpgrade('inf',18)?0.6:0.5);
                     return x
                 },
                 effDesc(x=this.effect()) { return "x"+format(x)+(x.gte(1e10)?" <span class='soft'>(softcapped)</span>":"") },
@@ -843,6 +884,11 @@ const UPGS = {
                     return x
                 },
                 effDesc(x=this.effect()) { return "x"+format(x) },
+            },
+            18: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: `Infinity Mass base formula is better, and Infinity Upgrade 3's softcap is weaker.`,
+                cost: E(1e27),
             },
         },
     },

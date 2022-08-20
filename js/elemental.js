@@ -33,13 +33,15 @@ const ELEMENTS = {
         'Roeritgenium','Copernicium','Nihonium','Flerovium','Moscovium','Livermorium','Tennessine','Oganesson'
     ],
     canBuy(x) { 
+		if(this.upgs[x].et)return player.et.points.gte(this.upgs[x].cost) && !hasElement(x)
 		if(x>118) return player.inf.points.gte(this.upgs[x].cost) && !hasElement(x)
 		return player.atom.quarks.gte(this.upgs[x].cost) && !hasElement(x) && (player.qu.rip.active ? true : x <= 86) && !tmp.elements.cannot.includes(x)
 	},
     buyUpg(x) {
         if (this.canBuy(x)) {
 			if(x>118){
-				player.inf.points = player.inf.points.sub(this.upgs[x].cost)
+				if(this.upgs[x].et)player.et.points = player.et.points.sub(this.upgs[x].cost)
+				else player.inf.points = player.inf.points.sub(this.upgs[x].cost)
 			}else{
 				player.atom.quarks = player.atom.quarks.sub(this.upgs[x].cost)
 			}
@@ -556,6 +558,7 @@ const ELEMENTS = {
             desc: `Pre-Ultra Mass Upgrades scale weaker based on Cosmic Ray's free tickspeeds.`,
             cost: E('e7e14'),
             effect() {
+				if(player.ranks.hex.gte(84))return E(0);
                 let x = tmp.atom?E(0.9).pow(tmp.atom.atomicEff.add(1).log10().pow(2/3)):E(1)
                 return x
             },
@@ -591,6 +594,7 @@ const ELEMENTS = {
             cost: E('e1300'),
             effect() {
                 let x = player.md.mass.add(1).log10().add(1).pow(0.5)
+				if(player.ranks.hex.gte(90))x = x.pow(1.1);
                 return x
             },
             effDesc(x) { return "x"+x.format() },
@@ -607,7 +611,7 @@ const ELEMENTS = {
             desc: `Entropy gain is increased by 66.7% for every OoM^2 of normal mass.`,
             cost: E('e29500'),
             effect() {
-                let x = E(5/3).pow(player.mass.add(1).log10().add(1).log10())
+                let x = E(player.ranks.hex.gte(93)?2:(5/3)).pow(player.mass.add(1).log10().add(1).log10())
                 return x
             },
             effDesc(x) { return "x"+x.format() },
@@ -662,7 +666,7 @@ const ELEMENTS = {
             desc: `Pre-Quantum Global Speed is effective based on Honor.`,
             cost: E('e5e8'),
             effect() {
-                let x = E(2).pow(player.prestiges[1])
+                let x = E(player.ranks.hex.gte(103)?2.1:2).pow(player.prestiges[1])
 				if(hasPrestige(1,23))x = x.pow(prestigeEff(1,23))
                 return x
             },
@@ -773,6 +777,67 @@ const ELEMENTS = {
 			desc: `Multiply Shard Generators Power by 1.5`,
 			cost: E("1e15"),
 		},
+		{
+			desc: `Multiply Infinity times and Eternal Mass gain by Eternity times.`,
+			cost: E("5e4"),
+			et: true,
+			effect() {
+				let x = player.et.times.add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `Multiply Infinity Mass gain by Eternity times.`,
+			cost: E("1e6"),
+			et: true,
+			effect() {
+				let x = player.et.times.add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `Multiply Entropy gain by Infinity times.`,
+			cost: E("1.6190000001e20"),
+			effect() {
+				let x = player.inf.times.add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `All Fermion Tiers are Uncapped.`,
+			cost: E("1.6190000001e23"),
+		},
+		{
+			desc: `The 120th element boost Eternal mass at a reduced rate.`,
+			cost: E("2e7"),
+			et: true,
+			effect() {
+				let x = (tmp.elements.effect[120]||E(1)).pow(0.4);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `Eternal mass boost Infinity mass gain.`,
+			cost: E("2e8"),
+			et: true,
+			effect() {
+				let x = player.et.points.add(1).log10().add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `QC Modifier 'Hypertiered' is 50% weaker in Big Rips.`,
+			cost: E("5.9720000001e27"),
+		},
+		{
+			desc: `TBD`,
+			cost: E("5.9720000001e27").mul(200),
+		},
 	],
     /*
     {
@@ -805,7 +870,7 @@ const ELEMENTS = {
         if (hasTree('unl3')) u += 3
         if (player.qu.rip.first) u += 9
         if (hasUpgrade("br",9)) u += 23 // 23
-		if (hasUpgrade("atom",16)) u += 4
+		if (hasUpgrade("atom",16)) u += 12
         return u
     },
 }
@@ -882,10 +947,10 @@ function setupElementsHTML() {
                 table += ELEMENTS.upgs[num]===undefined?`<div style="width: 50px; height: 50px"></div>`
                 :`<button class="elements ${num == 118 ? 'final' : ''}" id="elementID_${num}" onclick="ELEMENTS.buyUpg(${num}); ssf[0]('${ELEMENTS.names[num]}')" onmouseover="tmp.elements.choosed = ${num}" onmouseleave="tmp.elements.choosed = 0"><div style="font-size: 12px;">${num}</div>${ELEMENTS.names[num]}</button>`
                 if (k == 1) {
-                    if (num==56 || num==88) num += 14
-                    else if (num==70) num += 18
-                    else if (num==118) num = 56
-                    else if (num==102) num = 118
+                    if (num==57 || num==89) num += 14
+                    else if (num==71) num += 18
+                    else if (num==118) num = 57
+                    else if (num==103) num = 118
                 } else {
                     //console.log(num,p)
                     if (n == 0) {
@@ -921,7 +986,7 @@ function updateElementsHTML() {
     if (ch) {
         tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b>"+ELEMENTS.upgs[ch].desc)
         tmp.el.elem_cost.setTxt(format(ELEMENTS.upgs[ch].cost,0)+"夸克"+(ch>86?"(需进入大撕裂)":"")+(player.qu.rip.active&&tmp.elements.cannot.includes(ch)?"[大撕裂中无法购买]":""))
-        if(ch > 118)tmp.el.elem_cost.setTxt(formatMass(ELEMENTS.upgs[ch].cost,0)+"无限质量")
+        if(ch > 118)tmp.el.elem_cost.setTxt(formatMass(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].et?"永恒质量":"无限质量"))
 		tmp.el.elem_eff.setHTML(ELEMENTS.upgs[ch].effDesc?"Currently: "+ELEMENTS.upgs[ch].effDesc(tElem.effect[ch]):"")
     }
 
@@ -942,7 +1007,7 @@ function updateElementsHTML() {
                     let unl2 = x <= tElem.unl_length
                     upg.setVisible(unl2)
                     if (unl2) {
-                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: x > 86 && x <= 118})
+                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: (x > 86 && x <= 118) || ELEMENTS.upgs[x].et})
                     }
                 }
             }

@@ -4,6 +4,7 @@ const SCALE_START = {
 		tier: E(10),
 		tetr: E(7),
 		pent: E(15),
+		hex: E(100),
         massUpg: E(100),
 		tickspeed: E(100),
 		bh_condenser: E(100),
@@ -27,6 +28,7 @@ const SCALE_START = {
 		fTier: E(50),
 		cosmic_str: E(90),
 		prestige0: E(160),
+		prestige1: E(30),
 	},
 	ultra: {
 		rank: E(600),
@@ -55,6 +57,7 @@ const SCALE_POWER= {
 		tier: 1.5,
 		tetr: 2,
 		pent: 2,
+		hex: 3,
 		massUpg: 2.5,
 		tickspeed: 2,
 		bh_condenser: 2,
@@ -78,6 +81,7 @@ const SCALE_POWER= {
 		fTier: 4,
 		cosmic_str: 4,
 		prestige0: 2,
+		prestige1: 2,
 	},
 	ultra: {
 		rank: 4,
@@ -116,6 +120,7 @@ const SCALING_RES = {
 	tier(x=0) { return player.ranks.tier },
 	tetr(x=0) { return player.ranks.tetr },
 	pent(x=0) { return player.ranks.pent },
+	hex(x=0) { return player.ranks.hex },
 	tickspeed(x=0) { return player.tickspeed },
     massUpg(x=1) { return E(player.massUpg[x]||0) },
 	bh_condenser(x=0) { return player.bh.condenser },
@@ -132,6 +137,7 @@ const NAME_FROM_RES = {
 	tier: "Tier",
 	tetr: "Tetr",
 	pent: "Pent",
+	hex: "Hex",
 	massUpg: "Mass Upgrades",
 	tickspeed: "Tickspeed",
 	bh_condenser: "Black Hole Condenser",
@@ -267,6 +273,7 @@ function getScalingStart(type, name) {
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
 			if (player.ranks.hex.gte(68)) start = start.mul(2)
+			if (player.ranks.hex.gte(88)) start = start.mul(100)
 			if (player.ranks.pent.gte(4)) start = start.mul(RANKS.effect.pent[4]())
 			start = start.mul(tmp.fermions.effs[0][5])
 			start = start.mul(getEnRewardEff(0))
@@ -291,6 +298,14 @@ function getScalingStart(type, name) {
 			start = start.softcap("1e30", 0.5, 0);
 		}
 	}
+	
+	if (name=="rank" && type!="meta") if (player.ranks.hex.gte(80))return EINF;
+	if (name=="tickspeed" && type!="meta") if (player.ranks.hex.gte(80))return EINF;
+	if (name=="bh_condenser" && type!="meta") if (player.ranks.hex.gte(82))return EINF;
+	if ( name=="gamma_ray" && type!="meta") if (player.ranks.hex.gte(82))return EINF;
+	if (name=="massUpg" && type!="meta" && type!="ultra") if (player.ranks.hex.gte(95))return EINF;
+	if (name=="tier" && type!="meta" && type!="ultra") if (player.ranks.hex.gte(95))return EINF;
+	if (name=="supernova" && type!="meta") if (player.ranks.hex.gte(98))return EINF;
 	return start.floor()
 }
 

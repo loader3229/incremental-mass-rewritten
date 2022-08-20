@@ -1,12 +1,15 @@
 const INFINITY_LAYER = {
     gain() {
         let x = player.qu.points.add(1).log(Number.MAX_VALUE);
+        let y = player.qu.rip.amt.add(1).log(Number.MAX_VALUE);
         if (x.lt(1)) return E(0)
+        if (y.lt(1)) y=E(1)
 		let power = E(2)
 		if (hasUpgrade('inf',7))power = power.add(1)
 		if (hasUpgrade('inf',14))power = power.add(2)
 		if (hasUpgrade('inf',16))power = power.add(1)
-        x = x.pow(power).sub(1);
+		if (hasUpgrade('inf',18))power = power.add(1)
+        x = x.mul(y).pow(power).sub(1);
 
 		let m = player.mass.add(1).log10().add(1).log10().add(1).sqrt();
 		x = x.mul(m);
@@ -22,12 +25,18 @@ const INFINITY_LAYER = {
         if (hasPrestige(0,165)) x = x.mul(prestigeEff(0,165));
 		if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
 		if (hasUpgrade('inf',17)) x = x.mul(upgEffect(5,17));
+		if (hasElement(124)) x = x.mul(tmp.elements.effect[124]);
+		if (hasUpgrade('rp',18)) x = x.mul(upgEffect(1,18));
+		if (hasUpgrade('bh',18)) x = x.mul(upgEffect(2,18));
+		if (hasUpgrade('atom',18)) x = x.mul(upgEffect(3,18));
+		if (hasElement(128)) x = x.mul(tmp.elements.effect[128]);
         return x
     },
     gainTimes() {
         let x = E(1)
         if (hasUpgrade('inf',12)) x = x.mul(upgEffect(5,12));
 		if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
+		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
         return x
     },
     enter() {
@@ -92,11 +101,14 @@ const ETERNITY_LAYER = {
 		if (hasUpgrade('inf',15))power = power.add(2)
 		if (hasUpgrade('inf',17))power = power.add(3)
         x = x.pow(power).sub(1);
+		x = overflow(x,10,2);
 		
         if (hasPrestige(2,4)) x = x.mul(prestigeEff(2,4));
         if (hasPrestige(1,26)) x = x.mul(prestigeEff(1,26));
         if (hasPrestige(0,250)) x = x.mul(prestigeEff(0,250));
 		if (hasElement(121)) x = x.mul(tmp.elements.effect[121]);
+		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
+		if (hasElement(127)) x = x.mul(tmp.elements.effect[127]);
         return x
     },
     gainTimes() {
@@ -240,5 +252,6 @@ function calcShardsEffect() {
 	let eff = player.et.shards.add(1).log10().add(1).log10().add(1).pow(0.1);
 	if(hasUpgrade('br',16))eff = eff.pow(1.1);
 	if(hasUpgrade('br',17))eff = eff.pow(1.2);
+	if(hasUpgrade('br',18))eff = eff.pow(1.1);
 	return eff;
 }
