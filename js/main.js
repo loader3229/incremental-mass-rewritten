@@ -337,6 +337,8 @@ const FORMS = {
             if (hasElement(46) && player.ranks.hex.gte(46)) x = x.pow(tmp.elements.effect[46])
             if (player.md.active || CHALS.inChal(10) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
+			tmp.bhOverflowStart = E("e1e34")
+			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
 			
 			let x_original = x
 			x = overflow(x,tmp.bhOverflowStart,0.8);
@@ -474,7 +476,7 @@ function loop() {
     updateTemp()
     updateHTML()
     calc(diff/1000*tmp.offlineMult,diff/1000);
-    date = Date.now();
+    date = date+diff;
     player.offline.current = date
 }
 
