@@ -539,7 +539,7 @@ const ELEMENTS = {
             cost: E('e4.8e12'),
         },
         {
-            desc: `Stronger & Tickspeed are 10x stronger.`,
+            desc: `Stronger & Tickspeed are 25x stronger.`,
             cost: E('e1.4e13'),
         },
         {
@@ -730,6 +730,7 @@ const ELEMENTS = {
             cost: E('e1e14'),
             effect() {
                 let x = (tmp.prestiges.base||E(1)).add(1).root(3)
+				if(player.ranks.hex.gte(116))x = x.pow(3)
                 return x
             },
             effDesc(x) { return "x"+format(x) },
@@ -750,6 +751,7 @@ const ELEMENTS = {
 			cost: E("5e13"),
 			effect() {
 				let x = player.inf.points.add(10).log10();
+				if(player.ranks.hex.gte(119))x = x.pow(2)
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -816,6 +818,7 @@ const ELEMENTS = {
 			et: true,
 			effect() {
 				let x = (tmp.elements.effect[120]||E(1)).pow(0.4);
+				if(hasElement(131))x = x.pow(1.5);
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -835,8 +838,69 @@ const ELEMENTS = {
 			cost: E("5.9720000001e27"),
 		},
 		{
-			desc: `TBD`,
+			desc: `'90%' in Neutron Tree Upgrade [br3] is now 80%.`,
 			cost: E("5.9720000001e27").mul(200),
+		},
+		{
+			desc: `You can autobuy Cosmic Strings, and the 127th Element is better.`,
+			cost: E("1e14"),
+			et: true,
+		},
+		{
+			desc: `If you bought [prim8], levels of Epsilon/Theta/Beta Particles is 1 per 2 Primordium Theorem, instead of 2.5.`,
+			cost: E("1e15"),
+			et: true,
+		},
+		{
+			desc: `Uncap C12 completions.`,
+			cost: E("1.9890000001e33"),
+		},
+		{
+			desc: `Unlock Accelerators, tickspeed now provides exponential boost, but Argon-18 is disabled.`,
+			cost: E("1.9890000001e33").mul(200),
+		},
+		{
+			desc: `Accelerators boost itself.`,
+			cost: E("1e18"),
+			et: true,
+			effect() {
+				let x = player.accelerator.div(1000).add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x to power" },
+		},
+		{
+			desc: `Accelerators boost Pre-Quantum Global Speed.`,
+			cost: E("1e19"),
+			et: true,
+			effect() {
+				let x = player.accelerator.add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `Accelerator Effect boost Tickspeed Power.`,
+			cost: E("1.9890000001e37"),
+		},
+		{
+			desc: `Entropic Condenser^2 is 15% weaker.`,
+			cost: E("1.9890000001e37"),
+		},
+		{
+			desc: `Multiply Entropy gain by Eternity times.`,
+			cost: E("1.6190000001e20"),
+			et: true,
+			effect() {
+				let x = player.et.times.add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `TBD`,
+			cost: E("1.6190000001e21"),
+			et: true,
 		},
 	],
     /*
@@ -870,7 +934,7 @@ const ELEMENTS = {
         if (hasTree('unl3')) u += 3
         if (player.qu.rip.first) u += 9
         if (hasUpgrade("br",9)) u += 23 // 23
-		if (hasUpgrade("atom",16)) u += 12
+		if (hasUpgrade("atom",16)) u += 22
         return u
     },
 }

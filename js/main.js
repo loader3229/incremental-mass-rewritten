@@ -25,6 +25,7 @@ const FORMS = {
 		if(hasTree('qc5')) x = x.mul(treeEff('qc5'));
 		if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[0]);
 		if (hasUpgrade('inf',9)) x = x.mul(upgEffect(5,9));
+        if (hasElement(136)) x = x.mul(tmp.elements.effect[136])
 			
         if (player.mainUpg.br.includes(3)) x = x.pow(tmp.upgs.main[4][3].effect)
         if (hasPrestige(0,5)) x = x.pow(2)
@@ -52,6 +53,9 @@ const FORMS = {
         if (!hasElement(105)) x = x.mul(tmp.atom.particles[0].powerEffect.eff1)
         else x = x.pow(tmp.atom.particles[0].powerEffect.eff1)
 
+		if (!hasElement(134)) x = x.mul(tmp.tickspeedEffect.eff||E(1))
+        else x = x.pow(tmp.tickspeedEffect.eff||E(1))
+	
         if (player.ranks.tier.gte(2)) x = x.pow(1.15)
         if (player.ranks.rank.gte(180)) x = x.pow(1.025)
         if (!CHALS.inChal(3) || CHALS.inChal(10) || FERMIONS.onActive("03")) x = x.pow(tmp.chal.eff[3])
@@ -63,8 +67,8 @@ const FORMS = {
 		}
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
         if (player.ranks.hex.gte(36)) x = x.pow(tmp.stars.effectPower)
-			
-        if (CHALS.inChal(9) || FERMIONS.onActive("12")) x = expMult(x,0.9)
+		if(hasUpgrade('bh',19))  x = x.pow(tmp.upgs.main?tmp.upgs.main[2][19].effect:E(1))
+		if (CHALS.inChal(9) || FERMIONS.onActive("12")) x = expMult(x,0.9)
         x = x.softcap(tmp.massSoftGain,tmp.massSoftPower,0)
         .softcap(tmp.massSoftGain2,tmp.massSoftPower2,0)
         .softcap(tmp.massSoftGain3,tmp.massSoftPower3,0)
@@ -78,8 +82,12 @@ const FORMS = {
         if (hasElement(117)) x = x.pow(10)
 
 			
-		tmp.massOverflow = overflow(x,"ee84",0.8).log(x);
-		x = overflow(x,"ee84",0.8);
+		tmp.massOverflowStart = E("ee84")
+		if (player.ranks.hex.gte(120))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
+		if (hasUpgrade('rp',19))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
+			
+		tmp.massOverflow = overflow(x,tmp.massOverflowStart,0.8).log(x);
+		x = overflow(x,tmp.massOverflowStart,0.8);
         return x
     },
     massSoftGain() {
@@ -239,6 +247,7 @@ const FORMS = {
             step = step.pow(tmp.qu.chroma_eff[0])
             if (hasTree("t1")) step = step.pow(1.15)
             if (player.ranks.hex.gte(86)) step = step.pow(2)
+			if (hasElement(134) && hasElement(137)) step = step.pow(tmp.accelEffect.eff||1)
 			
             let ss = E(1e50).mul(tmp.radiation.bs.eff[13])
             let p = 0.1
@@ -252,12 +261,46 @@ const FORMS = {
             else step = step.softcap(ss,p,0)
             
             let eff = step.pow(t.add(bonus).mul(hasElement(80)?25:1))
-            if (hasElement(18)) eff = eff.pow(tmp.elements.effect[18])
-            if (player.ranks.tetr.gte(3)) eff = eff.pow(1.05)
-            return {step: step, eff: eff, bonus: bonus, ss: ss}
+            if (hasElement(18) && !hasElement(134)) eff = eff.pow(tmp.elements.effect[18])
+            if (player.ranks.tetr.gte(3) && !hasElement(134)) eff = eff.pow(1.05)
+			
+			let eff_bottom = eff
+			if (hasElement(134)){
+				eff = eff.add(1).log10().add(1).log10().pow(tmp.accelEffect.eff.mul(0.1));
+				eff_bottom = eff_bottom.pow(tmp.accelEffect.eff);
+				if (player.ranks.tetr.gte(3)) eff = eff.pow(1.05),eff_bottom = eff_bottom.pow(1.05);
+			}
+			
+            return {step: step, eff: eff, bonus: bonus, ss: ss, eff_bottom: eff_bottom}
         },
         autoUnl() { return player.mainUpg.bh.includes(5) },
         autoSwitch() { player.autoTickspeed = !player.autoTickspeed },
+    },
+    accel: {
+        cost(x=player.accelerator) { return Decimal.pow(10,Decimal.pow(1.5,x)).floor() },
+        can() { return player.rp.points.gte(tmp.accelCost) },
+        buy() {
+            if (this.can()) {
+                player.accelerator = player.accelerator.add(1)
+            }
+        },
+        buyMax() { 
+            if (this.can()) {
+                player.accelerator = tmp.accelBulk
+            }
+        },
+        effect() {
+			let step = E(0.0004)
+			if(hasElement(135))step = step.mul(tmp.elements.effect[135])
+            if (player.ranks.hex.gte(124)) step = step.mul(RANKS.effect.hex[124]())
+            if (player.ranks.hex.gte(126)) step = step.mul(RANKS.effect.hex[126]())
+			
+            let x = player.accelerator.mul(step).add(1)
+			
+			return {step: step, eff: x}
+        },
+        autoUnl() { return true },
+        autoSwitch() { player.autoAccel = !player.autoAccel },
     },
     rp: {
         gain() {
@@ -391,6 +434,7 @@ const FORMS = {
             player.mainUpg.rp = keep
             player.rp.points = E(0)
             player.tickspeed = E(0)
+            player.accelerator = E(0)
             player.bh.mass = E(0)
             FORMS.rp.doReset()
         },

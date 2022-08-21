@@ -38,10 +38,10 @@ const TREE_IDS = [
         ['fn13','fn14','fn7','fn8','pm1',''],
         ['prim5','qu6','qu7','qu8','qu9','qu10','qu11','qc5'],
     ],[
-        ['sn6'],
+        ['s5','sn6'],
         [],
         ['chal13','chal14'],
-        ['fn18','fn16','fn17','fn15','pm2',''],
+        ['fn18','fn16','fn17','fn15','pm2','im1'],
         ['prim6','prim7','prim8','qu12','br3','qc7','qc6'],
     ],
 ]
@@ -236,6 +236,12 @@ const TREE_UPGS = {
             reqDesc: `6次超新星。`,
             desc: `Beyond unlocking stars, Star Unlocker will transform into Booster.`,
             cost: E(1e5),
+        },
+        s5: {
+            unl() { return player.inf.times.gte(1) },
+            branch: ["s4"],
+            desc: `Disable collapsed stars gain softcap.`,
+            cost: E("ee25"),
         },
         qol1: {
             req() { return player.supernova.times.gte(2) },
@@ -1131,7 +1137,7 @@ const TREE_UPGS = {
             cost: E(1e157),
         },
         pm1: {
-            unl() { return hasPrestige(0,10) },
+            unl() { return hasPrestige(1,10) },
             branch: [],
             desc: `Neutron Star boost Prestige mass gain.`,
             cost: E("1e300000000"),
@@ -1142,12 +1148,23 @@ const TREE_UPGS = {
             effDesc(x) { return "x"+format(x) },
         },
         pm2: {
-            unl() { return hasPrestige(0,10) },
+            unl() { return hasPrestige(1,10) },
             branch: ['pm1'],
             desc: `Supernovas boost Prestige mass gain.`,
             cost: E("e1e15"),
             effect() {
                 let x = player.supernova.times.add(1).log10().add(1).log10().add(1).pow(3);
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        im1: {
+            unl() { return player.inf.times.gte(1) },
+            branch: ['pm2'],
+            desc: `Supernovas boost Infinity mass gain.`,
+            cost: E("e1e25"),
+            effect() {
+                let x = player.supernova.times.add(1).log10().add(1).log10().add(1);
                 return x
             },
             effDesc(x) { return "x"+format(x) },

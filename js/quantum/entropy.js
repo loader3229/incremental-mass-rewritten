@@ -24,6 +24,8 @@ const ENTROPY = {
         if (hasUpgrade('inf',2)) x = x.mul(upgEffect(5,2).pow(0.1).mul(2))
         if (hasElement(125)) x = x.mul(tmp.elements.effect[125]||1)
 		if (hasPrestige(2,5)) x = x.mul(prestigeEff(2,5));
+		if (player.ranks.hex.gte(125)) x = x.mul(player.ranks.hex.add(1));
+        if (hasElement(139)) x = x.mul(tmp.elements.effect[139]||1)
         return x
     },
     cap() {
@@ -58,7 +60,7 @@ const ENTROPY = {
             inc: E(10),
 
             eff(i) {
-                let x = hasElement(114) ? i.add(1).root(1.5) : i.div(2).add(1).root(3)
+                let x = player.ranks.hex.gte(114) ? i.add(1) : hasElement(114) ? i.add(1).root(1.5) : i.div(2).add(1).root(3)
                 return x
             },
             desc(x) { return `Meta Tickspeed, BHC & Cosmic Ray start <b>${x.format()}倍</b> later.` },
@@ -177,6 +179,7 @@ const ENTROPY = {
 				if (i == 2 && hasPrestige(0,115)) p = p ** 0.95
 				if (i == 2 && hasPrestige(0,131)) p = p ** 0.95
 				if (i == 2 && hasPrestige(0,141)) p = p ** 0.95
+				if (i == 6 && hasElement(138)) p = p ** 0.85
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -196,6 +199,7 @@ const ENTROPY = {
 				if (i == 2 && hasPrestige(0,115)) p = p ** 0.95
 				if (i == 2 && hasPrestige(0,131)) p = p ** 0.95
 				if (i == 2 && hasPrestige(0,141)) p = p ** 0.95
+				if (i == 6 && hasElement(138)) p = p ** 0.85
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()

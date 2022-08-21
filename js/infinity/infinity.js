@@ -9,6 +9,7 @@ const INFINITY_LAYER = {
 		if (hasUpgrade('inf',14))power = power.add(2)
 		if (hasUpgrade('inf',16))power = power.add(1)
 		if (hasUpgrade('inf',18))power = power.add(1)
+		if (hasUpgrade('inf',19))power = power.add(1)
         x = x.mul(y).pow(power).sub(1);
 
 		let m = player.mass.add(1).log10().add(1).log10().add(1).sqrt();
@@ -30,6 +31,8 @@ const INFINITY_LAYER = {
 		if (hasUpgrade('bh',18)) x = x.mul(upgEffect(2,18));
 		if (hasUpgrade('atom',18)) x = x.mul(upgEffect(3,18));
 		if (hasElement(128)) x = x.mul(tmp.elements.effect[128]);
+		if (hasTree('im1')) x = x.mul(treeEff('im1'));
+        if (player.ranks.hex.gte(127)) x = x.mul(RANKS.effect.hex[127]())
         return x
     },
     gainTimes() {
@@ -253,5 +256,6 @@ function calcShardsEffect() {
 	if(hasUpgrade('br',16))eff = eff.pow(1.1);
 	if(hasUpgrade('br',17))eff = eff.pow(1.2);
 	if(hasUpgrade('br',18))eff = eff.pow(1.1);
+	if(hasUpgrade('br',19))eff = eff.pow(1.5);
 	return eff;
 }

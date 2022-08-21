@@ -25,7 +25,7 @@ const QCs = {
     ctn: [
         {
             eff(i) {
-				if(i>=30)return [0,0]
+				//if(i>=30)return [0,0]
 				if(i>=11)return [1-0.03*i,2/(i**3/100+2)]
                 return [1-0.03*i,2/(i+2)]
             },
@@ -33,7 +33,7 @@ const QCs = {
         },{
             eff(i) {
 				if(hasPrestige(0,134))i *= 0.97
-				if(i>=30)return E(2).pow(10**i)
+				//if(i>=30)return E(2).pow(10**i)
 				if(i>=11)return E(2).pow(i**5/1000)
                 let x = E(2).pow(i**2)
                 return x
@@ -42,7 +42,7 @@ const QCs = {
         },{
             eff(i) {
                 if (hasElement(129) && player.qu.rip.active) i *= 0.5
-				if(i>=30)return 10**i
+				//if(i>=30)return 10**i
 				if(i>=11)return i**3.5*0.0015+1
                 let x = i**1.5*0.15+1
                 return x
@@ -50,7 +50,7 @@ const QCs = {
             effDesc(x) { return `x${format(x)} to requirements of any Fermions.` },
         },{
             eff(i) {
-				if(i>=30)return 0
+				//if(i>=30)return 0
 				if(i>=21)return 0.9**(i**6.25/800000)
 				if(i>=11)return 0.9**(i**3.25/100)
                 let x = 0.9**(i**1.25)
@@ -61,7 +61,7 @@ const QCs = {
             eff(i) {
 				if(hasPrestige(0,99))i *= 0.92
 				if(hasPrestige(1,28))i *= 0.92
-				if(i>=30)return 0
+				//if(i>=30)return 0
 				if(i>=21)return 0.8**(i**6.25/800000)
 				if(i>=11)return 0.8**(i**3.25/100)
                 let x = 0.8**(i**1.25)
@@ -70,7 +70,7 @@ const QCs = {
             effDesc(x) { return `^${format(x)} to multiplier from pre-Supernova resources, except All-Stars resources.` },
         },{
             eff(i) {
-				if(i>=30)return 1e200
+				//if(i>=30)return 1e200
 				if(i>=11)return 1.2**(i**4/1000)
                 let x = 1.2**i
                 return x
@@ -78,7 +78,7 @@ const QCs = {
             effDesc(x) { return `x${format(x)} to requirements of any pre-Quantum Challenges.` },
         },{
             eff(i) {
-				if(i>=30)return 1e200
+				//if(i>=30)return 1e200
 				if(i>=11)return i**4.5/2000+1
                 let x = i**1.5/2+1
                 return x
@@ -87,7 +87,7 @@ const QCs = {
         },{
             eff(i) {
                 if (hasElement(98) && player.qu.rip.active) i *= 0.8
-				if(i>=30)return [0,10**i]
+				//if(i>=30)return [0,10**i]
 				if(i>=17)return [0.15*((2/3)**(i-17)),i**4/10000+1]
 				if(i>=11)return [1-0.05*i,i**4/10000+1]
                 let x = [1-0.05*i,i/10+1]

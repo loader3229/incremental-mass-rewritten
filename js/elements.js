@@ -256,10 +256,24 @@ function updateTickspeedHTML() {
 		tmp.el.tickspeed_cost.setTxt(format(tmp.tickspeedCost,0))
 		tmp.el.tickspeed_step.setHTML((teff.step.gte(10)?format(teff.step)+"倍":format(teff.step.sub(1).mul(100))+"%")
 		+(teff.step.gte(teff.ss)?"<span class='soft'>(softcapped)</span>":""))
-		tmp.el.tickspeed_eff.setTxt(format(teff.eff))
-
+		tmp.el.tickspeed_eff.setTxt(format(teff.eff)+"倍")
+		if(hasElement(134)){
+			tmp.el.tickspeed_eff.setTxt("^"+format(teff.eff))
+		}
 		tmp.el.tickspeed_auto.setDisplay(FORMS.tickspeed.autoUnl())
 		tmp.el.tickspeed_auto.setTxt(player.autoTickspeed?"ON":"OFF")
+	}
+	if(hasElement(134)){
+		let eff = tmp.accelEffect
+		//tmp.el.accel_scale.setTxt(getScalingName('accel'))
+		tmp.el.accel_lvl.setTxt(format(player.accelerator,0))
+		tmp.el.accel_btn.setClasses({btn: true, locked: !FORMS.accel.can()})
+		tmp.el.accel_cost.setTxt(format(tmp.accelCost,0))
+		tmp.el.accel_step.setHTML("+^"+format(eff.step))
+		tmp.el.accel_eff.setHTML("^"+format(eff.eff)+" to Tickspeed "+(hasElement(137)?"Power and ":"")+"Effect")
+
+		tmp.el.accel_auto.setDisplay(FORMS.accel.autoUnl())
+		tmp.el.accel_auto.setTxt(player.autoAccel?"ON":"OFF")
 	}
 }
 

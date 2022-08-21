@@ -182,7 +182,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return player.mainUpg.bh.includes(5) },
-            lens: 18,
+            lens: 19,
             1: {
                 desc: "Boosters adds Musclers.",
                 cost: E(1),
@@ -328,6 +328,11 @@ const UPGS = {
                     return format(x)+"x"
                 },
             },
+            19: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: "Mass Overflow starts ^10 later.",
+                cost: E('e2e123'),
+            },
         },
         2: {
             title: "Black Hole Upgrades",
@@ -342,7 +347,7 @@ const UPGS = {
                     player.mainUpg.bh.push(x)
                 }
             },
-            lens: 18,
+            lens: 19,
             1: {
                 desc: "Mass Upgardes no longer spends mass.",
                 cost: E(1),
@@ -490,6 +495,17 @@ const UPGS = {
                     return format(x)+"x"
                 },
             },
+            19: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: "Black Hole effect exponentially boost mass gain.",
+                cost: E('e2e130'),
+                effect() {
+                    return (tmp.bh?(tmp.bh.effect||E(1)):E(1)).add(1).log10().add(1).log10().pow(0.1);
+                },
+                effDesc(x=this.effect()) {
+                    return "^"+format(x)
+                },
+            },
         },
         3: {
             title: "Atom Upgrades",
@@ -513,7 +529,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return hasTree("qol1") },
-            lens: 18,
+            lens: 19,
             1: {
                 desc: "Start with Mass upgrades unlocked.",
                 cost: E(1),
@@ -643,6 +659,11 @@ const UPGS = {
                     return format(x)+"x"
                 },
             },
+            19: {
+                unl() { return hasUpgrade('inf',15) },
+                desc() {return "Cosmic Ray effect softcaps are weaker."},
+                cost: E('e3e108'),
+            },
         },
         4: {
             title: "Big Rip Upgrades",
@@ -657,7 +678,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 18,
+            lens: 19,
             1: {
                 desc: `Start with Hydrogen-1 unlocked in Big Rip.`,
                 cost: E(5),
@@ -759,6 +780,11 @@ const UPGS = {
                 desc: "Timeshard Effect is slightly stronger again.",
                 cost: E(1e266),
             },
+            19: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: "Timeshard Effect is slightly stronger again.",
+                cost: E("1e337"),
+            },
         },
         5: {
             title: "无限升级",
@@ -773,7 +799,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 18,
+            lens: 19,
             1: {
                 desc: `使量子次数乘以(200+无限次数)。无限质量加成量子泡沫获取速度。该升级只花费1毫克无限质量。`,
                 cost: E(1e-3),
@@ -889,6 +915,11 @@ const UPGS = {
                 unl() { return hasUpgrade('inf',15) },
                 desc: `Infinity Mass base formula is better, and Infinity Upgrade 3's softcap is weaker.`,
                 cost: E(1e27),
+            },
+            19: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: `Infinity Mass base formula is better, and Death Shard gain softcap is weaker.`,
+                cost: E(1e34),
             },
         },
     },

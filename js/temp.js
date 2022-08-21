@@ -160,6 +160,13 @@ function updateMassTemp() {
 }
 
 function updateTickspeedTemp() {
+    tmp.accelUnl = hasElement(134)
+
+    tmp.accelCost = FORMS.accel.cost()
+    tmp.accelBulk = E(0)
+    if (player.rp.points.gte(10)) tmp.accelBulk = player.rp.points.max(1).log10().max(1).log(1.5).add(1).floor()
+    tmp.accelEffect = FORMS.accel.effect()
+
     tmp.tickspeedFP = tmp.fermions.effs[1][2]
     tmp.tickspeedCost = E(2).pow(player.tickspeed.scaleEvery('tickspeed')).floor()
     tmp.tickspeedBulk = E(0)

@@ -10,6 +10,7 @@ const STARS = {
     },
     softGain() {
         let s = E("e1000").pow(tmp.fermions.effs[1][0]||1)
+		if(hasTree('s5'))s = EINF
         return s
     },
     softPower() {

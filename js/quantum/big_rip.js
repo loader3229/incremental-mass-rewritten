@@ -15,15 +15,21 @@ const BIG_RIP = {
         if (!(player.qu.rip.active || hasTree('qu_qol12')) || x.lt(1)) return E(0)
         if (hasTree('br1')) x = x.mul(treeEff('br1'))
         if (hasElement(90)) x = x.mul(tmp.elements.effect[90]||1)
-        if (player.qu.rip.active && hasElement(94)) x = x.mul(tmp.elements.effect[94]||1)
-		else if (hasTree('br3') && hasElement(94)) x = x.mul(E(tmp.elements.effect[94]||1).pow(0.1))
+        if (player.qu.rip.active){
+			if (hasElement(94)) x = x.mul(tmp.elements.effect[94]||1)
+		}else{
+			let eff=0
+			if (hasTree('br3'))eff += 0.1
+			if (hasElement(130))eff += 0.1
+			if (hasElement(94)) x = x.mul(E(tmp.elements.effect[94]||1).pow(eff))
+		}
         if (hasPrestige(0,2)) x = x.mul(4)
         if (player.md.break.upgs[6].gte(1)) x = x.mul(tmp.bd.upgs[6].eff?tmp.bd.upgs[6].eff[1]:1)
         if (hasUpgrade('br',13)) x = x.mul(upgEffect(4,13))
         if (hasPrestige(0,55)) x = x.mul(player.prestiges[0].max(1))
 		if (hasPrestige(0,98)) x = x.mul(prestigeEff(0,98,[E(1),E(1)])[0]);
         if (hasUpgrade('inf',3)) x = x.mul(upgEffect(5,3))
-		x = overflow(x,Number.MAX_VALUE,0.25);
+		x = overflow(x,Number.MAX_VALUE,hasUpgrade('inf',19)?0.3:0.25);
         return x.floor()
     },
 }

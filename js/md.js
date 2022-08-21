@@ -398,6 +398,7 @@ function updateMDTemp() {
     tmp.md.bd3 = player.md.break.upgs[2].gte(1)
     let mdub = 1
     if (hasElement(115)) mdub *= 1.05
+    if (player.ranks.hex.gte(115)) mdub *= 1.05
     for (let x = 0; x < MASS_DILATION.upgs.ids.length; x++) {
         let upg = MASS_DILATION.upgs.ids[x]
         tmp.md.upgs[x].cost = upg.cost(player.md.upgs[x])

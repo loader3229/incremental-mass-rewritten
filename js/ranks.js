@@ -204,6 +204,16 @@ const RANKS = {
 			'103': `Lawrencium-103's effect base is 2.1 instead of 2.`,
 			'104': "add 2000 more C12 maximum completions.",
 			'110': "add 2000 more C12 maximum completions.",
+			'114': `Entropic Multiplier uses a better formula.`,
+			'115': `Mass Dilation upgrades are 5% stronger.`,
+			'116': "Livermorium-116 is better.",
+			'119': "Effect of the 119th element is squared.",
+			'120': "Mass Overflow start ^10 later.",
+			'123': "Meta-Tickspeed starts later based on Accelerators.",
+			'124': "Bought Tickspeeds boost Accelerator Power.",
+			'125': "Hex Boost Entropy Gain.",
+			'126': "Hex boost Accelerator Power.",
+			'127': "Hex Boost Infinity Mass Gain.",
         },
     },
     effect: {
@@ -310,6 +320,26 @@ const RANKS = {
                 let ret = Decimal.pow(0.93,player.ranks.hex.sub(70));
                 return ret
             },
+            '123'() {
+                let ret = player.accelerator.add(1);
+                return ret
+            },
+            '124'() {
+                let ret = player.tickspeed.add(1).log10().div(15).max(1);
+                return ret
+            },
+            '125'() {
+                let ret = player.ranks.hex.add(1);
+                return ret
+            },
+            '126'() {
+                let ret = player.ranks.hex.div(100);
+                return ret
+            },
+            '127'() {
+                let ret = player.ranks.hex.add(1);
+                return ret
+            },
         },
     },
     effDesc: {
@@ -344,6 +374,11 @@ const RANKS = {
             5(x) { return "+"+format(x)},
             62(x) { return format(x)+"x later" },
             71(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+            123(x) { return format(x)+"x later" },
+            124(x) { return format(x)+"x" },
+            125(x) { return format(x)+"x" },
+            126(x) { return format(x)+"x" },
+            127(x) { return format(x)+"x" },
         },
     },
     fp: {
@@ -511,6 +546,8 @@ const PRESTIGES = {
             "26": `Honor boost Eternal Mass gain.`,
             "27": `Hex don't reset anything.`,
             "28": `QC Modifier 'Intense Catalyst' is 8% weaker.`,
+            "31": `Prestige Mass Formula from Prestige Level is better.`,
+			"32": `Prestige Mass Effect is applied to Hyper Honor scaling.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
@@ -807,6 +844,7 @@ function prestigeMassGain(){
     if (hasPrestige(0,110)) x = x.mul(prestigeEff(0,110));
     if (hasPrestige(0,111)) x = x.mul(prestigeEff(0,111));
     if (hasUpgrade('inf',5)) x = x.mul(upgEffect(5,5))
+	if (hasPrestige(1,31)) x = x.mul(player.prestiges[0].pow(0.15).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
 	return x;
 }
 

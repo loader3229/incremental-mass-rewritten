@@ -275,6 +275,7 @@ function getScalingStart(type, name) {
 			if (player.ranks.hex.gte(68)) start = start.mul(2)
 			if (player.ranks.hex.gte(88)) start = start.mul(100)
 			if (player.ranks.pent.gte(4)) start = start.mul(RANKS.effect.pent[4]())
+			if (player.ranks.hex.gte(123)) start = start.mul(RANKS.effect.hex[123]())
 			start = start.mul(tmp.fermions.effs[0][5])
 			start = start.mul(getEnRewardEff(0))
 		}
@@ -306,6 +307,7 @@ function getScalingStart(type, name) {
 	if (name=="massUpg" && type!="meta" && type!="ultra") if (player.ranks.hex.gte(95))return EINF;
 	if (name=="tier" && type!="meta" && type!="ultra") if (player.ranks.hex.gte(95))return EINF;
 	if (name=="supernova" && type!="meta") if (player.ranks.hex.gte(98))return EINF;
+	//if (name=="tetr" && type=="super") if (player.ranks.hex.gte(121))return EINF;
 	return start.floor()
 }
 
@@ -411,6 +413,9 @@ function getScalingPower(type, name) {
 		}
 		if (name=="prestige0") {
 			if (hasPrestige(1,21)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="prestige1") {
+			if (hasPrestige(1,32)) power = power.mul(tmp.prestigeMassEffect)
 		}
 	}
 	if (type=="ultra") {

@@ -322,6 +322,8 @@ function updateQuantumHTML() {
         tmp.el.cosmic_str_cost.setTxt(format(tmp.qu.cosmic_str_cost,0))
         tmp.el.cosmic_str_pow.setTxt(format(tmp.qu.cosmic_str_eff.pow))
         tmp.el.cosmic_str_eff.setHTML(format(tmp.qu.cosmic_str_eff.eff))
+    tmp.el.cosmic_str_auto.setDisplay(hasElement(131))
+	tmp.el.cosmic_str_auto.setTxt(player.qu.auto_cs?"ON":"OFF")
     }
 
     if (tmp.tab == 6) {

@@ -17,6 +17,7 @@ function updateChalHTML() {
             if (unl) {
                 tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0)+" / "+format(tmp.chal.max[x],0))
 				if(hasPrestige(1,25) && x <= 11)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(133) && x == 12)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
             }
         }
         tmp.el.chal_enter.setVisible(player.chal.active != player.chal.choosed)
@@ -149,6 +150,7 @@ const CHALS = {
         if (player.ranks.hex.gte(104) && (i==12)) x = x.add(2000)
         if (player.ranks.hex.gte(110) && (i==12)) x = x.add(2000)
         if (hasPrestige(1,25) && (i<=11))  x = x.add(1/0)
+        if (hasElement(133) && (i==12))  x = x.add(1/0)
         return x.floor()
     },
     getScaleName(i) {
