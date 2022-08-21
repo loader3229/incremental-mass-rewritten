@@ -358,6 +358,8 @@ function updateOptionsHTML() {
 		?player.qu.rip.first
 		:CONFIRMS[x] == "inf"
 		?player.inf.times.gte(1)
+		:CONFIRMS[x] == "et"
+		?player.et.times.gte(1)
 		:player[CONFIRMS[x]].unl
 
 		tmp.el["confirm_div_"+x].setDisplay(unl)

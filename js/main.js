@@ -248,8 +248,8 @@ const FORMS = {
             }
             if (hasPrestige(0,6)) ss = ss.pow(100)
             if (hasElement(102)) ss = ss.pow(100)
-			if (hasUpgrade('rp',16)) ss = E(1/0)
-            step = step.softcap(ss,p,0)
+			if (hasUpgrade('rp',16)) ss = EINF
+            else step = step.softcap(ss,p,0)
             
             let eff = step.pow(t.add(bonus).mul(hasElement(80)?25:1))
             if (hasElement(18)) eff = eff.pow(tmp.elements.effect[18])
@@ -337,10 +337,16 @@ const FORMS = {
             if (hasElement(46) && player.ranks.hex.gte(46)) x = x.pow(tmp.elements.effect[46])
             if (player.md.active || CHALS.inChal(10) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
-			tmp.bhOverflowStart = E("e1e34")
-			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
-			tmp.bhOverflow = overflow(overflow(x,tmp.bhOverflowStart,0.8),"ee100",0.8).log(x);
-		    x = overflow(overflow(x,tmp.bhOverflowStart,0.8),"ee100",0.8);
+			
+			let x_original = x
+			x = overflow(x,tmp.bhOverflowStart,0.8);
+			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
+			if(x.gte(bhOverflowStart2)){
+				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(0.8).mul(bhOverflowStart2.log10().log10());
+				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
+			}
+			tmp.bhOverflow = x.log(x_original);
+		    
 			return x
         },
         f() {
