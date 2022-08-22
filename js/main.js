@@ -26,7 +26,8 @@ const FORMS = {
 		if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[0]);
 		if (hasUpgrade('inf',9)) x = x.mul(upgEffect(5,9));
         if (hasElement(136)) x = x.mul(tmp.elements.effect[136])
-			
+		if (player.ranks.hept.gte(6)) x = x.mul(player.ranks.hept.add(1));
+		
         if (player.mainUpg.br.includes(3)) x = x.pow(tmp.upgs.main[4][3].effect)
         if (hasPrestige(0,5)) x = x.pow(2)
 		x = x.pow(calcShardsEffect())
@@ -67,7 +68,8 @@ const FORMS = {
 		}
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
         if (player.ranks.hex.gte(36)) x = x.pow(tmp.stars.effectPower)
-		if(hasUpgrade('bh',19))  x = x.pow(tmp.upgs.main?tmp.upgs.main[2][19].effect:E(1))
+		if (hasUpgrade('bh',19)) x = x.pow(tmp.upgs.main?tmp.upgs.main[2][19].effect:E(1))
+        if (hasUpgrade('br',20)) x = x.pow(tmp.upgs.main?tmp.upgs.main[4][20].effect:E(1))
 		if (CHALS.inChal(9) || FERMIONS.onActive("12")) x = expMult(x,0.9)
         x = x.softcap(tmp.massSoftGain,tmp.massSoftPower,0)
         .softcap(tmp.massSoftGain2,tmp.massSoftPower2,0)
@@ -85,9 +87,12 @@ const FORMS = {
 		tmp.massOverflowStart = E("ee84")
 		if (player.ranks.hex.gte(120))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
 		if (hasUpgrade('rp',19))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
-			
-		tmp.massOverflow = overflow(x,tmp.massOverflowStart,0.8).log(x);
-		x = overflow(x,tmp.massOverflowStart,0.8);
+		
+		tmp.massOverflowPower = E(0.8)
+		if (player.ranks.hept.gte(1))tmp.massOverflowPower = tmp.massOverflowPower.pow(RANKS.effect.hept[1]())
+		
+		tmp.massOverflow = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower).log(x);
+		x = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower);
         return x
     },
     massSoftGain() {
@@ -294,8 +299,13 @@ const FORMS = {
 			if(hasElement(135))step = step.mul(tmp.elements.effect[135])
             if (player.ranks.hex.gte(124)) step = step.mul(RANKS.effect.hex[124]())
             if (player.ranks.hex.gte(126)) step = step.mul(RANKS.effect.hex[126]())
+            if (player.ranks.hex.gte(140)) step = step.mul(RANKS.effect.hex[140]())
+			if(hasPrestige(1,33))step = step.mul(prestigeEff(1,33)||1)
+			if (hasUpgrade('atom',20)) step = step.mul(upgEffect(3,20))
+			if (hasUpgrade('rp',20)) step = step.mul(upgEffect(1,20))
+            if (player.ranks.hept.gte(4)) step = step.mul(RANKS.effect.hept[4]())
 			
-            let x = player.accelerator.mul(step).add(1)
+            let x = player.accelerator.mul(step).add(1).min(100)
 			
 			return {step: step, eff: x}
         },
@@ -384,7 +394,7 @@ const FORMS = {
 			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
 			
 			let x_original = x
-			x = overflow(x,tmp.bhOverflowStart,0.8);
+			x = overflow(x,tmp.bhOverflowStart,hasUpgrade('bh',20)?0.81:0.8);
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
 				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(0.8).mul(bhOverflowStart2.log10().log10());

@@ -4,13 +4,20 @@ const INFINITY_LAYER = {
         let y = player.qu.rip.amt.add(1).log(Number.MAX_VALUE);
         if (x.lt(1)) return E(0)
         if (y.lt(1)) y=E(1)
+		if (hasUpgrade('inf',20))y = y.pow(2)
 		let power = E(2)
 		if (hasUpgrade('inf',7))power = power.add(1)
 		if (hasUpgrade('inf',14))power = power.add(2)
 		if (hasUpgrade('inf',16))power = power.add(1)
 		if (hasUpgrade('inf',18))power = power.add(1)
 		if (hasUpgrade('inf',19))power = power.add(1)
+		if (hasElement(146)){
+			let z = player.qu.en.amt.add(1).log(Number.MAX_VALUE);
+			if (z.lt(1)) z=E(1)
+			x = x.mul(z)
+		}
         x = x.mul(y).pow(power).sub(1);
+		x = overflow(x,1e5,2);
 
 		let m = player.mass.add(1).log10().add(1).log10().add(1).sqrt();
 		x = x.mul(m);
@@ -257,5 +264,6 @@ function calcShardsEffect() {
 	if(hasUpgrade('br',17))eff = eff.pow(1.2);
 	if(hasUpgrade('br',18))eff = eff.pow(1.1);
 	if(hasUpgrade('br',19))eff = eff.pow(1.5);
+	if(hasElement(148))eff = eff.pow(1.1);
 	return eff;
 }

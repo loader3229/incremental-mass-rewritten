@@ -5,8 +5,14 @@ const STARS = {
         if (player.md.upgs[8].gte(1)) x = x.mul(tmp.md.upgs[8].eff)
         if (hasPrestige(1,1)) x = x.pow(2)
         x = x.softcap(tmp.stars.softGain,tmp.stars.softPower,0)
-		tmp.starOverflow = overflow(x,"e1e43",0.8).log(x);
-        return overflow(x,"e1e43",0.8);
+	
+	
+		tmp.starOverflowPower = E(0.8)
+		if (player.ranks.hept.gte(2))tmp.starOverflowPower = tmp.starOverflowPower.pow(RANKS.effect.hept[2]())
+			
+		
+		tmp.starOverflow = overflow(x,"e1e43",tmp.starOverflowPower).log(x);
+        return overflow(x,"e1e43",tmp.starOverflowPower);
     },
     softGain() {
         let s = E("e1000").pow(tmp.fermions.effs[1][0]||1)
@@ -30,9 +36,12 @@ const STARS = {
             ,(hasElement(69)?player.ranks.pent.mul(pp):E(0)).softcap(9,0.5,0)]
         let x =
         s.max(1).log10().add(1).pow(r.mul(t1.pow(2)).add(1).pow(t2.add(1).pow(5/9).mul(0.25).mul(t3.pow(0.85).mul(0.0125).add(1))))
-		let l = 145;
+		let l = E(145);
 		if(player.ranks.hex.gte(69)){
-			l = 214-player.ranks.hex;
+			l = E(214).sub(player.ranks.hex);
+		}
+		if(player.ranks.hex.gte(204)){
+			l = E(10);
 		}
 		let l2=Decimal.pow(10,Decimal.pow(10,l));
 		tmp.stars.effectPower = x.add(1).mul(l2).log10().log10().div(l).sqrt()

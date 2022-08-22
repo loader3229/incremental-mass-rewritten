@@ -29,7 +29,7 @@ const BIG_RIP = {
         if (hasPrestige(0,55)) x = x.mul(player.prestiges[0].max(1))
 		if (hasPrestige(0,98)) x = x.mul(prestigeEff(0,98,[E(1),E(1)])[0]);
         if (hasUpgrade('inf',3)) x = x.mul(upgEffect(5,3))
-		x = overflow(x,Number.MAX_VALUE,hasUpgrade('inf',19)?0.3:0.25);
+		x = overflow(x,Number.MAX_VALUE,hasUpgrade('inf',20)?0.35:hasUpgrade('inf',19)?0.3:0.25);
         return x.floor()
     },
 }

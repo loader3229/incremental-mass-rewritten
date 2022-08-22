@@ -1,6 +1,6 @@
 const RANKS = {
-    names: ['rank', 'tier', 'tetr', 'pent', 'hex'],
-    fullNames: ['级别', '阶层', '三重阶层', '五重阶层', '六重阶层'],
+    names: ['rank', 'tier', 'tetr', 'pent', 'hex', 'hept'],
+    fullNames: ['级别', '阶层', '三重阶层', '五重阶层', '六重阶层', '七重阶层'],
     reset(type) {
         if (tmp.ranks[type].can) {
             player.ranks[type] = player.ranks[type].add(1)
@@ -32,6 +32,7 @@ const RANKS = {
         tetr() { return player.mainUpg.atom.includes(3) || tmp.radiation.unl },
         pent() { return tmp.radiation.unl },
         hex() { return player.prestiges[0].gte(42) },
+        hept() { return player.prestiges[2].gte(6) },
     },
     doReset: {
         rank() {
@@ -54,6 +55,10 @@ const RANKS = {
             player.ranks.pent = E(0)
             this.pent()
         },
+        hept() {
+            player.ranks.hex = E(0)
+            this.hex()
+        },
     },
     autoSwitch(rn) { player.auto_ranks[rn] = !player.auto_ranks[rn] },
     autoUnl: {
@@ -62,6 +67,7 @@ const RANKS = {
         tetr() { return player.mainUpg.atom.includes(5) },
         pent() { return hasTree("qol8") },
         hex() { return true; },
+        hept() { return true; },
     },
     desc: {
         rank: {
@@ -184,7 +190,7 @@ const RANKS = {
 			'70': "add 1000 more C12 maximum completions.",
 			'71': "BH mass gain softcap is weaker based on Hex.",
 			'72': `Tetrs are 15% cheaper. If you're in Big Rip or at least Hex 100, this effect is applied twice.`,
-			'73': "add 1000 more C12 maximum completions. The softcap of [Neut-Muon] in Big Rips is weaker.",
+			'73': "add 1000 more C12 maximum completions. If you're in Big Rip, the softcap of [Neut-Muon] is weaker.",
 			'74': `Super Tetr scales 10% weaker.`,
 			'75': "remove mass gain softcap^9.",
 			'76': "Collapsed Star's effect is 25% stronger.",
@@ -214,7 +220,20 @@ const RANKS = {
 			'125': "Hex Boost Entropy Gain.",
 			'126': "Hex boost Accelerator Power.",
 			'127': "Hex Boost Infinity Mass Gain.",
+			'129': "If you're in Big Rip, QC Modifier 'Hypertiered' is 50% weaker.",
+			'135': "If you're in Big Rip, QC Modifier 'Extreme Scaling' is 40% weaker.",
+			'140': "C2 Completions boost Accelerator Power.",
+			'238': "Disable Super Tetr scaling.",
+			'300': "Ultra Mass Upgrades is 2% weaker.",
         },
+        hept: {
+            '1': "Mass Overflow is weaker based on Hept.",
+            '2': "Star Overflow is weaker based on Hept.",
+            '3': "Ultra Tier scaling is weaker based on Hept.",
+            '4': "Hept boost Accelerator Power.",
+            '5': "Hept 1's effect and Hept 3's effect are boosted.",
+            '6': "Hept boost Pre-Quantum Global Speed.",
+		},
     },
     effect: {
         rank: {
@@ -340,7 +359,35 @@ const RANKS = {
                 let ret = player.ranks.hex.add(1);
                 return ret
             },
+            '140'() {
+                let ret = player.chal.comps[2].div(200000).add(1);
+                return ret
+            },
         },
+        hept: {
+            '1'() {
+                let ret = E(0.98).pow(player.ranks.hept);
+				if(player.ranks.hept.gte(5))ret = ret.pow(1.2);
+                return ret
+            },
+            '2'() {
+                let ret = E(0.9).pow(player.ranks.hept);
+                return ret
+            },
+            '3'() {
+                let ret = E(0.99).pow(player.ranks.hept);
+				if(player.ranks.hept.gte(5))ret = ret.pow(1.2);
+                return ret
+            },
+            '4'() {
+                let ret = E(1.01).pow(player.ranks.hept);
+                return ret
+            },
+            '6'() {
+                let ret = player.ranks.hept.add(1);
+                return ret
+            },
+		},
     },
     effDesc: {
         rank: {
@@ -379,7 +426,15 @@ const RANKS = {
             125(x) { return format(x)+"x" },
             126(x) { return format(x)+"x" },
             127(x) { return format(x)+"x" },
+            140(x) { return format(x)+"x" },
         },
+        hept: {
+            1(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+            2(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+            3(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+            4(x) { return format(x)+"x" },
+            6(x) { return format(x)+"x" },
+		},
     },
     fp: {
         rank() {
@@ -523,6 +578,7 @@ const PRESTIGES = {
             "141": `Entropic Evaporation^2 is 5% weaker.`,
             "165": `Prestige Level boost Infinity Mass gain.`,
             "250": `Prestige Level boost Eternal Mass gain.`,
+            "500": `Prestige Mass Effect is applied to Super Fermion Tier scaling.`,
         },
         {
             "1": `使所有星辰相关资源获取速度变为原来的2次方。`,
@@ -548,6 +604,12 @@ const PRESTIGES = {
             "28": `QC Modifier 'Intense Catalyst' is 8% weaker.`,
             "31": `Prestige Mass Formula from Prestige Level is better.`,
 			"32": `Prestige Mass Effect is applied to Hyper Honor scaling.`,
+			"33": `Honor boost Accelerator Power.`,
+			"34": `Prestige Mass Effect is applied to Super Hex scaling.`,
+			"35": `Hyper Cosmic Strings is 20% weaker.`,
+			"37": `Hyper Tetr is 2% weaker.`,
+			"38": `Honor 18's effect ^4.`,
+            "39": `QC Modifier 'Intense Catalyst' is 5% weaker.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
@@ -555,6 +617,7 @@ const PRESTIGES = {
             "3": `Glory boost Infinity Mass gain.`,
             "4": `Glory boost Eternal Mass gain, and Glory 3's effect is squared.`,
             "5": `Honor boost Entropy gain.`,
+            "6": `Unlock Hept.`,
 		},
     ],
     rewardEff: [
@@ -637,6 +700,7 @@ const PRESTIGES = {
             },x=>x[0].format()+"x to Entropy Gain, "+x[1].format()+"x to Prestige Mass"],
             "18": [_=>{
                 let x = player.prestiges[1].add(1).root(4)
+				if(hasPrestige(1,38))x = x.pow(4);
                 return x
             },x=>"x"+x.format()],
             "23": [_=>{
@@ -645,6 +709,10 @@ const PRESTIGES = {
             },x=>"^"+x.format()],
             "26": [_=>{
                 let x = player.prestiges[1].add(1).root(4)
+                return x
+            },x=>"x"+x.format()],
+            "33": [_=>{
+                let x = player.prestiges[1].sub(30).div(10).add(1);
                 return x
             },x=>"x"+x.format()],
         },
@@ -722,6 +790,12 @@ function updateRanksTemp() {
     pow = 1.5
     tmp.ranks.hex.req = player.ranks.hex.scaleEvery('hex').div(fp).pow(pow).add(25).floor()
     tmp.ranks.hex.bulk = player.ranks.pent.sub(25).gte(0)?player.ranks.pent.sub(25).max(0).root(pow).mul(fp).scaleEvery('hex',true).add(1).floor():E(0);
+
+    fp = E(0.1)
+	if (hasElement(150)) fp = fp.mul(1.6)
+    pow = 1.5
+    tmp.ranks.hept.req = player.ranks.hept.scaleEvery('hept').div(fp).pow(pow).add(200).floor()
+    tmp.ranks.hept.bulk = player.ranks.hex.sub(200).gte(0)?player.ranks.hex.sub(200).max(0).root(pow).mul(fp).scaleEvery('hept',true).add(1).floor():E(0);
 
     for (let x = 0; x < RANKS.names.length; x++) {
         let rn = RANKS.names[x]
@@ -845,12 +919,15 @@ function prestigeMassGain(){
     if (hasPrestige(0,111)) x = x.mul(prestigeEff(0,111));
     if (hasUpgrade('inf',5)) x = x.mul(upgEffect(5,5))
 	if (hasPrestige(1,31)) x = x.mul(player.prestiges[0].pow(0.15).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
+	if (hasElement(145)) x = x.mul(10);
 	return x;
 }
 
 function prestigeMassEffect(){
-	if(hasTree("qu12"))return E(0.98).pow(player.prestigeMass.add(1).log10().pow(0.725));
-	return E(0.965).pow(player.prestigeMass.add(1).log10().sqrt());
+	let p = player.prestigeMass.add(1).log10();
+	if(p.gte(104))p = p.softcap(104,0.5,0);
+	if(hasTree("qu12"))return E(0.98).pow(p.pow(0.725));
+	return E(0.965).pow(p.sqrt());
 }
 
 function calcPrestigeMass(dt){

@@ -25,7 +25,7 @@ const QCs = {
     ctn: [
         {
             eff(i) {
-				//if(i>=30)return [0,0]
+				if(i>=34)return [0,0]
 				if(i>=11)return [1-0.03*i,2/(i**3/100+2)]
                 return [1-0.03*i,2/(i+2)]
             },
@@ -42,6 +42,7 @@ const QCs = {
         },{
             eff(i) {
                 if (hasElement(129) && player.qu.rip.active) i *= 0.5
+                if (player.ranks.hex.gte(129) && player.qu.rip.active) i *= 0.5
 				//if(i>=30)return 10**i
 				if(i>=11)return i**3.5*0.0015+1
                 let x = i**1.5*0.15+1
@@ -61,6 +62,8 @@ const QCs = {
             eff(i) {
 				if(hasPrestige(0,99))i *= 0.92
 				if(hasPrestige(1,28))i *= 0.92
+				if(hasElement(143))i *= 0.95
+				if(hasPrestige(1,39))i *= 0.95
 				//if(i>=30)return 0
 				if(i>=21)return 0.8**(i**6.25/800000)
 				if(i>=11)return 0.8**(i**3.25/100)
@@ -87,6 +90,7 @@ const QCs = {
         },{
             eff(i) {
                 if (hasElement(98) && player.qu.rip.active) i *= 0.8
+                if (player.ranks.hex.gte(135) && player.qu.rip.active) i *= 0.6
 				//if(i>=30)return [0,10**i]
 				if(i>=17)return [0.15*((2/3)**(i-17)),i**4/10000+1]
 				if(i>=11)return [1-0.05*i,i**4/10000+1]

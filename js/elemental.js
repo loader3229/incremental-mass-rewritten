@@ -771,6 +771,7 @@ const ELEMENTS = {
 			cost: E("1e15"),
 			effect() {
 				let x = player.inf.points.add(10).log10();
+				if(hasElement(142))x = x.pow(2)
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -829,6 +830,8 @@ const ELEMENTS = {
 			et: true,
 			effect() {
 				let x = player.et.points.add(1).log10().add(1);
+				if(hasElement(140))x = player.et.points.add(1).pow(0.2);
+				if(hasElement(147))x = x.pow(1.2);
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -898,8 +901,62 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `TBD`,
+			desc: `The Formula of Element 128 is better.`,
 			cost: E("1.6190000001e21"),
+			et: true,
+		},
+		{
+			desc: `Entropic Radiation^2 is 20% weaker.`,
+			cost: E("2.98350000001e45"),
+		},
+		{
+			desc: `Element 121 is squared.`,
+			cost: E("2.98350000001e45"),
+		},
+		{
+			desc: `QC Modifier 'Intense Catalyst' is 5% weaker.`,
+			cost: E("1.6190000001e26"),
+			et: true,
+		},
+		{
+			desc: `Entropic Condenser^2 is 15% weaker.`,
+			cost: E("1.6190000001e27"),
+			et: true,
+		},
+		{
+			desc: `Gain 10x more Prestige Mass.`,
+			cost: E("2.98350000001e53"),
+		},
+		{
+			desc: `Entropy Post-1.8e308 added to base Infinity Mass gain formula.`,
+			cost: uni(1),
+		},
+		{
+			desc: `Element 128's effect ^1.2.`,
+			cost: E("5.9720000001e30"),
+			et: true,
+		},
+		{
+			desc: `Timeshard effect is slightly stronger.`,
+			cost: E("5.9720000001e31"),
+			et: true,
+		},
+		{
+			desc: `Super Hex is 5% weaker.`,
+			cost: uni(1e5),
+		},
+		{
+			desc: `The Hept requirement is reduced.`,
+			cost: uni(1e7),
+		},
+		{
+			desc: `Entropic Condenser^2 is 15% weaker.`,
+			cost: E("1.9890000001e34"),
+			et: true,
+		},
+		{
+			desc: `If you bought [prim8], levels of Epsilon/Theta/Beta Particles is 1 per 1.5 Primordium Theorem, instead of 2.`,
+			cost: E("1.9890000001e34"),
 			et: true,
 		},
 	],
@@ -934,7 +991,7 @@ const ELEMENTS = {
         if (hasTree('unl3')) u += 3
         if (player.qu.rip.first) u += 9
         if (hasUpgrade("br",9)) u += 23 // 23
-		if (hasUpgrade("atom",16)) u += 22
+		if (hasUpgrade("atom",16)) u += 34
         return u
     },
 }

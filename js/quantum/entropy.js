@@ -180,6 +180,9 @@ const ENTROPY = {
 				if (i == 2 && hasPrestige(0,131)) p = p ** 0.95
 				if (i == 2 && hasPrestige(0,141)) p = p ** 0.95
 				if (i == 6 && hasElement(138)) p = p ** 0.85
+				if (i == 7 && hasElement(141)) p = p ** 0.8
+				if (i == 6 && hasElement(144)) p = p ** 0.85
+				if (i == 6 && hasElement(151)) p = p ** 0.85
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -200,6 +203,9 @@ const ENTROPY = {
 				if (i == 2 && hasPrestige(0,131)) p = p ** 0.95
 				if (i == 2 && hasPrestige(0,141)) p = p ** 0.95
 				if (i == 6 && hasElement(138)) p = p ** 0.85
+				if (i == 7 && hasElement(141)) p = p ** 0.8
+				if (i == 6 && hasElement(144)) p = p ** 0.85
+				if (i == 6 && hasElement(151)) p = p ** 0.85
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()

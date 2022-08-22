@@ -155,6 +155,7 @@ function getPlayerData() {
             tetr: E(0),
             pent: E(0),
             hex: E(0),
+            hept: E(0),
         },
         auto_ranks: {
             rank: false,

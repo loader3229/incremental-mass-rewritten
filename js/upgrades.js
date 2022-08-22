@@ -182,7 +182,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return player.mainUpg.bh.includes(5) },
-            lens: 19,
+            lens: 20,
             1: {
                 desc: "Boosters adds Musclers.",
                 cost: E(1),
@@ -333,6 +333,18 @@ const UPGS = {
                 desc: "Mass Overflow starts ^10 later.",
                 cost: E('e2e123'),
             },
+            20: {
+                unl() { return hasElement(134) },
+                desc() {return "Rage Power boost Accelerator Power."},
+                cost: E('ee151'),
+                effect() {
+                    let ret = player.rp.points.add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.1);
+                    return ret
+                },
+                effDesc(x=this.effect()) {
+                    return format(x)+"x"
+                },
+            },
         },
         2: {
             title: "Black Hole Upgrades",
@@ -347,7 +359,7 @@ const UPGS = {
                     player.mainUpg.bh.push(x)
                 }
             },
-            lens: 19,
+            lens: 20,
             1: {
                 desc: "Mass Upgardes no longer spends mass.",
                 cost: E(1),
@@ -506,6 +518,11 @@ const UPGS = {
                     return "^"+format(x)
                 },
             },
+            20: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: "The first Black Hole Overflow effect is weaker.",
+                cost: E('ee170'),
+            },
         },
         3: {
             title: "Atom Upgrades",
@@ -529,7 +546,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return hasTree("qol1") },
-            lens: 19,
+            lens: 20,
             1: {
                 desc: "Start with Mass upgrades unlocked.",
                 cost: E(1),
@@ -664,6 +681,18 @@ const UPGS = {
                 desc() {return "Cosmic Ray effect softcaps are weaker."},
                 cost: E('e3e108'),
             },
+            20: {
+                unl() { return hasElement(134) },
+                desc() {return "Atomic Powers boost Accelerator Power."},
+                cost: E('e2e124'),
+                effect() {
+                    let ret = player.atom.atomic.add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.1);
+                    return ret
+                },
+                effDesc(x=this.effect()) {
+                    return format(x)+"x"
+                },
+            },
         },
         4: {
             title: "Big Rip Upgrades",
@@ -678,7 +707,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 19,
+            lens: 20,
             1: {
                 desc: `Start with Hydrogen-1 unlocked in Big Rip.`,
                 cost: E(5),
@@ -785,6 +814,16 @@ const UPGS = {
                 desc: "Timeshard Effect is slightly stronger again.",
                 cost: E("1e337"),
             },
+            20: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: "Death Shards boost mass gain.",
+                cost: E("1e375"),
+                effect() {
+                    let x = player.qu.rip.amt.add(1).log10().add(1).log10().add(1).pow(1.5);
+                    return x
+                },
+                effDesc(x=this.effect()) { return "^"+format(x) },
+            },
         },
         5: {
             title: "无限升级",
@@ -799,7 +838,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 19,
+            lens: 20,
             1: {
                 desc: `使量子次数乘以(200+无限次数)。无限质量加成量子泡沫获取速度。该升级只花费1毫克无限质量。`,
                 cost: E(1e-3),
@@ -920,6 +959,11 @@ const UPGS = {
                 unl() { return hasUpgrade('inf',15) },
                 desc: `Infinity Mass base formula is better, and Death Shard gain softcap is weaker.`,
                 cost: E(1e34),
+            },
+            20: {
+                unl() { return hasUpgrade('inf',15) },
+                desc: `Infinity Mass formula from Death Shards is better, and Death Shard gain softcap is weaker.`,
+                cost: E(1e51),
             },
         },
     },

@@ -137,7 +137,7 @@ function freePrimordiumParticles(id) {
 	if (hasTree('prim6') && id == 1) res = player.qu.prim.theorems,player.qu.prim.particles[1] = E(0)
 	if (hasTree('prim7') && id == 3) res = player.qu.prim.theorems,player.qu.prim.particles[3] = E(0)
 	if (hasTree('prim8') && id == 4) res = player.qu.prim.theorems,player.qu.prim.particles[4] = E(0)
-	if (hasTree('prim8') && id >= 5) res = player.qu.prim.theorems.div(hasElement(132)?2:hasPrestige(0,130)?2.5:3).floor(),player.qu.prim.particles[5] = E(0)
+	if (hasTree('prim8') && id >= 5) res = player.qu.prim.theorems.div(hasElement(152)?1.5:hasElement(132)?2:hasPrestige(0,130)?2.5:3).floor(),player.qu.prim.particles[5] = E(0)
 	if (hasPrestige(1,4)) res = res.add(5)
 	if (hasPrestige(1,9)) res = res.add(prestigeEff(1,9,0))
 	return res
@@ -168,7 +168,7 @@ function updatePrimordiumHTML() {
 		if (freePrimordiumParticles(i).gt(0))tmp.el["prim_part"+i].setTxt(format(player.qu.prim.particles[i],0)+" + "+format(freePrimordiumParticles(i),0))
 			if (hasTree('prim8')){
 				let level=player.qu.prim.theorems;
-				if(i>=5)level=level.div(hasElement(132)?2:hasPrestige(0,130)?2.5:3).floor();
+				if(i>=5)level=level.div(hasElement(152)?1.5:hasElement(132)?2:hasPrestige(0,130)?2.5:3).floor();
 				tmp.el["prim_part"+i].setTxt("等级 "+format(level,0)+" + "+format(freePrimordiumParticles(i).sub(level),0))
 			}
         tmp.el["prim_part_eff"+i].setHTML(PRIM.particle.effDesc[i](tmp.prim.eff[i]))

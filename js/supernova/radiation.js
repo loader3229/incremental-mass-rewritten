@@ -183,7 +183,7 @@ const RADIATION = {
         },{
             title: `Meta-Rank Boost`,
             eff(b) {
-                let x = overflow(E(1.025).pow(b).softcap(200000,0.5,0).softcap(1.2e10,0.1,0),1e13,0.1);
+                let x = overflow(overflow(E(1.025).pow(b).softcap(200000,0.5,0).softcap(1.2e10,0.1,0),1e13,0.1),1e51,0.1);
                 return x
             },
             desc(x) { return `Meta-Rank starts ${format(x)}x later` },
