@@ -16,6 +16,7 @@ const ENTROPY = {
         player.qu.en[i][3] = 0
     },
     gain() {
+		if (CHALS.inChal(13)) return E(0)
         let x = tmp.en.eff.eth.mul(getEnRewardEff(6))
         if (hasElement(93)) x = x.mul(tmp.elements.effect[93]||1)
         if (player.md.break.upgs[6].gte(1)) x = x.mul(tmp.bd.upgs[6].eff?tmp.bd.upgs[6].eff[0]:1)
@@ -183,6 +184,8 @@ const ENTROPY = {
 				if (i == 7 && hasElement(141)) p = p ** 0.8
 				if (i == 6 && hasElement(144)) p = p ** 0.85
 				if (i == 6 && hasElement(151)) p = p ** 0.85
+				if (i == 2 && hasElement(165)) p = p ** 0.95
+				if (i == 6 && hasElement(167)) p = p ** 0.85
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -206,6 +209,8 @@ const ENTROPY = {
 				if (i == 7 && hasElement(141)) p = p ** 0.8
 				if (i == 6 && hasElement(144)) p = p ** 0.85
 				if (i == 6 && hasElement(151)) p = p ** 0.85
+				if (i == 2 && hasElement(165)) p = p ** 0.95
+				if (i == 6 && hasElement(167)) p = p ** 0.85
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()

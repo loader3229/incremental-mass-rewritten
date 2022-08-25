@@ -263,6 +263,7 @@ function updateTickspeedHTML() {
 		tmp.el.tickspeed_auto.setDisplay(FORMS.tickspeed.autoUnl())
 		tmp.el.tickspeed_auto.setTxt(player.autoTickspeed?"ON":"OFF")
 	}
+	tmp.el.accel_div.setDisplay(hasElement(134));
 	if(hasElement(134)){
 		let eff = tmp.accelEffect
 		//tmp.el.accel_scale.setTxt(getScalingName('accel'))
@@ -270,7 +271,7 @@ function updateTickspeedHTML() {
 		tmp.el.accel_btn.setClasses({btn: true, locked: !FORMS.accel.can()})
 		tmp.el.accel_cost.setTxt(format(tmp.accelCost,0))
 		tmp.el.accel_step.setHTML("+^"+format(eff.step))
-		tmp.el.accel_eff.setHTML("^"+format(eff.eff)+"时间速度"+(hasElement(137)?"倍率和":"")+"效果")
+		tmp.el.accel_eff.setHTML("^"+format(eff.eff)+"时间速度"+(hasElement(137)?"倍率和":"")+"效果"+(eff.eff.gte(eff.ss)?"<span class='soft'>(softcapped"+(eff.eff.gte(eff.ss2)?"^2":"")+")</span>":""))
 
 		tmp.el.accel_auto.setDisplay(FORMS.accel.autoUnl())
 		tmp.el.accel_auto.setTxt(player.autoAccel?"ON":"OFF")
@@ -428,7 +429,7 @@ function updateHTML() {
 				tmp.el.massSoftStart10.setTxt(formatMass(tmp.massSoftGain9))
 				
 				
-				tmp.el.massOverflow.setDisplay(tmp.massGain.gte("ee84"))
+				tmp.el.massOverflow.setDisplay(tmp.massGain.gte(tmp.massOverflowStart))
 				tmp.el.massOverflow2.setTxt(format(tmp.massOverflow))
 				tmp.el.rankCollapse.setDisplay(tmp.rankCollapse.gt(1))
 				tmp.el.rankCollapse2.setTxt(format(tmp.rankCollapse))

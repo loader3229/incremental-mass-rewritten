@@ -1,6 +1,6 @@
 const ATOM = {
     gain() {
-        if (CHALS.inChal(12)) return E(0)
+        if (CHALS.inChal(12) || CHALS.inChal(14)) return E(0)
         let x = player.bh.mass.div(player.mainUpg.br.includes(1)?1.5e156**0.5:1.5e156)
         if (x.lt(1)) return E(0)
         x = x.root(5)
@@ -62,7 +62,7 @@ const ATOM = {
 
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             if (FERMIONS.onActive("00")) x = expMult(x,0.6)
-            if (player.md.active || CHALS.inChal(10) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
+            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             return x
         },
         effect() {
@@ -109,7 +109,7 @@ const ATOM = {
     particles: {
         names: ['Protons', 'Neutrons', 'Electrons'],
         assign(x) {
-            if (player.atom.quarks.lt(1) || CHALS.inChal(9) || FERMIONS.onActive("12")) return
+            if (player.atom.quarks.lt(1) || CHALS.inChal(9) || CHALS.inChal(14) || FERMIONS.onActive("12")) return
             let m = player.atom.ratio
             let spent = m > 0 ? player.atom.quarks.mul(RATIO_MODE[m]).ceil() : E(1)
             player.atom.quarks = player.atom.quarks.sub(spent).max(0)
@@ -117,7 +117,7 @@ const ATOM = {
         },
         assignAll() {
             let sum = player.atom.dRatio[0]+player.atom.dRatio[1]+player.atom.dRatio[2]
-            if (player.atom.quarks.lt(sum) || CHALS.inChal(9) || FERMIONS.onActive("12")) return
+            if (player.atom.quarks.lt(sum) || CHALS.inChal(9) || CHALS.inChal(14) || FERMIONS.onActive("12")) return
             let spent = player.atom.quarks.div(sum).floor()
             for (let x = 0; x < 3; x++) {
                 let add = spent.mul(player.atom.dRatio[x])
@@ -146,6 +146,11 @@ const ATOM = {
                 let a = hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).pow(3)
                 let b = hasElement(29) ? x.add(1).log2().pow(1.25).mul(0.01) : x.add(1).pow(2.5).log2().mul(0.01)
 				if(player.ranks.hex.gte(29))b = x.add(1).log2().pow(2);
+				if(hasElement(156)){
+					a = a.pow(5);
+					b = a;
+					if(player.ranks.hex.gte(29))b = b.pow(2);
+				}
                 return {eff1: a, eff2: b}
             },
             x=>{
@@ -166,9 +171,10 @@ const ATOM = {
         ],
         desc: [
             x=>{ return `
-                Boosts Mass gain by ${hasElement(105)?"^"+format(x.eff1):format(x.eff1)+"x"}<br><br>
-                Adds Tickspeed Power by ${format(x.eff2.mul(100))}%
-            ` },
+                Boosts Mass gain by ${hasElement(105)?"^"+format(x.eff1):format(x.eff1)+"x"}<br><br>`+
+				(hasElement(156)?` Boosts Tickspeed Power by ^`+format(x.eff2):
+                `Adds Tickspeed Power by ${format(x.eff2.mul(100))}%`)
+			},
             x=>{ return `
                 Boosts Rage Power gain by ${hasElement(105)?"^"+format(x.eff1):format(x.eff1)+"x"}<br><br>
                 Makes Mass gain boosted by Rage Powers - ${format(x.eff2)}x<br><br>

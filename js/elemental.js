@@ -649,7 +649,7 @@ const ELEMENTS = {
             desc: `Prestige Base’s exponent is increased based on Pent.`,
             cost: E('e2.5e7'),
             effect() {
-                let x = player.ranks.pent.root(2).div(1e3).toNumber()
+                let x = player.ranks.pent.root(2).div(1e3).softcap(5.5,0.1,0);
                 return x
             },
             effDesc(x) { return "+^"+format(x) },
@@ -832,6 +832,7 @@ const ELEMENTS = {
 				let x = player.et.points.add(1).log10().add(1);
 				if(hasElement(140))x = player.et.points.add(1).pow(0.2);
 				if(hasElement(147))x = x.pow(1.2);
+				if(hasElement(157))x = x.pow(1.2);
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -959,6 +960,83 @@ const ELEMENTS = {
 			cost: E("1.9890000001e34"),
 			et: true,
 		},
+		{
+			desc: `The first softcap of Prestige Mass effect is weaker.`,
+			cost: E("1.9890000001e36"),
+			et: true,
+		},
+		{
+			desc: `QC Modifier 'Intense Catalyst' is 5% weaker.`,
+			cost: E("1.9890000001e40"),
+			et: true,
+		},
+		{
+			desc: `Unlock the 13th Challenge.`,
+			cost: uni(1e18),
+		},
+		{
+			desc: `Effects of Protons Powers is better.`,
+			cost: uni(1e21),
+		},
+		{
+			desc: `Element 128's effect ^1.2.`,
+			cost: E("1.9890000001e41").mul(3),
+			et: true,
+		},
+		{
+			desc: `Disable dilated mass gain softcap, and Dilated Overflow is weaker.`,
+			cost: E("1.9890000001e41").mul(3),
+			et: true,
+		},
+		{
+			desc: `Unlock the 14th Challenge.`,
+			cost: uni(1e27),
+		},
+		{
+			desc: `Base Dilated Mass effect ^6.`,
+			cost: uni(1e29),
+		},
+		{
+			desc: `Eternal Mass boost Timeshards.`,
+			cost: E("1.989e44"),
+			et: true,
+			effect() {
+				let x = player.et.points.add(1).pow(0.2);
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `First Rank Collapse effect is weaker.`,
+			cost: E("2.98350000001e45"),
+			et: true,
+		},
+		{
+			desc: `Prestige Base Post-1.8e308 added to base Infinity Mass gain formula.`,
+			cost: uni(6e35),
+		},
+		{
+			desc: `Unlock the 15th Challenge.`,
+			cost: uni(5e39),
+		},
+		{
+            desc: `Entropic Evaporation^2 is 5% weaker.`,
+			cost: E("2.9835e49"),
+			et: true,
+		},
+		{
+            desc: `If you bought [prim8], levels of Epsilon/Theta/Beta Particles is 1 per 1 Primordium Theorem, instead of 1.5.`,
+			cost: uni(1),
+			et: true,
+		},
+		{
+			desc: `Entropic Condenser^2 is 15% weaker.`,
+			cost: uni(1e61),
+		},
+		{
+			desc: `Unlock the 16th Challenge.`,
+			cost: uni(1e100),
+		},
 	],
     /*
     {
@@ -991,7 +1069,9 @@ const ELEMENTS = {
         if (hasTree('unl3')) u += 3
         if (player.qu.rip.first) u += 9
         if (hasUpgrade("br",9)) u += 23 // 23
-		if (hasUpgrade("atom",16)) u += 34
+		if (hasUpgrade("atom",16)) u += 16
+		if (hasElement(134)) u += 21
+        if (player.chal.comps[13].gte(1)) u += 13
         return u
     },
 }

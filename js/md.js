@@ -14,7 +14,7 @@ const MASS_DILATION = {
         updateMDTemp()
     },
     RPexpgain() {
-        let x = E(2).add(tmp.md.upgs[5].eff).mul((tmp.chal && !CHALS.inChal(10))?tmp.chal.eff[10]:1)
+        let x = E(2).add(tmp.md.upgs[5].eff).mul((tmp.chal && !CHALS.inChal(10) && !CHALS.inChal(14))?tmp.chal.eff[10]:1)
         if ((!player.md.active && hasTree("d1")) || player.ranks.hex.gte(43)) x = x.mul(1.25)
         if (FERMIONS.onActive("01")) x = x.div(10)
         if (QCs.active()) x = x.mul(tmp.qu.qc_eff[4])
@@ -34,12 +34,12 @@ const MASS_DILATION = {
         return x
     },
     RPgain(m=player.mass) {
-        if (CHALS.inChal(11)) return E(0)
+        if (CHALS.inChal(11)|| CHALS.inChal(14)) return E(0)
         let x = m.div(1.50005e56).max(1).log10().div(40).sub(14).max(0).pow(tmp.md.rp_exp_gain).mul(tmp.md.rp_mult_gain)
         return x.sub(player.md.particles).max(0).floor()
     },
     massGain() {
-        if (CHALS.inChal(11)) return E(0)
+        if (CHALS.inChal(11)|| CHALS.inChal(14)) return E(0)
         let pow = E(2).add(tmp.bd.upgs[1].eff)
         let x = player.md.particles.pow(pow)
         x = x.mul(tmp.md.upgs[0].eff)
@@ -50,9 +50,9 @@ const MASS_DILATION = {
         if (player.ranks.hex.gte(32)) x = x.pow(1.05)
         if (player.ranks.hex.gte(35)) x = x.pow(tmp.elements.effect[35])
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
-		x = x.softcap(mlt(1e12),0.5,0);
-		tmp.dmOverflow = overflow(x,"e5e28",0.8).log(x);
-        return overflow(x,"e5e28",0.8);
+		if (!hasElement(158))x = x.softcap(mlt(1e12),0.5,0);
+		tmp.dmOverflow = overflow(x,"e5e28",hasElement(158)?0.9:0.8).log(x);
+        return overflow(x,"e5e28",hasElement(158)?0.9:0.8);
     },
     mass_req() {
         let x = E(10).pow(player.md.particles.add(1).div(tmp.md.rp_mult_gain).root(tmp.md.rp_exp_gain).add(14).mul(40)).mul(1.50005e56)
@@ -60,7 +60,8 @@ const MASS_DILATION = {
     },
     effect() {
         let x = tmp.md.bd3 ? player.qu.rip.active ? player.md.mass.max(1).log10().max(1).log10().add(1).log10().add(1).root(2) : player.md.mass.max(1).log10().max(1).log10().add(1).root(3) : player.md.mass.max(1).log10().add(1).root(3)
-        x = x.mul(tmp.md.upgs[1].eff)
+        if(hasElement(160))x = x.pow(6)
+		x = x.mul(tmp.md.upgs[1].eff)
         return x
     },
     upgs: {
@@ -453,7 +454,7 @@ function updateMDHTML() {
         }
     }
 
-    tmp.el.dmSoft1.setDisplay(player.md.mass.gte(mlt(1e12)))
+    tmp.el.dmSoft1.setDisplay(player.md.mass.gte(mlt(1e12)) && !hasElement(158))
     tmp.el.dmSoftStart1.setTxt(formatMass(mlt(1e12)))
     tmp.el.dmOverflow.setDisplay(player.md.mass.gte("e5e28"));
     tmp.el.dmOverflow2.setTxt(format(tmp.dmOverflow));

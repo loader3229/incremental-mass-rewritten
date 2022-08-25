@@ -72,7 +72,22 @@ const CHALS = {
     reset(x, chal_reset=true) {
         if (x < 5) FORMS.bh.doReset()
         else if (x < 9) ATOM.doReset(chal_reset)
-        else SUPERNOVA.reset(true, true)
+        else if (x < 13) SUPERNOVA.reset(true, true)
+		else{
+			INFINITY_LAYER.doReset();
+			updateTemp();
+			updateTemp();
+			updateTemp();
+			updateTemp();
+			updateTemp();
+			if(x == 14 && chal_reset == false){
+				player.qu.rip.active = true;
+				QUANTUM.enter(false,true,true)
+			}
+			if(x == 16 && chal_reset == false){
+				player.prestigeMass = E(0);
+			}
+		}
     },
     exit(auto=false) {
         if (!player.chal.active == 0) {
@@ -109,7 +124,8 @@ const CHALS = {
     getReset(x) {
         if (x < 5) return "Entering challenge will reset with Dark Matters!"
         if (x < 9) return "Entering challenge will reset with Atoms except previous challenges!"
-        return "Entering challenge will reset without being Supernova!"
+        if (x < 13) return "Entering challenge will reset without being Supernova!"
+        return "Entering challenge will force an Infinity reset!"
     },
     getMax(i) {
         let x = this[i].max
@@ -125,8 +141,8 @@ const CHALS = {
         if (hasElement(73) && (i==5||i==6||i==8)) x = x.add(tmp.elements.effect[73])
         if (hasTree("chal1") && (i==7||i==8))  x = x.add(100)
         if (hasTree("chal4b") && (i==9))  x = x.add(100)
-        if (hasTree("chal8") && (i>=9))  x = x.add(200)
-        if (hasElement(104) && (i>=9))  x = x.add(200)
+        if (hasTree("chal8") && (i>=9 && i<=12))  x = x.add(200)
+        if (hasElement(104) && (i>=9 && i<=12))  x = x.add(200)
         if (hasTree("chal9") && (i==9))  x = x.add(2000)
         if (hasTree("chal10") && (i==10))  x = x.add(500)
         if (hasTree("chal10") && (i==11))  x = x.add(500)
@@ -154,7 +170,7 @@ const CHALS = {
         return x.floor()
     },
     getScaleName(i) {
-        if (player.chal.comps[i].gte(1000)) return "无望~"
+        if (player.chal.comps[i].gte(i>12?100:1000)) return "无望~"
         if (player.chal.comps[i].gte(i==8?200:i>8?50:300)) return "疯狂·"
         if (player.chal.comps[i].gte(i>8?10:75)) return "硬化-"
         return ""
@@ -169,11 +185,12 @@ const CHALS = {
     getPower2(i) {
         let x = E(1)
         if (hasElement(92)) x = x.mul(0.75)
-        if (player.ranks.hex.gte(92) && (i<=8 || i>=10)) x = x.mul(0.75)
+        if (player.ranks.hex.gte(92) && (i<=8 || i>=10) && i<=12) x = x.mul(0.75)
         return x
     },
     getPower3(i) {
         let x = E(1)
+		if (i>12)x = E(15)
         return x
     },
     getChalData(x, r=E(-1)) {
@@ -187,6 +204,7 @@ const CHALS = {
         if (x == 8) s2 = 200
         if (x > 8) s2 = 50
         let s3 = 1000
+        if (x > 12) s3 = 100
         let pow = chal.pow
         if (hasElement(10) && (x==3||x==4)) pow = pow.mul(0.95)
         if (player.ranks.hex.gte(10) && (x==3||x==4)) pow = pow.mul(0.95)
@@ -238,7 +256,7 @@ const CHALS = {
             let start2 = E(s2);
             let exp2 = E(4.5).pow(this.getPower2(x))
             let start3 = E(s3);
-            let exp3 = E(1.001).pow(this.getPower3())
+            let exp3 = E(1.001).pow(this.getPower3(x))
             goal =
             chal.inc.pow(
                     exp3.pow(lvl.div(fp).sub(start3)).mul(start3)
@@ -450,7 +468,68 @@ const CHALS = {
         },
         effDesc(x) { return "+"+format(x) },
     },
-    cols: 12,
+    13: {
+        unl() { return hasElement(155) },
+        title: "No Quantum",
+        desc: "You cannot gain Quantum Foams, Quantizes, Death Shards, Chromas, Blueprint Particles and Entropy.",
+        reward: `When outside Big Rips, raise Chromas gain and effect to a power.<br><span class="yellow">On 4th completion, unlock more Elements</span>`,
+        max: E(100),
+        inc: E('ee40'),
+        pow: E(8.2),
+        start: E('ee40'),
+        effect(x) {
+			if(x.gte(10))x=x.log10().mul(10);
+            let ret = x.div(100).add(1)
+            return ret
+        },
+        effDesc(x) { return "^"+format(x)+(x.gte(1.1)?" <span class='soft'>(softcapped)</span>":"") },
+    },
+    14: {
+        unl() { return hasElement(159) },
+        title: "The Reality II",
+        desc: "All challenges 1-12 are applied at once. In addtional, you are trapped in Big Rip!",
+        reward: `Death Shards gain softcap is weaker.`,
+        max: E(100),
+        inc: E('e2.5e11'),
+        pow: E(2),
+        start: E('e2e12'),
+        effect(x) {
+            let ret = E(0.97).pow(x.root(2))
+            return ret
+        },
+        effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+    },
+    15: {
+        unl() { return hasElement(164) },
+        title: "Super Overflow",
+        desc: "Mass Overflow starts at 10, and 12x stronger. Black Hole Overflow starts at 10, and stronger.",
+        reward: `Mass Overflow starts later.`,
+        max: E(100),
+        inc: E('e1e14'),
+        pow: E(5),
+        start: E('e1e13'),
+        effect(x) {
+            let ret = x.add(1)
+            return ret
+        },
+        effDesc(x) { return "^"+format(x) },
+    },
+    16: {
+        unl() { return hasElement(168) },
+        title: "No Prestige Mass",
+        desc: "You cannot gain Prestige Mass. Entering this challenge resets your Prestige Mass.",
+        reward: `Reach the current endgame.`,
+        max: E(1),
+        inc: E('ee100'),
+        pow: E('ee100'),
+        start: E('e1.65e87'),
+        effect(x) {
+            let ret = x
+            return ret
+        },
+        effDesc(x) { if(x.gte(1))return "You reached the current endgame!"; else return "Complete this challenge to reach the current endgame!" },
+    },
+    cols: 16,
 }
 
 /*

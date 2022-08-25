@@ -16,6 +16,11 @@ const INFINITY_LAYER = {
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
+		if (hasElement(163)){
+			let z = ((tmp.prestiges?tmp.prestiges.base:E(1))||E(1)).add(1).log(Number.MAX_VALUE);
+			if (z.lt(1)) z=E(1)
+			x = x.mul(z)
+		}
         x = x.mul(y).pow(power).sub(1);
 		x = overflow(x,1e5,2);
 
@@ -100,6 +105,10 @@ const INFINITY_LAYER = {
         QUANTUM.doReset()
 		player.atom.points = E(1e100)
 		player.atom.quarks = E(1e100)
+		player.chal.comps[9] = E(0)
+		player.chal.comps[10] = E(0)
+		player.chal.comps[11] = E(0)
+		player.chal.comps[12] = E(0)
         tmp.pass = false
     },
 }
@@ -178,12 +187,17 @@ const ETERNITY_LAYER = {
         player.inf.times = new Decimal(1)
 		player.atom.points = E(1e100)
 		player.atom.quarks = E(1e100)
+		player.chal.comps[9] = E(0)
+		player.chal.comps[10] = E(0)
+		player.chal.comps[11] = E(0)
+		player.chal.comps[12] = E(0)
         tmp.pass = false
     },
     shardsGain() {
         let x = E(1);
 		if(tmp.et.shard_gen_eff)x = x.mul(tmp.et.shard_gen_eff.eff);
 		if(hasElement(119))x = x.mul(tmp.elements.effect[119]);
+		if(hasElement(161))x = x.mul(tmp.elements.effect[161]);
         return x
     },
     shard_gen: {

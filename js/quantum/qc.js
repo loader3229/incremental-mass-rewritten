@@ -34,6 +34,7 @@ const QCs = {
             eff(i) {
 				if(hasPrestige(0,134))i *= 0.97
 				//if(i>=30)return E(2).pow(10**i)
+				if(i>=35)return E(2).pow(i**10/5e10)
 				if(i>=11)return E(2).pow(i**5/1000)
                 let x = E(2).pow(i**2)
                 return x
@@ -64,6 +65,7 @@ const QCs = {
 				if(hasPrestige(1,28))i *= 0.92
 				if(hasElement(143))i *= 0.95
 				if(hasPrestige(1,39))i *= 0.95
+				if(hasElement(154))i *= 0.95
 				//if(i>=30)return 0
 				if(i>=21)return 0.8**(i**6.25/800000)
 				if(i>=11)return 0.8**(i**3.25/100)
