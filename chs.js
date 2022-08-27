@@ -58,6 +58,8 @@ var cnItems = {
     'softcapped': '受软上限限制',
     'softcapped^2': '受二重软上限限制',
     'softcapped^3': '受三重软上限限制',
+    'softcapped^4': '受四重软上限限制',
+    'hardcapped': '受硬上限限制',
     'Require over 1e9 tonne of mass to reset previous features for gain Rage Powers': '需要超过1e9吨质量才可以进行狂怒重置，重置之前的所有内容，获得狂怒能量',
     'Require over 1e20 Rage Power to reset all previous features for gain Dark Matters': '需要超过1e20狂怒能量才可以进行暗物质重置，重置之前的所有内容，获得暗物质',
     'Require over 1e100 uni of black hole to reset all previous features for gain Atoms & Quarks': '需要黑洞质量超过1e100宇宙才可以进行原子重置，重置之前的所有内容，获得原子和夸克',

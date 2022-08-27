@@ -125,7 +125,7 @@ const CHALS = {
         if (x < 5) return "Entering challenge will reset with Dark Matters!"
         if (x < 9) return "Entering challenge will reset with Atoms except previous challenges!"
         if (x < 13) return "Entering challenge will reset without being Supernova!"
-        return "Entering challenge will force an Infinity reset!"
+        return "进入挑战时将强制进行无限重置！"
     },
     getMax(i) {
         let x = this[i].max
@@ -470,9 +470,9 @@ const CHALS = {
     },
     13: {
         unl() { return hasElement(155) },
-        title: "No Quantum",
-        desc: "You cannot gain Quantum Foams, Quantizes, Death Shards, Chromas, Blueprint Particles and Entropy.",
-        reward: `When outside Big Rips, raise Chromas gain and effect to a power.<br><span class="yellow">On 4th completion, unlock more Elements</span>`,
+        title: "量子失效",
+        desc: "您无法获得量子泡沫、量子次数、死寂碎片、色度、蓝图粒子和熵。",
+        reward: `当你不在大撕裂中时，加成色度的获取和效果。<br><span class="yellow">当完成第4次该挑战时，解锁更多元素</span>`,
         max: E(100),
         inc: E('ee40'),
         pow: E(8.2),
@@ -486,9 +486,9 @@ const CHALS = {
     },
     14: {
         unl() { return hasElement(159) },
-        title: "The Reality II",
-        desc: "All challenges 1-12 are applied at once. In addtional, you are trapped in Big Rip!",
-        reward: `Death Shards gain softcap is weaker.`,
+        title: "现实 II",
+        desc: "挑战1-挑战12同时触发，并强制进行大撕裂。",
+        reward: `死寂碎片获取的软上限被削弱。`,
         max: E(100),
         inc: E('e2.5e11'),
         pow: E(2),
@@ -501,9 +501,9 @@ const CHALS = {
     },
     15: {
         unl() { return hasElement(164) },
-        title: "Super Overflow",
-        desc: "Mass Overflow starts at 10, and 12x stronger. Black Hole Overflow starts at 10, and stronger.",
-        reward: `Mass Overflow starts later.`,
+        title: "超级溢出",
+        desc: "质量溢出在10克开始并且增强12倍。黑洞溢出在10克开始并且被增强。",
+        reward: `质量溢出延迟出现。`,
         max: E(100),
         inc: E('e1e14'),
         pow: E(5),
@@ -516,8 +516,8 @@ const CHALS = {
     },
     16: {
         unl() { return hasElement(168) },
-        title: "No Prestige Mass",
-        desc: "You cannot gain Prestige Mass. Entering this challenge resets your Prestige Mass.",
+        title: "无转生质量",
+        desc: "你不能获得转生质量。进入该挑战时重置转生质量。",
         reward: `Reach the current endgame.`,
         max: E(1),
         inc: E('ee100'),
