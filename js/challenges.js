@@ -134,9 +134,9 @@ const CHALS = {
         return formatMass
     },
     getReset(x) {
-        if (x < 5) return "Entering challenge will reset with Dark Matters!"
-        if (x < 9) return "Entering challenge will reset with Atoms except previous challenges!"
-        if (x < 13) return "Entering challenge will reset without being Supernova!"
+        if (x < 5) return "进入挑战时将同时进行暗物质重置！"
+        if (x < 9) return "进入挑战时将同时进行原子重置！但不会影响到之前挑战的完成次数。"
+        if (x < 13) return "进入挑战时将同时在未成为超新星的前提下重置！"
         if (x < 17) return "进入挑战时将强制进行无限重置！"
 		return "进入挑战时将强制进行永恒重置！"
     },
