@@ -1,7 +1,7 @@
 const QCs = {
     active() { return player.qu.qc.active || player.qu.rip.active },
     getMod(x) { return player.qu.rip.active ? BIG_RIP_QC[x] : player.qu.qc.mods[x] },
-    incMod(x,i) { if (!this.active()) player.qu.qc.mods[x] = Math.min(Math.max(player.qu.qc.mods[x]+i,0),hasTree('qc4')?Math.max(Math.floor(player.qu.qc.shard/8),10):10) },
+    incMod(x,i) { if (!this.active()) player.qu.qc.mods[x] = Math.min(Math.max(player.qu.qc.mods[x]+i,0),hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10) },
     enter() {
 		if(!hasTree('unl3')){
 			player.qu.qc.active = false
@@ -66,7 +66,9 @@ const QCs = {
 				if(hasElement(143))i *= 0.95
 				if(hasPrestige(1,39))i *= 0.95
 				if(hasElement(154))i *= 0.95
+				if(hasElement(172))i *= 0.94
 				//if(i>=30)return 0
+				if(i>=21&&hasElement(185))return 0.8**(i**5.25/40000)
 				if(i>=21)return 0.8**(i**6.25/800000)
 				if(i>=11)return 0.8**(i**3.25/100)
                 let x = 0.8**(i**1.25)
@@ -132,7 +134,7 @@ function saveQCPreset(x) {
 function loadQCPreset(x) {
     if (QCs.active()) return
     player.qu.qc.mods = player.qu.qc.presets[x].mods
-	for (let x = 0; x < QCs_len; x++)if(player.qu.qc.mods[i] > (hasTree('qc4')?Math.max(Math.floor(player.qu.qc.shard/8),10):10))player.qu.qc.mods[i] = (hasTree('qc4')?Math.max(Math.floor(player.qu.qc.shard/8),10):10);
+	for (let x = 0; x < QCs_len; x++)if(player.qu.qc.mods[i] > (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10))player.qu.qc.mods[i] = (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10);
     addNotify("Preset Loaded to Modifiers")
     updateQCModPresets()
 }
@@ -230,13 +232,13 @@ function updateQCHTML() {
         tmp.el.qc_btn.setTxt((QCs.active()?"Exit":"Enter") + " the Quantum Challenge")
         for (let x = 0; x < QCs_len; x++) {
             tmp.el["qcm_mod"+x].setTxt(QCs.getMod(x))
-            tmp.el["qcm_max"+x].setTxt(hasTree('qc4')?Math.max(Math.floor(player.qu.qc.shard/8),10):10)
+            tmp.el["qcm_max"+x].setTxt(hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10)
             tmp.el["qcm_btns"+x].setDisplay(!QCs.active())
         }
         tmp.el.qc_desc_div.setDisplay(tmp.qc_ch >= 0)
         if (tmp.qc_ch >= 0) {
             let x = tmp.qc_ch
-            tmp.el.qc_ch_title.setTxt(`[${x+1}]${QCs.names[x]}[目前为${QCs.getMod(x)}，上限为${hasTree('qc4')?Math.max(Math.floor(player.qu.qc.shard/8),10):10}]`)
+            tmp.el.qc_ch_title.setTxt(`[${x+1}]${QCs.names[x]}[目前为${QCs.getMod(x)}，上限为${hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10}]`)
             tmp.el.qc_ch_desc.setHTML(QCs.ctn[x].effDesc(tmp.qu.qc_eff[x]))
         }
     }

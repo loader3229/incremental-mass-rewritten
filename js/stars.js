@@ -44,8 +44,10 @@ const STARS = {
 			l = E(10);
 		}
 		let l2=Decimal.pow(10,Decimal.pow(10,l));
-		tmp.stars.effectPower = x.add(1).mul(l2).log10().log10().div(l).sqrt()
-		if(player.ranks.hex.gte(69))tmp.stars.effectPower = tmp.stars.effectPower.pow(player.ranks.hex.sub(68).mul(0.01).add(1));
+		tmp.stars.effectPowerRaw = x.add(1).mul(l2).log10().log10().div(l).sqrt()
+		if(player.ranks.hex.gte(69))tmp.stars.effectPowerRaw = tmp.stars.effectPowerRaw.pow(player.ranks.hex.sub(68).mul(0.01).add(1))
+		tmp.stars.effectPower = tmp.stars.effectPowerRaw//.min("1e85")
+		tmp.stars.effectRaw = x
 		if(hasPrestige(1,24))return x.min("e1e85");
         return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");
     },
@@ -156,6 +158,7 @@ function updateStarsScreenHTML() {
         tmp.el.star.changeStyle('background-color',color)
         tmp.el.star.changeStyle('width',size+"px")
         tmp.el.star.changeStyle('height',size+"px")
+		tmp.el.star.setDisplay(player.show_supernova!=1)
     }
 }
 

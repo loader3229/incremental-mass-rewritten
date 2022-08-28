@@ -69,6 +69,7 @@ const UPGS = {
                 if (player.ranks.rank.gte(3)) step = step.add(RANKS.effect.rank[3]())
                 step = step.mul(tmp.upgs.mass[2]?tmp.upgs.mass[2].eff.eff:1)
                 let ret = step.mul(x.add(tmp.upgs.mass[1].bonus))
+				if(hasElement(174))ret = ret.pow(tmp.elements.effect[174]||1);
                 return {step: step, eff: ret}
             },
             effDesc(eff) {
@@ -94,7 +95,8 @@ const UPGS = {
                 let step = E(2)
                 if (player.ranks.rank.gte(5)) step = step.add(RANKS.effect.rank[5]())
                 step = step.pow(tmp.upgs.mass[3]?tmp.upgs.mass[3].eff.eff:1)
-                let ret = step.mul(x.add(tmp.upgs.mass[2].bonus)).add(1)//.softcap("ee14",0.95,2)
+                let ret = step.mul(x.add(tmp.upgs.mass[2].bonus)).add(1)
+				if(hasElement(173))ret = ret.pow(tmp.elements.effect[173]||1);
                 return {step: step, eff: ret}
             },
             effDesc(eff) {

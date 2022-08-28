@@ -2,7 +2,7 @@ const INFINITY_LAYER = {
     gain() {
         let x = player.qu.points.add(1).log(Number.MAX_VALUE);
         let y = player.qu.rip.amt.add(1).log(Number.MAX_VALUE);
-        if (x.lt(1)) return E(0)
+        if (x.lt(1) || CHALS.inChal(18)) return E(0)
         if (y.lt(1)) y=E(1)
 		if (hasUpgrade('inf',20))y = y.pow(2)
 		let power = E(2)
@@ -18,6 +18,11 @@ const INFINITY_LAYER = {
 		}
 		if (hasElement(163)){
 			let z = ((tmp.prestiges?tmp.prestiges.base:E(1))||E(1)).add(1).log(Number.MAX_VALUE);
+			if (z.lt(1)) z=E(1)
+			x = x.mul(z)
+		}
+		if (hasElement(189)){
+			let z = (player.inf.points).add(1).log(Number.MAX_VALUE);
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
@@ -234,6 +239,11 @@ function calcInfinity(dt, dt_offline) {
 			player.inf.points = player.inf.points.add(tmp.inf.gain.mul(dt))
 			player.inf.times = player.inf.times.add(tmp.inf.gainTimes.mul(dt))
 		}
+		if (hasElement(195)){
+			updateInfinityTemp()
+			player.et.points = player.et.points.add(tmp.et.gain.mul(dt))
+			player.et.times = player.et.times.add(tmp.et.gainTimes.mul(dt))
+		}
 	}
 	if (player.et.times.gt(0)){
 		player.et.shards = player.et.shards.add(tmp.et.shardsGain.mul(dt))
@@ -260,7 +270,7 @@ function updateInfinityHTML() {
     let unl = player.inf.reached
     tmp.el.infinity_div.setDisplay(unl)
     tmp.el.eternity_div.setDisplay(hasUpgrade('inf',14))
-	tmp.el.etAmt.setHTML(formatMass(player.et.points,0)+"<br>(+"+formatMass(tmp.et.gain,0)+")");
+	tmp.el.etAmt.setHTML(formatMass(player.et.points,0)+"<br>"+(hasElement(195)?player.et.points.formatGain(tmp.et.gain,1):"(+"+formatMass(tmp.et.gain,0)+")"));
     if (unl) tmp.el.infAmt.setHTML(formatMass(player.inf.points,0)+"<br>"+(gain2?player.inf.points.formatGain(tmp.inf.gain,1):"(+"+formatMass(tmp.inf.gain,0)+")"))
 	tmp.el.shardsAmt.setHTML(format(player.et.shards,0)+player.et.shards.formatGain(tmp.et.shardsGain,0));
 	tmp.el.shardsEff.setHTML(format(calcShardsEffect()));

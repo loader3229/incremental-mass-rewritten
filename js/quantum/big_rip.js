@@ -23,6 +23,8 @@ const BIG_RIP = {
 			let eff=0
 			if (hasTree('br3'))eff += 0.1
 			if (hasElement(130))eff += 0.1
+			if (hasElement(179))eff += 0.1
+			if (hasElement(203))eff += 0.1
 			if (hasElement(94)) x = x.mul(E(tmp.elements.effect[94]||1).pow(eff))
 		}
         if (hasPrestige(0,2)) x = x.mul(4)

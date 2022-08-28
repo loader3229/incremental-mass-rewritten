@@ -24,36 +24,36 @@ const PRIM = {
 
         eff: [
             p=>{
-                let x = p.softcap(1000,1,0).add(1).root(2)
+                let x = p.add(1).root(2)
                 return x
             },
             p=>{
-                let x = [p.softcap(1000,1,0).root(3).div(5).add(1),p.softcap(1000,1,0).pow(1.25).add(1)]
+                let x = [p.root(3).div(5).add(1),p.pow(1.25).add(1)]
                 return x
             },
             p=>{
-                let x = [p.softcap(1000,1,0).root(3).div(5).add(1),E(3).pow(p.softcap(1000,1,0).pow(0.75))]
+                let x = [p.root(3).div(5).add(1),E(3).pow(p.pow(0.75))]
                 return x
             },
             p=>{
-                let x = [p.softcap(1000,1,0).root(3).div(5).add(1),E(2).pow(p.softcap(1000,1,0).pow(0.75))]
+                let x = [p.root(3).div(5).add(1),E(2).pow(p.pow(0.75))]
                 return x
             },
             p=>{
-                let x = p.softcap(1000,1,0).add(1).root(10)
+                let x = p.add(1).root(10)
                 return x
             },
             p=>{
-                let x = [p.softcap(1000,1,0).root(3).div(10), p.softcap(1000,1,0).root(3).pow((QCs.active()||hasTree('prim3a'))?2:1)]
+                let x = [p.root(3).div(10), p.root(3).pow((QCs.active()||hasTree('prim3a'))?2:1).pow((!QCs.active() && hasElement(200))?1.75:1)]
                 return x
             },
             p=>{
-                let x = [E(5).pow(p.softcap(1000,1,0).pow(0.75)), p.softcap(1000,1,0).root(5).div(10).add(1)]
+                let x = [E(5).pow(p.pow(0.75)), p.root(5).div(10).add(1)]
                 return x
             },
             p=>{
                 if (hasElement(107)) p = p.mul(2)
-                let x = p.softcap(1000,1,0).pow(0.9).mul(2)
+                let x = p.pow(0.9).mul(2)
                 return x
             },
         ],

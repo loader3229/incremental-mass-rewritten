@@ -383,6 +383,7 @@ function updateOptionsHTML() {
 	tmp.el.total_time.setTxt(formatTime(player.time))
 	tmp.el.offline_active.setTxt(player.offline.active?"ON":"OFF")
 	tmp.el.mass_display.setTxt(player.mass_display==1?"始终显示克":player.mass_display==2?"始终显示宇宙":player.mass_display==3?"始终显示多宇宙":"正常显示")
+	tmp.el.show_supernova.setTxt(player.show_supernova==1?"隐藏":"显示")
 	tmp.el.tree_anim_btn.setDisplay(player.supernova.times.gte(1) || quUnl())
 	tmp.el.tree_anim.setTxt(TREE_ANIM[player.options.tree_animation])
 

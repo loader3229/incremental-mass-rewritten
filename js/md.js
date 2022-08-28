@@ -51,8 +51,8 @@ const MASS_DILATION = {
         if (player.ranks.hex.gte(35)) x = x.pow(tmp.elements.effect[35])
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
 		if (!hasElement(158))x = x.softcap(mlt(1e12),0.5,0);
-		tmp.dmOverflow = overflow(x,"e5e28",hasElement(158)?0.9:0.8).log(x);
-        return overflow(x,"e5e28",hasElement(158)?0.9:0.8);
+		tmp.dmOverflow = overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8).log(x);
+        return overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8);
     },
     mass_req() {
         let x = E(10).pow(player.md.particles.add(1).div(tmp.md.rp_mult_gain).root(tmp.md.rp_exp_gain).add(14).mul(40)).mul(1.50005e56)

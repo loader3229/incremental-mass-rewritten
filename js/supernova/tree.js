@@ -1032,7 +1032,7 @@ const TREE_UPGS = {
             desc: `Increase maximum QC nerf tier based on your Quantum Shards.`,
             cost: E(1e104),
             effect() {
-                let x = Math.floor((player.qu.qc.shard-80)/8);
+                let x = Math.min(Math.floor((player.qu.qc.shard-80)/8),40);
                 return x
             },
             effDesc(x) { return "+"+format(x,0) },

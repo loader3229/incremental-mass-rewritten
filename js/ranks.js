@@ -225,6 +225,10 @@ const RANKS = {
 			'140': "C2 Completions boost Accelerator Power.",
 			'238': "Disable Super Tetr scaling.",
 			'300': "Ultra Mass Upgrades is 2% weaker.",
+			'777': "Meta-Rank is 99.99999999% weaker.",
+			'888': "Meta-Rank is 99.99999999% weaker.",
+			'999': "Meta-Rank is 99.99999999% weaker.",
+			'1005': "Meta-Rank is weaker based on Hept.",
         },
         hept: {
             '1': "Mass Overflow is weaker based on Hept.",
@@ -238,7 +242,12 @@ const RANKS = {
 			'10': "Hyper Tetr is 50% weaker.",
 			'11': "Disable Hyper Tetr scaling.",
 			'13': "Hept 3's effect is boosted.",
-			//'14': "Disable Ultra Tier scaling.",
+			'14': "Hept 3's effect affects Ultra Tetr scaling.",
+			'15': "Disable Ultra Tier scaling.",
+			'16': "Disable Ultra Tetr scaling.",
+			'17': "Meta-Rank scaling starts later based on Hept.",
+			'19': "Hept 17's effect is better.",
+			'20': "Meta-Tier scaling starts later based on Hept.",
 		},
     },
     effect: {
@@ -270,7 +279,7 @@ const RANKS = {
                 return ret
             },
             '380'() {
-                let ret = E(10).pow(player.ranks.rank.sub(379).pow(1.5).pow(player.ranks.tier.gte(55)?RANKS.effect.tier[55]():1).softcap(1000,0.5,0))
+                let ret = E(10).pow(overflow(player.ranks.rank.sub(379).pow(1.5).pow(player.ranks.tier.gte(55)?RANKS.effect.tier[55]():1).softcap(1000,0.5,0),"1e2500",0.1))
                 return ret
             },
             '800'() {
@@ -324,7 +333,7 @@ const RANKS = {
                 return ret
             },
             '5'() {
-                let ret = overflow(E(1.05).pow(player.ranks.pent),1e10,0.1);
+                let ret = overflow(E(1.05).pow(player.ranks.pent),1e10,hasPrestige(1,63)?0.15:0.1);
                 return ret
             },
             '8'() {
@@ -369,6 +378,10 @@ const RANKS = {
                 let ret = player.chal.comps[2].div(200000).add(1);
                 return ret
             },
+            '1005'() {
+                let ret = E(0.99).pow(player.ranks.hept.pow(2.2));
+                return ret
+            },
         },
         hept: {
             '1'() {
@@ -392,6 +405,15 @@ const RANKS = {
             },
             '6'() {
                 let ret = player.ranks.hept.add(1);
+                return ret
+            },
+            '17'() {
+                let ret = E(10).pow(player.ranks.hept);
+				if(player.ranks.hept.gte(19))ret = E(1.001).pow(player.ranks.hept.pow(4));
+                return ret
+            },
+            '20'() {
+                let ret = E(1.1).pow(player.ranks.hept);
                 return ret
             },
 		},
@@ -434,6 +456,7 @@ const RANKS = {
             126(x) { return format(x)+"x" },
             127(x) { return format(x)+"x" },
             140(x) { return format(x)+"x" },
+            1005(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
         },
         hept: {
             1(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
@@ -441,13 +464,15 @@ const RANKS = {
             3(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
             4(x) { return format(x)+"x" },
             6(x) { return format(x)+"x" },
+            17(x) { return format(x)+"x later" },
+            20(x) { return format(x)+"x later" },
 		},
     },
     fp: {
         rank() {
             let f = E(1)
             if (player.ranks.tier.gte(1)) f = f.mul(1/0.8)
-            f = f.mul(tmp.chal.eff[5].pow(-1))
+            if (!hasElement(170))f = f.mul(tmp.chal.eff[5].pow(-1))
             return f
         },
         tier() {
@@ -506,10 +531,10 @@ const PRESTIGES = {
                 if (y.gte(2e13)) x = y.div(2e13).max(1).log(1.1).max(0).root(1.1).scaleEvery('prestige0',true).add(1)
                 break;
             case 1:
-                if (y.gte(4)) x = y.sub(4).div(2).max(0).root(1.5).scaleEvery('prestige1',true).add(1)
+                if (y.gte(4)) x = y.sub(4).div(3).max(0).root(1.25).scaleEvery('prestige1',true).add(1)
                 break
             case 2:
-                if (y.gte(12)) x = y.sub(12).div(2).max(0).root(1.5).scaleEvery('prestige2',true).add(1)
+                if (y.gte(12)) x = y.sub(12).div(3).max(0).root(1.25).scaleEvery('prestige2',true).add(1)
                 break
             default:
                 x = E(0)
@@ -620,7 +645,15 @@ const PRESTIGES = {
             "39": `QC Modifier 'Intense Catalyst' is 5% weaker.`,
             "43": `Prestige Level 135's reward is better.`,
 			"44": `Honor 26's effect ^4.`,
-			//"56": `Hyper Hex scaling is 6% weaker.`,
+			"56": `Hyper Hex scaling is 4.5% weaker.`,
+			"57": `Meta-Rank scaling starts later based on your Honor.`,
+			"58": `Meta-Tier scaling starts later based on your Rank.`,
+			"60": `Boost Honor 57's effect`,
+			"61": `Prestige Mass Effect is applied to Ultra Honor scaling.`,
+			"62": `Prestige Mass Effect is applied to Hyper Hex scaling.`,
+			"63": `Pent 5's effect softcap is weaker.`,
+			"64": `Prestige Mass Effect is applied to Super Hept scaling.`,
+			"67": `Prestige Mass Effect is applied to Meta Prestige Level scaling.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
@@ -631,6 +664,8 @@ const PRESTIGES = {
             "6": `Unlock Hept.`,
             "7": `Meta-Tickspeed starts 10000x later.`,
             "8": `Prestige Mass Effect is applied to Ultra Prestige Level scaling.`,
+            "10": `Automatically gain Honor.`,
+            "12": `Prestige Mass Effect is applied to Super Glory scaling.`,
 		},
     ],
     rewardEff: [
@@ -732,6 +767,15 @@ const PRESTIGES = {
             },x=>"x"+x.format()],
             "33": [_=>{
                 let x = player.prestiges[1].sub(30).div(10).add(1);
+                return x
+            },x=>"x"+x.format()],
+            "57": [_=>{
+                let x = E(2).pow(player.prestiges[1]);
+				if(player.prestiges[1].gte(60))x = E(1.001).pow(player.prestiges[1].pow(3));
+                return x
+            },x=>"x"+x.format()],
+            "58": [_=>{
+                let x = player.ranks.rank.add(10).log10();
                 return x
             },x=>"x"+x.format()],
         },
@@ -841,6 +885,9 @@ function updateRanksTemp() {
 	if(hasPrestige(2,1)){
 		player.prestiges[0] = player.prestiges[0].max(PRESTIGES.bulk(0));
 	}
+	if(hasPrestige(2,10)){
+		player.prestiges[1] = player.prestiges[1].max(PRESTIGES.bulk(1));
+	}
 }
 
 function updateRanksHTML() {
@@ -944,7 +991,7 @@ function prestigeMassGain(){
 
 function prestigeMassEffect(){
 	let p = player.prestigeMass.add(1).log10();
-	if(p.gte(104))p = p.softcap(104,hasElement(135)?0.55:0.5,0);
+	if(p.gte(104))p = p.softcap(104,(hasElement(135)?0.55:0.5)**(hasElement(168)?tmp.chal.eff[16]:1),0);
 	if(p.gte(145))p = p.softcap(145,0.3,0);
 	if(hasTree("qu12"))return E(0.98).pow(p.pow(0.725));
 	return E(0.965).pow(p.sqrt());

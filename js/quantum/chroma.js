@@ -32,6 +32,7 @@ const CHROMA = {
 			x = overflow(overflow(x,1000,0.5),100000,0.5);
             if (hasUpgrade('br',7) && player.qu.rip.active) x = x.pow(2)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)
+            if (hasElement(180) && !player.qu.rip.active) x = x.pow(1.5)
             return x
         },
         i => {

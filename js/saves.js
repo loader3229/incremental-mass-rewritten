@@ -122,7 +122,7 @@ function calc(dt, dt_offline) {
         if (hasTree("qu_qol4")) SUPERNOVA.reset(false,false,true)
 
         if (hasTree("qol6")) CHALS.exit(true)
-        if (CHALS.inChal(0) || player.chal.active >= 13) {
+        if ((CHALS.inChal(0) || player.chal.active >= 13) && player.chal.active!=17) {
     
             if (hasTree("qu_qol3")) for (let x = 1; x <= 4; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))
             if (hasTree("qu_qol5")) for (let x = 5; x <= 8; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))

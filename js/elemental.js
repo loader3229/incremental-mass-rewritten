@@ -650,6 +650,7 @@ const ELEMENTS = {
             cost: E('e2.5e7'),
             effect() {
                 let x = player.ranks.pent.root(2).div(1e3).softcap(5.5,0.1,0);
+				if(player.ranks.pent.gte(1e11))x = x.min(player.ranks.pent.log10().pow(8/9));
                 return x
             },
             effDesc(x) { return "+^"+format(x) },
@@ -1037,6 +1038,188 @@ const ELEMENTS = {
 			desc: `Unlock the 16th Challenge.`,
 			cost: uni(1e100),
 		},
+		{
+            desc: `First Rank Collapse effect is weaker.`,
+			cost: uni(1e21),
+			et: true,
+		},
+		{
+            desc: `C5 effect is changed. C15 goal is heavily weaken.`,
+			cost: uni(1e22),
+			et: true,
+		},
+		{
+            desc: `Second Rank Collapse effect is weaker.`,
+			cost: uni(1e23),
+			et: true,
+		},
+		{
+            desc: `QC Modifier 'Intense Catalyst' is 6% weaker.`,
+			cost: uni(1e26),
+			et: true,
+		},
+		{
+            desc: `Booster boost its effect.`,
+			cost: uni(1e147),
+			effect() {
+				let x = player.massUpg[2].add(1).log10().pow(0.6);
+				return x
+			},
+			effDesc(x) { return "^"+format(x) },
+		},
+		{
+            desc: `Muscler boost its effect.`,
+			cost: uni(1e150),
+			effect() {
+				let x = player.massUpg[1].add(1).log10().pow(0.6);
+				return x
+			},
+			effDesc(x) { return "^"+format(x) },
+		},
+		{
+            desc: `Add 100 C13 & C15 completions.`,
+			cost: uni(1e27),
+			et: true,
+		},
+		{
+            desc: `Second Rank Collapse effect is weaker.`,
+			cost: uni(1e27),
+			et: true,
+		},
+		{
+            desc: `Entropic Condenser^2 is 15% weaker.`,
+			cost: E(1.5e217),
+		},
+		{
+            desc: `Permanently remove Pre-Meta Tier scaling.`,
+			cost: E(1.5e221),
+		},
+		{
+			desc: `'80%' in Neutron Tree Upgrade [br3] is now 70%.`,
+			cost: uni(1e32),
+			et: true,
+		},
+		{
+			desc: `If you're not in Big Rip, Green Chroma's effect ^1.5`,
+			cost: uni(1e36),
+			et: true,
+		},
+		{
+			desc: `Third Rank Collapse effect is weaker.`,
+			cost: uni(1e203),
+		},
+		{
+			desc: `Add 100 C13 & C16 completions.`,
+			cost: E(9e284),
+		},
+		{
+			desc: `Remove the first Rank Collapse effect.`,
+			cost: uni(1e45),
+			et: true,
+		},
+		{
+			desc: `Remove the second Rank Collapse effect.`,
+			cost: uni(1e48),
+			et: true,
+		},
+		{
+			desc: `Post-20 QC Modifier 'Intense Catalyst' effect scaling is weaker.`,
+			cost: E(1.5e294),
+		},
+		{
+			desc: `Add 300 C13 & C15 completions.`,
+			cost: E(6e299),
+		},
+		{
+			desc: `Remove Super Cosmic Strings scaling.`,
+			cost: uni(1e49),
+			et: true,
+		},
+		{
+			desc: `Break Dilation Upgrade 5 affects Meta-Tier scaling.`,
+			cost: uni(5e51),
+			et: true,
+		},
+		{
+			desc(){return `Meta-Infinity Confirmed! Infinity mass is added to its base gain formula. Cost of this element is ${format(E(2).pow(1024))} grams of Infinity mass.`},
+			cost: E(2).pow(1024),
+		},
+		{
+			desc: `Add 200 C13 & C16 completions.`,
+			cost: E("6e310"),
+		},
+		{
+			desc: `Remove Rank Collapse.`,
+			cost: uni(1e54),
+			et: true,
+		},
+		{
+			desc: `Unlock the 17th Challenge.`,
+			cost: uni(1e61),
+			et: true,
+		},
+		{
+			desc: `Remove 3 softcaps from Radiation Booster 'Meta-Rank Boost'`,
+			cost: uni(1e301),
+		},
+		{
+			desc: `Add 200 C13 completions.`,
+			cost: E("3e393"),
+		},
+		{
+			desc: `Gain 100% of Eternal Mass gain per second. Gain 1 Eternity count per second.`,
+			cost: uni(1e71),
+			et: true,
+		},
+		{
+			desc: `Dilated Overflow is weaker.`,
+			cost: uni(1e75),
+			et: true,
+		},
+		{
+			desc: `Entropic Condenser^2 is 15% weaker.`,
+			cost: E("1.5e461"),
+		},
+		{
+			desc: `Entropic Evaporation^2 is 10% weaker.`,
+			cost: E("1e500"),
+		},
+		{
+			desc: `C5 effect is changed.`,
+			cost: E("3e144"),
+			et: true,
+		},
+		{
+			desc: `Epsilon Particles's 2nd effect is better if you're not in Big Rips or Quantum Challenges.`,
+			cost: E("3e152"),
+			et: true,
+		},
+		{
+			desc: `Entropic Radiation^2 is 25% weaker.`,
+			cost: E("1.5e523"),
+		},
+		{
+			desc: `Remove Meta-Rank scaling. Radiation Booster 'Meta-Rank Boost' affects Meta-Tier at a reduced rate.`,
+			cost: E("1.5e527"),
+			effect() {
+				let x = tmp.radiation.bs.eff[14].add(1).log10();
+				return x
+			},
+			effDesc(x) { return format(x)+"x later"; },
+		},
+		{
+			desc: `'70%' in Neutron Tree Upgrade [br3] is now 60%.`,
+			cost: E("1.5e634"),
+		},
+		{
+			desc: `Add 1000 C13 completions.`,
+			cost: E("1.5e674"),
+		},
+		{
+			desc: `Unlock the 18th Challenge.`,
+			cost: uni(2e123),
+			et: true,
+		},
 	],
     /*
     {
@@ -1071,7 +1254,9 @@ const ELEMENTS = {
         if (hasUpgrade("br",9)) u += 23 // 23
 		if (hasUpgrade("atom",16)) u += 16
 		if (hasElement(134)) u += 21
-        if (player.chal.comps[13].gte(1)) u += 13
+        if (player.chal.comps[13].gte(4)) u += 13
+        if (player.chal.comps[16].gte(3)) u += 24
+        if (player.chal.comps[17].gte(3)) u += 13
         return u
     },
 }
@@ -1176,6 +1361,7 @@ function updateElementsHTML() {
     tmp.el.elem_ch_div.setVisible(ch>0)
     if (ch) {
         tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b>"+ELEMENTS.upgs[ch].desc)
+		if(ELEMENTS.upgs[ch].desc instanceof Function)tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc())
         tmp.el.elem_cost.setTxt(format(ELEMENTS.upgs[ch].cost,0)+"夸克"+(ch>86?"(需进入大撕裂)":"")+(player.qu.rip.active&&tmp.elements.cannot.includes(ch)?"[大撕裂中无法购买]":""))
         if(ch > 118)tmp.el.elem_cost.setTxt(formatMass(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].et?"永恒质量":"无限质量"))
 		tmp.el.elem_eff.setHTML(ELEMENTS.upgs[ch].effDesc?"Currently: "+ELEMENTS.upgs[ch].effDesc(tElem.effect[ch]):"")

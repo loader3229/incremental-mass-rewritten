@@ -18,6 +18,7 @@ function updateChalHTML() {
                 tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0)+" / "+format(tmp.chal.max[x],0))
 				if(hasPrestige(1,25) && x <= 11)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
 				if(hasElement(133) && x == 12)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				//if(hasElement(194) && x == 13)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
             }
         }
         tmp.el.chal_enter.setVisible(player.chal.active != player.chal.choosed)
@@ -31,6 +32,7 @@ function updateChalHTML() {
             tmp.el.chal_ch_reset.setTxt(CHALS.getReset(player.chal.choosed))
             tmp.el.chal_ch_goal.setTxt("目标："+CHALS.getFormat(player.chal.choosed)(tmp.chal.goal[player.chal.choosed])+CHALS.getResName(player.chal.choosed))
             tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward)
+			if(player.chal.choosed == 5)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
             tmp.el.chal_ch_eff.setHTML("Currently: "+chal.effDesc(tmp.chal.eff[player.chal.choosed]))
         }
     }
@@ -73,7 +75,7 @@ const CHALS = {
         if (x < 5) FORMS.bh.doReset()
         else if (x < 9) ATOM.doReset(chal_reset)
         else if (x < 13) SUPERNOVA.reset(true, true)
-		else{
+		else if (x < 17) {
 			INFINITY_LAYER.doReset();
 			updateTemp();
 			updateTemp();
@@ -87,6 +89,13 @@ const CHALS = {
 			if(x == 16 && chal_reset == false){
 				player.prestigeMass = E(0);
 			}
+		}else {
+			ETERNITY_LAYER.doReset();
+			updateTemp();
+			updateTemp();
+			updateTemp();
+			updateTemp();
+			updateTemp();
 		}
     },
     exit(auto=false) {
@@ -105,7 +114,10 @@ const CHALS = {
             player.chal.active = player.chal.choosed
             this.reset(player.chal.choosed, false)
         } else if (player.chal.choosed != player.chal.active) {
-            this.exit(true)
+            if (tmp.chal.canFinish) {
+                player.chal.comps[player.chal.active] = player.chal.comps[player.chal.active].add(tmp.chal.gain).min(tmp.chal.max[player.chal.active])
+            }
+            this.reset(player.chal.active)
             player.chal.active = player.chal.choosed
             this.reset(player.chal.choosed, false)
         }
@@ -125,7 +137,8 @@ const CHALS = {
         if (x < 5) return "Entering challenge will reset with Dark Matters!"
         if (x < 9) return "Entering challenge will reset with Atoms except previous challenges!"
         if (x < 13) return "Entering challenge will reset without being Supernova!"
-        return "进入挑战时将强制进行无限重置！"
+        if (x < 17) return "进入挑战时将强制进行无限重置！"
+		return "进入挑战时将强制进行永恒重置！"
     },
     getMax(i) {
         let x = this[i].max
@@ -165,8 +178,14 @@ const CHALS = {
         if (player.ranks.hex.gte(73) && (i==12)) x = x.add(1000)
         if (player.ranks.hex.gte(104) && (i==12)) x = x.add(2000)
         if (player.ranks.hex.gte(110) && (i==12)) x = x.add(2000)
-        if (hasPrestige(1,25) && (i<=11))  x = x.add(1/0)
-        if (hasElement(133) && (i==12))  x = x.add(1/0)
+        if (hasPrestige(1,25) && (i<=11))  x = x.add(EINF)
+        if (hasElement(133) && (i==12))  x = x.add(EINF)
+        if (hasElement(175) && (i==13||i==15))  x = x.add(100)
+        if (hasElement(182) && (i==13||i==16))  x = x.add(100)
+        if (hasElement(186) && (i==13||i==15))  x = x.add(300)
+        if (hasElement(190) && (i==13||i==16))  x = x.add(200)
+        if (hasElement(194) && (i==13))  x = x.add(200)
+        if (hasElement(204) && (i==13))  x = x.add(1000)
         return x.floor()
     },
     getScaleName(i) {
@@ -180,23 +199,27 @@ const CHALS = {
         if (hasElement(2)) x = x.mul(0.75)
         if (hasElement(26)) x = x.mul(tmp.elements.effect[26])
 		if (player.ranks.hex.gte(2)) x = x.mul(0.75)
+		if (i >= 16) x = x.mul(30);
+		if (i <= 12) x = x.mul(tmp.chal.eff[17]||1);
         return x
     },
     getPower2(i) {
         let x = E(1)
         if (hasElement(92)) x = x.mul(0.75)
         if (player.ranks.hex.gte(92) && (i<=8 || i>=10) && i<=12) x = x.mul(0.75)
+		if (i >= 17) x = x.mul(3);
         return x
     },
     getPower3(i) {
         let x = E(1)
-		if (i>12)x = E(15)
+		if (i>12)x = E(50)
         return x
     },
     getChalData(x, r=E(-1)) {
         let res = this.getResource(x)
         let lvl = r.lt(0)?player.chal.comps[x]:r
         let chal = this[x]
+		if(hasElement(170)&&x==15)chal.inc = E(2);
         let fp = 1
         if (QCs.active()) fp /= tmp.qu.qc_eff[5]
         let s1 = x > 8 ? 10 : 75
@@ -214,7 +237,7 @@ const CHALS = {
         if (res.lt(chal.start)) bulk = E(0)
         if (lvl.max(bulk).gte(s1)) {
             let start = E(s1);
-            let exp = E(3).pow(this.getPower());
+            let exp = E(3).pow(this.getPower(x));
             goal =
             chal.inc.pow(
                     lvl.div(fp).pow(exp).div(start.pow(exp.sub(1))).pow(pow)
@@ -231,7 +254,7 @@ const CHALS = {
         }
         if (lvl.max(bulk).gte(s2)) {
             let start = E(s1);
-            let exp = E(3).pow(this.getPower());
+            let exp = E(3).pow(this.getPower(x));
             let start2 = E(s2);
             let exp2 = E(4.5).pow(this.getPower2(x))
             goal =
@@ -252,7 +275,7 @@ const CHALS = {
         }
         if (lvl.max(bulk).gte(s3)) {
             let start = E(s1);
-            let exp = E(3).pow(this.getPower());
+            let exp = E(3).pow(this.getPower(x));
             let start2 = E(s2);
             let exp2 = E(4.5).pow(this.getPower2(x))
             let start3 = E(s3);
@@ -325,7 +348,7 @@ const CHALS = {
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
             let ret = x.root(1.5).mul(0.01).add(1)
-            return ret.softcap(3,0.25,0)
+            return ret.softcap(3,E(0.25).pow(tmp.chal.eff[17]||1),0)
         },
         effDesc(x) { return "^"+format(x)+(x.gte(3)?"<span class='soft'>(softcapped)</span>":"") },
     },
@@ -341,8 +364,8 @@ const CHALS = {
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
             let ret = x.root(1.5).mul(0.01).add(1)
-			if (player.ranks.hex.gte(39))return ret.softcap(3,0.26,0);
-            return ret.softcap(3,0.25,0)
+			if (player.ranks.hex.gte(39))return ret.softcap(3,E(0.26).pow(tmp.chal.eff[17]||1),0);
+            return ret.softcap(3,E(0.25).pow(tmp.chal.eff[17]||1),0)
         },
         effDesc(x) { return "^"+format(x)+(x.gte(3)?"<span class='soft'>(softcapped)</span>":"") },
     },
@@ -350,16 +373,20 @@ const CHALS = {
         unl() { return player.atom.unl },
         title: "移除级别",
         desc: "You cannot rank up.",
-        reward: `Rank requirement are weaker by completions.`,
+        reward() {
+			if(hasElement(170))return `Meta-Rank scaling starts later.`;
+			return `Rank requirement are weaker by completions.`
+		},
         max: E(50),
         inc: E(50),
         pow: E(1.25),
         start: E(1.5e136),
         effect(x) {
-            let ret = E(0.97).pow(x.root(2).softcap(5,0.5,0))
+			if(hasElement(170))return x.pow(hasElement(199)?0.8:0.6).add(1);
+            let ret = E(0.97).pow(x.root(2).softcap(5,0.5,0));
             return ret
         },
-        effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker"+(x.log(0.97).gte(5)?"<span class='soft'>(softcapped)</span>":"") },
+        effDesc(x) { if(hasElement(170))return format(x)+"x later";return format(E(1).sub(x).mul(100))+"% weaker"+(x.log(0.97).gte(5)?" <span class='soft'>(softcapped)</span>":"") },
     },
     6: {
         unl() { return player.chal.comps[5].gte(1) || player.supernova.times.gte(1) || quUnl() },
@@ -478,6 +505,7 @@ const CHALS = {
         pow: E(8.2),
         start: E('ee40'),
         effect(x) {
+			if(CHALS.inChal(17))return E(1)
 			if(x.gte(10))x=x.log10().mul(10);
             let ret = x.div(100).add(1)
             return ret
@@ -494,6 +522,7 @@ const CHALS = {
         pow: E(2),
         start: E('e2e12'),
         effect(x) {
+			if(CHALS.inChal(17))return E(1)
             let ret = E(0.97).pow(x.root(2))
             return ret
         },
@@ -509,6 +538,7 @@ const CHALS = {
         pow: E(5),
         start: E('e1e13'),
         effect(x) {
+			if(CHALS.inChal(17))return E(1)
             let ret = x.add(1)
             return ret
         },
@@ -517,19 +547,50 @@ const CHALS = {
     16: {
         unl() { return hasElement(168) },
         title: "无转生质量",
-        desc: "你不能获得转生质量。进入该挑战时重置转生质量。",
+        desc: "您不能获得转生质量。进入该挑战时重置转生质量。",
+        reward: `转生质量效果的第一个软上限被削弱。<br><span class="yellow">当完成第3次该挑战时，解锁更多元素</span>`,
+        max: E(100),
+        inc: E('e3e86'),
+        pow: E(1.45),
+        start: E('e1.65e87'),
+        effect(x) {
+			if(CHALS.inChal(17))return E(1)
+            let ret = E(0.93).pow(x.root(2))
+            return ret
+        },
+        effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+    },
+    17: {
+        unl() { return hasElement(192) },
+        title: "无挑战",
+        desc: "您不能完成挑战1-12。挑战13-16没有效果。",
+        reward: `挑战3-4的软上限被削弱。弱化挑战1-12的硬化折算。<br><span class="yellow">当完成第3次该挑战时，解锁更多元素</span>`,
+        max: E(100),
+        inc: E('e3e619'),
+        pow: E(3),
+        start: E('ee619'),
+        effect(x) {
+            let ret = E(0.95).pow(x.root(2))
+            return ret
+        },
+        effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+    },
+    18: {
+        unl() { return hasElement(205) },
+        title: "无限失效",
+        desc: "您不能获取无限质量。",
         reward: `Reach the current endgame.`,
         max: E(1),
-        inc: E('ee100'),
-        pow: E('ee100'),
-        start: E('e1.65e87'),
+        inc: E('ee2684'),
+        pow: E(100),
+        start: E('ee2683'),
         effect(x) {
             let ret = x
             return ret
         },
         effDesc(x) { if(x.gte(1))return "You reached the current endgame!"; else return "Complete this challenge to reach the current endgame!" },
     },
-    cols: 16,
+    cols: 18,
 }
 
 /*
