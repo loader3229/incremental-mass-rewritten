@@ -96,6 +96,11 @@ const CHALS = {
 			updateTemp();
 			updateTemp();
 			updateTemp();
+			if(x == 19 && chal_reset == false){
+				player.qu.rip.active = true;
+				QUANTUM.enter(false,true,true)
+				player.prestigeMass = E(0);
+			}
 		}
     },
     exit(auto=false) {
@@ -186,6 +191,9 @@ const CHALS = {
         if (hasElement(190) && (i==13||i==16))  x = x.add(200)
         if (hasElement(194) && (i==13))  x = x.add(200)
         if (hasElement(204) && (i==13))  x = x.add(1000)
+        if (hasElement(206) && (i==14||i==16))  x = x.add(100)
+        if (hasElement(210) && (i==14||i==17))  x = x.add(100)
+        if (hasElement(214) && (i==15||i==16))  x = x.add(200)
         return x.floor()
     },
     getScaleName(i) {
@@ -199,7 +207,7 @@ const CHALS = {
         if (hasElement(2)) x = x.mul(0.75)
         if (hasElement(26)) x = x.mul(tmp.elements.effect[26])
 		if (player.ranks.hex.gte(2)) x = x.mul(0.75)
-		if (i >= 16) x = x.mul(30);
+		if (i >= 16 && i!=19) x = x.mul(30);
 		if (i <= 12) x = x.mul(tmp.chal.eff[17]||1);
         return x
     },
@@ -505,7 +513,7 @@ const CHALS = {
         pow: E(8.2),
         start: E('ee40'),
         effect(x) {
-			if(CHALS.inChal(17))return E(1)
+			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
 			if(x.gte(10))x=x.log10().mul(10);
             let ret = x.div(100).add(1)
             return ret
@@ -522,7 +530,7 @@ const CHALS = {
         pow: E(2),
         start: E('e2e12'),
         effect(x) {
-			if(CHALS.inChal(17))return E(1)
+			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
             let ret = E(0.97).pow(x.root(2))
             return ret
         },
@@ -538,7 +546,7 @@ const CHALS = {
         pow: E(5),
         start: E('e1e13'),
         effect(x) {
-			if(CHALS.inChal(17))return E(1)
+			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
             let ret = x.add(1)
             return ret
         },
@@ -554,7 +562,7 @@ const CHALS = {
         pow: E(1.45),
         start: E('e1.65e87'),
         effect(x) {
-			if(CHALS.inChal(17))return E(1)
+			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
             let ret = E(0.93).pow(x.root(2))
             return ret
         },
@@ -579,18 +587,48 @@ const CHALS = {
         unl() { return hasElement(205) },
         title: "无限失效",
         desc: "您不能获取无限质量。",
-        reward: `Reach the current endgame.`,
-        max: E(1),
+        reward: `Boost Infinity Mass base formula.<br><span class="yellow">On 3rd completion, unlock more Elements</span>`,
+        max: E(100),
         inc: E('ee2684'),
-        pow: E(100),
+        pow: E(9),
         start: E('ee2683'),
         effect(x) {
-            let ret = x
+            let ret = x.add(1).log10().add(1).log10().add(1).log10().softcap(0.09,0.25,0);
             return ret
         },
-        effDesc(x) { if(x.gte(1))return "You reached the current endgame!"; else return "Complete this challenge to reach the current endgame!" },
+        effDesc(x) { return "+"+format(x) },
     },
-    cols: 18,
+    19: {
+        unl() { return hasElement(209) },
+        title: "现实 III",
+        desc: "挑战1-挑战18同时触发。",
+        reward: `Multiply Shard Generators Power.<br><span class="yellow">On 8th completion, unlock more Elements</span>`,
+		max: E(100),
+		inc: E(10),
+		pow: E(1.25),
+        start: E("1e191"),
+        effect(x) {
+            let ret = x.div(4).add(1);
+            return ret
+        },
+        effDesc(x) { return format(x)+"x" },
+    },
+    20: {
+        unl() { return hasElement(213) },
+        title: "质量对数",
+        desc: "质量获取变为log10(质量获取)",
+        reward: `Mass gain is raised by completions.`,
+		max: E(100),
+		inc: E(10),
+		pow: E(1.25),
+        start: E("1e3149"),
+        effect(x) {
+            let ret = E(2).pow(x);
+            return ret
+        },
+        effDesc(x) { return "^"+format(x) },
+    },
+    cols: 20,
 }
 
 /*

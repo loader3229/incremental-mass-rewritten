@@ -14,7 +14,7 @@ const MASS_DILATION = {
         updateMDTemp()
     },
     RPexpgain() {
-        let x = E(2).add(tmp.md.upgs[5].eff).mul((tmp.chal && !CHALS.inChal(10) && !CHALS.inChal(14))?tmp.chal.eff[10]:1)
+        let x = E(2).add(tmp.md.upgs[5].eff).mul((tmp.chal && !CHALS.inChal(10) && !CHALS.inChal(14) && !CHALS.inChal(19))?tmp.chal.eff[10]:1)
         if ((!player.md.active && hasTree("d1")) || player.ranks.hex.gte(43)) x = x.mul(1.25)
         if (FERMIONS.onActive("01")) x = x.div(10)
         if (QCs.active()) x = x.mul(tmp.qu.qc_eff[4])
@@ -34,12 +34,12 @@ const MASS_DILATION = {
         return x
     },
     RPgain(m=player.mass) {
-        if (CHALS.inChal(11)|| CHALS.inChal(14)) return E(0)
+        if (CHALS.inChal(11)|| CHALS.inChal(14) || CHALS.inChal(19)) return E(0)
         let x = m.div(1.50005e56).max(1).log10().div(40).sub(14).max(0).pow(tmp.md.rp_exp_gain).mul(tmp.md.rp_mult_gain)
         return x.sub(player.md.particles).max(0).floor()
     },
     massGain() {
-        if (CHALS.inChal(11)|| CHALS.inChal(14)) return E(0)
+        if (CHALS.inChal(11)|| CHALS.inChal(14) || CHALS.inChal(19)) return E(0)
         let pow = E(2).add(tmp.bd.upgs[1].eff)
         let x = player.md.particles.pow(pow)
         x = x.mul(tmp.md.upgs[0].eff)

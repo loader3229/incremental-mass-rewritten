@@ -1,6 +1,6 @@
 const ATOM = {
     gain() {
-        if (CHALS.inChal(12) || CHALS.inChal(14)) return E(0)
+        if (CHALS.inChal(12) || CHALS.inChal(14) || CHALS.inChal(19)) return E(0)
         let x = player.bh.mass.div(player.mainUpg.br.includes(1)?1.5e156**0.5:1.5e156)
         if (x.lt(1)) return E(0)
         x = x.root(5)
@@ -62,8 +62,12 @@ const ATOM = {
 
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             if (FERMIONS.onActive("00")) x = expMult(x,0.6)
-            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
-            return x
+            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
+            
+			
+			tmp.atomicOverflowPower = E(0.8)
+			tmp.atomicOverflow = overflow(x,"e1e3000",tmp.atomicOverflowPower).log(x);
+			return overflow(x,"e1e3000",tmp.atomicOverflowPower);
         },
         effect() {
             let x = player.atom.atomic.max(1).log(player.ranks.hex.gte(23)?1.2:hasElement(23)?1.5:1.75).pow(getEnRewardEff(1))
@@ -109,7 +113,7 @@ const ATOM = {
     particles: {
         names: ['Protons', 'Neutrons', 'Electrons'],
         assign(x) {
-            if (player.atom.quarks.lt(1) || CHALS.inChal(9) || CHALS.inChal(14) || FERMIONS.onActive("12")) return
+            if (player.atom.quarks.lt(1) || CHALS.inChal(9) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) return
             let m = player.atom.ratio
             let spent = m > 0 ? player.atom.quarks.mul(RATIO_MODE[m]).ceil() : E(1)
             player.atom.quarks = player.atom.quarks.sub(spent).max(0)
@@ -117,7 +121,7 @@ const ATOM = {
         },
         assignAll() {
             let sum = player.atom.dRatio[0]+player.atom.dRatio[1]+player.atom.dRatio[2]
-            if (player.atom.quarks.lt(sum) || CHALS.inChal(9) || CHALS.inChal(14) || FERMIONS.onActive("12")) return
+            if (player.atom.quarks.lt(sum) || CHALS.inChal(9) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) return
             let spent = player.atom.quarks.div(sum).floor()
             for (let x = 0; x < 3; x++) {
                 let add = spent.mul(player.atom.dRatio[x])
@@ -249,6 +253,10 @@ function updateAtomicHTML() {
 	tmp.el.gamma_ray_eff.setHTML(format(tmp.atom.gamma_ray_eff.eff))
     tmp.el.gamma_ray_auto.setDisplay(hasElement(18))
 	tmp.el.gamma_ray_auto.setTxt(player.atom.auto_gr?"ON":"OFF")
+	
+	
+    tmp.el.atomicOverflow.setDisplay(tmp.atom.atomicGain.gte("ee3000"))
+	tmp.el.atomicOverflow2.setTxt(format(tmp.atomicOverflow))
 }
 
 function updateAtomHTML() {

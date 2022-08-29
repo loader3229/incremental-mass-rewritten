@@ -1,6 +1,6 @@
 const BIG_RIP = {
     rip() {
-		if (CHALS.inChal(14)) return
+		if (CHALS.inChal(14) || CHALS.inChal(19)) return
         if (!player.qu.rip.active && player.confirms.br) if (!confirm(`您确定要使维度大撕裂吗？
         大撕裂维度后，熵的加成失效，所有原基粒子的效果减半，艾普西隆粒子完全失效，中子树升级[qu2]和[qu10]失效，并且您强制以[10,2,10,10,5,0,2,10]的配置进行量子挑战。
         但大撕裂维度后，您可以根据质量获得死寂碎片。
@@ -12,7 +12,7 @@ const BIG_RIP = {
         QUANTUM.enter(false,true,true)
     },
     gain() {
-		if (CHALS.inChal(13)) return E(0)
+		if (CHALS.inChal(13) || CHALS.inChal(19)) return E(0)
         let x = player.mass.add(1).log10().div(2e5).max(0)
         if (!(player.qu.rip.active || hasTree('qu_qol12')) || x.lt(1)) return E(0)
         if (hasTree('br1')) x = x.mul(treeEff('br1'))

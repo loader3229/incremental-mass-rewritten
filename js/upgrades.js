@@ -261,7 +261,7 @@ const UPGS = {
                 cost: E(1e72),
                 effect() {
                     let ret = player.rp.points.add(1).root(10).softcap('e4000',0.1,0)
-                    return ret//.softcap("ee13",0.9,2)
+                    return overflow(ret,"ee11000",0.5);
                 },
                 effDesc(x=this.effect()) {
                     return format(x)+"x"+(x.gte("e4000")?"<span class='soft'>(softcapped)</span>":"")
@@ -856,6 +856,7 @@ const UPGS = {
                 effect() {
                     let x = player.inf.points.mul(20).add(1);
 					if(hasUpgrade('inf',16))x = x.pow(2);
+					if(hasElement(211))x = x.pow(1.2);
                     return x
                 },
                 effDesc(x=this.effect()) { return "熵获取速度变为"+format(x.pow(0.1).mul(2))+"倍，熵上限变为"+format(x)+"倍" },
@@ -910,11 +911,11 @@ const UPGS = {
             },
             10: {
                 desc: `Infinity Mass formula from Prestige mass is better. Mass gain softcap^8 is 50% weaker.`,
-                cost: E(5000000),
+                cost: E(5e6),
             },
             11: {
                 desc: `Gain 100% of Infinity Mass gain per second. Gain 1 Infinity count per second.`,
-                cost: E(100000000),
+                cost: E(1e8),
             },
             12: {
                 desc: `Infinity Mass Boost Infinity count gain.`,

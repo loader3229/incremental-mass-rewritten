@@ -65,6 +65,7 @@ const ELEMENTS = {
                 let x = player.atom?player.atom.powers[2].add(1).root(2):E(1)
 				if(player.ranks.hex.gte(3))x=x.pow(1.5);
                 if (x.gte('e1e4')) x = expMult(x.div('e1e4'),0.9).mul('e1e4')
+				if (x.gte('ee4000')) x = overflow(x,'ee4000',0.5);
                 return x
             },
             effDesc(x) { return format(x)+"x"+(x.gte('e1e4')?"<span class='soft'>(softcapped)</span>":"") },
@@ -1220,6 +1221,75 @@ const ELEMENTS = {
 			cost: uni(2e123),
 			et: true,
 		},
+		{
+			desc: `Add 100 C14 & C16 completions.`,
+			cost: E("7.5e193"),
+			et: true,
+		},
+		{
+			desc: `Remove a softcap from Radiation Booster 'Meta-Rank Boost'.`,
+			cost: E("6e832"),
+		},
+		{
+			desc: `Entropic Radiation^2 is 50% weaker.`,
+			cost: E("6e852"),
+		},
+		{
+			desc: `Unlock the 19th Challenge.`,
+			cost: uni(1e158),
+			et: true,
+		},
+		{
+			desc: `Add 100 C14 & C17 completions.`,
+			cost: E("9e224"),
+			et: true,
+		},
+		{
+			desc: `Raise Infinity Upgrade 3 by 1.2`,
+			cost: E("1.5e955"),
+		},
+		{
+			desc: `Multiply Honor 9 Effect by 2`,
+			cost: E("1.5e1099"),
+		},
+		{
+			desc: `Unlock the 20th Challenge.`,
+			cost: uni(1e197),
+			et: true,
+		},
+		{
+			desc: `Add 200 C15 & C16 completions.`,
+			cost: uni(2e198),
+			et: true,
+		},
+		{
+			desc: `Multiply Honor 9 Effect by 2`,
+			cost: E("1.5e1145"),
+		},
+		{
+			desc: `Eternity Times boost Quantum Times gain.`,
+			cost: E("1.5e1157"),
+			effect() {
+				let x = player.et.times.add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Eternal Mass boost Eternity Times gain.`,
+			cost: uni(1e206),
+			et: true,
+			effect() {
+				let x = player.et.points.add(1).log10();
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Reach the current Endgame.`,
+			cost: uni(1e210),
+			et: true,
+		},
 	],
     /*
     {
@@ -1257,6 +1327,8 @@ const ELEMENTS = {
         if (player.chal.comps[13].gte(4)) u += 13
         if (player.chal.comps[16].gte(3)) u += 24
         if (player.chal.comps[17].gte(3)) u += 13
+        if (player.chal.comps[18].gte(3)) u += 4
+        if (player.chal.comps[19].gte(8)) u += 9
         return u
     },
 }

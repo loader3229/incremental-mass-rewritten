@@ -248,6 +248,8 @@ const RANKS = {
 			'17': "Meta-Rank scaling starts later based on Hept.",
 			'19': "Hept 17's effect is better.",
 			'20': "Meta-Tier scaling starts later based on Hept.",
+			'21': "Super Pent is 20% weaker.",
+			'22': "Ultra Mass Upgrades is 1% weaker.",
 		},
     },
     effect: {
@@ -666,6 +668,7 @@ const PRESTIGES = {
             "8": `Prestige Mass Effect is applied to Ultra Prestige Level scaling.`,
             "10": `Automatically gain Honor.`,
             "12": `Prestige Mass Effect is applied to Super Glory scaling.`,
+            "13": `Prestige Mass Effect is applied to Ultra Fermion Tier scaling.`,
 		},
     ],
     rewardEff: [
@@ -746,6 +749,8 @@ const PRESTIGES = {
 				if(hasPrestige(2,2))x = x.mul(player.prestiges[2].max(1));
 				if(hasPrestige(0,135))x = x.mul(prestigeEff(0,135));
 				if(hasPrestige(1,22))x = x.mul(2);
+				if(hasElement(212))x = x.mul(2);
+				if(hasElement(215))x = x.mul(2);
                 return x
             },x=>"+"+x.format()],
             "11": [_=>{
@@ -825,7 +830,7 @@ function updateRanksTemp() {
     tmp.ranks.rank.req = E(10).pow(player.ranks.rank.div(fp2).scaleEvery('rank').div(fp).pow(1.15)).mul(10)
     tmp.ranks.rank.bulk = E(0)
     if (player.mass.gte(10)) tmp.ranks.rank.bulk = player.mass.div(10).max(1).log10().root(1.15).mul(fp).scaleEvery('rank',true).mul(fp2).add(1).floor();
-    tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(5) && !CHALS.inChal(10) && !CHALS.inChal(14) && !FERMIONS.onActive("03")
+    tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(5) && !CHALS.inChal(10) && !CHALS.inChal(14) && !CHALS.inChal(19) && !FERMIONS.onActive("03")
 
     fp = RANKS.fp.tier()
     tmp.ranks.tier.req = player.ranks.tier.div(fp2).scaleEvery('tier').div(fp).add(2).pow(2).floor()
@@ -962,7 +967,7 @@ function updateRanksHTML() {
 }
 
 function prestigeMassGain(){
-	if(player.prestiges[1].lt(10) || CHALS.inChal(16)){
+	if(player.prestiges[1].lt(10) || CHALS.inChal(16) || CHALS.inChal(19)){
 		return E(0);
 	}
 	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0]).mul(player.prestiges[1].pow(2)).mul(player.prestiges[2].add(1)).pow(player.prestiges[1].div(10))

@@ -5,7 +5,7 @@ const CHROMA = {
         }
     },
     gain(i) {
-		if (CHALS.inChal(13)) return E(0)
+		if (CHALS.inChal(13) || CHALS.inChal(19)) return E(0)
         if (!player.qu.chr_get.includes(i)) return E(0)
         let x = E(1)
         if (tmp.qu.mil_reached[5]) x = x.mul((tmp.preQUGlobalSpeed||E(1)).root(2))
@@ -37,6 +37,7 @@ const CHROMA = {
         },
         i => {
             let x = E(1.1).pow(i.add(1).log10().max(0).pow(0.75))
+			x = overflow(x,"1e730",0.5).min("1e1000");
             if (hasUpgrade('br',10)) x = x.pow(1.1)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)
             return x

@@ -60,7 +60,7 @@ const FORMS = {
         if (player.ranks.tier.gte(2)) x = x.pow(1.15)
         if (player.ranks.rank.gte(180)) x = x.pow(1.025)
         if (!CHALS.inChal(3)) x = x.pow(tmp.chal.eff[3])
-        if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) {
+        if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) {
             x = expMult(x,tmp.md.pen)
             if (hasElement(28)) x = x.pow(1.5)
         }else{
@@ -70,7 +70,8 @@ const FORMS = {
         if (player.ranks.hex.gte(36)) x = x.pow(tmp.stars.effectPower)
 		if (hasUpgrade('bh',19)) x = x.pow(tmp.upgs.main?tmp.upgs.main[2][19].effect:E(1))
         if (hasUpgrade('br',20)) x = x.pow(tmp.upgs.main?tmp.upgs.main[4][20].effect:E(1))
-		if (CHALS.inChal(9) || CHALS.inChal(14) || FERMIONS.onActive("12")) x = expMult(x,0.9)
+		if (hasElement(213)) x = x.pow(tmp.chal.eff[20])
+		if (CHALS.inChal(9) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) x = expMult(x,0.9)
         x = x.softcap(tmp.massSoftGain,tmp.massSoftPower,0)
         .softcap(tmp.massSoftGain2,tmp.massSoftPower2,0)
         .softcap(tmp.massSoftGain3,tmp.massSoftPower3,0)
@@ -82,18 +83,19 @@ const FORMS = {
         .softcap(tmp.massSoftGain9,tmp.massSoftPower9,0)
 
         if (hasElement(117)) x = x.pow(10)
-
-			
+		
+		if (CHALS.inChal(20)) x = x.add(1).log10()
+		
 		tmp.massOverflowStart = E("ee84")
 		if (player.ranks.hex.gte(120))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
 		if (hasUpgrade('rp',19))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
 		if (hasElement(164))tmp.massOverflowStart = tmp.massOverflowStart.pow(tmp.chal.eff[15])
 		
-		if (CHALS.inChal(15))tmp.massOverflowStart = E(10)
+		if (CHALS.inChal(15) || CHALS.inChal(19))tmp.massOverflowStart = E(10)
 		
 		tmp.massOverflowPower = E(0.8)
 		if (player.ranks.hept.gte(1))tmp.massOverflowPower = tmp.massOverflowPower.pow(RANKS.effect.hept[1]())
-		if (CHALS.inChal(15))tmp.massOverflowPower = tmp.massOverflowPower.pow(12)
+		if (CHALS.inChal(15) || CHALS.inChal(19))tmp.massOverflowPower = tmp.massOverflowPower.pow(12)
 			
 		tmp.massOverflow = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower).log(x);
 		x = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower);
@@ -101,8 +103,8 @@ const FORMS = {
     },
     massSoftGain() {
         let s = E(1.5e156)
-        if (CHALS.inChal(3) || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("03")) s = s.div(1e150)
-        if (CHALS.inChal(4) || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("03")) s = s.div(1e100)
+        if (CHALS.inChal(3) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("03")) s = s.div(1e150)
+        if (CHALS.inChal(4) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("03")) s = s.div(1e100)
         if (player.mainUpg.bh.includes(7)) s = s.mul(tmp.upgs.main?tmp.upgs.main[2][7].effect:E(1))
         if (player.mainUpg.rp.includes(13)) s = s.mul(tmp.upgs.main?tmp.upgs.main[1][13].effect:E(1))
         if (hasPrestige(0,1)) s = s.pow(10)
@@ -111,8 +113,8 @@ const FORMS = {
     massSoftPower() {
         if (player.ranks.hex.gte(1)) return E(1)
         let p = E(1/3)
-        if (CHALS.inChal(3) || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("03")) p = p.mul(4)
-        if (CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14)) p = p.mul(6)
+        if (CHALS.inChal(3) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("03")) p = p.mul(4)
+        if (CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) ) p = p.mul(6)
         if (player.mainUpg.bh.includes(11)) p = p.mul(0.9)
         if (player.ranks.rank.gte(800)) p = p.mul(RANKS.effect.rank[800]())
         return E(1).div(p.add(1))
@@ -223,7 +225,7 @@ const FORMS = {
     },
     tickspeed: {
         cost(x=player.tickspeed) { return E(2).pow(x).floor() },
-        can() { return player.rp.points.gte(tmp.tickspeedCost) && !CHALS.inChal(2) && !CHALS.inChal(6) && !CHALS.inChal(10) && !CHALS.inChal(14) },
+        can() { return player.rp.points.gte(tmp.tickspeedCost) && !CHALS.inChal(2) && !CHALS.inChal(6) && !CHALS.inChal(10) && !CHALS.inChal(14) && !CHALS.inChal(19) },
         buy() {
             if (this.can()) {
                 if (!player.mainUpg.atom.includes(2)) player.rp.points = player.rp.points.sub(tmp.tickspeedCost).max(0)
@@ -325,7 +327,7 @@ const FORMS = {
     },
     rp: {
         gain() {
-            if (player.mass.lt(1e15) || CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14)) return E(0)
+            if (player.mass.lt(1e15) || CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19)) return E(0)
             let gain = player.mass.div(1e15).root(3)
             if (player.ranks.rank.gte(14)) gain = gain.mul(2)
             if (player.ranks.rank.gte(45)) gain = gain.mul(RANKS.effect.rank[45]())
@@ -338,11 +340,11 @@ const FORMS = {
 
             if (player.mainUpg.bh.includes(8)) gain = gain.pow(1.15)
             gain = gain.pow(tmp.chal.eff[4])
-            if (CHALS.inChal(4) || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("03")) gain = gain.root(10)
+            if (CHALS.inChal(4) || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("03")) gain = gain.root(10)
             gain = gain.pow(tmp.prim.eff[1][0])
 
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
-            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
+            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
             return gain.floor()
         },
         reset() {
@@ -361,22 +363,22 @@ const FORMS = {
         see() { return player.rp.unl },
         DM_gain() {
             let gain = player.rp.points.div(1e20)
-            if (CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14)) gain = player.mass.div(1e180)
+            if (CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19)) gain = player.mass.div(1e180)
             if (gain.lt(1)) return E(0)
             gain = gain.root(4)
 
             if (hasTree("bh1")) gain = gain.mul(tmp.supernova.tree_eff.bh1)
             gain = gain.mul(tmp.bosons.upgs.photon[0].effect)
 
-            if (CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14)) gain = gain.root(6)
+            if (CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19)) gain = gain.root(6)
             if (!hasElement(105)) gain = gain.mul(tmp.atom.particles[2].powerEffect.eff1)
             else gain = gain.pow(tmp.atom.particles[2].powerEffect.eff1)
-            if (CHALS.inChal(8) || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("12")) gain = gain.root(8)
+            if (CHALS.inChal(8) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) gain = gain.root(8)
             gain = gain.pow(tmp.chal.eff[8])
             gain = gain.pow(tmp.prim.eff[2][0])
 
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
-            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
+            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
             return gain.floor()
         },
         massPowerGain() {
@@ -394,19 +396,19 @@ const FORMS = {
             if (player.mainUpg.bh.includes(14)) x = x.mul(tmp.upgs.main?tmp.upgs.main[2][14].effect:E(1))
             if (hasElement(46) && !player.ranks.hex.gte(46)) x = x.mul(tmp.elements.effect[46])
             x = x.mul(tmp.bosons.upgs.photon[0].effect)
-            if (CHALS.inChal(8) || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("12")) x = x.root(8)
+            if (CHALS.inChal(8) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) x = x.root(8)
             x = x.pow(tmp.chal.eff[8])
 
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             if (hasElement(46) && player.ranks.hex.gte(46)) x = x.pow(tmp.elements.effect[46])
-            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
+            if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
 			tmp.bhOverflowStart = E("e1e34")
 			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
-			if (CHALS.inChal(15))tmp.bhOverflowStart = E(10)
+			if (CHALS.inChal(15) || CHALS.inChal(19))tmp.bhOverflowStart = E(10)
 			
 			let x_original = x
-			x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(15)?0.05:(hasUpgrade('bh',20)?0.81:0.8));
+			x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
 				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(0.8).mul(bhOverflowStart2.log10().log10());
@@ -470,7 +472,7 @@ const FORMS = {
         condenser: {
             autoSwitch() { player.bh.autoCondenser = !player.bh.autoCondenser },
             autoUnl() { return player.mainUpg.atom.includes(2) },
-            can() { return player.bh.dm.gte(tmp.bh.condenser_cost) && !CHALS.inChal(6)  && !CHALS.inChal(10) && !CHALS.inChal(14)},
+            can() { return player.bh.dm.gte(tmp.bh.condenser_cost) && !CHALS.inChal(6)  && !CHALS.inChal(10) && !CHALS.inChal(14) && !CHALS.inChal(19)},
             buy() {
                 if (this.can()) {
                     player.bh.dm = player.bh.dm.sub(tmp.bh.condenser_cost).max(0)
@@ -520,6 +522,7 @@ const FORMS = {
         set(id) {
             if (id=="sn") {
                 player.reset_msg = "Reach over "+format(tmp.supernova.maxlimit)+" collapsed stars to be Supernova"
+				if (player.supernova.times.gte(1000000)) player.reset_msg = "You reached the maximum Supernova limit!";
                 return
             }
             if (id=="qu") {

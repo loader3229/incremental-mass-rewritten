@@ -168,8 +168,9 @@ function updateStarsHTML() {
     tmp.el.starOverflow.setDisplay(tmp.stars.gain.gte("ee43"))
 	tmp.el.starOverflow1.setTxt(format(tmp.starOverflow))
     tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed))+"星辰，成为超新星需要"+format(tmp.supernova.maxlimit,2))
+    if (player.supernova.times.gte(1000000))tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed))+"星辰")
     tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x")
-if (player.ranks.hex.gte(36))tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x, ^"+format(tmp.stars.effectPower))
+	if (player.ranks.hex.gte(36))tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x, ^"+format(tmp.stars.effectPower))
     tmp.el.star_btn.setDisplay(hasTree("s4") || player.stars.unls < 5)
     tmp.el.star_btn.setHTML((player.stars.unls < 5 || !hasTree("s4"))
     ? `Unlock new type of Stars, require ${format(tmp.stars.generator_req)} Quark`

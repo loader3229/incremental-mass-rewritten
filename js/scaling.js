@@ -57,6 +57,7 @@ const SCALE_START = {
 		supernova: E(100),
 		fTier: E(25000),
 		prestige0: E(1000),
+		prestige1: E(100), // remove it
 	},
 }
 
@@ -120,6 +121,7 @@ const SCALE_POWER= {
 		supernova: 1.025,
 		fTier: 1.0001,
 		prestige0: 1.004,
+		prestige1: 1.1, // remove it
 	},
 }
 
@@ -242,7 +244,7 @@ function getScalingStart(type, name) {
 	let start = E(SCALE_START[type][name])
 	if (type=="super") {
 		if (name=="rank") {
-			if (CHALS.inChal(1) || CHALS.inChal(10) || CHALS.inChal(14)) return E(25)
+			if (CHALS.inChal(1) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19)) return E(25)
 			start = start.add(tmp.chal?tmp.chal.eff[1].rank:0)
 		}
 		if (name=="tier") {
@@ -252,11 +254,11 @@ function getScalingStart(type, name) {
 			if (player.ranks.tier.gte(100)) start = start.add(5)
 		}
 		if (name=="massUpg") {
-			if (CHALS.inChal(1) || CHALS.inChal(10) || CHALS.inChal(14)) return E(25)
+			if (CHALS.inChal(1) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19)) return E(25)
 			if (player.mainUpg.bh.includes(3)) start = start.add(tmp.upgs?tmp.upgs.main?tmp.upgs.main[2][3].effect:0:0)
 		}
 		if (name=='tickspeed') {
-			if (CHALS.inChal(1) || CHALS.inChal(10) || CHALS.inChal(14)) return E(50)
+			if (CHALS.inChal(1) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19)) return E(50)
 		}
 		if (name=="prestige0") {
 			if (player.md.break.upgs[9].gte(1)) start = start.add(10)
@@ -398,6 +400,7 @@ function getScalingPower(type, name) {
 		}
 		if (name=="pent") {
 			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
+			if (player.ranks.hept.gte(21)) power = power.mul(0.8)
 		}
 		if (name=="supernova") {
 			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
@@ -520,12 +523,16 @@ function getScalingPower(type, name) {
 		}
 		if (name=="massUpg") {
 			if (player.ranks.hex.gte(300)) power = power.mul(0.98)
+			if (player.ranks.hept.gte(22)) power = power.mul(0.99)
 		}
 		if (name=="prestige0") {
 			if (hasPrestige(2,8)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="prestige1") {
 			if (hasPrestige(1,61)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="fTier") {
+			if (hasPrestige(2,13)) power = power.mul(tmp.prestigeMassEffect)
 		}
 	}
 	if (type=="meta") {

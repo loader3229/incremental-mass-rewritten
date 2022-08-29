@@ -2,7 +2,7 @@ const INFINITY_LAYER = {
     gain() {
         let x = player.qu.points.add(1).log(Number.MAX_VALUE);
         let y = player.qu.rip.amt.add(1).log(Number.MAX_VALUE);
-        if (x.lt(1) || CHALS.inChal(18)) return E(0)
+        if (x.lt(1) || CHALS.inChal(18) || CHALS.inChal(19)) return E(0)
         if (y.lt(1)) y=E(1)
 		if (hasUpgrade('inf',20))y = y.pow(2)
 		let power = E(2)
@@ -11,6 +11,7 @@ const INFINITY_LAYER = {
 		if (hasUpgrade('inf',16))power = power.add(1)
 		if (hasUpgrade('inf',18))power = power.add(1)
 		if (hasUpgrade('inf',19))power = power.add(1)
+		if (hasElement(205))power = power.add(tmp.chal?tmp.chal.eff[18]:0);
 		if (hasElement(146)){
 			let z = player.qu.en.amt.add(1).log(Number.MAX_VALUE);
 			if (z.lt(1)) z=E(1)
@@ -22,7 +23,7 @@ const INFINITY_LAYER = {
 			x = x.mul(z)
 		}
 		if (hasElement(189)){
-			let z = (player.inf.points).add(1).log(Number.MAX_VALUE);
+			let z = overflow(player.inf.points.add(1).log(Number.MAX_VALUE),1000,0.5);
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
@@ -137,6 +138,7 @@ const ETERNITY_LAYER = {
     },
     gainTimes() {
         let x = E(1)
+		if (hasElement(217)) x = x.mul(tmp.elements.effect[217]);
         return x
     },
     enter() {
@@ -221,6 +223,7 @@ const ETERNITY_LAYER = {
         eff() {
             let pow = E(2)
 			if (hasElement(122)) pow = pow.mul(1.5)
+			if (hasElement(209)) pow = pow.mul(tmp.chal?tmp.chal.eff[19]:1)
             let x = pow.pow(player.et.shard_gen)
             return {pow: pow, eff: x}
         },

@@ -16,7 +16,7 @@ const ENTROPY = {
         player.qu.en[i][3] = 0
     },
     gain() {
-		if (CHALS.inChal(13)) return E(0)
+		if (CHALS.inChal(13) || CHALS.inChal(19)) return E(0)
         let x = tmp.en.eff.eth.mul(getEnRewardEff(6))
         if (hasElement(93)) x = x.mul(tmp.elements.effect[93]||1)
         if (player.md.break.upgs[6].gte(1)) x = x.mul(tmp.bd.upgs[6].eff?tmp.bd.upgs[6].eff[0]:1)
@@ -72,7 +72,7 @@ const ENTROPY = {
             inc: E(20),
 
             eff(i) {
-                let x = i.pow(0.5).div(5).add(1)
+                let x = i.pow(0.5).div(5).add(1).softcap(11,0.1,0)
                 return x
             },
             desc(x) { return `Atomic Power’s effect is <b>${formatPercent(x.sub(1))}</b> exponentially stronger.` },
@@ -190,6 +190,7 @@ const ENTROPY = {
 				if (i == 6 && hasElement(197)) p = p ** 0.85
 				if (i == 2 && hasElement(198)) p = p ** 0.9
 				if (i == 7 && hasElement(201)) p = p ** 0.75
+				if (i == 7 && hasElement(208)) p = p ** 0.5
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -219,6 +220,7 @@ const ENTROPY = {
 				if (i == 6 && hasElement(197)) p = p ** 0.85
 				if (i == 2 && hasElement(198)) p = p ** 0.9
 				if (i == 7 && hasElement(201)) p = p ** 0.75
+				if (i == 7 && hasElement(208)) p = p ** 0.5
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()

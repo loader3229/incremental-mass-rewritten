@@ -1,6 +1,6 @@
 const QUANTUM = {
     gain() {
-		if (CHALS.inChal(13)) return E(0)
+		if (CHALS.inChal(13) || CHALS.inChal(19)) return E(0)
         let x = player.mass.max(1).log10().div(1e13)
         if (x.lt(1)) return E(0)
         x = x.max(0).pow(hasTree("qu11")?3:1.5)
@@ -17,16 +17,17 @@ const QUANTUM = {
         return x.floor()
     },
     gainTimes() {
-		if (CHALS.inChal(13)) return E(0)
+		if (CHALS.inChal(13) || CHALS.inChal(19)) return E(0)
         let x = E(1)
         if (hasTree("qu7")) x = x.mul(treeEff("qu7"))
         if (hasTree("qu9")) x = x.mul(treeEff("qu9"))
         if (hasTree("qu_qol11")) x = x.mul(10)
         if (hasUpgrade('inf',1)) x = x.mul(player.inf.times.add(200))
+        if (hasElement(216)) x = x.mul(tmp.elements.effect[216])
         return x
     },
     enter(auto=false,force=false,rip=false,bd=false) {
-		if(CHALS.inChal(14))rip = true, player.qu.rip.active = true;
+		if(CHALS.inChal(14) || CHALS.inChal(19))rip = true, player.qu.rip.active = true;
         if (tmp.qu.gain.gte(1) || force) {
             if (player.confirms.qu&&!auto&&!force) if (confirm("你确定要前往量子吗？除了部分qol升级以外您将失去绝大部分进度")?!confirm("您真的确定了吗？？？"):true) return
             if (QCs.active() && !rip && !bd && !player.qu.rip.active) {
@@ -113,7 +114,7 @@ const QUANTUM = {
         tmp.pass = false
     },
     bpGain() {
-		if (CHALS.inChal(13)) return E(0)
+		if (CHALS.inChal(13) || CHALS.inChal(19)) return E(0)
         let x = E(1)
         if (tmp.qu.mil_reached[5]) x = x.mul(tmp.preQUGlobalSpeed.root(2).softcap(1e50,0.95,2))
         if (hasTree('qu5')) x = x.mul(tmp.supernova.tree_eff.qu5)
