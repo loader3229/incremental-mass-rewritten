@@ -1062,7 +1062,7 @@ const ELEMENTS = {
             desc: `Booster boost its effect.`,
 			cost: uni(1e147),
 			effect() {
-				let x = player.massUpg[2].add(1).log10().pow(0.6);
+				let x = (player.massUpg[2]||E(0)).add(10).log10().pow(0.6);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1071,7 +1071,7 @@ const ELEMENTS = {
             desc: `Muscler boost its effect.`,
 			cost: uni(1e150),
 			effect() {
-				let x = player.massUpg[1].add(1).log10().pow(0.6);
+				let x = (player.massUpg[1]||E(0)).add(10).log10().pow(0.6);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
