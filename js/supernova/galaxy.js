@@ -50,6 +50,7 @@ const SUPERNOVA_GALAXY = {
 		if(player.superGal.gte(3))player.mainUpg.bh=[4,5,6];
 		if(player.superGal.gte(3))player.mainUpg.atom=[2,3,4,5,6];
 		TABS.choose(0);
+		tmp.rank_tab = 0;
 		TABS.choose(5);
 	},
 	effects:{

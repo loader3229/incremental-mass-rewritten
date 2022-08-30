@@ -247,12 +247,12 @@ const UPGS = {
                 },
             },
             9: {
-                unl() { return player.bh.unl },
+                unl() { return player.bh.unl || player.chal.unl},
                 desc: "Stronger Power is added +^0.25.",
                 cost: E(1e31),
             },
             10: {
-                unl() { return player.bh.unl },
+                unl() { return player.bh.unl || player.chal.unl},
                 desc: "Super Rank scaling is 20% weaker.",
                 cost: E(1e43),
             },
@@ -337,7 +337,7 @@ const UPGS = {
                 cost: E('e2e123'),
             },
             20: {
-                unl() { return hasElement(134) },
+                unl() { return hasUpgrade('inf',15) && hasElement(134) },
                 desc() {return "Rage Power boost Accelerator Power."},
                 cost: E('ee151'),
                 effect() {
@@ -685,7 +685,7 @@ const UPGS = {
                 cost: E('e3e108'),
             },
             20: {
-                unl() { return hasElement(134) },
+                unl() { return hasUpgrade('inf',15) && hasElement(134) },
                 desc() {return "Atomic Powers boost Accelerator Power."},
                 cost: E('e2e124'),
                 effect() {
