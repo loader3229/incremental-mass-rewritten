@@ -50,7 +50,7 @@ const TABS = {
             { id: "Bosons", unl() { return player.supernova.post_10 } },
             { id: "Fermions", unl() { return player.supernova.fermions.unl } },
             { id: "Radiation", unl() { return tmp.radiation.unl } },
-            { id: "Galaxy", unl() { return hasElement(218) || player.superGal.gte(1)} },
+            { id: "星系", unl() { return hasElement(218) || player.superGal.gte(1)} },
         ],
         6: [
             { id: "Chroma" },
