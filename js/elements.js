@@ -215,17 +215,22 @@ function updateUpperHTML() {
 		<br>本次挑战可增加${tmp.chal.gain}次完成次数(到达${tmp.chal.format(data.goal)+CHALS.getResName(player.chal.active)}后可再增加1次)`)
 	}
 	
-	unl = player.atom.unl
+	unl = player.atom.unl && player.superGal.lt(10)
 	tmp.el.quark_div.setDisplay(unl)
 	if (unl) tmp.el.quarkAmt.setHTML(format(player.atom.quarks,0)+"<br>"+(hasElement(14)?formatGain(player.atom.quarks,tmp.atom?tmp.atom.quarkGain.mul(tmp.atom.quarkGainSec).mul(gs):0):"(+"+format(tmp.atom.quarkGain,0)+")"))
 	
-	unl = MASS_DILATION.unlocked()
+	unl = MASS_DILATION.unlocked() && player.superGal.lt(10)
 	tmp.el.md_div.setDisplay(unl)
 	if (unl) tmp.el.md_massAmt.setHTML(format(player.md.particles,0)+"<br>"+(player.md.active?"(+"+format(tmp.md.rp_gain,0)+")":(hasTree("qol3")?formatGain(player.md.particles,tmp.md.passive_rp_gain.mul(gs)):"(inactive)")))
 	
 	unl = (player.supernova.post_10 || player.superGal.gte(1))
 	tmp.el.sn_div.setDisplay(unl)
 	if (unl) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>(+"+format(tmp.supernova.bulk.sub(player.supernova.times).max(0),0)+")")
+		
+	
+	unl = (player.superGal.gte(10))
+	tmp.el.galQk_div.setDisplay(unl)
+	if (unl) tmp.el.galQkAmt.setHTML(format(player.galQk,0)+"<br>"+player.galQk.formatGain(SUPERNOVA_GALAXY.galQkGain(),0))
 }
 
 function updateMassUpgradesHTML() {

@@ -398,6 +398,7 @@ var cnItems = {
     '[Oganesson]': '[气奥]',
 	'Element Tier 1': '元素阶层1',
 	'Element Tier 2': '元素阶层2',
+	'Element Tier 3': '元素阶层3',
     'Improves quark gain formula is better.': '使增加夸克获取速度的公式变得更好。',
     'Hardened Challenge scale 25% weaker.': '使硬化挑战的折算效果弱化25%。',
     'Electron Power boost Atomic Powers gain.': '使电子能量可以加成原子能量获取速度。',
@@ -553,7 +554,6 @@ var cnItems = {
     'Back to Main': '返回主游戏',
     'Reset without being Supernova': '在未成为超新星的前提下重置',
     'You become ': '您已经有',
-    'Next Supernova at ': '下次超新星需要',
     ' stars': '星辰',
     ' Neutron star.': '中子星。',
     'You become Supernova!': '您成为了超新星！',
@@ -1080,4 +1080,5 @@ var cnRegReplace = new Map([
     [/^Boost all Radiations gains by (.+)x \/$/, '使辐射波的波长获取速度变为原来的$1倍/'], //量子等
     [/^ Make all Radiations effects (.+)x stronger$/, '使辐射波的效果变为原来的$1倍'], //量子等
     [/^Make all Supernova's scalings start (.+) later$/, '使超新星的所有折算延迟$1次出现'], //量子等
+    [/^Next Supernova at (.+) stars$/, '下次超新星需要$1星辰'],
 ]);

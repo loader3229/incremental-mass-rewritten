@@ -88,7 +88,7 @@ const SCALE_POWER= {
 		tetr: 3,
 		pent: 3,
 		hex: 5,
-		hept: 6,
+		hept: 5,
 		massUpg: 5,
 		tickspeed: 4,
 		bh_condenser: 2,
@@ -297,7 +297,7 @@ function getScalingStart(type, name) {
 			start = start.mul(tmp.bd.upgs[4].eff)
 			if (hasPrestige(0,53)) start = start.mul(1.5)
 			if (player.ranks.hex.gte(62)) start = start.mul(RANKS.effect.hex[62]())
-            if (hasElement(170))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
+            if (hasElement(170) && !hasElement(230))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
 			if (hasPrestige(1,57)) start = start.mul(prestigeEff(1,57))
 			if (player.ranks.hept.gte(17)) start = start.mul(RANKS.effect.hept[17]())
 			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
@@ -307,7 +307,11 @@ function getScalingStart(type, name) {
             if (hasElement(188))start = start.mul(tmp.bd.upgs[4].eff)
             if (hasElement(202))start = start.mul(tmp.elements.effect[202])
 			if (player.ranks.hept.gte(20)) start = start.mul(RANKS.effect.hept[20]())
+            if (hasElement(230))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
 			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
+		}
+		if (name=="tetr") {
+            if (hasElement(232))start = start.mul(tmp.elements.effect[232])
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -413,6 +417,7 @@ function getScalingPower(type, name) {
 			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
 			if (player.ranks.hept.gte(21)) power = power.mul(0.8)
 			if (player.ranks.hept.gte(30)) power = power.mul(0.6)
+			if (hasPrestige(1,120)) power = power.mul(0.4)
 		}
 		if (name=="supernova") {
 			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
@@ -492,6 +497,12 @@ function getScalingPower(type, name) {
 		if (name=="hex") {
 			if (hasPrestige(1,56)) power = power.mul(0.955)
 			if (hasPrestige(1,62)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="hept") {
+			if (hasPrestige(1,146)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.1))
+			if (hasPrestige(2,21)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.1))
+			if (hasPrestige(2,22)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.3))
+			if (hasPrestige(2,23)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.5))
 		}
 	}
 	if (type=="ultra") {

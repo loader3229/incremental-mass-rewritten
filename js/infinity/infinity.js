@@ -72,7 +72,7 @@ const INFINITY_LAYER = {
 		updateInfinityTemp()
         player.inf.points = player.inf.points.add(tmp.inf.gain)
         player.inf.times = player.inf.times.add(tmp.inf.gainTimes)
-		if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
+		if(player.superGal.lt(6))if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
 		else{
 			
         let keep = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11']
@@ -107,7 +107,7 @@ const INFINITY_LAYER = {
 		if(!hasUpgrade('inf',3))player.mainUpg.rp = []
 		if(!hasUpgrade('inf',3))player.mainUpg.bh = []
 		if(!hasUpgrade('inf',3))player.mainUpg.atom = []
-		if(!hasUpgrade('inf',5))player.atom.elements=SUPERNOVA_GALAXY.effects.elem();
+		if(!hasUpgrade('inf',5) && player.superGal.lt(8))player.atom.elements=SUPERNOVA_GALAXY.effects.elem();
 		player.md.break.energy = E(0)
 		player.md.break.mass = E(0)
         QUANTUM.doReset()
@@ -155,7 +155,7 @@ const ETERNITY_LAYER = {
 		updateInfinityTemp()
         player.et.points = player.et.points.add(tmp.et.gain)
         player.et.times = player.et.times.add(tmp.et.gainTimes)
-		if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
+		if(player.superGal.lt(6))if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
 		else{
 			
         let keep = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11']
@@ -190,7 +190,7 @@ const ETERNITY_LAYER = {
 		if(!hasUpgrade('inf',3))player.mainUpg.rp = []
 		if(!hasUpgrade('inf',3))player.mainUpg.bh = []
 		if(!hasUpgrade('inf',3))player.mainUpg.atom = []
-		if(!hasUpgrade('inf',5))player.atom.elements=SUPERNOVA_GALAXY.effects.elem();
+		if(!hasUpgrade('inf',5) && player.superGal.lt(8))player.atom.elements=SUPERNOVA_GALAXY.effects.elem();
 		player.md.break.energy = E(0)
 		player.md.break.mass = E(0)
         QUANTUM.doReset()
@@ -246,11 +246,11 @@ function calcInfinity(dt, dt_offline) {
 			player.inf.points = player.inf.points.add(tmp.inf.gain.mul(dt))
 			player.inf.times = player.inf.times.add(tmp.inf.gainTimes.mul(dt))
 		}
-		if (hasElement(195)){
-			updateInfinityTemp()
-			player.et.points = player.et.points.add(tmp.et.gain.mul(dt))
-			player.et.times = player.et.times.add(tmp.et.gainTimes.mul(dt))
-		}
+	}
+	if (hasElement(195)){
+		updateInfinityTemp()
+		player.et.points = player.et.points.add(tmp.et.gain.mul(dt))
+		player.et.times = player.et.times.add(tmp.et.gainTimes.mul(dt))
 	}
 	if (player.et.times.gt(0)){
 		player.et.shards = player.et.shards.add(tmp.et.shardsGain.mul(dt))
@@ -269,6 +269,8 @@ function updateInfinityTemp() {
 
     tmp.et.shard_gen_can = player.et.points.gte(tmp.et.shard_gen_cost)
     tmp.et.shard_gen_eff = ETERNITY_LAYER.shard_gen.eff()
+	
+	if(hasElement(220))player.et.shard_gen = player.et.shard_gen.max(tmp.et.shard_gen_bulk)
 }
 
 
@@ -296,5 +298,7 @@ function calcShardsEffect() {
 	if(hasUpgrade('br',18))eff = eff.pow(1.1);
 	if(hasUpgrade('br',19))eff = eff.pow(1.5);
 	if(hasElement(148))eff = eff.pow(1.1);
+	if(hasElement(223))eff = eff.pow(1.4);
+	if(hasElement(226))eff = eff.pow(1.3);
 	return eff;
 }

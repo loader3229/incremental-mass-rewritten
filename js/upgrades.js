@@ -723,10 +723,10 @@ const UPGS = {
                 desc: `Pre-Quantum Global Speed is raised based on Death Shards (before division).`,
                 cost: E(50),
                 effect() {
-                    let x = player.qu.rip.amt.add(1).log10().div(25).add(1)
+                    let x = player.qu.rip.amt.add(1).log10().div(25).add(1).softcap(500,0.25,0);
                     return x
                 },
-                effDesc(x=this.effect()) { return "^"+format(x) },
+                effDesc(x=this.effect()) { return "^"+format(x)+(x.gte(500)?" <span class='soft'>(softcapped)</span>":"") },
             },
             4: {
                 desc: `Start with 2 tiers of each Fermion in Big Rip.`,
@@ -949,7 +949,7 @@ const UPGS = {
                 desc: `Timeshards boost Infinity Mass. Eternity Mass base formula is better.`,
                 cost: E(1e16),
                 effect() {
-                    let x = player.et.shards.pow(0.05);
+                    let x = player.et.shards.add(1).pow(0.05);
                     return x
                 },
                 effDesc(x=this.effect()) { return "x"+format(x) },

@@ -34,6 +34,8 @@ const ATOM = {
         if (player.ranks.hex.gte(47)) x = x.pow(1.1)
         if (hasPrestige(1,7)) x = x.pow(prestigeEff(1,7))
         if (hasElement(67) && player.ranks.hex.gte(67)) x = x.pow(tmp.elements.effect[67])
+		x = x.pow(SUPERNOVA_GALAXY.galPow1_eff())
+        if (hasElement(231)) x = x.pow(tmp.elements.effect[231])
         return x.floor();
     },
     canReset() { return tmp.atom.gain.gte(1) },

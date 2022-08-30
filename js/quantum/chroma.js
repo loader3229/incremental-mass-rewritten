@@ -24,6 +24,7 @@ const CHROMA = {
             let x = i.add(1).log10().add(1).root(3)
             if (hasUpgrade('br',10)) x = x.mul(1.1)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)
+			if (player.ranks.hept.gte(40)) x = x.pow(3)
             return x
         },
         i => {

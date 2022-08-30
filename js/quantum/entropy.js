@@ -27,6 +27,7 @@ const ENTROPY = {
 		if (hasPrestige(2,5)) x = x.mul(prestigeEff(2,5));
 		if (player.ranks.hex.gte(125)) x = x.mul(player.ranks.hex.add(1));
         if (hasElement(139)) x = x.mul(tmp.elements.effect[139]||1)
+		if (player.ranks.hept.gte(52)) x = x.mul(E(10).pow(player.ranks.hept));
 		x = x.mul(SUPERNOVA_GALAXY.effects.entropyg())
 	
         return x
@@ -126,6 +127,7 @@ const ENTROPY = {
 
             eff(i) {
                 let x = i.root(2).div(10).add(1).pow(-1)
+				if(x.lt(0.07))x = x.mul(0.0049).cbrt()
                 return x
             },
             desc(x) { return `All pre-Supernova scaling is <b>${formatReduction(x)}</b> weaker before Meta scaling (not including Pent).` },

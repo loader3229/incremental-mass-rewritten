@@ -18,7 +18,7 @@ function updateChalHTML() {
                 tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0)+" / "+format(tmp.chal.max[x],0))
 				if(hasPrestige(1,25) && x <= 11)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
 				if(hasElement(133) && x == 12)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
-				//if(hasElement(194) && x == 13)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(222) && x == 13)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
             }
         }
         tmp.el.chal_enter.setVisible(player.chal.active != player.chal.choosed)
@@ -194,7 +194,9 @@ const CHALS = {
         if (hasElement(206) && (i==14||i==16))  x = x.add(100)
         if (hasElement(210) && (i==14||i==17))  x = x.add(100)
         if (hasElement(214) && (i==15||i==16))  x = x.add(200)
+        if (hasElement(222) && (i==13))  x = x.add(EINF)
 		if (i<=16)x = x.add(SUPERNOVA_GALAXY.effects.chal())
+        if (hasElement(227) && (i==17))  x = x.add(300)
         return x.floor()
     },
     getScaleName(i) {
@@ -210,6 +212,7 @@ const CHALS = {
 		if (player.ranks.hex.gte(2)) x = x.mul(0.75)
 		if (i >= 16 && i!=19) x = x.mul(30);
 		if (i <= 12) x = x.mul(tmp.chal.eff[17]||1);
+		if (hasPrestige(1,122)) x = x.mul(0.9)
         return x
     },
     getPower2(i) {
@@ -383,6 +386,7 @@ const CHALS = {
         title: "移除级别",
         desc: "You cannot rank up.",
         reward() {
+			if(hasElement(230))return `Meta-Tier scaling starts later.`;
 			if(hasElement(170))return `Meta-Rank scaling starts later.`;
 			return `Rank requirement are weaker by completions.`
 		},
@@ -391,7 +395,7 @@ const CHALS = {
         pow: E(1.25),
         start: E(1.5e136),
         effect(x) {
-			if(hasElement(170))return x.pow(hasElement(199)?0.8:0.6).add(1);
+			if(hasElement(170))return x.pow(hasElement(230)?1:hasElement(199)?0.8:0.6).add(1);
             let ret = E(0.97).pow(x.root(2).softcap(5,0.5,0));
             return ret
         },
@@ -594,10 +598,10 @@ const CHALS = {
         pow: E(9),
         start: E('ee2683'),
         effect(x) {
-            let ret = x.add(1).log10().add(1).log10().add(1).log10().softcap(0.09,0.25,0);
+            let ret = x.add(1).log10().add(1).log10().add(1).log10().softcap(0.09,hasElement(233)?1:0.25,0).mul(hasElement(233)?4.2:1);
             return ret
         },
-        effDesc(x) { return "+"+format(x) },
+        effDesc(x) { return "+"+format(x)+((x.gte(0.09) && !hasElement(233))?" <span class='soft'>(softcapped)</span>":"") },
     },
     19: {
         unl() { return hasElement(209) },
@@ -624,7 +628,9 @@ const CHALS = {
 		pow: E(1.25),
         start: E("1e3149"),
         effect(x) {
+			if(hasPrestige(2,17))x = x.pow(2);
             let ret = E(2).pow(x);
+			if(hasElement(229))ret = ret.pow(3);
             return ret
         },
         effDesc(x) { return "^"+format(x) },

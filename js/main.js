@@ -93,7 +93,8 @@ const FORMS = {
 		if (player.ranks.hex.gte(120))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
 		if (hasUpgrade('rp',19))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
 		if (hasElement(164))tmp.massOverflowStart = tmp.massOverflowStart.pow(tmp.chal.eff[15])
-		
+        if (hasPrestige(2,19))tmp.massOverflowStart = tmp.massOverflowStart.pow(tmp.bosons.effect.neg_w[0])
+			
 		if (CHALS.inChal(15) || CHALS.inChal(19))tmp.massOverflowStart = E(10)
 		
 		tmp.massOverflowPower = E(0.8)
@@ -420,6 +421,7 @@ const FORMS = {
 				
 			
 		 x = x.pow(SUPERNOVA_GALAXY.effects.bh())
+		x = x.pow(SUPERNOVA_GALAXY.galPow2_eff())
 		
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)

@@ -10,6 +10,7 @@ const RANKS = {
             if (type == "tetr" && hasTree("qol5")) reset = false
             if (type == "pent" && hasTree("qol8")) reset = false
             if (type == "hex" && hasPrestige(1,27)) reset = false
+            if (type == "hept" && hasPrestige(2,18)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -23,6 +24,7 @@ const RANKS = {
             if (type == "tetr" && hasTree("qol5")) reset = false
             if (type == "pent" && hasTree("qol8")) reset = false
             if (type == "hex" && hasPrestige(1,27)) reset = false
+            if (type == "hept" && hasPrestige(2,18)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -251,6 +253,8 @@ const RANKS = {
 			'21': "Super Pent is 20% weaker.",
 			'22': "Ultra Mass Upgrades is 1% weaker.",
 			'30': "Super Pent is 40% weaker.",
+			'40': "the effect of red chroma ^3",
+			'52': "Hept Boost Entropy Gain.",
 		},
     },
     effect: {
@@ -390,6 +394,7 @@ const RANKS = {
             '1'() {
                 let ret = E(0.98).pow(player.ranks.hept);
 				if(player.ranks.hept.gte(5))ret = ret.pow(1.2);
+				ret = ret.max(1/3);
                 return ret
             },
             '2'() {
@@ -417,6 +422,10 @@ const RANKS = {
             },
             '20'() {
                 let ret = E(1.1).pow(player.ranks.hept);
+                return ret
+            },
+            '52'() {
+                let ret = E(10).pow(player.ranks.hept);
                 return ret
             },
 		},
@@ -469,6 +478,7 @@ const RANKS = {
             6(x) { return format(x)+"x" },
             17(x) { return format(x)+"x later" },
             20(x) { return format(x)+"x later" },
+            52(x) { return format(x)+"x" },
 		},
     },
     fp: {
@@ -551,9 +561,9 @@ const PRESTIGES = {
         _=>hasPrestige(1,12) || hasPrestige(2,1),
     ],
     noReset: [
-        _=>hasUpgrade('br',11),
-        _=>hasPrestige(2,2),
-        _=>false,
+        _=>hasUpgrade('br',11) || player.superGal.gte(9),
+        _=>hasPrestige(2,2) || player.superGal.gte(9),
+        _=>player.superGal.gte(9),
     ],
     rewards: [
         {
@@ -658,6 +668,10 @@ const PRESTIGES = {
 			"64": `Prestige Mass Effect is applied to Super Hept scaling.`,
 			"67": `Prestige Mass Effect is applied to Meta Prestige Level scaling.`,
 			"90": `Galactic Power effect is better.`,
+			"120": `Super Pent is 60% weaker.`,
+			"122": `Hardened scalings of Challenge 1-20 are 10% weaker.`,
+			"136": `Galactic Dark Energy effect is better.`,
+			"146": `Prestige Mass Effect is applied to Hyper Hept scaling at reduced rate.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
@@ -672,6 +686,12 @@ const PRESTIGES = {
             "12": `Prestige Mass Effect is applied to Super Glory scaling.`,
             "13": `Prestige Mass Effect is applied to Ultra Fermion Tier scaling.`,
             "14": `Meta Fermion Tier scaling starts 100x later.`,
+            "17": `Boost Challenge 20 effect.`,
+            "18": `Hept don't reset anything.`,
+            "19": `First effect of W- Bosons affects Mass Overflow.`,
+            "21": `Add +10% to Honor 146's effectiveness`,
+            "22": `Add +30% to Honor 146's effectiveness`,
+            "23": `Add +50% to Honor 146's effectiveness`,
 		},
     ],
     rewardEff: [
@@ -786,6 +806,13 @@ const PRESTIGES = {
                 let x = player.ranks.rank.add(10).log10();
                 return x
             },x=>"x"+x.format()],
+            "146": [_=>{
+                let x = 10;
+				if (hasPrestige(2,21))x += 10;
+				if (hasPrestige(2,22))x += 30;
+				if (hasPrestige(2,23))x += 50;
+                return x
+            },x=>x+"% effectiveness"],
         },
 		{
             "3": [_=>{

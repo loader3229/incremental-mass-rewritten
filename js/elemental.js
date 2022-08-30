@@ -33,6 +33,7 @@ const ELEMENTS = {
         'Roeritgenium','Copernicium','Nihonium','Flerovium','Moscovium','Livermorium','Tennessine','Oganesson'
     ],
     canBuy(x) { 
+		if(this.upgs[x].galQk)return player.galQk.gte(this.upgs[x].cost) && !hasElement(x)
 		if(this.upgs[x].et)return player.et.points.gte(this.upgs[x].cost) && !hasElement(x)
 		if(x>118) return player.inf.points.gte(this.upgs[x].cost) && !hasElement(x)
 		return player.atom.quarks.gte(this.upgs[x].cost) && !hasElement(x) && (player.qu.rip.active ? true : x <= 86) && !tmp.elements.cannot.includes(x)
@@ -40,7 +41,8 @@ const ELEMENTS = {
     buyUpg(x) {
         if (this.canBuy(x)) {
 			if(x>118){
-				if(this.upgs[x].et)player.et.points = player.et.points.sub(this.upgs[x].cost)
+				if(this.upgs[x].galQk)player.galQk = player.galQk.sub(this.upgs[x].cost)
+				else if(this.upgs[x].et)player.et.points = player.et.points.sub(this.upgs[x].cost)
 				else player.inf.points = player.inf.points.sub(this.upgs[x].cost)
 			}else{
 				player.atom.quarks = player.atom.quarks.sub(this.upgs[x].cost)
@@ -836,6 +838,7 @@ const ELEMENTS = {
 				if(hasElement(140))x = player.et.points.add(1).pow(0.2);
 				if(hasElement(147))x = x.pow(1.2);
 				if(hasElement(157))x = x.pow(1.2);
+				if(hasElement(221))x = x.pow(1.63);
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -1291,6 +1294,95 @@ const ELEMENTS = {
 			cost: uni(1e210),
 			et: true,
 		},
+		
+		// extended element II
+		
+		
+		{
+			desc: `[sn6] is better.`,
+			cost: E(1e6),
+			galQk: true,
+		},
+		{
+			desc: `Autobuy Shard Generators.`,
+			cost: E("1.5e516"),
+			et: true,
+		},
+		{
+			desc: `Raise Element 128's effect by 1.63`,
+			cost: E("1.5e2976"),
+		},
+		{
+			desc: `Uncap C13 completions.`,
+			cost: E(1e7),
+			galQk: true,
+		},
+		{
+			desc: `Timeshards effect is better.`,
+			cost: E("1.5e533"),
+			et: true,
+		},
+		{
+			desc: `Remove a softcap from Radiation Booster 'Meta-Rank Boost'.`,
+			cost: E("1.5e3306"),
+		},
+		{
+			desc: `The effect softcap of Galactic Power is weaker.`,
+			cost: E(2.5e7),
+			galQk: true,
+		},
+		{
+			desc: `Timeshards effect is better.`,
+			cost: E("1.5e560"),
+			et: true,
+		},
+		{
+			desc: `Add 300 C17 completions.`,
+			cost: E("1.5e3656"),
+		},
+		{
+			desc: `The effect softcap of Galactic Power is weaker.`,
+			cost: E(1e8),
+			galQk: true,
+		},
+		{
+			desc: `Raise C20 effect by 3`,
+			cost: E("1.5e606"),
+			et: true,
+		},
+		{
+			desc: `C5 effect is changed.`,
+			cost: E("1.5e3806"),
+		},
+		{
+			desc: `Galactic Quarks boost Quark gain.`,
+			cost: E(5e8),
+			galQk: true,
+			effect() {
+				let x = player.galQk.add(1);
+				return x
+			},
+			effDesc(x) { return "^"+format(x); },
+		},
+		{
+			desc: `Meta-Tetr scaling starts later based on Tier.`,
+			cost: E("1.5e611"),
+			et: true,
+			effect() {
+				let x = player.ranks.tier.add(10).log10().sqrt();
+				return x
+			},
+			effDesc(x) { return format(x)+"x later"; },
+		},
+		{
+			desc: `C18 effect is stronger.`,
+			cost: E("1.5e3816"),
+		},
+		{
+			desc: `Effect of Galactic Atoms is better.`,
+			cost: E(2e9),
+			galQk: true,
+		},
 	],
     /*
     {
@@ -1305,6 +1397,7 @@ const ELEMENTS = {
     */
     getUnlLength() {
 		
+		if(player.superGal.gte(10))return 234;
 		if(player.superGal.gte(1))return 218;
         let u = 4
         if (quUnl()) u = 77+3
@@ -1335,7 +1428,7 @@ const ELEMENTS = {
     },
 }
 
-const MAX_ELEM_TIERS = 2
+const MAX_ELEM_TIERS = 3
 
 function getElementId(x) {
     let log = Math.floor(Math.log10(x))
@@ -1428,6 +1521,8 @@ function setupElementsHTML() {
 function updateElementsHTML() {
     let tElem = tmp.elements
 
+	if (tElem.unl_length<=118)player.atom.elemTier=Math.min(player.atom.elemTier,1)
+	if (tElem.unl_length<=218)player.atom.elemTier=Math.min(player.atom.elemTier,2)
     tmp.el.elemTierDiv.setDisplay(hasUpgrade("atom",16) || player.superGal.gte(1))
     tmp.el.elemTier.setHTML("Element Tier "+player.atom.elemTier)
 
@@ -1437,7 +1532,7 @@ function updateElementsHTML() {
         tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b>"+ELEMENTS.upgs[ch].desc)
 		if(ELEMENTS.upgs[ch].desc instanceof Function)tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc())
         tmp.el.elem_cost.setTxt(format(ELEMENTS.upgs[ch].cost,0)+"夸克"+(ch>86?"(需进入大撕裂)":"")+(player.qu.rip.active&&tmp.elements.cannot.includes(ch)?"[大撕裂中无法购买]":""))
-        if(ch > 118)tmp.el.elem_cost.setTxt(formatMass(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].et?"永恒质量":"无限质量"))
+        if(ch > 118)tmp.el.elem_cost.setTxt((ELEMENTS.upgs[ch].galQk?format:formatMass)(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].galQk?"星系夸克":ELEMENTS.upgs[ch].et?"永恒质量":"无限质量"))
 		tmp.el.elem_eff.setHTML(ELEMENTS.upgs[ch].effDesc?"Currently: "+ELEMENTS.upgs[ch].effDesc(tElem.effect[ch]):"")
     }
 
@@ -1458,7 +1553,7 @@ function updateElementsHTML() {
                     let unl2 = x <= tElem.unl_length
                     upg.setVisible(unl2)
                     if (unl2) {
-                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: (x > 86 && x <= 118) || ELEMENTS.upgs[x].et})
+                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: (x > 86 && x <= 118), ext: (x > 118), et: ELEMENTS.upgs[x].et, gqk: ELEMENTS.upgs[x].galQk})
                     }
                 }
             }

@@ -287,7 +287,8 @@ function getPlayerData() {
 			shard_gen: E(0)
 		},
 		superGal: E(0),
-		galPow: [E(0)]
+		galQk: E(0),
+		galPow: [E(0),E(0),E(0),E(0),E(0),E(0)]
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {

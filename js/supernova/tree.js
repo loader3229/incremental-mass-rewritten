@@ -137,6 +137,7 @@ const TREE_UPGS = {
             cost: E('e1.35e12'),
             effect() {
                 let x = player.supernova.times.add(10).log10();
+				if(hasElement(219))x = player.supernova.times.add(1);
                 return x
             },
             effDesc(x) { return "^"+format(x) },
