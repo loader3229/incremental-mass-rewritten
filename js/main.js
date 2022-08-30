@@ -27,7 +27,7 @@ const FORMS = {
 		if (hasUpgrade('inf',9)) x = x.mul(upgEffect(5,9));
         if (hasElement(136)) x = x.mul(tmp.elements.effect[136])
 		if (player.ranks.hept.gte(6)) x = x.mul(player.ranks.hept.add(1));
-		
+		x = x.mul(SUPERNOVA_GALAXY.effects.pqgs());
         if (player.mainUpg.br.includes(3)) x = x.pow(tmp.upgs.main[4][3].effect)
         if (hasPrestige(0,5)) x = x.pow(2)
 		x = x.pow(calcShardsEffect())
@@ -51,6 +51,7 @@ const FORMS = {
 
         x = x.mul(tmp.bosons.effect.pos_w[0])
 		
+        x = x.mul(SUPERNOVA_GALAXY.effects.pqgs())
         if (!hasElement(105)) x = x.mul(tmp.atom.particles[0].powerEffect.eff1)
         else x = x.pow(tmp.atom.particles[0].powerEffect.eff1)
 
@@ -83,6 +84,8 @@ const FORMS = {
         .softcap(tmp.massSoftGain9,tmp.massSoftPower9,0)
 
         if (hasElement(117)) x = x.pow(10)
+		
+		x = x.pow(SUPERNOVA_GALAXY.galPow0_eff())
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
@@ -253,6 +256,10 @@ const FORMS = {
             if (!hasElement(156))step = step.add(tmp.atom.particles[0].powerEffect.eff2)
             if (player.ranks.tier.gte(4)) step = step.add(RANKS.effect.tier[4]())
             if (player.ranks.rank.gte(40)) step = step.add(RANKS.effect.rank[40]())
+					
+				
+			step = step.mul(SUPERNOVA_GALAXY.effects.tsMult())
+			
             step = step.mul(tmp.bosons.effect.z_boson[0])
             step = tmp.md.bd3 ? step.pow(tmp.md.mass_eff) : step.mul(tmp.md.mass_eff)
             step = step.pow(tmp.qu.chroma_eff[0])
@@ -261,6 +268,8 @@ const FORMS = {
 			if (hasElement(134) && hasElement(137)) step = step.pow(tmp.accelEffect.eff||1)
 			if (hasElement(156))step = step.pow(tmp.atom.particles[0].powerEffect.eff2)
                
+		   
+			step = step.pow(SUPERNOVA_GALAXY.effects.ts())
             let ss = E(1e50).mul(tmp.radiation.bs.eff[13])
             let p = 0.1
             if (hasElement(86)) {
@@ -278,7 +287,7 @@ const FORMS = {
 		
 			let eff_bottom = eff
 			if (hasElement(134)){
-				eff = eff.add(1).log10().add(1).log10().pow(tmp.accelEffect.eff.mul(0.1));
+				eff = eff.add(9).log10().add(9).log10().pow(tmp.accelEffect.eff.mul(0.1));
 				eff_bottom = eff_bottom.pow(tmp.accelEffect.eff);
 				if (player.ranks.tetr.gte(3)) eff = eff.pow(1.05),eff_bottom = eff_bottom.pow(1.05);
 			}
@@ -312,12 +321,18 @@ const FORMS = {
 			if (hasUpgrade('rp',20)) step = step.mul(upgEffect(1,20))
             if (player.ranks.hept.gte(4)) step = step.mul(RANKS.effect.hept[4]())
 			
+			step = step.mul(SUPERNOVA_GALAXY.effects.apMult())
             let x = player.accelerator.mul(step).add(1)
 			
             let ss = E(100)
             let p = 0.5
             let ss2 = E(200)
             let p2 = 0.1
+			
+			ss = ss.mul(SUPERNOVA_GALAXY.effects.aesc())
+			
+			ss2 = ss2.mul(SUPERNOVA_GALAXY.effects.aesc())
+			
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -343,6 +358,7 @@ const FORMS = {
             if (CHALS.inChal(4) || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("03")) gain = gain.root(10)
             gain = gain.pow(tmp.prim.eff[1][0])
 
+		gain = gain.pow(SUPERNOVA_GALAXY.effects.rp())
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
             return gain.floor()
@@ -401,6 +417,10 @@ const FORMS = {
 
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             if (hasElement(46) && player.ranks.hex.gte(46)) x = x.pow(tmp.elements.effect[46])
+				
+			
+		 x = x.pow(SUPERNOVA_GALAXY.effects.bh())
+		
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
 			tmp.bhOverflowStart = E("e1e34")
@@ -522,7 +542,7 @@ const FORMS = {
         set(id) {
             if (id=="sn") {
                 player.reset_msg = "Reach over "+format(tmp.supernova.maxlimit)+" collapsed stars to be Supernova"
-				if (player.supernova.times.gte(1000000)) player.reset_msg = "You reached the maximum Supernova limit!";
+				if (player.supernova.times.gte(SUPERNOVA_GALAXY.req())) player.reset_msg = "You reached the maximum Supernova limit!";
                 return
             }
             if (id=="qu") {
@@ -631,6 +651,7 @@ function formatARV(ex,gain=false) {
     if (gain) mlt = ex
     let arv = mlt.log10().div(15).floor()
 	if (player.mass_display == 3)arv = E(0)
+	if(arv.add(2).gte(1000))return format(mlt.log10().div(15).add(2))+" arvs";
     return format(mlt.div(Decimal.pow(1e15,arv))) + (arv.gte(8)?"arv^"+format(arv.add(2),0):ARV[arv.toNumber()])
 }
 
@@ -672,6 +693,11 @@ function formatGain(amt, gain, isMass=false) {
 			rate = "(+"+formatARV(mlt_next.sub(mlt_amt).mul(20),true) + "/秒)"
 		}
         else rate = "(+"+format(ooms) + "数量级/秒)"
+		if (player.mass_display == 0 && isMass){
+			let arv_amt = getMltValue(amt).log10().div(15);
+			let arv_next = getMltValue(amt.add(gain.div(20))).log10().div(15);
+			if (getMltValue(gain).log10().div(15).gte(1000) || arv_next.sub(arv_amt).gte(10))rate = "(+"+format(arv_next.sub(arv_amt).mul(20)) + " arvs/sec)"
+		}
     }
     else rate = "(+"+f(gain)+"/秒)"
 	}

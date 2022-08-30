@@ -23,6 +23,7 @@ const SCALE_START = {
 		tetr: E(60),
 		pent: E(100),
 		hex: E(500),
+		hept: E(40),
 		massUpg: E(500),
 		tickspeed: E(250),
 		bh_condenser: E(300),
@@ -51,13 +52,14 @@ const SCALE_START = {
 	meta: {
 		rank: E(1e4),
 		tier: E(1e65),
+		tetr: E(1e70),
 		tickspeed: E(5e4),
 		bh_condenser: E(1e7),
 		gamma_ray: E(1e6),
 		supernova: E(100),
 		fTier: E(25000),
 		prestige0: E(1000),
-		prestige1: E(100), // remove it
+		//prestige1: E(100), // remove it
 	},
 }
 
@@ -86,6 +88,7 @@ const SCALE_POWER= {
 		tetr: 3,
 		pent: 3,
 		hex: 5,
+		hept: 6,
 		massUpg: 5,
 		tickspeed: 4,
 		bh_condenser: 2,
@@ -121,7 +124,7 @@ const SCALE_POWER= {
 		supernova: 1.025,
 		fTier: 1.0001,
 		prestige0: 1.004,
-		prestige1: 1.1, // remove it
+		//prestige1: 1.01, // remove it
 	},
 }
 
@@ -297,12 +300,14 @@ function getScalingStart(type, name) {
             if (hasElement(170))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
 			if (hasPrestige(1,57)) start = start.mul(prestigeEff(1,57))
 			if (player.ranks.hept.gte(17)) start = start.mul(RANKS.effect.hept[17]())
+			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
 		}
 		if (name=="tier") {
 			if (hasPrestige(1,58)) start = start.mul(prestigeEff(1,58))
             if (hasElement(188))start = start.mul(tmp.bd.upgs[4].eff)
             if (hasElement(202))start = start.mul(tmp.elements.effect[202])
 			if (player.ranks.hept.gte(20)) start = start.mul(RANKS.effect.hept[20]())
+			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -313,11 +318,17 @@ function getScalingStart(type, name) {
 			if (hasPrestige(2,7)) start = start.mul(10000)
 			start = start.mul(tmp.fermions.effs[0][5])
 			start = start.mul(getEnRewardEff(0))
+			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
 		}
 		if (name=="bh_condenser" || name=="gamma_ray") {
 			start = start.mul(getEnRewardEff(0))
+			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
 		}
 		if (name == "supernova") if (hasPrestige(1,2)) start = start.add(100)
+			
+		if (name=="fTier") {
+			if (hasPrestige(2,14)) start = start.mul(100)
+		}
 	}
 	if (name=='supernova') {
 		start = start.add(tmp.prim.eff[7])
@@ -401,6 +412,7 @@ function getScalingPower(type, name) {
 		if (name=="pent") {
 			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)
 			if (player.ranks.hept.gte(21)) power = power.mul(0.8)
+			if (player.ranks.hept.gte(30)) power = power.mul(0.6)
 		}
 		if (name=="supernova") {
 			if (hasPrestige(0,61)) power = power.mul(tmp.prestigeMassEffect)

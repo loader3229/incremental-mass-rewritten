@@ -194,6 +194,7 @@ const CHALS = {
         if (hasElement(206) && (i==14||i==16))  x = x.add(100)
         if (hasElement(210) && (i==14||i==17))  x = x.add(100)
         if (hasElement(214) && (i==15||i==16))  x = x.add(200)
+		if (i<=16)x = x.add(SUPERNOVA_GALAXY.effects.chal())
         return x.floor()
     },
     getScaleName(i) {
@@ -531,10 +532,10 @@ const CHALS = {
         start: E('e2e12'),
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
-            let ret = E(0.97).pow(x.root(2))
+            let ret = E(0.97).pow(x.root(2).softcap(25,0.56,0))
             return ret
         },
-        effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+        effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker"+(x.log(0.97).gte(25)?" <span class='soft'>(softcapped)</span>":"") },
     },
     15: {
         unl() { return hasElement(164) },

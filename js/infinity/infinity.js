@@ -51,6 +51,7 @@ const INFINITY_LAYER = {
 		if (hasElement(128)) x = x.mul(tmp.elements.effect[128]);
 		if (hasTree('im1')) x = x.mul(treeEff('im1'));
         if (player.ranks.hex.gte(127)) x = x.mul(RANKS.effect.hex[127]())
+		x = x.mul(SUPERNOVA_GALAXY.effects.inf())
         return x
     },
     gainTimes() {
@@ -58,6 +59,7 @@ const INFINITY_LAYER = {
         if (hasUpgrade('inf',12)) x = x.mul(upgEffect(5,12));
 		if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
 		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
+        x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
         return x
     },
     enter() {
@@ -84,14 +86,14 @@ const INFINITY_LAYER = {
         player.supernova.tree = save_keep
 		}
 		player.qu.points = E(0)
-		if(!hasUpgrade('inf',3))player.qu.times = E(0)
-		if(hasUpgrade('inf',3))player.qu.times = E(200)
+		if(!hasUpgrade('inf',3))player.qu.times = SUPERNOVA_GALAXY.effects.qut()
+		if(hasUpgrade('inf',3))player.qu.times = SUPERNOVA_GALAXY.effects.qut().add(200)
 		player.qu.bp = E(0)
 		player.qu.cosmic_str = E(0)
 		player.qu.chroma = [E(0),E(0),E(0)]
 		player.qu.prim.theorems = E(0)
 		player.qu.prim.particles = [E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0)]
-		if(!hasUpgrade('inf',3))player.qu.qc.shard = 0
+		if(!hasUpgrade('inf',3))player.qu.qc.shard =SUPERNOVA_GALAXY.effects.qs();
 		if(!hasUpgrade('inf',3))player.qu.qc.mods = [0,0,0,0,0,0,0,0]
 		player.qu.qc.active = false
 		player.qu.en.amt = E(0)
@@ -105,7 +107,7 @@ const INFINITY_LAYER = {
 		if(!hasUpgrade('inf',3))player.mainUpg.rp = []
 		if(!hasUpgrade('inf',3))player.mainUpg.bh = []
 		if(!hasUpgrade('inf',3))player.mainUpg.atom = []
-		if(!hasUpgrade('inf',5))player.atom.elements=[]
+		if(!hasUpgrade('inf',5))player.atom.elements=SUPERNOVA_GALAXY.effects.elem();
 		player.md.break.energy = E(0)
 		player.md.break.mass = E(0)
         QUANTUM.doReset()
@@ -134,11 +136,13 @@ const ETERNITY_LAYER = {
 		if (hasElement(121)) x = x.mul(tmp.elements.effect[121]);
 		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
 		if (hasElement(127)) x = x.mul(tmp.elements.effect[127]);
+		x = x.mul(SUPERNOVA_GALAXY.effects.inf())
         return x
     },
     gainTimes() {
         let x = E(1)
 		if (hasElement(217)) x = x.mul(tmp.elements.effect[217]);
+        x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
         return x
     },
     enter() {
@@ -172,7 +176,7 @@ const ETERNITY_LAYER = {
 		player.qu.chroma = [E(0),E(0),E(0)]
 		player.qu.prim.theorems = E(0)
 		player.qu.prim.particles = [E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0)]
-		if(!hasUpgrade('inf',3))player.qu.qc.shard = 0
+		if(!hasUpgrade('inf',3))player.qu.qc.shard = SUPERNOVA_GALAXY.effects.qs();
 		if(!hasUpgrade('inf',3))player.qu.qc.mods = [0,0,0,0,0,0,0,0]
 		player.qu.qc.active = false
 		player.qu.en.amt = E(0)
@@ -186,7 +190,7 @@ const ETERNITY_LAYER = {
 		if(!hasUpgrade('inf',3))player.mainUpg.rp = []
 		if(!hasUpgrade('inf',3))player.mainUpg.bh = []
 		if(!hasUpgrade('inf',3))player.mainUpg.atom = []
-		if(!hasUpgrade('inf',5))player.atom.elements=[]
+		if(!hasUpgrade('inf',5))player.atom.elements=SUPERNOVA_GALAXY.effects.elem();
 		player.md.break.energy = E(0)
 		player.md.break.mass = E(0)
         QUANTUM.doReset()

@@ -24,6 +24,8 @@ const QUANTUM = {
         if (hasTree("qu_qol11")) x = x.mul(10)
         if (hasUpgrade('inf',1)) x = x.mul(player.inf.times.add(200))
         if (hasElement(216)) x = x.mul(tmp.elements.effect[216])
+			
+        x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
         return x
     },
     enter(auto=false,force=false,rip=false,bd=false) {
@@ -308,7 +310,7 @@ function updateQuantumHTML() {
     tmp.el.qu_div.setDisplay(unl)
     if (unl) tmp.el.quAmt.setHTML(format(player.qu.points,0)+"<br>"+(gain2?player.qu.points.formatGain(tmp.qu.gain.div(hasTree('qu_qol11')?1:10)):"(+"+format(tmp.qu.gain,0)+")"))
 
-    unl = quUnl()
+    unl = quUnl() || player.superGal.gte(1)
     tmp.el.gs1_div.setDisplay(unl)
     if (unl) tmp.el.preQGSpeed.setHTML(formatMult(tmp.preQUGlobalSpeed))
 

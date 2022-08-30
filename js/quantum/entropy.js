@@ -27,11 +27,14 @@ const ENTROPY = {
 		if (hasPrestige(2,5)) x = x.mul(prestigeEff(2,5));
 		if (player.ranks.hex.gte(125)) x = x.mul(player.ranks.hex.add(1));
         if (hasElement(139)) x = x.mul(tmp.elements.effect[139]||1)
+		x = x.mul(SUPERNOVA_GALAXY.effects.entropyg())
+	
         return x
     },
     cap() {
         let x = tmp.en.eff.hr
         if (hasUpgrade('inf',2)) x = x.mul(upgEffect(5,2))
+		x = x.mul(SUPERNOVA_GALAXY.effects.entropy())
         return x
     },
     evaPow(i) {

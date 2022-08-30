@@ -6,6 +6,8 @@ const ATOM = {
         x = x.root(5)
         if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][15].effect:E(1))
         x = x.mul(tmp.bosons.upgs.gluon[0].effect)
+	
+	
         if (hasElement(17)) x = x.pow(1.1)
         if (player.ranks.hex.gte(17)) x = x.pow(1.1)
         x = x.pow(tmp.prim.eff[3][0])
@@ -49,6 +51,7 @@ const ATOM = {
         player.bh.condenser = E(0)
         let keep = []
         for (let x = 0; x < player.mainUpg.bh.length; x++) if ([5].includes(player.mainUpg.bh[x])) keep.push(player.mainUpg.bh[x])
+        if(player.qu.times.gt(0))for (let x = 0; x < player.mainUpg.bh.length; x++) if ([6].includes(player.mainUpg.bh[x])) keep.push(player.mainUpg.bh[x])
         player.mainUpg.bh = keep
         if (chal_reset && !player.mainUpg.atom.includes(4) && !hasTree("chal2") ) for (let x = 1; x <= 4; x++) player.chal.comps[x] = E(0)
         FORMS.bh.doReset()

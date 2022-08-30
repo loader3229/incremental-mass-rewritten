@@ -613,9 +613,10 @@ const ELEMENTS = {
             cost: E('e29500'),
             effect() {
                 let x = E(player.ranks.hex.gte(93)?2:(5/3)).pow(player.mass.add(1).log10().add(1).log10())
+				x = overflow(x,"e1e4",0.1);
                 return x
             },
-            effDesc(x) { return "x"+x.format() },
+            effDesc(x) { return "x"+x.format()+(x.gte('e1e4')?" <span class='soft'>(softcapped)</span>":"")  },
         },
         {
             desc: `Death Shard is increased by 10% for every supernova.`,
@@ -1286,7 +1287,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x"; },
 		},
 		{
-			desc: `Reach the current Endgame.`,
+			desc: `Unlock Supernova Galaxies in the Supernova tab.`,
 			cost: uni(1e210),
 			et: true,
 		},
@@ -1303,8 +1304,9 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
+		
+		if(player.superGal.gte(1))return 218;
         let u = 4
-
         if (quUnl()) u = 77+3
         else {
             if (player.supernova.times.gte(1)) u = 49+5
@@ -1426,7 +1428,7 @@ function setupElementsHTML() {
 function updateElementsHTML() {
     let tElem = tmp.elements
 
-    tmp.el.elemTierDiv.setDisplay(hasUpgrade("atom",16))
+    tmp.el.elemTierDiv.setDisplay(hasUpgrade("atom",16) || player.superGal.gte(1))
     tmp.el.elemTier.setHTML("Element Tier "+player.atom.elemTier)
 
     let ch = tElem.choosed

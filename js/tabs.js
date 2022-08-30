@@ -16,7 +16,7 @@ const TABS = {
         { id: "Upgrades", unl() { return player.rp.unl } },
         { id: "Challenges", unl() { return player.chal.unl } },
         { id: "Atom", unl() { return player.atom.unl }, style: "atom" },
-        { id: "Supernova", unl() { return player.supernova.times.gte(1) || quUnl() }, style: "sn" },
+        { id: "Supernova", unl() { return player.supernova.times.gte(1) || quUnl() || player.superGal.gte(1)}, style: "sn" },
         { id: "Quantum", unl() { return quUnl() }, style: "qu" },
         { id: "Options" },
     ],
@@ -50,6 +50,7 @@ const TABS = {
             { id: "Bosons", unl() { return player.supernova.post_10 } },
             { id: "Fermions", unl() { return player.supernova.fermions.unl } },
             { id: "Radiation", unl() { return tmp.radiation.unl } },
+            { id: "Galaxy", unl() { return hasElement(218) || player.superGal.gte(1)} },
         ],
         6: [
             { id: "Chroma" },

@@ -31,6 +31,7 @@
     <script src="js/quantum/chroma.js"></script>
     <script src="js/quantum/quantum.js"></script>
 
+    <script src="js/supernova/galaxy.js"></script>
     <script src="js/supernova/radiation.js"></script>
     <script src="js/supernova/fermions.js"></script>
     <script src="js/supernova/bosons.js"></script>
@@ -152,6 +153,15 @@
             Your frequency is <span id="frequency">0</span> Hz, which multiples any Fermions gain by <span id="frequency_eff">1</span>倍<br>
             <span id="nr_div">At <span id="next_radiation">0</span> of frequency, unlock <span id="unl_radiation">X</span></span><br><br>
             <div id="radiation_table"></div>
+        </div><div id="stab_frame5_4">
+			You have <span id="superGal">0</span> Supernova Galaxies<br>
+			Next at <span id="superGalReq">0</span> Supernova<br>
+            <button class="btn" onclick="SUPERNOVA_GALAXY.reset()">Reset for a Supernova Galaxy</button><br>
+			<hr>
+			<div id="superGalEff">
+			</div>
+			<hr>
+			<span id="galPow0span">You have <span id="galPow0">0</span> Galactic Power (gain based on neutron star), which are boosting mass gain by ^<span id="galPow0_eff">1</span><br></span>
         </div>
     </div>
     <div id='app' style='display: none'>
@@ -502,8 +512,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.7.9c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的NG+, 汉化版) v0.7.9c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.8.0c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的NG+, 汉化版) v0.8.0c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

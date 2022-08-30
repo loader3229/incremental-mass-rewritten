@@ -191,17 +191,17 @@ function updateUpperHTML() {
 	tmp.el.reset_desc.setHTML(player.reset_msg)
 	tmp.el.mass.setHTML(formatMass(player.mass)+"<br>"+formatGain(player.mass, tmp.massGain.mul(gs), true))
 	
-	let unl = !quUnl()
+	let unl = (!quUnl() || !hasUpgrade('bh',6))
 	tmp.el.rp_div.setDisplay(unl)
 	if (unl) tmp.el.rpAmt.setHTML(format(player.rp.points,0)+"<br>"+(player.mainUpg.bh.includes(6)||player.mainUpg.atom.includes(6)?formatGain(player.rp.points, tmp.rp.gain.mul(gs)):"(+"+format(tmp.rp.gain,0)+")"))
 	
-	unl = FORMS.bh.see() && !quUnl()
+	unl = FORMS.bh.see() && (!quUnl() || !hasUpgrade('atom',6))
 	tmp.el.dm_div.setDisplay(unl)
 	if (unl) tmp.el.dmAmt.setHTML(format(player.bh.dm,0)+"<br>"+(player.mainUpg.atom.includes(6)?formatGain(player.bh.dm, tmp.bh.dm_gain.mul(gs)):"(+"+format(tmp.bh.dm_gain,0)+")"))
 	
 	unl = player.bh.unl
 	tmp.el.bh_div.setDisplay(unl)
-	tmp.el.atom_div.setDisplay(unl && !quUnl())
+	tmp.el.atom_div.setDisplay(unl && (!quUnl() || !hasElement(14) || !hasElement(24)))
 	if (unl) {
 		tmp.el.bhMass.setHTML(formatMass(player.bh.mass)+"<br>"+formatGain(player.bh.mass, tmp.bh.mass_gain.mul(gs), true))
 		tmp.el.atomAmt.setHTML(format(player.atom.points,0)+"<br>"+(hasElement(24)?formatGain(player.atom.points,tmp.atom.gain.mul(gs)):"(+"+format(tmp.atom.gain,0)+")"))
@@ -223,7 +223,7 @@ function updateUpperHTML() {
 	tmp.el.md_div.setDisplay(unl)
 	if (unl) tmp.el.md_massAmt.setHTML(format(player.md.particles,0)+"<br>"+(player.md.active?"(+"+format(tmp.md.rp_gain,0)+")":(hasTree("qol3")?formatGain(player.md.particles,tmp.md.passive_rp_gain.mul(gs)):"(inactive)")))
 	
-	unl = player.supernova.post_10
+	unl = (player.supernova.post_10 || player.superGal.gte(1))
 	tmp.el.sn_div.setDisplay(unl)
 	if (unl) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>(+"+format(tmp.supernova.bulk.sub(player.supernova.times).max(0),0)+")")
 }
@@ -263,7 +263,7 @@ function updateTickspeedHTML() {
 		tmp.el.tickspeed_auto.setDisplay(FORMS.tickspeed.autoUnl())
 		tmp.el.tickspeed_auto.setTxt(player.autoTickspeed?"ON":"OFF")
 	}
-	tmp.el.accel_div.setDisplay(hasElement(134));
+	tmp.el.accel_div.setDisplay(unl && hasElement(134));
 	if(hasElement(134)){
 		let eff = tmp.accelEffect
 		//tmp.el.accel_scale.setTxt(getScalingName('accel'))
@@ -366,16 +366,16 @@ function updateOptionsHTML() {
 	for (let x = 0; x < CONFIRMS.length; x++) {
 		let unl = 
 		CONFIRMS[x] == "sn"
-		?(player.supernova.times.gte(1) || quUnl())
+		?(player.supernova.times.gte(1) || quUnl() || player.superGal.gte(1))
 		:CONFIRMS[x] == "qu"
-		?quUnl()
+		?(quUnl() || player.superGal.gte(1))
 		:CONFIRMS[x] == "br"
-		?player.qu.rip.first
+		?(player.qu.rip.first || player.superGal.gte(1))
 		:CONFIRMS[x] == "inf"
-		?player.inf.times.gte(1)
+		?(player.inf.times.gte(1) || player.superGal.gte(1))
 		:CONFIRMS[x] == "et"
-		?player.et.times.gte(1)
-		:player[CONFIRMS[x]].unl
+		?(player.et.times.gte(1) || player.superGal.gte(1))
+		:(player[CONFIRMS[x]].unl || player.superGal.gte(1))
 
 		tmp.el["confirm_div_"+x].setDisplay(unl)
 		tmp.el["confirm_btn_"+x].setTxt(player.confirms[CONFIRMS[x]] ? "ON":"OFF")

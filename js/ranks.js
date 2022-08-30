@@ -250,6 +250,7 @@ const RANKS = {
 			'20': "Meta-Tier scaling starts later based on Hept.",
 			'21': "Super Pent is 20% weaker.",
 			'22': "Ultra Mass Upgrades is 1% weaker.",
+			'30': "Super Pent is 40% weaker.",
 		},
     },
     effect: {
@@ -656,6 +657,7 @@ const PRESTIGES = {
 			"63": `Pent 5's effect softcap is weaker.`,
 			"64": `Prestige Mass Effect is applied to Super Hept scaling.`,
 			"67": `Prestige Mass Effect is applied to Meta Prestige Level scaling.`,
+			"90": `Galactic Power effect is better.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
@@ -669,6 +671,7 @@ const PRESTIGES = {
             "10": `Automatically gain Honor.`,
             "12": `Prestige Mass Effect is applied to Super Glory scaling.`,
             "13": `Prestige Mass Effect is applied to Ultra Fermion Tier scaling.`,
+            "14": `Meta Fermion Tier scaling starts 100x later.`,
 		},
     ],
     rewardEff: [
