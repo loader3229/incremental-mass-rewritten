@@ -2,6 +2,8 @@ const UPGS = {
     mass: {
         cols: 3,
         temp() {
+            tmp.massFP = 1;
+            if (hasSpecialInfusion(0,3)) tmp.massFP *= specialInfusionEff(0,3)
             for (let x = this.cols; x >= 1; x--) {
                 let d = tmp.upgs.mass
                 let data = this.getData(x)
@@ -42,6 +44,7 @@ const UPGS = {
             let start = upg.start
             let lvl = player.massUpg[i]||E(0)
             let cost, bulk
+            let fp = tmp.massFP
 
             if (i==4) {
                 cost = mlt(inc.pow(lvl).mul(start))
@@ -52,9 +55,9 @@ const UPGS = {
                 if (i == 2 && player.ranks.rank.gte(3)) inc = inc.pow(0.8)
                 if (i == 3 && player.ranks.rank.gte(4)) inc = inc.pow(0.8)
                 if (player.ranks.tier.gte(3)) inc = inc.pow(0.8)
-                cost = inc.pow(lvl.scaleEvery("massUpg")).mul(start)
+                cost = inc.pow(lvl.div(fp).scaleEvery("massUpg")).mul(start)
                 bulk = E(0)
-                if (player.mass.gte(start)) bulk = player.mass.div(start).max(1).log(inc).scaleEvery("massUpg",true).add(1).floor()
+                if (player.mass.gte(start)) bulk = player.mass.div(start).max(1).log(inc).scaleEvery("massUpg",true).mul(fp).add(1).floor()
             }
         
             return {cost: cost, bulk: bulk}
@@ -97,6 +100,7 @@ const UPGS = {
                 step = step.pow(tmp.upgs.mass[3]?tmp.upgs.mass[3].eff.eff:1)
                 let ret = step.mul(x.add(tmp.upgs.mass[2].bonus)).add(1)
 				if(hasElement(173))ret = ret.pow(tmp.elements.effect[173]||1);
+				if (hasSpecialInfusion(0,2)) ret = ret.pow(specialInfusionEff(0,2))
                 return {step: step, eff: ret}
             },
             effDesc(eff) {

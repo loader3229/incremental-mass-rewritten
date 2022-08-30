@@ -33,6 +33,7 @@ const FORMS = {
 		x = x.pow(calcShardsEffect())
 	
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
+        x = x.div(10)
 			
 		return x
     },
@@ -84,8 +85,13 @@ const FORMS = {
         .softcap(tmp.massSoftGain9,tmp.massSoftPower9,0)
 
         if (hasElement(117)) x = x.pow(10)
+        if (hasElement(122)) x = x.pow(2)
 		
 		x = x.pow(SUPERNOVA_GALAXY.galPow0_eff())
+		
+		x = expMult(x,0.95)
+		
+        x = x.pow(tmp.anti.infusion.eff[0])
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
@@ -111,6 +117,7 @@ const FORMS = {
         if (player.mainUpg.bh.includes(7)) s = s.mul(tmp.upgs.main?tmp.upgs.main[2][7].effect:E(1))
         if (player.mainUpg.rp.includes(13)) s = s.mul(tmp.upgs.main?tmp.upgs.main[1][13].effect:E(1))
         if (hasPrestige(0,1)) s = s.pow(10)
+        if (hasSpecialInfusion(0,1)) s = s.pow(specialInfusionEff(0,1))
         return s.min(tmp.massSoftGain2||1/0)
     },
     massSoftPower() {
@@ -131,6 +138,7 @@ const FORMS = {
         s = s.pow(tmp.bosons.effect.neg_w[0])
         if (hasPrestige(0,1)) s = s.pow(10)
 
+        if (hasSpecialInfusion(0,1)) s = s.pow(specialInfusionEff(0,1))
         return s.min(tmp.massSoftGain3||1/0)
     },
     massSoftPower2() {
@@ -146,6 +154,7 @@ const FORMS = {
         s = s.pow(tmp.radiation.bs.eff[2])
         if (hasPrestige(0,1)) s = s.pow(10)
         if (hasPrestige(0,101)) s = s.pow(tmp.bosons.effect.neg_w[0])
+        if (hasSpecialInfusion(0,1)) s = s.pow(specialInfusionEff(0,1))
         return s
     },
     massSoftPower3() {
@@ -162,6 +171,7 @@ const FORMS = {
         if (hasTree('qc1')) s = s.pow(treeEff('qc1'))
         if (hasPrestige(0,1)) s = s.pow(10)
         if (hasPrestige(0,101)) s = s.pow(tmp.bosons.effect.neg_w[0])
+        if (hasSpecialInfusion(0,1)) s = s.pow(specialInfusionEff(0,1))
         return s
     },
     massSoftPower4() {
@@ -175,6 +185,7 @@ const FORMS = {
         if (hasPrestige(0,8)) s = s.pow(prestigeEff(0,8))
         if (hasUpgrade("br",12)) s = s.pow(upgEffect(4,12))
         if (hasPrestige(0,101)) s = s.pow(tmp.bosons.effect.neg_w[0])
+        if (hasSpecialInfusion(0,1)) s = s.pow(specialInfusionEff(0,1))
         return s
     },
     massSoftPower5() {
@@ -276,9 +287,10 @@ const FORMS = {
                 ss = ss.pow(2)
                 p **= 0.5
             }
+            if (hasElement(119)) p **= 0.5
             if (hasPrestige(0,6)) ss = ss.pow(100)
             if (hasElement(102)) ss = ss.pow(100)
-			if (hasUpgrade('rp',16)) ss = EINF
+			if (hasElement(121)) ss = EINF
             else step = step.softcap(ss,p,0)
             
             let eff = step.pow(t.add(bonus).mul(hasElement(80)?25:1))
@@ -290,6 +302,9 @@ const FORMS = {
 				eff = eff.add(9).log10().add(9).log10().pow(tmp.accelEffect.eff.mul(0.1));
 				eff_bottom = eff_bottom.pow(tmp.accelEffect.eff);
 				if (player.ranks.tetr.gte(3)) eff = eff.pow(1.05),eff_bottom = eff_bottom.pow(1.05);
+			}else{
+				eff = eff.pow(tmp.accelEffect.eff)
+				eff_bottom = eff
 			}
 			
             return {step: step, eff: eff, bonus: bonus, ss: ss, eff_bottom: eff_bottom}
@@ -311,7 +326,7 @@ const FORMS = {
             }
         },
         effect() {
-			let step = E(0.0004)
+			let step = E(0.1)
 			if(hasElement(135))step = step.mul(tmp.elements.effect[135])
             if (player.ranks.hex.gte(124)) step = step.mul(RANKS.effect.hex[124]())
             if (player.ranks.hex.gte(126)) step = step.mul(RANKS.effect.hex[126]())
@@ -322,7 +337,9 @@ const FORMS = {
             if (player.ranks.hept.gte(4)) step = step.mul(RANKS.effect.hept[4]())
 			
 			step = step.mul(SUPERNOVA_GALAXY.effects.apMult())
-            let x = player.accelerator.mul(step).add(1)
+            let x = player.accelerator
+            if (hasElement(120)) x = x.mul(2)
+			x = x.mul(step).add(1)
 			
             let ss = E(100)
             let p = 0.5
@@ -393,6 +410,7 @@ const FORMS = {
             gain = gain.pow(tmp.chal.eff[8])
             gain = gain.pow(tmp.prim.eff[2][0])
 
+			
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
             return gain.floor()
@@ -422,7 +440,8 @@ const FORMS = {
 		 x = x.pow(SUPERNOVA_GALAXY.effects.bh())
 		
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
-            x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
+            x = expMult(x,0.95)
+			x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
 			tmp.bhOverflowStart = E("e1e34")
 			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
 			if (CHALS.inChal(15) || CHALS.inChal(19))tmp.bhOverflowStart = E(10)

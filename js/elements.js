@@ -136,6 +136,7 @@ function setupHTML() {
 	setupFermionsHTML()
 	setupRadiationHTML()
 	setupQuantumHTML()
+	setupAntiHTML()
 
 	/*
 	function setupTestHTML() {
@@ -263,8 +264,8 @@ function updateTickspeedHTML() {
 		tmp.el.tickspeed_auto.setDisplay(FORMS.tickspeed.autoUnl())
 		tmp.el.tickspeed_auto.setTxt(player.autoTickspeed?"ON":"OFF")
 	}
-	tmp.el.accel_div.setDisplay(unl && hasElement(134));
-	if(hasElement(134)){
+	tmp.el.accel_div.setDisplay(unl);
+	if(unl){
 		let eff = tmp.accelEffect
 		//tmp.el.accel_scale.setTxt(getScalingName('accel'))
 		tmp.el.accel_lvl.setTxt(format(player.accelerator,0))
@@ -465,5 +466,6 @@ function updateHTML() {
 		if (tmp.tab == 7) {
 			updateOptionsHTML()
 		}
+		updateAntiHTML()
 	}
 }

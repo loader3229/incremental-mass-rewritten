@@ -5,6 +5,7 @@ const RANKS = {
         if (tmp.ranks[type].can) {
             player.ranks[type] = player.ranks[type].add(1)
             let reset = true
+			if (hasAntiUpgrade('am',2))reset = false
             if (type == "rank" && player.mainUpg.rp.includes(4)) reset = false
             if (type == "tier" && player.mainUpg.bh.includes(4)) reset = false
             if (type == "tetr" && hasTree("qol5")) reset = false
@@ -18,6 +19,7 @@ const RANKS = {
         if (tmp.ranks[type].can) {
             player.ranks[type] = player.ranks[type].max(tmp.ranks[type].bulk.max(player.ranks[type].add(1)))
             let reset = true
+			if (hasAntiUpgrade('am',2))reset = false
             if (type == "rank" && player.mainUpg.rp.includes(4)) reset = false
             if (type == "tier" && player.mainUpg.bh.includes(4)) reset = false
             if (type == "tetr" && hasTree("qol5")) reset = false
@@ -572,6 +574,7 @@ const PRESTIGES = {
             "32": `Prestige Base’s exponent is increased based on Prestige Level.`,
             "40": `Chromium-24 is slightly stronger.`,
             "42": `Unlock Hex.`,
+            "44": `Quarks gain ^1.5.`,
             "45": `Ultra Tetr scale 42% weaker.`,
             "50": `The 13th-15th Atom upgrades can be bought outside Big Rips, are stronger, and costs are raised by 1/20000.`,
             "51": `Mass gain softcap^2 is 50% weaker.`,
@@ -829,17 +832,20 @@ function updateRanksTemp() {
     if (!tmp.ranks) tmp.ranks = {}
     for (let x = 0; x < RANKS.names.length; x++) if (!tmp.ranks[RANKS.names[x]]) tmp.ranks[RANKS.names[x]] = {}
     let fp2 = tmp.qu.chroma_eff[1]
-    let fp = RANKS.fp.rank()
+    let ffp = E(1)
+    if (hasSpecialInfusion(0,0)) ffp = ffp.mul(1/specialInfusionEff(0,0))
+		
+    let fp = RANKS.fp.rank().mul(ffp)
     tmp.ranks.rank.req = E(10).pow(player.ranks.rank.div(fp2).scaleEvery('rank').div(fp).pow(1.15)).mul(10)
     tmp.ranks.rank.bulk = E(0)
     if (player.mass.gte(10)) tmp.ranks.rank.bulk = player.mass.div(10).max(1).log10().root(1.15).mul(fp).scaleEvery('rank',true).mul(fp2).add(1).floor();
     tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(5) && !CHALS.inChal(10) && !CHALS.inChal(14) && !CHALS.inChal(19) && !FERMIONS.onActive("03")
 
-    fp = RANKS.fp.tier()
+    fp = RANKS.fp.tier().mul(ffp)
     tmp.ranks.tier.req = player.ranks.tier.div(fp2).scaleEvery('tier').div(fp).add(2).pow(2).floor()
     tmp.ranks.tier.bulk = player.ranks.rank.max(0).root(2).sub(2).mul(fp).scaleEvery('tier',true).mul(fp2).add(1).floor();
 
-    fp = E(1)
+    fp = E(1).mul(ffp)
     let pow = 2
     if (hasElement(44)) pow = 1.75
     if (player.ranks.hex.gte(44)) pow = 1.74

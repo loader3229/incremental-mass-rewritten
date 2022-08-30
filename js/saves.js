@@ -132,6 +132,7 @@ function calc(dt, dt_offline) {
 		calcPrestigeMass(dt, dt_offline)
         calcInfinity(dt, dt_offline)
         calcSupernovaGalaxy(dt, dt_offline)
+		calcAnti(dt, dt_offline)
     }
 
     tmp.pass = true
@@ -287,7 +288,9 @@ function getPlayerData() {
 			shard_gen: E(0)
 		},
 		superGal: E(0),
-		galPow: [E(0)]
+		galPow: [E(0)],
+		dim_shard: 1,
+		loader3229: 1,
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {
@@ -304,6 +307,7 @@ function getPlayerData() {
         s.supernova.radiation.bs.push(E(0),E(0))
     }
     s.qu = getQUSave()
+    s.anti = getAntiSave()
     return s
 }
 
@@ -320,8 +324,8 @@ function wipe(reload=false) {
 
 function loadPlayer(load) {
     const DATA = getPlayerData()
-	if(load.dim_shard>0){
-		alert("Saves from Incremental Mass Rewritten Vanilla 1.0 beta or above is not supported in this NG+ Version!");
+	if(load.dim_shard != 1 && load.loader3229 != 1){
+		alert("This save is not supported in this NG+ Version!");
 		return true;
 	}
     player = deepNaN(load, DATA)
@@ -379,9 +383,9 @@ function cannotSave() { return tmp.supernova.reached && player.supernova.times.l
 function save(){
     let str = btoa(JSON.stringify(player))
     if (cannotSave() || findNaN(str, true)) return
-    if (localStorage.getItem("testSave") == '') wipe()
-    localStorage.setItem("testSave",str)
-    tmp.prevSave = localStorage.getItem("testSave")
+    if (localStorage.getItem("imrngp_p1edit") == '') wipe()
+    localStorage.setItem("imrngp_p1edit",str)
+    tmp.prevSave = localStorage.getItem("imrngp_p1edit")
     if (tmp.saving < 1) {addNotify("Game Saved", 3); tmp.saving++}
 }
 
@@ -462,7 +466,7 @@ function importy() {
 }
 
 function loadGame(start=true, gotNaN=false) {
-    if (!gotNaN) tmp.prevSave = localStorage.getItem("testSave")
+    if (!gotNaN) tmp.prevSave = localStorage.getItem("imrngp_p1edit")
     wipe()
     load(tmp.prevSave)
     setupHTML()

@@ -107,6 +107,19 @@ function resetTemp() {
         et: {
             
         },
+		
+        anti: {
+            tab: 0,
+            stab: [],
+            upgs: {
+                main: {},
+            },
+            infusion: {
+                req: [],
+                eff: [],
+                sEff: [],
+            },
+        },
         prevSave: "",
     }
     for (let x = 0; x < PRES_LEN; x++) tmp.prestiges.eff[x] = {}
@@ -133,6 +146,9 @@ function resetTemp() {
     tmp.el = keep[0]
     tmp.prevSave = keep[1]
 	tmp.preQUGlobalSpeed = E(1)
+	
+    for (let x = 1; x <= ANTI_UPGS.main.cols; x++) tmp.anti.upgs.main[x] = {}
+    for (x in INFUSIONS) tmp.anti.infusion.sEff[x] = []
 }
 
 resetTemp()
@@ -213,6 +229,9 @@ function updateTemp() {
     tmp.offlineActive = player.offline.time > 1
     tmp.offlineMult = tmp.offlineActive?player.offline.time+1:1
 
+	
+    updateAntiTemp()
+	
     updateInfinityTemp()
 	
     updateQuantumTemp()

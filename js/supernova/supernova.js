@@ -71,6 +71,11 @@ const SUPERNOVA = {
 		x = x.mul(SUPERNOVA_GALAXY.effects.nsMult())
         if (hasTree("sn6")) x = x.pow(tmp.supernova.tree_eff.sn6)
 		x = x.pow(SUPERNOVA_GALAXY.effects.ns())
+        if (hasAntiUpgrade("am",4)) x = x.mul(10)
+        if (hasElement(119)) x = x.mul(100)
+        if (hasElement(120)) x = x.mul(100)
+        if (hasElement(121)) x = x.mul(100)
+        if (hasElement(122)) x = x.mul(100)
         return x
     },
     req(x=player.supernova.times) {
@@ -96,7 +101,7 @@ function calcSupernova(dt, dt_offline) {
             SUPERNOVA.reset()
         }
     }
-    if (su.times.gte(1) || quUnl()) su.stars = su.stars.add(tmp.supernova.star_gain.mul(dt_offline).mul(tmp.preQUGlobalSpeed))
+    if (su.times.gte(1) || quUnl()) su.stars = su.stars.add(tmp.supernova.star_gain.mul(du_gs))
 
     if (!su.post_10 && su.times.gte(10)) {
         su.post_10 = true

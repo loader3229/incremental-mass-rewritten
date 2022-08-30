@@ -34,12 +34,12 @@ const ELEMENTS = {
     ],
     canBuy(x) { 
 		if(this.upgs[x].et)return player.et.points.gte(this.upgs[x].cost) && !hasElement(x)
-		if(x>118) return player.inf.points.gte(this.upgs[x].cost) && !hasElement(x)
-		return player.atom.quarks.gte(this.upgs[x].cost) && !hasElement(x) && (player.qu.rip.active ? true : x <= 86) && !tmp.elements.cannot.includes(x)
+		if(x>122) return player.inf.points.gte(this.upgs[x].cost) && !hasElement(x)
+		return player.atom.quarks.gte(this.upgs[x].cost) && !hasElement(x) && (player.qu.rip.active ? true : x <= 86 || x>118) && !tmp.elements.cannot.includes(x)
 	},
     buyUpg(x) {
         if (this.canBuy(x)) {
-			if(x>118){
+			if(x>122){
 				if(this.upgs[x].et)player.et.points = player.et.points.sub(this.upgs[x].cost)
 				else player.inf.points = player.inf.points.sub(this.upgs[x].cost)
 			}else{
@@ -747,8 +747,26 @@ const ELEMENTS = {
             cost: E("e1.7e17"),
         },
 		
+        {
+            desc: `Tickspeed Effect’s softcap is 50% weaker. Multiply Neutron Star gain by 100.`,
+            cost: E("e6e7"),
+        },
+        {
+            desc: `Accelerators are twice effective. Multiply Neutron Star gain by 100.`,
+            cost: E("e7.5e7"),
+        },
+        {
+            desc: `Remove Tickspeed Effect’s softcap. Multiply Neutron Star gain by 100.`,
+            cost: E("e1e8"),
+        },
+        {
+            desc: `Raise mass gain by 2 after softcaps. Multiply Neutron Star gain by 100.`,
+            cost: E("e2e8"),
+        },
+		
 		// extended element
 		
+		/*
 		{
 			desc: `Infinity Mass Boost Timeshards.`,
 			cost: E("5e13"),
@@ -778,11 +796,7 @@ const ELEMENTS = {
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
-		},
-		{
-			desc: `Multiply Shard Generators Power by 1.5`,
-			cost: E("1e15"),
-		},
+		},*/
 		{
 			desc: `Multiply Infinity times and Eternal Mass gain by Eternity times.`,
 			cost: E("5e4"),
@@ -1306,31 +1320,14 @@ const ELEMENTS = {
     getUnlLength() {
 		
 		if(player.superGal.gte(1))return 218;
-        let u = 4
-        if (quUnl()) u = 77+3
-        else {
-            if (player.supernova.times.gte(1)) u = 49+5
-            else {
-                if (player.chal.comps[8].gte(1)) u += 14
-                if (hasElement(18)) u += 3
-                if (MASS_DILATION.unlocked()) u += 15
-                if (STARS.unlocked()) u += 18
-            }
-            if (player.supernova.post_10) u += 3
-            if (player.supernova.fermions.unl) u += 10
-            if (tmp.radiation.unl) u += 10
-        }
-        if (PRIM.unl()) u += 3
-        if (hasTree('unl3')) u += 3
-        if (player.qu.rip.first) u += 9
-        if (hasUpgrade("br",9)) u += 23 // 23
-		if (hasUpgrade("atom",16)) u += 16
-		if (hasElement(134)) u += 21
-        if (player.chal.comps[13].gte(4)) u += 13
-        if (player.chal.comps[16].gte(3)) u += 24
-        if (player.chal.comps[17].gte(3)) u += 13
-        if (player.chal.comps[18].gte(3)) u += 4
-        if (player.chal.comps[19].gte(8)) u += 9
+        let u = 122
+		//if (hasUpgrade("atom",16)) u += 12
+		//if (hasElement(134)) u += 21
+        //if (player.chal.comps[13].gte(4)) u += 13
+        //if (player.chal.comps[16].gte(3)) u += 24
+        //if (player.chal.comps[17].gte(3)) u += 13
+        //if (player.chal.comps[18].gte(3)) u += 4
+        //if (player.chal.comps[19].gte(8)) u += 9
         return u
     },
 }
@@ -1438,7 +1435,7 @@ function setupElementsHTML() {
 function updateElementsHTML() {
     let tElem = tmp.elements
 
-    tmp.el.elemTierDiv.setDisplay(hasUpgrade("atom",16) || player.superGal.gte(1))
+    tmp.el.elemTierDiv.setDisplay(true)
     tmp.el.elemTier.setHTML("Element Tier "+player.atom.elemTier)
 
     let ch = tElem.choosed
@@ -1447,7 +1444,7 @@ function updateElementsHTML() {
         tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc)
 		if(ELEMENTS.upgs[ch].desc instanceof Function)tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc())
         tmp.el.elem_cost.setTxt(format(ELEMENTS.upgs[ch].cost,0)+" Quarks"+(ch>86&&ch<=118?" in Big Rip":"")+(player.qu.rip.active&&tElem.cannot.includes(ch)?" [CANNOT AFFORD in Big Rip]":""))
-        if(ch > 118)tmp.el.elem_cost.setTxt(formatMass(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].et?" Eternal Mass":" Infinity Mass"))
+        if(ch > 122)tmp.el.elem_cost.setTxt(formatMass(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].et?" Eternal Mass":" Infinity Mass"))
 		tmp.el.elem_eff.setHTML(ELEMENTS.upgs[ch].effDesc?"Currently: "+ELEMENTS.upgs[ch].effDesc(tElem.effect[ch]):"")
     }
 

@@ -19,6 +19,7 @@ const TABS = {
         { id: "Supernova", unl() { return player.supernova.times.gte(1) || quUnl() || player.superGal.gte(1)}, style: "sn" },
         { id: "Quantum", unl() { return quUnl() }, style: "qu" },
         { id: "Options" },
+        { id: "Anti-Tab" },
     ],
     2: {
         0: [
@@ -58,6 +59,11 @@ const TABS = {
             { id: "Auto-Quantum", unl() { return tmp.qu.mil_reached[6] } },
             { id: "Primordium", unl() { return PRIM.unl() } },
             { id: "Entropy", unl() { return player.qu.en.unl } },
+        ],
+        8: [
+        { id: "Anti-Main" },
+        { id: "Dimensional Info" },
+        { id: "Anti-Upgrades" },
         ],
     },
 }

@@ -32,6 +32,7 @@ const ATOM = {
         x = x.mul(tmp.md.upgs[9].eff)
         if (hasElement(47)) x = x.pow(1.1)
         if (player.ranks.hex.gte(47)) x = x.pow(1.1)
+        if (hasPrestige(0,44)) x = x.pow(1.5)
         if (hasPrestige(1,7)) x = x.pow(prestigeEff(1,7))
         if (hasElement(67) && player.ranks.hex.gte(67)) x = x.pow(tmp.elements.effect[67])
         return x.floor();

@@ -227,7 +227,7 @@ function getQUSave() {
 }
 
 function calcQuantum(dt, dt_offline) {
-    if (player.mass.gte(mlt(1e4)) && !player.qu.reached && player.chal.comps[12].gte(1)) {
+    if (player.mass.gte(mlt(1e4)) && !player.qu.reached && player.chal.comps[11].gte(1)) {
         player.qu.reached = true
         addPopup(POPUP_GROUPS.qu)
     }
@@ -306,11 +306,11 @@ function updateQuantumTemp() {
 function updateQuantumHTML() {
     let gain2 = hasUpgrade('br',8)
 
-    let unl = quUnl() || player.chal.comps[12].gte(1)
+    let unl = quUnl() || player.chal.comps[11].gte(1)
     tmp.el.qu_div.setDisplay(unl)
     if (unl) tmp.el.quAmt.setHTML(format(player.qu.points,0)+"<br>"+(gain2?player.qu.points.formatGain(tmp.qu.gain.div(hasTree('qu_qol11')?1:10)):"(+"+format(tmp.qu.gain,0)+")"))
 
-    unl = quUnl() || player.superGal.gte(1)
+    unl = true
     tmp.el.gs1_div.setDisplay(unl)
     if (unl) tmp.el.preQGSpeed.setHTML(formatMult(tmp.preQUGlobalSpeed))
 

@@ -67,7 +67,7 @@ const TREE_UPGS = {
         c: {
             req() { return player.supernova.times.gte(1) },
             reqDesc: `1 Supernova.`,
-            desc: `Start generating 0.1 Neutron Star per second (not affected by offline production).`,
+            desc: `Start generating 0.1 Neutron Star per second (affected by offline production).`,
             cost: E(0),
         },
         sn1: {

@@ -42,7 +42,7 @@ const INFINITY_LAYER = {
         if (hasPrestige(2,3)) x = x.mul(prestigeEff(2,3));
         if (hasPrestige(1,18)) x = x.mul(prestigeEff(1,18));
         if (hasPrestige(0,165)) x = x.mul(prestigeEff(0,165));
-		if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
+		//if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
 		if (hasUpgrade('inf',17)) x = x.mul(upgEffect(5,17));
 		if (hasElement(124)) x = x.mul(tmp.elements.effect[124]);
 		if (hasUpgrade('rp',18)) x = x.mul(upgEffect(1,18));
@@ -57,7 +57,7 @@ const INFINITY_LAYER = {
     gainTimes() {
         let x = E(1)
         if (hasUpgrade('inf',12)) x = x.mul(upgEffect(5,12));
-		if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
+		//if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
 		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
         x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
         return x
@@ -133,7 +133,7 @@ const ETERNITY_LAYER = {
         if (hasPrestige(2,4)) x = x.mul(prestigeEff(2,4));
         if (hasPrestige(1,26)) x = x.mul(prestigeEff(1,26));
         if (hasPrestige(0,250)) x = x.mul(prestigeEff(0,250));
-		if (hasElement(121)) x = x.mul(tmp.elements.effect[121]);
+		//if (hasElement(121)) x = x.mul(tmp.elements.effect[121]);
 		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
 		if (hasElement(127)) x = x.mul(tmp.elements.effect[127]);
 		x = x.mul(SUPERNOVA_GALAXY.effects.inf())
@@ -207,7 +207,7 @@ const ETERNITY_LAYER = {
     shardsGain() {
         let x = E(1);
 		if(tmp.et.shard_gen_eff)x = x.mul(tmp.et.shard_gen_eff.eff);
-		if(hasElement(119))x = x.mul(tmp.elements.effect[119]);
+		//if(hasElement(119))x = x.mul(tmp.elements.effect[119]);
 		if(hasElement(161))x = x.mul(tmp.elements.effect[161]);
         return x
     },
@@ -225,8 +225,7 @@ const ETERNITY_LAYER = {
 			}
         },
         eff() {
-            let pow = E(2)
-			if (hasElement(122)) pow = pow.mul(1.5)
+            let pow = E(3)
 			if (hasElement(209)) pow = pow.mul(tmp.chal?tmp.chal.eff[19]:1)
             let x = pow.pow(player.et.shard_gen)
             return {pow: pow, eff: x}
