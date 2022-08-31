@@ -105,12 +105,15 @@ const QCs = {
         },
     ],
 	maxAll(){
+		if (QCs.active()) return
 		for (let i = 0; i < QCs_len; i++)player.qu.qc.mods[i] = hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10
 	},
 	resetAll(){
+		if (QCs.active()) return
 		for (let i = 0; i < QCs_len; i++)player.qu.qc.mods[i] = 0
 	},
 	import(){
+		if (QCs.active()) return
 		let preset = prompt('Import your preset.').split('/');
 		if(preset.length!=8){
 			alert('Your preset is invalid.');
