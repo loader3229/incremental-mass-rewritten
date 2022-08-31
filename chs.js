@@ -256,6 +256,7 @@ var cnItems = {
     'Preset Loaded to Modifiers': '预设已载入至挑战限制',
     'Preset Renamed': '预设已重命名',
     'Preset Deleted': '预设已删除',
+    'Preset Exported to Clipboard': '预设已导出至剪贴板',
     'Load': '载入',
     'Rename': '重命名',
     'Delete': '删除',
