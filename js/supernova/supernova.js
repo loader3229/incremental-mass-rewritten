@@ -142,6 +142,7 @@ function updateSupernovaTemp() {
             let unl = (t.unl?t.unl():true)
             let req = t.req?t.req():true
             if (tmp.qu.mil_reached[1] && NO_REQ_QU.includes(id)) req = true
+            if (player.superGal.gte(2)) req = true
             let can = (t.qf?player.qu.points:player.supernova.stars).gte(t.cost) && !hasTree(id) && req
             if (branch != "") for (let x = 0; x < branch.length; x++) if (!hasTree(branch[x])) {
                 unl = false

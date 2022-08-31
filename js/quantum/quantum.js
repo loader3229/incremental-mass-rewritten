@@ -85,7 +85,7 @@ const QUANTUM = {
 
         let save_keep = []
         for (let x in keep) if (hasTree(keep[x])) save_keep.push(keep[x])
-        if(player.superGal.lt(6))player.supernova.tree = save_keep
+        if(player.superGal.lt(5))player.supernova.tree = save_keep
 
         player.supernova.bosons = {
             pos_w: E(0),

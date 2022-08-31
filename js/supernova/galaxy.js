@@ -42,7 +42,7 @@ const SUPERNOVA_GALAXY = {
 		if(player.superGal.lt(2))player.qu.chr_get = [];
 		player.qu.times = SUPERNOVA_GALAXY.effects.qut();
 		tmp.radiation.unl = false;
-		if(player.superGal.lt(6))player.supernova.tree=[];
+		if(player.superGal.lt(5))player.supernova.tree=[];
 		if(player.superGal.lt(10))player.qu.rip.first = false;
 		if(player.superGal.lt(2))player.supernova.post_10 = false;
 		player.md.break.upgs=[E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0)];
@@ -228,11 +228,12 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superGal.gte(2))html += "<br>初始时就解锁色度";
 		if(player.superGal.gte(2))html += "<br>初始时就有"+format(SUPERNOVA_GALAXY.effects.qut())+"量子次数";
 		if(player.superGal.gte(2))html += "<br>量子次数、无限次数、永恒次数获取变为原来的"+format(SUPERNOVA_GALAXY.effects.qut2())+"倍";
+		if(player.superGal.gte(2))html += "<br>购买中子树升级不需要完成它们的额外条件";
 		if(player.superGal.gte(3))html += "<br>加速器效果的软上限和二重软上限延迟"+format(SUPERNOVA_GALAXY.effects.aesc())+"倍出现";
 		tmp.el.galPow0.setTxt(format(player.galPow[0])+player.galPow[0].formatGain(SUPERNOVA_GALAXY.galPow0_gain()))
 		tmp.el.galPow0_eff.setTxt(format(SUPERNOVA_GALAXY.galPow0_eff()))
+		if(player.superGal.gte(5))html += "<br>重置时保留中子树";
 		if(player.superGal.gte(6)){
-			html += "<br>重置时保留中子树";
 			tmp.el.galPow1.setTxt(format(player.galPow[1])+player.galPow[1].formatGain(SUPERNOVA_GALAXY.galPow1_gain()))
 			tmp.el.galPow1_eff.setTxt(format(SUPERNOVA_GALAXY.galPow1_eff()))
 			tmp.el.galPow2.setTxt(format(player.galPow[2])+player.galPow[2].formatGain(SUPERNOVA_GALAXY.galPow2_gain()))

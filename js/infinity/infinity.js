@@ -72,7 +72,7 @@ const INFINITY_LAYER = {
 		updateInfinityTemp()
         player.inf.points = player.inf.points.add(tmp.inf.gain)
         player.inf.times = player.inf.times.add(tmp.inf.gainTimes)
-		if(player.superGal.lt(6))if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
+		if(player.superGal.lt(5))if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
 		else{
 			
         let keep = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11']
@@ -155,7 +155,7 @@ const ETERNITY_LAYER = {
 		updateInfinityTemp()
         player.et.points = player.et.points.add(tmp.et.gain)
         player.et.times = player.et.times.add(tmp.et.gainTimes)
-		if(player.superGal.lt(6))if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
+		if(player.superGal.lt(5))if(!hasUpgrade('inf',2))player.supernova.tree = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11','qol8','qol9','c','qol7','unl1','qu_qol1','qu_qol4']
 		else{
 			
         let keep = ['qol1','qol2','qol3','qol4','qol5','qol6','fn2','fn5','fn6','fn7','fn8','fn9','fn10','fn11']
