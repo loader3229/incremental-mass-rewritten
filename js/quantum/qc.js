@@ -109,6 +109,43 @@ const QCs = {
 	},
 	resetAll(){
 		for (let i = 0; i < QCs_len; i++)player.qu.qc.mods[i] = 0
+	},
+	import(){
+		let preset = prompt('Import your preset.').split('/');
+		if(preset.length!=8){
+			alert('Your preset is invalid.');
+			return
+		}
+		let copied_mods = []
+		for (let x = 0; x < QCs_len; x++){
+			copied_mods.push(parseInt(preset[x]))
+			if (copied_mods[x] != copied_mods[x]){
+				alert('Your preset is invalid.');
+				return
+			}
+			if (copied_mods[x] < 0){
+				alert('Your preset is invalid.');
+				return
+			}
+			if (copied_mods[x] > 100){
+				alert('Your preset is invalid.');
+				return
+			}
+		}
+		for (let i = 0; i < QCs_len; i++)player.qu.qc.mods[i] = copied_mods[i]
+		for (let i = 0; i < QCs_len; i++)if(player.qu.qc.mods[i] > (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10))player.qu.qc.mods[i] = (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10);
+	},
+	export(){
+		let str = player.qu.qc.mods[0]
+		for (let i = 1; i < QCs_len; i++)str+="/"+player.qu.qc.mods[i];
+		let copyText = document.getElementById('copy')
+		copyText.value = str
+		copyText.style.visibility = "visible"
+		copyText.select();
+		document.execCommand("copy");
+		copyText.style.visibility = "hidden"
+		addNotify("Preset Exported to Clipboard")
+		updateQCModPresets()
 	}
 }
 
@@ -129,6 +166,66 @@ function addQCPresetAs() {
     updateQCModPresets()
 }
 
+function importPreset() {
+    if (player.qu.qc.presets.length >= 5) {
+        addNotify("You cannot add QC Preset because of maxmium length of presets")
+        return
+    }
+
+	let preset = prompt('Import your preset.').split('/');
+	if(preset.length!=8){
+		alert('Your preset is invalid.');
+		return
+	}
+    let copied_mods = []
+    for (let x = 0; x < QCs_len; x++){
+		copied_mods.push(parseInt(preset[x]))
+		if (copied_mods[x] != copied_mods[x]){
+			alert('Your preset is invalid.');
+			return
+		}
+		if (copied_mods[x] < 0){
+			alert('Your preset is invalid.');
+			return
+		}
+		if (copied_mods[x] > 100){
+			alert('Your preset is invalid.');
+			return
+		}
+	}
+    player.qu.qc.presets.push({
+        p_name: "New Preset",
+        mods: copied_mods,
+    })
+    updateQCModPresets()
+}
+
+function importQCPreset(x) {
+	let preset = prompt('Import your preset.').split('/');
+	if(preset.length!=8){
+		alert('Your preset is invalid.');
+		return
+	}
+    let copied_mods = []
+    for (let x = 0; x < QCs_len; x++){
+		copied_mods.push(parseInt(preset[x]))
+		if (copied_mods[x] != copied_mods[x]){
+			alert('Your preset is invalid.');
+			return
+		}
+		if (copied_mods[x] < 0){
+			alert('Your preset is invalid.');
+			return
+		}
+		if (copied_mods[x] > 100){
+			alert('Your preset is invalid.');
+			return
+		}
+	}
+    player.qu.qc.presets[x].mods = copied_mods
+    updateQCModPresets()
+}
+
 function saveQCPreset(x) {
     let copied_mods = []
     for (let x = 0; x < QCs_len; x++) copied_mods.push(player.qu.qc.mods[x])
@@ -139,9 +236,22 @@ function saveQCPreset(x) {
 
 function loadQCPreset(x) {
     if (QCs.active()) return
-    player.qu.qc.mods = player.qu.qc.presets[x].mods
+    for (let i = 0; i < QCs_len; i++)player.qu.qc.mods[i] = player.qu.qc.presets[x].mods[i]
 	for (let i = 0; i < QCs_len; i++)if(player.qu.qc.mods[i] > (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10))player.qu.qc.mods[i] = (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10);
     addNotify("Preset Loaded to Modifiers")
+    updateQCModPresets()
+}
+
+function exportQCPreset(x) {
+	let str = player.qu.qc.presets[x].mods[0]
+	for (let i = 1; i < QCs_len; i++)str+="/"+player.qu.qc.presets[x].mods[i];
+	let copyText = document.getElementById('copy')
+    copyText.value = str
+    copyText.style.visibility = "visible"
+    copyText.select();
+    document.execCommand("copy");
+    copyText.style.visibility = "hidden"
+    addNotify("Preset Exported to Clipboard")
     updateQCModPresets()
 }
 
@@ -188,15 +298,17 @@ function updateQCModPresets() {
         `
         for (let y = 0; y < QCs_len; y++) {
             table += `
-            <div style="margin: 5px; align-items: center;" class="table_center">
+            <div style="margin: 3px; align-items: center;" class="table_center">
             <div style="margin-right: 3px; width: 20px; text-align: right;">${p.mods[y]}</div><div tooltip="${QCs.names[y]}"><img style="width: 25px; height: 25px" src="images/qcm${y}.png"></div>
             </div>
             `
         }
         table += `</div>
-        <div style="margin: 5px">
+        <div style="margin: 3px">
         <button class="btn" onclick="saveQCPreset(${x})">Save</button>
         <button class="btn" onclick="loadQCPreset(${x})">Load</button>
+        <button class="btn" onclick="importQCPreset(${x})">Import</button>
+        <button class="btn" onclick="exportQCPreset(${x})">Export</button>
         <button class="btn" onclick="renameQCPreset(${x})">Rename</button>
         <button class="btn" onclick="deleteQCPreset(${x})">Delete</button>
         </div>
