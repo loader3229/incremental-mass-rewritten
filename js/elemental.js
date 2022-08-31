@@ -1380,7 +1380,7 @@ const ELEMENTS = {
 		},
 		{
 			desc: `星系原子的效果变得更好。`,
-			cost: E(2e9),
+			cost: E(2.5e9),
 			galQk: true,
 		},
 	],
