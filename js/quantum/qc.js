@@ -78,7 +78,7 @@ const QCs = {
         },{
             eff(i) {
 				//if(i>=30)return 1e200
-				if(i>=11)return 1.2**(i**4/1000)
+				if(i>=11)return Math.min(1.2**(i**4/1000),1e300)
                 let x = 1.2**i
                 return x
             },
