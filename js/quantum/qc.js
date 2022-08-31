@@ -104,6 +104,12 @@ const QCs = {
             effDesc(x) { return `^${format(x[0])} to starting of pre-Quantum scaling.<br>${format(x[1]*100)}% to strength of pre-Quantum scaling.` },
         },
     ],
+	maxAll(){
+		for (let i = 0; i < QCs_len; i++)player.qu.qc.mods[i] = hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10
+	},
+	resetAll(){
+		for (let i = 0; i < QCs_len; i++)player.qu.qc.mods[i] = 0
+	}
 }
 
 const QCs_len = 8
@@ -134,7 +140,7 @@ function saveQCPreset(x) {
 function loadQCPreset(x) {
     if (QCs.active()) return
     player.qu.qc.mods = player.qu.qc.presets[x].mods
-	for (let x = 0; x < QCs_len; x++)if(player.qu.qc.mods[i] > (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10))player.qu.qc.mods[i] = (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10);
+	for (let i = 0; i < QCs_len; i++)if(player.qu.qc.mods[i] > (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10))player.qu.qc.mods[i] = (hasTree('qc4')?Math.min(Math.max(Math.floor(player.qu.qc.shard/8),10),50):10);
     addNotify("Preset Loaded to Modifiers")
     updateQCModPresets()
 }
@@ -164,7 +170,7 @@ function setupQCHTML() {
         <div style="margin: 5px;">
         <div style="margin: 5px" tooltip="${QCs.names[x]}"><img onclick="tmp.qc_ch = ${x}" style="cursor: pointer" src="images/qcm${x}.png"></div>
         <div><span id="qcm_mod${x}">0</span>/<span id="qcm_max${x}">10</span></div>
-        <div id="qcm_btns${x}"><button onclick="QCs.incMod(${x},-1); tmp.qc_ch = ${x}">-</button><button onclick="QCs.incMod(${x},1); tmp.qc_ch = ${x}">+</button></div>
+        <div id="qcm_btns${x}"><button onclick="QCs.incMod(${x},-999); tmp.qc_ch = ${x}">0</button><button onclick="QCs.incMod(${x},-1); tmp.qc_ch = ${x}">-</button><button onclick="QCs.incMod(${x},1); tmp.qc_ch = ${x}">+</button><button onclick="QCs.incMod(${x},999); tmp.qc_ch = ${x}">M</button></div>
         </div>
         `
     }
