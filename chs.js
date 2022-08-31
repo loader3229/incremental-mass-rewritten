@@ -557,6 +557,7 @@ var cnItems = {
     ' stars': '星辰',
     ' Neutron star.': '中子星。',
     'You become Supernova!': '您成为了超新星！',
+    'You reached the maximum Supernova limit!': '您已经达到了最大超新星上限！',
     'Quality of life': '游戏体验',
     'Challenge': '挑战',
     'Post-Supernova': '超新星之后',
@@ -866,6 +867,13 @@ var cnItems = {
     'Hint 1: Hover top image above tabs to show description...': '提示1：鼠标停留在选项卡上方的图片以查看详情……',
     'Total time played': '游戏总时间',
     //#endregion
+	
+	'Timeshard effect is slightly stronger.': '时间碎片效果变得更好。',
+	'Timeshard Effect is slightly stronger.': '时间碎片效果变得更好。',
+	'Timeshard Effect is slightly stronger again.': '时间碎片效果变得更好。',
+	'Timeshard effect is stronger.': '时间碎片效果变得更好。',
+	'Timeshard Effect is stronger.': '时间碎片效果变得更好。',
+	'Timeshards effect is better.': '时间碎片效果变得更好。',
 }
 
 
@@ -1081,4 +1089,13 @@ var cnRegReplace = new Map([
     [/^ Make all Radiations effects (.+)x stronger$/, '使辐射波的效果变为原来的$1倍'], //量子等
     [/^Make all Supernova's scalings start (.+) later$/, '使超新星的所有折算延迟$1次出现'], //量子等
     [/^Next Supernova at (.+) stars$/, '下次超新星需要$1星辰'],
+    [/^If you bought .prim8., levels of Epsilon\/Theta\/Beta Particles is 1 per (.+) Primordium Theorem, instead of (.+).$/, '如果你购买了中子树升级[prim8]，艾普西隆[Ε]粒子、西塔[Θ]粒子、贝塔[Β]粒子的基础等级获取变为每$1个原基定理增加1级。'],
+    [/^Unlock the (.+)th Challenge.$/, '解锁第$1个挑战。'],
+    [/^Uncap C([0-9]+) completions.$/, '移除第$1个挑战的上限。'],
+    [/^'([0-9]+)%' in Neutron Tree Upgrade .br3. is now ([0-9]+)%.$/, '中子树升级[br3]中的$1%变为$2%。'],
+    [/^Entropic Evaporation\^2 is (.+)% weaker.$/, '使熵消耗²的折算弱化$1%。'],
+    [/^Entropic Condenser\^2 is (.+)% weaker.$/, '使熵压缩²的折算弱化$1%。'],
+    [/^Entropic Radiation\^2 is (.+)% weaker.$/, '使熵辐射²的折算弱化$1%。'],
+    [/^QC Modifier 'Time Anomaly' is (.+)% weaker.$/, '使量子挑战2的削弱弱化$1%。'],
+    [/^QC Modifier 'Intense Catalyst' is (.+)% weaker.$/, '使量子挑战5的削弱弱化$1%。'],
 ]);

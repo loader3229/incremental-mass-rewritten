@@ -852,7 +852,7 @@ const ELEMENTS = {
 			cost: E("5.9720000001e27").mul(200),
 		},
 		{
-			desc: `You can autobuy Cosmic Strings, and the 127th Element is better.`,
+			desc: `你可以自动购买宇宙弦，127号元素的效果更好。`,
 			cost: E("1e14"),
 			et: true,
 		},
@@ -866,11 +866,11 @@ const ELEMENTS = {
 			cost: E("1.9890000001e33"),
 		},
 		{
-			desc: `Unlock Accelerators, tickspeed now provides exponential boost, but Argon-18 is disabled.`,
+			desc: `解锁加速器，时间速度效果改为以指数加成质量，但是氩(18Ar)失效。`,
 			cost: E("1.9890000001e33").mul(200),
 		},
 		{
-			desc: `Accelerators boost itself.`,
+			desc: `加速器加成自身。`,
 			cost: E("1e18"),
 			et: true,
 			effect() {
@@ -880,7 +880,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x to power" },
 		},
 		{
-			desc: `Accelerators boost Pre-Quantum Global Speed.`,
+			desc: `加速器加成量子之前所有资源获取速度。`,
 			cost: E("1e19"),
 			et: true,
 			effect() {
@@ -890,7 +890,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `Accelerator Effect boost Tickspeed Power.`,
+			desc: `加速器加成时间速度倍率。`,
 			cost: E("1.9890000001e37"),
 		},
 		{
@@ -898,7 +898,7 @@ const ELEMENTS = {
 			cost: E("1.9890000001e37"),
 		},
 		{
-			desc: `Multiply Entropy gain by Eternity times.`,
+			desc: `永恒次数加成熵获取。`,
 			cost: E("1.6190000001e20"),
 			et: true,
 			effect() {
@@ -908,7 +908,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `The Formula of Element 128 is better.`,
+			desc: `128号元素变得更好。`,
 			cost: E("1.6190000001e21"),
 			et: true,
 		},
@@ -917,7 +917,7 @@ const ELEMENTS = {
 			cost: E("2.98350000001e45"),
 		},
 		{
-			desc: `Element 121 is squared.`,
+			desc: `121号元素的效果变为原来的平方。`,
 			cost: E("2.98350000001e45"),
 		},
 		{
@@ -931,15 +931,15 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Gain 10x more Prestige Mass.`,
+			desc: `获得10倍的转生质量。`,
 			cost: E("2.98350000001e53"),
 		},
 		{
-			desc: `Entropy Post-1.8e308 added to base Infinity Mass gain formula.`,
+			desc: `使高于1.8e308的熵加成基础无限质量获取。`,
 			cost: uni(1),
 		},
 		{
-			desc: `Element 128's effect ^1.2.`,
+			desc: `128号元素的效果变为原来的1.2次方。`,
 			cost: E("5.9720000001e30"),
 			et: true,
 		},
@@ -949,11 +949,11 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Super Hex is 5% weaker.`,
+			desc: `使六重阶层的超级折算弱化5%。`,
 			cost: uni(1e5),
 		},
 		{
-			desc: `The Hept requirement is reduced.`,
+			desc: `降低七重阶层的需求。`,
 			cost: uni(1e7),
 		},
 		{
@@ -967,7 +967,7 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `The first softcap of Prestige Mass effect is weaker.`,
+			desc: `削除转生质量效果的第一个软上限。`,
 			cost: E("1.9890000001e36"),
 			et: true,
 		},
@@ -981,16 +981,16 @@ const ELEMENTS = {
 			cost: uni(1e18),
 		},
 		{
-			desc: `Effects of Protons Powers is better.`,
+			desc: `质子能量的效果变得更好。`,
 			cost: uni(1e21),
 		},
 		{
-			desc: `Element 128's effect ^1.2.`,
+			desc: `128号元素的效果变为原来的1.2次方。`,
 			cost: E("1.9890000001e41").mul(3),
 			et: true,
 		},
 		{
-			desc: `Disable dilated mass gain softcap, and Dilated Overflow is weaker.`,
+			desc: `移除膨胀质量获取的软上限，膨胀溢出被削弱。`,
 			cost: E("1.9890000001e41").mul(3),
 			et: true,
 		},
@@ -999,11 +999,11 @@ const ELEMENTS = {
 			cost: uni(1e27),
 		},
 		{
-			desc: `Base Dilated Mass effect ^6.`,
+			desc: `膨胀质量的基础效果变为原来的6次方。`,
 			cost: uni(1e29),
 		},
 		{
-			desc: `Eternal Mass boost Timeshards.`,
+			desc: `永恒质量加成时间碎片。`,
 			cost: E("1.989e44"),
 			et: true,
 			effect() {
@@ -1013,12 +1013,12 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x" },
 		},
 		{
-			desc: `First Rank Collapse effect is weaker.`,
+			desc: `削弱第一个级别坍缩效果。`,
 			cost: E("2.98350000001e45"),
 			et: true,
 		},
 		{
-			desc: `Prestige Base Post-1.8e308 added to base Infinity Mass gain formula.`,
+			desc: `使高于1.8e308的转生基础值加成基础无限质量获取。`,
 			cost: uni(6e35),
 		},
 		{
@@ -1044,17 +1044,17 @@ const ELEMENTS = {
 			cost: uni(1e100),
 		},
 		{
-            desc: `First Rank Collapse effect is weaker.`,
+            desc: `削弱第一个级别坍缩效果。`,
 			cost: uni(1e21),
 			et: true,
 		},
 		{
-            desc: `C5 effect is changed. C15 goal is heavily weaken.`,
+            desc: `修改挑战5的效果。挑战15的目标变得更低。`,
 			cost: uni(1e22),
 			et: true,
 		},
 		{
-            desc: `Second Rank Collapse effect is weaker.`,
+            desc: `削弱第二个级别坍缩效果。`,
 			cost: uni(1e23),
 			et: true,
 		},
@@ -1064,7 +1064,7 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-            desc: `Booster boost its effect.`,
+            desc: `助推器加成自身。`,
 			cost: uni(1e147),
 			effect() {
 				let x = (player.massUpg[2]||E(0)).add(10).log10().pow(0.6);
@@ -1073,7 +1073,7 @@ const ELEMENTS = {
 			effDesc(x) { return "^"+format(x) },
 		},
 		{
-            desc: `Muscler boost its effect.`,
+            desc: `锻体器加成自身。`,
 			cost: uni(1e150),
 			effect() {
 				let x = (player.massUpg[1]||E(0)).add(10).log10().pow(0.6);
@@ -1082,12 +1082,12 @@ const ELEMENTS = {
 			effDesc(x) { return "^"+format(x) },
 		},
 		{
-            desc: `Add 100 C13 & C15 completions.`,
+            desc: `挑战13和15的次数上限增加100。`,
 			cost: uni(1e27),
 			et: true,
 		},
 		{
-            desc: `Second Rank Collapse effect is weaker.`,
+            desc: `削弱第二个级别坍缩效果。`,
 			cost: uni(1e27),
 			et: true,
 		},
@@ -1096,7 +1096,7 @@ const ELEMENTS = {
 			cost: E(1.5e217),
 		},
 		{
-            desc: `Permanently remove Pre-Meta Tier scaling.`,
+            desc: `移除阶层除元折算以外的所有折算。`,
 			cost: E(1.5e221),
 		},
 		{
@@ -1105,56 +1105,56 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `If you're not in Big Rip, Green Chroma's effect ^1.5`,
+			desc: `如果你不在大撕裂中，绿色色度的效果变为原来的1.5次方。`,
 			cost: uni(1e36),
 			et: true,
 		},
 		{
-			desc: `Third Rank Collapse effect is weaker.`,
+			desc: `削弱第三个级别坍缩效果。`,
 			cost: uni(1e203),
 		},
 		{
-			desc: `Add 100 C13 & C16 completions.`,
+			desc: `挑战13和16的次数上限增加100。`,
 			cost: E(9e284),
 		},
 		{
-			desc: `Remove the first Rank Collapse effect.`,
+			desc: `移除第一个级别坍缩效果。`,
 			cost: uni(1e45),
 			et: true,
 		},
 		{
-			desc: `Remove the second Rank Collapse effect.`,
+			desc: `移除第二个级别坍缩效果。`,
 			cost: uni(1e48),
 			et: true,
 		},
 		{
-			desc: `Post-20 QC Modifier 'Intense Catalyst' effect scaling is weaker.`,
+			desc: `量子挑战5高于20的效果被削弱。`,
 			cost: E(1.5e294),
 		},
 		{
-			desc: `Add 300 C13 & C15 completions.`,
+			desc: `挑战13和15的次数上限增加300。`,
 			cost: E(6e299),
 		},
 		{
-			desc: `Remove Super Cosmic Strings scaling.`,
+			desc: `移除宇宙弦的超级折算。`,
 			cost: uni(1e49),
 			et: true,
 		},
 		{
-			desc: `Break Dilation Upgrade 5 affects Meta-Tier scaling.`,
+			desc: `撕裂膨胀升级5影响阶层的元折算。`,
 			cost: uni(5e51),
 			et: true,
 		},
 		{
-			desc(){return `Meta-Infinity Confirmed! Infinity mass is added to its base gain formula. Cost of this element is ${format(E(2).pow(1024))} grams of Infinity mass.`},
+			desc: `使高于1.8e308克的无限质量加成基础无限质量获取。`,
 			cost: E(2).pow(1024),
 		},
 		{
-			desc: `Add 200 C13 & C16 completions.`,
+			desc: `挑战13和16的次数上限增加200。`,
 			cost: E("6e310"),
 		},
 		{
-			desc: `Remove Rank Collapse.`,
+			desc: `移除级别坍缩。`,
 			cost: uni(1e54),
 			et: true,
 		},
@@ -1164,20 +1164,20 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Remove 3 softcaps from Radiation Booster 'Meta-Rank Boost'`,
+			desc: `移除辐射波加成“级别元折算加成”的3个软上限。`,
 			cost: uni(1e301),
 		},
 		{
-			desc: `Add 200 C13 completions.`,
+			desc: `挑战13的次数上限增加200。`,
 			cost: E("3e393"),
 		},
 		{
-			desc: `Gain 100% of Eternal Mass gain per second. Gain 1 Eternity count per second.`,
+			desc: `每秒获得永恒质量和永恒次数，数量为重置时获取量的100%。`,
 			cost: uni(1e71),
 			et: true,
 		},
 		{
-			desc: `Dilated Overflow is weaker.`,
+			desc: `膨胀溢出被削弱。`,
 			cost: uni(1e75),
 			et: true,
 		},
@@ -1190,12 +1190,12 @@ const ELEMENTS = {
 			cost: E("1e500"),
 		},
 		{
-			desc: `C5 effect is changed.`,
+			desc: `修改挑战5的效果。`,
 			cost: E("3e144"),
 			et: true,
 		},
 		{
-			desc: `Epsilon Particles's 2nd effect is better if you're not in Big Rips or Quantum Challenges.`,
+			desc: `如果你不在大撕裂或量子挑战中，艾普西隆[Ε]粒子的第二个效果更好。`,
 			cost: E("3e152"),
 			et: true,
 		},
@@ -1204,7 +1204,7 @@ const ELEMENTS = {
 			cost: E("1.5e523"),
 		},
 		{
-			desc: `Remove Meta-Rank scaling. Radiation Booster 'Meta-Rank Boost' affects Meta-Tier at a reduced rate.`,
+			desc: `移除级别的元折算。辐射波加成“级别元折算加成”以较低的效果影响阶层的元折算。`,
 			cost: E("1.5e527"),
 			effect() {
 				let x = tmp.radiation.bs.eff[14].add(1).log10();
@@ -1217,7 +1217,7 @@ const ELEMENTS = {
 			cost: E("1.5e634"),
 		},
 		{
-			desc: `Add 1000 C13 completions.`,
+			desc: `挑战13的次数上限增加1000。`,
 			cost: E("1.5e674"),
 		},
 		{
@@ -1226,12 +1226,12 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Add 100 C14 & C16 completions.`,
+			desc: `挑战14和16的次数上限增加100。`,
 			cost: E("7.5e193"),
 			et: true,
 		},
 		{
-			desc: `Remove a softcap from Radiation Booster 'Meta-Rank Boost'.`,
+			desc: `移除辐射波加成“级别元折算加成”的1个软上限。`,
 			cost: E("6e832"),
 		},
 		{
@@ -1244,16 +1244,16 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Add 100 C14 & C17 completions.`,
+			desc: `挑战14和17的次数上限增加100。`,
 			cost: E("9e224"),
 			et: true,
 		},
 		{
-			desc: `Raise Infinity Upgrade 3 by 1.2`,
+			desc: `无限升级3的效果变为原来的1.2次方。`,
 			cost: E("1.5e955"),
 		},
 		{
-			desc: `Multiply Honor 9 Effect by 2`,
+			desc: `荣耀9的效果变为原来的2倍。`,
 			cost: E("1.5e1099"),
 		},
 		{
@@ -1262,16 +1262,16 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Add 200 C15 & C16 completions.`,
+			desc: `挑战15和16的次数上限增加200。`,
 			cost: uni(2e198),
 			et: true,
 		},
 		{
-			desc: `Multiply Honor 9 Effect by 2`,
+			desc: `荣耀9的效果变为原来的2倍。`,
 			cost: E("1.5e1145"),
 		},
 		{
-			desc: `Eternity Times boost Quantum Times gain.`,
+			desc: `永恒次数加成量子次数。`,
 			cost: E("1.5e1157"),
 			effect() {
 				let x = player.et.times.add(1);
@@ -1280,7 +1280,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x"; },
 		},
 		{
-			desc: `Eternal Mass boost Eternity Times gain.`,
+			desc: `永恒质量加成永恒次数。`,
 			cost: uni(1e206),
 			et: true,
 			effect() {
@@ -1290,7 +1290,7 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x"; },
 		},
 		{
-			desc: `Unlock Supernova Galaxies in the Supernova tab.`,
+			desc: `在超新星选项卡中解锁超新星星系。`,
 			cost: uni(1e210),
 			et: true,
 		},
@@ -1299,17 +1299,17 @@ const ELEMENTS = {
 		
 		
 		{
-			desc: `[sn6] is better.`,
+			desc: `中子树升级[sn6]变得更好。`,
 			cost: E(1e6),
 			galQk: true,
 		},
 		{
-			desc: `Autobuy Shard Generators.`,
+			desc: `自动购买碎片生成器。`,
 			cost: E("1.5e516"),
 			et: true,
 		},
 		{
-			desc: `Raise Element 128's effect by 1.63`,
+			desc: `128号元素的效果变为原来的1.63次方。`,
 			cost: E("1.5e2976"),
 		},
 		{
@@ -1323,11 +1323,11 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Remove a softcap from Radiation Booster 'Meta-Rank Boost'.`,
+			desc: `移除辐射波加成“级别元折算加成”的1个软上限。`,
 			cost: E("1.5e3306"),
 		},
 		{
-			desc: `The effect softcap of Galactic Power is weaker.`,
+			desc: `削弱星系能量效果的软上限。`,
 			cost: E(2.5e7),
 			galQk: true,
 		},
@@ -1337,25 +1337,25 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Add 300 C17 completions.`,
+			desc: `挑战17的次数上限增加300。`,
 			cost: E("1.5e3656"),
 		},
 		{
-			desc: `The effect softcap of Galactic Power is weaker.`,
+			desc: `削弱星系能量效果的软上限。`,
 			cost: E(1e8),
 			galQk: true,
 		},
 		{
-			desc: `Raise C20 effect by 3`,
+			desc: `挑战20效果变为原来的立方。`,
 			cost: E("1.5e606"),
 			et: true,
 		},
 		{
-			desc: `C5 effect is changed.`,
+			desc: `修改挑战5的效果。`,
 			cost: E("1.5e3806"),
 		},
 		{
-			desc: `Galactic Quarks boost Quark gain.`,
+			desc: `星系夸克加成夸克获取。`,
 			cost: E(5e8),
 			galQk: true,
 			effect() {
@@ -1365,7 +1365,7 @@ const ELEMENTS = {
 			effDesc(x) { return "^"+format(x); },
 		},
 		{
-			desc: `Meta-Tetr scaling starts later based on Tier.`,
+			desc: `基于阶层，使三重阶层的元折算延迟出现。`,
 			cost: E("1.5e611"),
 			et: true,
 			effect() {
@@ -1375,11 +1375,11 @@ const ELEMENTS = {
 			effDesc(x) { return format(x)+"x later"; },
 		},
 		{
-			desc: `C18 effect is stronger.`,
+			desc: `挑战18效果变得更好。`,
 			cost: E("1.5e3816"),
 		},
 		{
-			desc: `Effect of Galactic Atoms is better.`,
+			desc: `星系原子的效果变得更好。`,
 			cost: E(2e9),
 			galQk: true,
 		},

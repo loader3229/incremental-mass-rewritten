@@ -228,11 +228,11 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superGal.gte(2))html += "<br>初始时就解锁色度";
 		if(player.superGal.gte(2))html += "<br>初始时就有"+format(SUPERNOVA_GALAXY.effects.qut())+"量子次数";
 		if(player.superGal.gte(2))html += "<br>量子次数、无限次数、永恒次数获取变为原来的"+format(SUPERNOVA_GALAXY.effects.qut2())+"倍";
-		if(player.superGal.gte(3))html += "<br>Accelerator Effect Softcap^1-^2 starts "+format(SUPERNOVA_GALAXY.effects.aesc())+"x later";
+		if(player.superGal.gte(3))html += "<br>加速器效果的软上限和二重软上限延迟"+format(SUPERNOVA_GALAXY.effects.aesc())+"倍出现";
 		tmp.el.galPow0.setTxt(format(player.galPow[0])+player.galPow[0].formatGain(SUPERNOVA_GALAXY.galPow0_gain()))
 		tmp.el.galPow0_eff.setTxt(format(SUPERNOVA_GALAXY.galPow0_eff()))
 		if(player.superGal.gte(6)){
-			html += "<br>Permanently Keep your Neutron Tree";
+			html += "<br>重置时保留中子树";
 			tmp.el.galPow1.setTxt(format(player.galPow[1])+player.galPow[1].formatGain(SUPERNOVA_GALAXY.galPow1_gain()))
 			tmp.el.galPow1_eff.setTxt(format(SUPERNOVA_GALAXY.galPow1_eff()))
 			tmp.el.galPow2.setTxt(format(player.galPow[2])+player.galPow[2].formatGain(SUPERNOVA_GALAXY.galPow2_gain()))
@@ -241,22 +241,22 @@ function updateSupernovaGalaxyHTML() {
 				tmp.el.galPow3.setTxt(format(player.galPow[3])+player.galPow[3].formatGain(SUPERNOVA_GALAXY.galPow3_gain()))
 				tmp.el.galPow3_eff.setTxt(format(SUPERNOVA_GALAXY.galPow3_eff()))
 				if(player.superGal.gte(9)){
-					html += "<br>Prestiges resets nothing";
+					html += "<br>所有转生不再重置任何东西";
 					tmp.el.galPow4.setTxt(format(player.galPow[4])+player.galPow[4].formatGain(SUPERNOVA_GALAXY.galPow4_gain()))
 					tmp.el.galPow4_eff.setTxt(format(SUPERNOVA_GALAXY.galPow4_eff()))
 					tmp.el.galPow5.setTxt(format(player.galPow[5])+player.galPow[5].formatGain(SUPERNOVA_GALAXY.galPow5_gain()))
 					tmp.el.galPow5_eff.setTxt(format(SUPERNOVA_GALAXY.galPow5_eff()))
 					if(player.superGal.gte(10)){
-						html += "<br>Permanently Keep your Infinity upgrades";
-						html += "<br>Unlock Element Tier 3";
+						html += "<br>重置时保留无限升级";
+						html += "<br>解锁元素阶层3";
 						tmp.el.galQk.setTxt(format(player.galQk)+player.galQk.formatGain(SUPERNOVA_GALAXY.galQkGain()))
 						tmp.el.galPowNextspan.setDisplay(false);
 					}else tmp.el.galPowNext.setTxt(10);
 				}else tmp.el.galPowNext.setTxt(9);
 			}else tmp.el.galPowNext.setTxt(7);
 		}else tmp.el.galPowNext.setTxt(6);
-		if(player.superGal.gte(11))html += "<br>Permanently Keep Prestiges";
-		if(player.superGal.gte(13))html += "<br>Permanently Keep C13-C20 completions";
+		if(player.superGal.gte(11))html += "<br>重置时保留转生";
+		if(player.superGal.gte(13))html += "<br>重置时保留挑战13-20的完成次数";
 		
 		tmp.el.superGalEff.setHTML(html)
 	}else tmp.el.galPowNext.setTxt(1);
