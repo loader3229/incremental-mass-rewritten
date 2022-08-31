@@ -233,7 +233,7 @@ const CHALS = {
         let chal = this[x]
 		if(hasElement(170)&&x==15)chal.inc = E(2);
         let fp = 1
-        if (QCs.active()) fp /= tmp.qu.qc_eff[5]
+        if (QCs.active() && x <= 12) fp /= tmp.qu.qc_eff[5]
         let s1 = x > 8 ? 10 : 75
         let s2 = 300
         if (x == 8) s2 = 200
