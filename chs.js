@@ -545,6 +545,13 @@ var cnItems = {
     'Relativistic Mass gain is increased by 75% for every OoM^2 of dilated mass.': '膨胀质量每有一个数量级的二次方，就使相对论质量获取速度增加75%。',
     'Pre-Quantum Global Speed affects Relativistic Mass gain at a severely reduced rate.': '使量子之前所有资源获取速度可以对相对论质量获取速度生效，只是效果倍率严重降低。',
     'Super Prestige Level starts 10 later.': '使转生等级的超级折算延迟10次出现。',
+	'Break Dilation Upgrade 9\'s effect is raised by 10.': '使撕裂膨胀升级9的效果变为原来的10次方。',
+	'Relativistic mass boost Prestige mass gain.': '使相对论质量可以加成转生质量。',
+	
+    ' Galactic Quarks': '星系夸克',
+    ' Galactic Protons': '星系质子',
+    ' Galactic Neutrons': '星系中子',
+    ' Galactic Electrons': '星系电子',
     //#endregion
     //#region 超新星
     'You have become SUPERNOVA!': '您终于成为了超新星！',
@@ -691,6 +698,18 @@ var cnItems = {
     '[Neutrino]': '[中微子]',
     '[Neut-Muon]': '[缪中微子]',
     '[Neut-Tau]': '[陶中微子]',
+    '[G-Up]': '[G-上夸克]',
+    '[G-Down]': '[G-下夸克]',
+    '[G-Charm]': '[G-粲夸克]',
+    '[G-Strange]': '[G-奇夸克]',
+    '[G-Top]': '[G-顶夸克]',
+    '[G-Bottom]': '[G-底夸克]',
+    '[G-Electron]': '[G-电子]',
+    '[G-Muon]': '[G-缪子]',
+    '[G-Tau]': '[G-陶子]',
+    '[G-Neutrino]': '[G-中微子]',
+    '[G-Neut-Muon]': '[G-缪中微子]',
+    '[G-Neut-Tau]': '[G-陶中微子]',
     'Tier ': '阶层',
     'Next Tier at': '下一阶层需',
     '(Increased by Atomic Powers': '(单位为原子能量',
@@ -1014,6 +1033,7 @@ var cnRegReplace = new Map([
     [/^Boosts Mass gain by (.+)x$/, '使质量获取速度变为原来的$1倍'], //原子等
     [/^Boosts Mass gain by \^(.*)$/, '使质量获取速度变为原来的$1次方'], //原子等
     [/^Adds Tickspeed Power by (.+)%$/, '使时间速度倍率增加$1%'], //原子等
+    [/^ Boosts Tickspeed Power by \^(.*)$/, '使时间速度倍率变为原来的$1次方'], //原子等
     [/^Boosts Rage Power gain by (.+)x$/, '使狂怒能量获取速度变为原来的$1倍'], //原子等
     [/^Boosts Rage Power gain by \^(.*)$/, '使狂怒能量获取速度变为原来的$1次方'], //原子等
     [/^Makes Mass gain boosted by Rage Powers - (.+)x$/, '使狂怒能量可以加成质量获取速度 - 倍率为$1倍'], //原子等

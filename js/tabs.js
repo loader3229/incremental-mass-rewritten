@@ -44,7 +44,7 @@ const TABS = {
             { id: "Elements", unl() { return player.chal.comps[7].gte(16) || player.supernova.times.gte(1) || quUnl() } },
             { id: "Mass Dilation", unl() { return MASS_DILATION.unlocked() }, style: "dilation" },
             { id: "Break Dilation", unl() { return hasUpgrade("br",9) }, style: "break_dilation" },
-            { id: "G-Particles", unl() { return hasElement(251) } },
+            { id: "星系粒子", unl() { return hasElement(251) } },
         ],
         5: [
             { id: "Neutron Tree" },
