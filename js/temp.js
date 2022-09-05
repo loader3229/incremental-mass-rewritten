@@ -46,10 +46,10 @@ function resetTemp() {
         fermions: {
             ch: [0,0],
             gains: [E(0),E(0)],
-            maxTier: [[],[]],
-            tiers: [[],[]],
-            effs:  [[],[]],
-            bonuses: [[],[]],
+            maxTier: [[],[],[],[]],
+            tiers: [[],[],[],[]],
+            effs:  [[],[],[],[]],
+            bonuses: [[],[],[],[]],
         },
     
         supernova: {

@@ -60,7 +60,7 @@ const FORMS = {
 	
         if (player.ranks.tier.gte(2)) x = x.pow(1.15)
         if (player.ranks.rank.gte(180)) x = x.pow(1.025)
-        if (!CHALS.inChal(3)) x = x.pow(tmp.chal.eff[3])
+        if (!(player.chal.active == 3)) x = x.pow(tmp.chal.eff[3])
         if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) {
             x = expMult(x,tmp.md.pen)
             if (hasElement(28)) x = x.pow(1.5)
@@ -72,6 +72,12 @@ const FORMS = {
 		if (hasUpgrade('bh',19)) x = x.pow(tmp.upgs.main?tmp.upgs.main[2][19].effect:E(1))
         if (hasUpgrade('br',20)) x = x.pow(tmp.upgs.main?tmp.upgs.main[4][20].effect:E(1))
 		if (hasElement(213)) x = x.pow(tmp.chal.eff[20])
+		
+		x = x.pow(tmp.fermions.effs[2][2]||E(1))	
+		
+		
+		x = x.pow(SUPERNOVA_GALAXY.galPow0_eff())
+		
 		if (CHALS.inChal(9) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) x = expMult(x,0.9)
         x = x.softcap(tmp.massSoftGain,tmp.massSoftPower,0)
         .softcap(tmp.massSoftGain2,tmp.massSoftPower2,0)
@@ -85,7 +91,6 @@ const FORMS = {
 
         if (hasElement(117)) x = x.pow(10)
 		
-		x = x.pow(SUPERNOVA_GALAXY.galPow0_eff())
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
@@ -330,10 +335,18 @@ const FORMS = {
             let ss2 = E(200)
             let p2 = 0.1
 			
+			if(hasElement(253))p = p ** 0.7, p2 = p2 ** 0.7
+			
 			ss = ss.mul(SUPERNOVA_GALAXY.effects.aesc())
 			
 			ss2 = ss2.mul(SUPERNOVA_GALAXY.effects.aesc())
 			
+			
+			
+			ss = ss.mul(tmp.fermions.effs[3][2]||E(1))	
+		
+		
+			ss2 = ss2.mul(tmp.fermions.effs[3][2]||E(1))	
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -396,6 +409,10 @@ const FORMS = {
 
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
+				
+			
+			if (FERMIONS.onActive("32"))gain = gain.add(1).log10().pow(5)
+				
             return gain.floor()
         },
         massPowerGain() {
@@ -425,12 +442,15 @@ const FORMS = {
 		
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
+			
+			if (FERMIONS.onActive("31")) x = x.add(1).log10().pow(100)
+			
 			tmp.bhOverflowStart = E("e1e34")
 			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
 			if (CHALS.inChal(15) || CHALS.inChal(19))tmp.bhOverflowStart = E(10)
 			
 			let x_original = x
-			x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasUpgrade('bh',20)?0.81:0.8));
+			x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
 				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(0.8).mul(bhOverflowStart2.log10().log10());

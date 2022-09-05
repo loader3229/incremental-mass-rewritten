@@ -169,6 +169,21 @@
 			<span id="galPow4span">您有<span id="galPow4">0</span>星系U-费米子（获取量基于U-夸克和U-轻子），所有U-费米子的获取变为原来的<span id="galPow4_eff">1</span>次方<br></span>
 			<span id="galPow5span">您有<span id="galPow5">0</span>星系辐射波（获取量基于频率），所有辐射波的获取变为原来的<span id="galPow5_eff">1</span>次方<br></span>
 			<span id="galQkspan">您有<span id="galQk">0</span>星系夸克（获取量基于夸克和U-夸克）</span>
+        </div><div id="stab_frame5_5">
+            Choosing any Galactic Fermion will force a Supernova Galaxy reset!<br>
+            In Galactic Fermions, you can't gain Infinity and Eternity mass!<br>
+            Galactic Fermion tiers boost your Galactic U-Fermions gain.<br><br>
+            <button class="btn" onclick="FERMIONS.backNormal()">Back to Normal</button><br><br>
+            <div class="fermions">
+                <div class="f_quark sub_f">
+                    You have <span id="fgquarkAmt">X</span> Total Galactic Quark Tiers<br><br>
+                    <div id="fermions_gquark_table" class="table_center"></div>
+                </div>
+                <div class="f_lepton sub_f">
+                    You have <span id="fgleptonAmt">X</span> Total Galactic Lepton Tiers<br><br>
+                    <div id="fermions_glepton_table" class="table_center"></div>
+                </div>
+            </div>
         </div>
     </div>
     <div id='app' style='display: none'>
@@ -466,6 +481,19 @@
                     <div id="bd_upg_table" class="table_center" style="width: 1000px;"></div>
                 </div>
             </div>
+            <div id="stab_frame4_4">
+                You have <span id="unassignGQuarkAmt">X</span> Galactic Quarks<br><br>
+                <div>
+                    <button class="btn" onclick="ATOM.particles.gassignAll()">Distribute</button><br><br>
+                    <input class="input_ratio" style="color: #0f0;" type="number" min="1" id="gratio_d0">
+                    <input class="input_ratio" style="color: #ff0;" type="number" min="1" id="gratio_d1">
+                    <input class="input_ratio" style="color: #f00;" type="number" min="1" id="gratio_d2">
+                </div>
+                <br><br>
+                Ratio Mode: <span id="atom_ratio_gq">X</span><br>
+                <button class="btn" onclick="player.atom.ratio = 0">+1</button><button class="btn"onclick="player.atom.ratio = 1">25%</button><button class="btn"onclick="player.atom.ratio = 2">100%</button><br><br>
+                <div id="gparticles_table" class="table_center" style="justify-content: space-evenly;"></div>
+            </div>
         </div><div id="tab_frame6">
             <div id="stab_frame6_0">
                 <span id="qu_theory_div">You have <span id="qu_theory">0</span> Quantum Theory (based on every going quantum)</span><br><br>
@@ -523,8 +551,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.8.1.1c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的NG+, 汉化版) v0.8.1.1c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.8.2c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的NG+, 汉化版) v0.8.2c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

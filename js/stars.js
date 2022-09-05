@@ -4,6 +4,9 @@ const STARS = {
         let x = player.stars.generators[0]
         if (player.md.upgs[8].gte(1)) x = x.mul(tmp.md.upgs[8].eff)
         if (hasPrestige(1,1)) x = x.pow(2)
+			
+		
+		x = x.pow(tmp.fermions.effs[3][0]||E(1))
         x = x.softcap(tmp.stars.softGain,tmp.stars.softPower,0)
 	
 	

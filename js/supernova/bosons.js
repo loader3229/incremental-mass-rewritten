@@ -3,6 +3,7 @@ const BOSONS = {
     gain: {
         pos_w() {
             let x = E(0.01).mul(tmp.bosons.effect.neg_w?tmp.bosons.effect.neg_w[1]:1).mul(tmp.bosons.effect.z_boson?tmp.bosons.effect.z_boson[1]:1).mul(tmp.bosons.effect.graviton?tmp.bosons.effect.graviton[0]:1)
+			if (hasElement(246))x = x.mul(100)
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())
@@ -10,6 +11,7 @@ const BOSONS = {
         },
         neg_w() {
             let x = E(0.01).mul(tmp.bosons.effect.pos_w?tmp.bosons.effect.pos_w[1]:1).mul(tmp.bosons.effect.z_boson?tmp.bosons.effect.z_boson[1]:1).mul(tmp.bosons.effect.graviton?tmp.bosons.effect.graviton[0]:1)
+			if (hasElement(246))x = x.mul(100)
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())
@@ -17,6 +19,7 @@ const BOSONS = {
         },
         z_boson() {
             let x = E(0.01).mul(tmp.bosons.effect.graviton?tmp.bosons.effect.graviton[0]:1)
+			if (hasElement(246))x = x.mul(100)
             if (hasTree("bs4")) x = x.pow(1.5)
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
@@ -27,6 +30,7 @@ const BOSONS = {
             let x = E(0.01).mul(tmp.bosons.effect.graviton?tmp.bosons.effect.graviton[0]:1)
             x = x.mul(tmp.bosons.upgs.photon[2]?tmp.bosons.upgs.photon[2].effect:1)
             if (hasTree("bs2") && tmp.supernova.tree_eff.bs2) x = x.mul(tmp.supernova.tree_eff.bs2[1])
+			if (hasElement(246))x = x.mul(100)
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())
@@ -36,6 +40,7 @@ const BOSONS = {
             let x = E(0.01).mul(tmp.bosons.effect.graviton?tmp.bosons.effect.graviton[0]:1)
             x = x.mul(tmp.bosons.upgs.gluon[2]?tmp.bosons.upgs.gluon[2].effect:1)
             if (hasTree("bs2") && tmp.supernova.tree_eff.bs2) x = x.mul(tmp.supernova.tree_eff.bs2[0])
+			if (hasElement(246))x = x.mul(100)
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())
@@ -43,6 +48,7 @@ const BOSONS = {
         },
         graviton() {
             let x = E(0.01).mul(tmp.bosons.effect.graviton?tmp.bosons.effect.graviton[0]:1).mul(tmp.fermions.effs[1][1])
+			if (hasElement(246))x = x.mul(100)
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())
@@ -52,6 +58,7 @@ const BOSONS = {
             let x = E(0.01).mul(tmp.fermions.effs[1][1])
             if (hasTree("bs1")) x = x.mul(tmp.supernova?tmp.supernova.tree_eff.bs1:1)
 			if (player.ranks.hex.gte(6)) x = x.mul((tmp.elements.effect[6]||1));
+			if (hasElement(246))x = x.mul(100)
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())

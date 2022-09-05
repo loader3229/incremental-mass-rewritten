@@ -2,7 +2,7 @@ const INFINITY_LAYER = {
     gain() {
         let x = player.qu.points.add(1).log(Number.MAX_VALUE);
         let y = player.qu.rip.amt.add(1).log(Number.MAX_VALUE);
-        if (x.lt(1) || CHALS.inChal(18) || CHALS.inChal(19)) return E(0)
+        if (x.lt(1) || CHALS.inChal(18) || CHALS.inChal(19) || player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3")) return E(0)
         if (y.lt(1)) y=E(1)
 		if (hasUpgrade('inf',20))y = y.pow(2)
 		let power = E(2)
@@ -64,7 +64,7 @@ const INFINITY_LAYER = {
     },
     enter() {
         let x = player.qu.points.add(1).log(Number.MAX_VALUE);
-        if (x.lt(1)) return
+        if (x.lt(1) || player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3")) return
         if (player.confirms.inf) if (confirm("你确定要无限吗？除了部分qol升级和转生以外您将失去绝大部分进度")?!confirm("您真的确定了吗？？？"):true) return
 		INFINITY_LAYER.doReset()
     },
@@ -123,7 +123,7 @@ const INFINITY_LAYER = {
 const ETERNITY_LAYER = {
     gain() {
         let x = tmp.preQUGlobalSpeed.add(1).log("1e2000");
-        if (x.lt(1)) return E(0)
+        if (x.lt(1) || player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3")) return E(0)
 		let power = E(1)
 		if (hasUpgrade('inf',15))power = power.add(2)
 		if (hasUpgrade('inf',17))power = power.add(3)
@@ -142,12 +142,13 @@ const ETERNITY_LAYER = {
     gainTimes() {
         let x = E(1)
 		if (hasElement(217)) x = x.mul(tmp.elements.effect[217]);
+		if (hasElement(243)) x = x.mul(tmp.elements.effect[243]);
         x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
         return x
     },
     enter() {
         let x = tmp.preQUGlobalSpeed.add(1).log("1e2000");
-        if (x.lt(1)) return
+        if (x.lt(1) || player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3")) return
         if (player.confirms.et) if (confirm("Are you sure to go Eternity? Going Eternity will reset all previous except QoL mechanicals and Prestiges")?!confirm("ARE YOU SURE ABOUT IT???"):true) return
 		ETERNITY_LAYER.doReset()
     },
@@ -300,5 +301,6 @@ function calcShardsEffect() {
 	if(hasElement(148))eff = eff.pow(1.1);
 	if(hasElement(223))eff = eff.pow(1.4);
 	if(hasElement(226))eff = eff.pow(1.3);
+	if(hasElement(238))eff = eff.pow(1.2);
 	return eff;
 }

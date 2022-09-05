@@ -157,6 +157,7 @@ function getPlayerData() {
             pent: E(0),
             hex: E(0),
             hept: E(0),
+            oct: E(0),
         },
         auto_ranks: {
             rank: false,
@@ -250,7 +251,7 @@ function getPlayerData() {
             fermions: {
                 unl: false,
                 points: [E(0),E(0)],
-                tiers: [[E(0),E(0),E(0),E(0),E(0),E(0)],[E(0),E(0),E(0),E(0),E(0),E(0)]],
+                tiers: [[E(0),E(0),E(0),E(0),E(0),E(0)],[E(0),E(0),E(0),E(0),E(0),E(0)],[E(0),E(0),E(0),E(0),E(0),E(0)],[E(0),E(0),E(0),E(0),E(0),E(0)]],
                 choosed: "",
             },
             radiation: {
@@ -288,7 +289,8 @@ function getPlayerData() {
 		},
 		superGal: E(0),
 		galQk: E(0),
-		galPow: [E(0),E(0),E(0),E(0),E(0),E(0)]
+		galPow: [E(0),E(0),E(0),E(0),E(0),E(0)],
+		galParticles: [E(0), E(0), E(0)],
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {
@@ -475,14 +477,30 @@ function loadGame(start=true, gotNaN=false) {
         updateHTML()
         for (let x = 0; x < 3; x++) {
             let r = document.getElementById('ratio_d'+x)
+			let gr = document.getElementById('gratio_d'+x)
             r.value = player.atom.dRatio[x]
+            gr.value = player.atom.dRatio[x]
             r.addEventListener('input', e=>{
                 let n = Number(e.target.value)
                 if (n < 1) {
                     player.atom.dRatio[x] = 1
                     r.value = 1
+                    gr.value = 1
                 } else {
                     if (Math.floor(n) != n) r.value = Math.floor(n)
+					gr.value = r.value
+                    player.atom.dRatio[x] = Math.floor(n)
+                }
+            })
+            gr.addEventListener('input', e=>{
+                let n = Number(e.target.value)
+                if (n < 1) {
+                    player.atom.dRatio[x] = 1
+                    r.value = 1
+                    gr.value = 1
+                } else {
+                    if (Math.floor(n) != n) gr.value = Math.floor(n)
+					r.value = gr.value
                     player.atom.dRatio[x] = Math.floor(n)
                 }
             })

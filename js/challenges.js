@@ -70,7 +70,12 @@ const CHALS = {
         }
         player.chal.choosed = x
     },
-    inChal(x) { return player.chal.active == x },
+    inChal(x) {
+		if(player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3"))if(x == 13)return true
+		if(player.supernova.fermions.choosed.startsWith("3"))if(x == 16)return true
+		if(FERMIONS.onActive("22"))if(x == 20)return true
+		return player.chal.active == x
+	},
     reset(x, chal_reset=true) {
         if (x < 5) FORMS.bh.doReset()
         else if (x < 9) ATOM.doReset(chal_reset)
@@ -197,6 +202,12 @@ const CHALS = {
         if (hasElement(222) && (i==13))  x = x.add(EINF)
 		if (i<=16)x = x.add(SUPERNOVA_GALAXY.effects.chal())
         if (hasElement(227) && (i==17))  x = x.add(300)
+        if (hasElement(235) && (i==19))  x = x.add(300)
+        if (hasElement(236) && (i==18))  x = x.add(300)
+        if (hasElement(247) && (i==14))  x = x.add(400)
+		if (hasElement(249) && (i==18||i==19))  x = x.add(100)
+		if (hasElement(252) && (i==17||i==18||i==19))  x = x.add(250)
+		if (hasElement(258) && (i==17||i==18||i==19))  x = x.add(250)
         return x.floor()
     },
     getScaleName(i) {
@@ -219,7 +230,7 @@ const CHALS = {
         let x = E(1)
         if (hasElement(92)) x = x.mul(0.75)
         if (player.ranks.hex.gte(92) && (i<=8 || i>=10) && i<=12) x = x.mul(0.75)
-		if (i >= 17) x = x.mul(3);
+		if (i >= 17 && i <= 19) x = x.mul(3);
         return x
     },
     getPower3(i) {
@@ -386,6 +397,7 @@ const CHALS = {
         title: "移除级别",
         desc: "You cannot rank up.",
         reward() {
+			if(hasElement(265))return `Meta-Tetr scaling starts later.`;
 			if(hasElement(230))return `Meta-Tier scaling starts later.`;
 			if(hasElement(170))return `Meta-Rank scaling starts later.`;
 			return `Rank requirement are weaker by completions.`

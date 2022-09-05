@@ -370,9 +370,10 @@ const ELEMENTS = {
             effect() {
                 let x = player.stars.points.add(1).log10().add(1).pow(1.1)
 				if(player.ranks.hex.gte(49))x = player.stars.points
+				x = overflow(x,"ee40000",0.75);
                 return x
             },
-            effDesc(x) { return format(x)+"x" },
+            effDesc(x) { return format(x)+"x"+(x.gte('ee40000')?" <span class='soft'>(softcapped)</span>":"") },
         },
         {
             desc: `Star generator is now ^1.05 stronger.`,
@@ -765,6 +766,7 @@ const ELEMENTS = {
 			desc: `每一个已购买的编号大于118的元素使无限质量和无限次数的获取量翻倍。`,
 			cost: E("5e13"),
 			effect() {
+				if(hasElement(256))return E(2).pow(player.atom.elements.length);
 				let x = E(1)
 				for(var i = 0;i < player.atom.elements.length;i++)if(player.atom.elements[i]>118)x = x.mul(2);
 				return x
@@ -1068,6 +1070,7 @@ const ELEMENTS = {
 			cost: uni(1e147),
 			effect() {
 				let x = (player.massUpg[2]||E(0)).add(10).log10().pow(0.6);
+				if(hasElement(244))x = expMult((player.massUpg[2]||E(1)),0.4);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1077,6 +1080,7 @@ const ELEMENTS = {
 			cost: uni(1e150),
 			effect() {
 				let x = (player.massUpg[1]||E(0)).add(10).log10().pow(0.6);
+				if(hasElement(244))x = expMult((player.massUpg[1]||E(1)),0.4);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1360,6 +1364,7 @@ const ELEMENTS = {
 			galQk: true,
 			effect() {
 				let x = player.galQk.add(1);
+				if(hasElement(264))x = expMult(x,2);
 				return x
 			},
 			effDesc(x) { return "^"+format(x); },
@@ -1383,6 +1388,175 @@ const ELEMENTS = {
 			cost: E(2.5e9),
 			galQk: true,
 		},
+		{
+			desc: `Add 300 C19 completions.`,
+			cost: E("1.5e648"),
+			et: true,
+		},
+		{
+			desc: `Add 300 C18 completions.`,
+			cost: E("1.5e4856"),
+		},
+		{
+			desc: `Unlock Galactic Fermions in the Supernova tab.`,
+			cost: E(6e9),
+			galQk: true,
+		},
+		{
+			desc: `Timeshards effect is better.`,
+			cost: E("1.5e671"),
+			et: true,
+		},
+		{
+			desc: `Remove Meta-Tier scaling. Radiation Booster 'Meta-Rank Boost' affects Meta-Tetr at a reduced rate.`,
+			cost: E("1.5e5256"),
+			effect() {
+				let x = tmp.radiation.bs.eff[14].add(1).log10().add(1).log10();
+				return x
+			},
+			effDesc(x) { return format(x)+"x later"; },
+		},
+		{
+			desc: `The effect of Supernova Galaxy's Rage Power boost is better.`,
+			cost: E(3e10),
+			galQk: true,
+		},
+		{
+			desc: `First Black Hole Overflow effect is weaker.`,
+			cost: E("1.5e704"),
+			et: true,
+		},
+		{
+			desc: `Meta-Tetr starts 10x later.`,
+			cost: E("1.5e5656"),
+		},
+		{
+			desc: `The 120th element boost Eternities at a reduced rate.`,
+			cost: E("1.5e706"),
+			et: true,
+			effect() {
+				let x = (tmp.elements.effect[120]||E(1)).pow(0.1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Elements 173-174 are better.`,
+			cost: E("1.5e5796"),
+		},
+		{
+			desc: `Unlock 2 new types of Galactic Fermions.`,
+			cost: E(1e11),
+			galQk: true,
+		},
+		{
+			desc: `Multiply all bosons base gain by 100`,
+			cost: E("1.5e721"),
+			et: true,
+		},
+		{
+			desc: `Add 400 C14 completions.`,
+			cost: E("1.5e6226"),
+		},
+		{
+			desc: `The effect softcap of Galactic Power is weaker.`,
+			cost: E(1e12),
+			galQk: true,
+		},
+		{
+			desc: `Add 100 C18-C19 max completions.`,
+			cost: E("1.5e756"),
+			et: true,
+		},
+		{
+			desc: `Blue Chroma's effect is better.`,
+			cost: E("1.5e6956"),
+		},
+		{
+			desc: `You can assign Galactic Quarks. (In Atom Tab)`,
+			cost: E(1e13),
+			galQk: true,
+		},
+		{
+			desc: `Add 250 C17-C19 max completions.`,
+			cost: E("9e779"),
+			et: true,
+		},
+		{
+			desc: `Accelerator effect softcap is weaker.`,
+			cost: E("1.5e7256"),
+		},
+		{
+			desc: `The effect of Supernova Galaxy's Entropy boost is better.`,
+			cost: E(5e13),
+			galQk: true,
+		},
+		{
+			desc: `Gain more Prestige Mass based on your bought Elements.`,
+			cost: E("1.5e786"),
+			et: true,
+			effect() {
+				let x = E(1.02).pow(player.atom.elements.length);
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `The 120th element now count all bought elements.`,
+			cost: E("1.5e7606"),
+		},
+		{
+			desc: `The effect softcap of Galactic Power is weaker.`,
+			cost: E(1e24),
+			galQk: true,
+		},
+		{
+			desc: `Add 250 C17-C19 max completions.`,
+			cost: E("1.5e821"),
+			et: true,
+		},
+		{
+			desc: `Prestige Mass effect affects Hyper Glory and Meta Fermion Tier scalings.`,
+			cost: E("1.5e7806"),
+		},
+		{
+			desc: `Galactic Quarks gain is better.`,
+			cost: E(2e24),
+			galQk: true,
+		},
+		{
+			desc: `Unlock 2 new types of Galactic Fermions.`,
+			cost: E(2e29),
+			galQk: true,
+		},
+		{
+			desc: `First Black Hole Overflow effect is weaker.`,
+			cost: E("1.5e824"),
+			et: true,
+		},
+		{
+			desc: `'60%' in Neutron Tree Upgrade [br3] is now 50%.`,
+			cost: E("1.5e8006"),
+		},
+		{
+			desc: `Element 231 is better.`,
+			cost: E(4e30),
+			galQk: true,
+		},
+		{
+			desc: `C5 effect is changed.`,
+			cost: E("1.5e834"),
+			et: true,
+		},
+		{
+			desc: `Entropic Condenser^2 and Entropic Radiation^2 are 90% weaker.`,
+			cost: E("1.5e8116"),
+		},
+		{
+			desc: `Reach the current endgame.`,
+			cost: E(1e31),
+			galQk: true,
+		},
 	],
     /*
     {
@@ -1397,7 +1571,7 @@ const ELEMENTS = {
     */
     getUnlLength() {
 		
-		if(player.superGal.gte(10))return 234;
+		if(player.superGal.gte(10))return 267;
 		if(player.superGal.gte(1))return 218;
         let u = 4
         if (quUnl()) u = 77+3

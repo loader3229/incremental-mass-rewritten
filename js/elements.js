@@ -466,6 +466,7 @@ function updateHTML() {
 			if (tmp.stab[4] == 1) updateElementsHTML()
 			if (tmp.stab[4] == 2) updateMDHTML()
 			if (tmp.stab[4] == 3) updateBDHTML()
+			if (tmp.stab[4] == 4) updateAtomHTML()
 		}
 		if (tmp.tab == 7) {
 			updateOptionsHTML()

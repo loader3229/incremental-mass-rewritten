@@ -36,6 +36,9 @@ const ATOM = {
         if (hasElement(67) && player.ranks.hex.gte(67)) x = x.pow(tmp.elements.effect[67])
 		x = x.pow(SUPERNOVA_GALAXY.galPow1_eff())
         if (hasElement(231)) x = x.pow(tmp.elements.effect[231])
+			
+		
+		if (FERMIONS.onActive("30")) x = x.add(1).log10()
         return x.floor();
     },
     canReset() { return tmp.atom.gain.gte(1) },
@@ -64,11 +67,13 @@ const ATOM = {
             if (hasElement(3)) x = x.mul(tmp.elements.effect[3])
             if (hasElement(52)) x = x.mul(tmp.elements.effect[52])
             x = x.mul(tmp.bosons.upgs.gluon[0].effect)
-
+			x = x.pow(tmp.fermions.effs[2][0]||E(1))
+			
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             if (FERMIONS.onActive("00")) x = expMult(x,0.6)
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             
+			if (FERMIONS.onActive("20")) x = x.add(1).log10()
 			
 			tmp.atomicOverflowPower = E(0.8)
 			tmp.atomicOverflow = overflow(x,"e1e3000",tmp.atomicOverflowPower).log(x);
@@ -124,6 +129,13 @@ const ATOM = {
             player.atom.quarks = player.atom.quarks.sub(spent).max(0)
             player.atom.particles[x] = player.atom.particles[x].add(spent)
         },
+        gassign(x) {
+            if (player.galQk.lt(1)) return
+            let m = player.atom.ratio
+            let spent = m > 0 ? player.galQk.mul(RATIO_MODE[m]).ceil() : E(1)
+            player.galQk = player.galQk.sub(spent).max(0)
+            player.galParticles[x] = player.galParticles[x].add(spent)
+        },
         assignAll() {
             let sum = player.atom.dRatio[0]+player.atom.dRatio[1]+player.atom.dRatio[2]
             if (player.atom.quarks.lt(sum) || CHALS.inChal(9) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) return
@@ -132,6 +144,16 @@ const ATOM = {
                 let add = spent.mul(player.atom.dRatio[x])
                 player.atom.quarks = player.atom.quarks.sub(add).max(0)
                 player.atom.particles[x] = player.atom.particles[x].add(add)
+            }
+        },
+        gassignAll() {
+            let sum = player.atom.dRatio[0]+player.atom.dRatio[1]+player.atom.dRatio[2]
+            if (player.galQk.lt(sum)) return
+            let spent = player.galQk.div(sum).floor()
+            for (let x = 0; x < 3; x++) {
+                let add = spent.mul(player.atom.dRatio[x])
+                player.galQk = player.galQk.sub(add).max(0)
+                player.galParticles[x] = player.galParticles[x].add(add)
             }
         },
         effect(i) {
@@ -148,6 +170,7 @@ const ATOM = {
             let x = tmp.atom.particles[i]?tmp.atom.particles[i].effect:E(0)
             if (player.mainUpg.atom.includes(7)) x = x.mul(tmp.upgs.main?tmp.upgs.main[3][7].effect:E(1))
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
+			x = x.pow(player.galParticles[i].add(1).log10().add(1).pow(3));
             return x
         },
         powerEffect: [
@@ -160,6 +183,9 @@ const ATOM = {
 					b = a;
 					if(player.ranks.hex.gte(29))b = b.pow(2);
 				}
+				
+				a = a.pow(player.galParticles[0].add(1).log10().add(1).pow(3));
+				b = b.pow(player.galParticles[0].add(1).log10().add(1).pow(3));
                 return {eff1: a, eff2: b}
             },
             x=>{
@@ -169,12 +195,18 @@ const ATOM = {
                 :hasElement(19)
                 ?player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(10).mul(x.max(1).log(10)).root(2.75))
                 :player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(100).mul(x.max(1).log(100)).root(3))
+				
+				a = a.pow(player.galParticles[1].add(1).log10().add(1).pow(3));
+				b = b.pow(player.galParticles[1].add(1).log10().add(1).pow(3));
                 return {eff1: a, eff2: b}
             },
             x=>{
                 let a = hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1)
                 let b = hasElement(30) ? x.add(1).log2().pow(1.2).mul(0.01) : x.add(1).pow(2).log2().mul(0.01)
 				if(player.ranks.hex.gte(30))b = x.add(1).log2().pow(2);
+				
+				a = a.pow(player.galParticles[2].add(1).log10().add(1).pow(3));
+				b = b.pow(player.galParticles[2].add(1).log10().add(1).pow(3));
                 return {eff1: a, eff2: b}
             },
         ],
@@ -244,6 +276,19 @@ function setupAtomHTML() {
         `
     }
 	particles_table.setHTML(table)
+    let gparticles_table = new Element("gparticles_table")
+	table = ""
+    for (let x = 0; x < ATOM.particles.names.length; x++) {
+        table += `
+        <div style="width: 30%"><button class="btn" onclick="ATOM.particles.gassign(${x})">Assign</button><br><br>
+            <div style="color: ${ATOM.particles.colors[x]}; min-height: 120px">
+                <h2><span id="gparticle_${x}_amt">X</span> Galactic ${ATOM.particles.names[x]}</h2><br>
+				<span id="gparticle_${x}_eff"></div>
+			</div><br>
+        </div>
+        `
+    }
+	gparticles_table.setHTML(table)
 }
 
 function updateAtomicHTML() {
@@ -266,11 +311,15 @@ function updateAtomicHTML() {
 
 function updateAtomHTML() {
     tmp.el.atom_ratio.setTxt(RATIO_ID[player.atom.ratio])
+    tmp.el.atom_ratio_gq.setTxt(RATIO_ID[player.atom.ratio])
     tmp.el.unassignQuarkAmt.setTxt(format(player.atom.quarks,0))
+    tmp.el.unassignGQuarkAmt.setTxt(format(player.galQk,0))
     for (let x = 0; x < ATOM.particles.names.length; x++) {
         tmp.el["particle_"+x+"_amt"].setTxt(format(player.atom.particles[x],0))
         tmp.el["particle_"+x+"_amtEff"].setTxt(format(tmp.atom.particles[x].powerGain))
         tmp.el["particle_"+x+"_power"].setTxt(format(player.atom.powers[x])+formatGain(player.atom.powers[x],tmp.atom.particles[x].powerGain.mul(tmp.preQUGlobalSpeed)))
         tmp.el["particle_"+x+"_powerEff"].setHTML(ATOM.particles.desc[x](tmp.atom.particles[x].powerEffect))
+        tmp.el["gparticle_"+x+"_amt"].setTxt(format(player.galParticles[x],0))
+        tmp.el["gparticle_"+x+"_eff"].setTxt("Which are raising "+ATOM.particles.names[x]+" Powers effect and gain by ^"+format(player.galParticles[x].add(1).log10().add(1).pow(3)))
     }
 }

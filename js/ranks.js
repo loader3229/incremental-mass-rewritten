@@ -1,6 +1,6 @@
 const RANKS = {
-    names: ['rank', 'tier', 'tetr', 'pent', 'hex', 'hept'],
-    fullNames: ['级别', '阶层', '三重阶层', '五重阶层', '六重阶层', '七重阶层'],
+    names: ['rank', 'tier', 'tetr', 'pent', 'hex', 'hept', 'oct'],
+    fullNames: ['级别', '阶层', '三重阶层', '五重阶层', '六重阶层', '七重阶层', '八重阶层'],
     reset(type) {
         if (tmp.ranks[type].can) {
             player.ranks[type] = player.ranks[type].add(1)
@@ -35,6 +35,7 @@ const RANKS = {
         pent() { return tmp.radiation.unl },
         hex() { return player.prestiges[0].gte(42) },
         hept() { return player.prestiges[2].gte(6) },
+        oct() { return player.prestiges[2].gte(30) },
     },
     doReset: {
         rank() {
@@ -61,6 +62,10 @@ const RANKS = {
             player.ranks.hex = E(0)
             this.hex()
         },
+        oct() {
+            player.ranks.hept = E(0)
+            this.hept()
+        },
     },
     autoSwitch(rn) { player.auto_ranks[rn] = !player.auto_ranks[rn] },
     autoUnl: {
@@ -70,6 +75,7 @@ const RANKS = {
         pent() { return hasTree("qol8") },
         hex() { return true; },
         hept() { return true; },
+        oct() { return true; },
     },
     desc: {
         rank: {
@@ -255,6 +261,11 @@ const RANKS = {
 			'30': "Super Pent is 40% weaker.",
 			'40': "the effect of red chroma ^3",
 			'52': "Hept Boost Entropy Gain.",
+			'100': "Break Hept 1's effect hardcap.",
+		},
+		oct: {
+            '1': "Super/Hyper Hex scalings are weaker based on Oct.",
+            '2': "Meta-Tetr starts later based on Oct.",
 		},
     },
     effect: {
@@ -319,6 +330,7 @@ const RANKS = {
             '2'() {
                 let ret = E(player.massUpg[3]||0).div(400)
                 if (ret.gte(1) && hasPrestige(0,15)) ret = ret.pow(1.5)
+				ret = ret.softcap("e4.5e6", 0.5, 0);
                 return ret
             },
             '4'() {
@@ -350,7 +362,8 @@ const RANKS = {
         },
         hex: {
             '5'() {
-                let ret = player.ranks.hex.div(1000).toNumber()
+                let ret = player.ranks.hex.div(1000).softcap(40,0.25,0)
+				if(ret.gte(100))ret = ret.log10().pow(2).mul(25)
                 return ret
             },
             '62'() {
@@ -395,6 +408,7 @@ const RANKS = {
                 let ret = E(0.98).pow(player.ranks.hept);
 				if(player.ranks.hept.gte(5))ret = ret.pow(1.2);
 				ret = ret.max(1/3);
+				if(player.ranks.hept.gte(100))ret = E(1).div(E(1).add(player.ranks.hept.log10()));
                 return ret
             },
             '2'() {
@@ -428,6 +442,17 @@ const RANKS = {
                 let ret = E(10).pow(player.ranks.hept);
                 return ret
             },
+		},
+		oct: {
+            '1'() {
+                let ret = E(0.98).pow(player.ranks.oct);
+                return ret
+            },
+            '2'() {
+                let ret = E(10).pow(player.ranks.oct);
+                return ret
+            },
+			
 		},
     },
     effDesc: {
@@ -479,6 +504,10 @@ const RANKS = {
             17(x) { return format(x)+"x later" },
             20(x) { return format(x)+"x later" },
             52(x) { return format(x)+"x" },
+		},
+		oct: {
+            1(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+            2(x) { return format(x)+"x later" },
 		},
     },
     fp: {
@@ -672,6 +701,7 @@ const PRESTIGES = {
 			"122": `Hardened scalings of Challenge 1-20 are 10% weaker.`,
 			"136": `Galactic Dark Energy effect is better.`,
 			"146": `Prestige Mass Effect is applied to Hyper Hept scaling at reduced rate.`,
+			"242": `Honor boost Galactic Quarks.`,
         },
 		{
             "1": `Super Prestige Level starts 5 later, and automatically gain Prestige Level.`,
@@ -692,6 +722,11 @@ const PRESTIGES = {
             "21": `Add +10% to Honor 146's effectiveness`,
             "22": `Add +30% to Honor 146's effectiveness`,
             "23": `Add +50% to Honor 146's effectiveness`,
+			"25": `Prestige Mass Effect is applied to Ultra Hex scaling at reduced rate.`,
+			"27": `Glory 5's effect is better based on Glory.`,
+            "29": `Remove Super Pent scaling.`,
+            "30": `Unlock Oct.`,
+            "31": `Remove Super Fermion Tier scaling.`,
 		},
     ],
     rewardEff: [
@@ -813,6 +848,10 @@ const PRESTIGES = {
 				if (hasPrestige(2,23))x += 50;
                 return x
             },x=>x+"% effectiveness"],
+            "242": [_=>{
+                let x = player.prestiges[1].add(1).pow(4.2)
+                return x
+            },x=>"x"+x.format()],
         },
 		{
             "3": [_=>{
@@ -825,9 +864,13 @@ const PRESTIGES = {
                 return x
             },x=>"x"+x.format()],
             "5": [_=>{
-                let x = E(2).pow(player.prestiges[1]);
+                let x = E(2).pow(player.prestiges[1]).pow(player.prestiges[2].sub(25).max(1));
                 return x
             },x=>"x"+x.format()],
+            "25": [_=>{
+                let x = 5;
+                return x
+            },x=>x+"% effectiveness"],
 		},
     ],
     reset(i) {
@@ -894,6 +937,12 @@ function updateRanksTemp() {
     pow = 1.5
     tmp.ranks.hept.req = player.ranks.hept.scaleEvery('hept').div(fp).pow(pow).add(200).floor()
     tmp.ranks.hept.bulk = player.ranks.hex.sub(200).gte(0)?player.ranks.hex.sub(200).max(0).root(pow).mul(fp).scaleEvery('hept',true).add(1).floor():E(0);
+
+    fp = E(0.1)
+	if (hasElement(150)) fp = fp.mul(1.6)
+    pow = 1.5
+    tmp.ranks.oct.req = player.ranks.oct.scaleEvery('oct').div(fp).pow(pow).add(200).floor()
+    tmp.ranks.oct.bulk = player.ranks.hept.sub(200).gte(0)?player.ranks.hept.sub(200).max(0).root(pow).mul(fp).scaleEvery('oct',true).add(1).floor():E(0);
 
     for (let x = 0; x < RANKS.names.length; x++) {
         let rn = RANKS.names[x]
@@ -1021,6 +1070,7 @@ function prestigeMassGain(){
     if (hasUpgrade('inf',5)) x = x.mul(upgEffect(5,5))
 	if (hasPrestige(1,31)) x = x.mul(player.prestiges[0].pow(0.15).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
 	if (hasElement(145)) x = x.mul(10);
+	if (hasElement(255)) x = x.mul(tmp.elements.effect[255]);
 	return x;
 }
 

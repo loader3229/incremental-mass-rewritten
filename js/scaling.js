@@ -12,6 +12,7 @@ const SCALE_START = {
 		gamma_ray: E(100),
 		supernova: E(15),
 		fTier: E(10),
+		gfTier: E(10),
 		cosmic_str: E(15),
 		prestige0: E(15),
 		prestige1: E(7),
@@ -33,6 +34,7 @@ const SCALE_START = {
 		cosmic_str: E(90),
 		prestige0: E(160),
 		prestige1: E(30),
+		prestige2: E(30),
 	},
 	ultra: {
 		rank: E(600),
@@ -53,6 +55,7 @@ const SCALE_START = {
 		rank: E(1e4),
 		tier: E(1e65),
 		tetr: E(1e70),
+		pent: E(1e60),
 		tickspeed: E(5e4),
 		bh_condenser: E(1e7),
 		gamma_ray: E(1e6),
@@ -77,6 +80,7 @@ const SCALE_POWER= {
 		gamma_ray: 2,
 		supernova: 3,
 		fTier: 2.5,
+		gfTier: 2,
 		cosmic_str: 2,
 		prestige0: 1.5,
 		prestige1: 1.5,
@@ -98,6 +102,7 @@ const SCALE_POWER= {
 		cosmic_str: 4,
 		prestige0: 2,
 		prestige1: 2,
+		prestige2: 3,
 	},
 	ultra: {
 		rank: 4,
@@ -118,6 +123,7 @@ const SCALE_POWER= {
 		rank: 1.0025,
 		tier: 1.0025,
 		tetr: 1.0025,
+		pent: 1.0025,
 		tickspeed: 1.001,
 		bh_condenser: 1.001,
 		gamma_ray: 1.001,
@@ -150,6 +156,7 @@ const SCALING_RES = {
 	gamma_ray(x=0) { return player.atom.gamma_ray },
 	supernova(x=0) { return player.supernova.times },
 	fTier(x=0, y=0) { return player.supernova.fermions.tiers[x][y] },
+	gfTier(x=0, y=0) { return player.supernova.fermions.tiers[x][y] },
 	cosmic_str(x=0) { return player.qu.cosmic_str },
 	prestige0() { return player.prestiges[0] },
 	prestige1() { return player.prestiges[1] },
@@ -169,6 +176,7 @@ const NAME_FROM_RES = {
 	gamma_ray: "Cosmic Ray",
 	supernova: "Supernova",
 	fTier: "Fermion Tier",
+	gfTier: "Galactic Fermion Tier",
 	cosmic_str: "Cosmic String",
 	prestige0: "Prestige Level",
 	prestige1: "Honor",
@@ -208,6 +216,12 @@ function updateScalingTemp() {
 				}
 			}
 			else if (key[y] == "fTier") for (let i = 0; i < 2; i++) for (let j = 0; j < 6; j++) {
+				if (scalingActive(key[y], SCALING_RES[key[y]](i,j), SCALE_TYPE[x])) {
+					tmp.scaling[SCALE_TYPE[x]].push(key[y])
+					break
+				}
+			}
+			else if (key[y] == "gfTier") for (let i = 2; i < 4; i++) for (let j = 0; j < 6; j++) {
 				if (scalingActive(key[y], SCALING_RES[key[y]](i,j), SCALE_TYPE[x])) {
 					tmp.scaling[SCALE_TYPE[x]].push(key[y])
 					break
@@ -307,11 +321,15 @@ function getScalingStart(type, name) {
             if (hasElement(188))start = start.mul(tmp.bd.upgs[4].eff)
             if (hasElement(202))start = start.mul(tmp.elements.effect[202])
 			if (player.ranks.hept.gte(20)) start = start.mul(RANKS.effect.hept[20]())
-            if (hasElement(230))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
+            if (hasElement(230) && !hasElement(265))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
 			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
 		}
 		if (name=="tetr") {
             if (hasElement(232))start = start.mul(tmp.elements.effect[232])
+            if (hasElement(239))start = start.mul(tmp.elements.effect[239])
+            if (hasElement(242))start = start.mul(10)
+            if (player.ranks.oct.gte(2))start = start.mul(RANKS.effect.oct[2]())
+            if (hasElement(265))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -363,6 +381,9 @@ function getScalingStart(type, name) {
 	if (name=="tetr" && type=="ultra") if (player.ranks.hept.gte(16))return EINF;
 	if (name=="cosmic_str" && type=="super") if (hasElement(187))return EINF;
 	if (name=="rank") if (hasElement(202))return EINF;
+	if (name=="tier") if (hasElement(239))return EINF;
+	if (name=="pent" && type=="super") if (hasPrestige(2,29))return EINF;
+	if (name=="fTier" && type=="super") if (hasPrestige(2,31))return EINF;
 	return start.floor()
 }
 
@@ -435,6 +456,7 @@ function getScalingPower(type, name) {
 		if (name=="hex") {
 			if (hasPrestige(1,34)) power = power.mul(tmp.prestigeMassEffect)
 			if (hasElement(149)) power = power.mul(0.95)
+			if (player.ranks.oct.gte(1)) power = power.mul(RANKS.effect.oct[1]())
 		}
 		if (name=="hept") {
 			if (hasPrestige(1,64)) power = power.mul(tmp.prestigeMassEffect)
@@ -491,12 +513,16 @@ function getScalingPower(type, name) {
 		if (name=="prestige1") {
 			if (hasPrestige(1,32)) power = power.mul(tmp.prestigeMassEffect)
 		}
+		if (name=="prestige2") {
+			if (hasElement(259)) power = power.mul(tmp.prestigeMassEffect)
+		}
 		if (name=="fTier") {
 			if (hasPrestige(0,1000)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="hex") {
 			if (hasPrestige(1,56)) power = power.mul(0.955)
 			if (hasPrestige(1,62)) power = power.mul(tmp.prestigeMassEffect)
+			if (player.ranks.oct.gte(1)) power = power.mul(RANKS.effect.oct[1]())
 		}
 		if (name=="hept") {
 			if (hasPrestige(1,146)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.1))
@@ -557,6 +583,9 @@ function getScalingPower(type, name) {
 		if (name=="fTier") {
 			if (hasPrestige(2,13)) power = power.mul(tmp.prestigeMassEffect)
 		}
+		if (name=="hex") {
+			if (hasPrestige(2,25)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+		}
 	}
 	if (type=="meta") {
 		if (name=='supernova') {
@@ -575,6 +604,9 @@ function getScalingPower(type, name) {
 		}
 		if (name=="prestige0") {
 			if (hasPrestige(1,67)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="fTier") {
+			if (hasElement(259)) power = power.mul(tmp.prestigeMassEffect)
 		}
 	}
 	if (name=="rank" && hasPrestige(0,58)) power = power.mul(0.5)

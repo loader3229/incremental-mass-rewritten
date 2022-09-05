@@ -143,6 +143,7 @@ const UPGS = {
                 let ret = step.mul(xx.mul(hasElement(80)?25:1)).add(1).softcap(ss,sp,0).softcap(1.8e5,hasPrestige(0,12)?0.525:0.5,0)
                 ret = ret.mul(tmp.prim.eff[0])
                 if (!player.ranks.pent.gte(15)) ret = ret.softcap(ss2,sp2,0)
+				ret = overflow(ret, "e4e6", 0.5);
                 return {step: step, eff: ret, ss: ss}
             },
             effDesc(eff) {
@@ -884,10 +885,10 @@ const UPGS = {
                 desc: `无限时保留元素。无限质量加成转生质量获取速度。`,
                 cost: E(5),
                 effect() {
-                    let x = player.inf.points.add(1).pow(0.5);
+                    let x = overflow(player.inf.points.add(1).pow(0.5),"1e2500",0.5);
                     return x
                 },
-                effDesc(x=this.effect()) { return "x"+format(x) },
+                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte("1e2500")?" <span class='soft'>(softcapped)</span>":"") },
             },
             6: {
                 desc: `Mass gain softcap^6-7 are 50% weaker.`,
@@ -905,10 +906,10 @@ const UPGS = {
                 desc: `Infinity Mass formula from normal mass is better. Infinity Mass boost Pre-Quantum Global Speed.`,
                 cost: E(10000),
                 effect() {
-                    let x = player.inf.points.add(1).pow(0.4);
+                    let x = overflow(player.inf.points.add(1).pow(0.4),"1e2000",0.5);
                     return x
                 },
-                effDesc(x=this.effect()) { return "x"+format(x) },
+                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte("1e2000")?" <span class='soft'>(softcapped)</span>":"") },
             },
             10: {
                 desc: `Infinity Mass formula from Prestige mass is better. Mass gain softcap^8 is 50% weaker.`,

@@ -36,6 +36,7 @@ const MASS_DILATION = {
     RPgain(m=player.mass) {
         if (CHALS.inChal(11)|| CHALS.inChal(14) || CHALS.inChal(19)) return E(0)
         let x = m.div(1.50005e56).max(1).log10().div(40).sub(14).max(0).pow(tmp.md.rp_exp_gain).mul(tmp.md.rp_mult_gain)
+		if (FERMIONS.onActive("21")) x = x.add(1).log10();
         return x.sub(player.md.particles).max(0).floor()
     },
     massGain() {
@@ -50,12 +51,15 @@ const MASS_DILATION = {
         if (player.ranks.hex.gte(32)) x = x.pow(1.05)
         if (player.ranks.hex.gte(35)) x = x.pow(tmp.elements.effect[35])
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
+			
+		x = x.pow(tmp.fermions.effs[2][1]||E(1))
 		if (!hasElement(158))x = x.softcap(mlt(1e12),0.5,0);
 		tmp.dmOverflow = overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8).log(x);
         return overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8);
     },
     mass_req() {
         let x = E(10).pow(player.md.particles.add(1).div(tmp.md.rp_mult_gain).root(tmp.md.rp_exp_gain).add(14).mul(40)).mul(1.50005e56)
+		if (FERMIONS.onActive("21")) x = E(10).pow(E(10).pow(player.md.particles).div(tmp.md.rp_mult_gain).root(tmp.md.rp_exp_gain).add(14).mul(40)).mul(1.50005e56)
         return x
     },
     effect() {

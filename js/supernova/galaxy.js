@@ -2,10 +2,10 @@ const SUPERNOVA_GALAXY = {
 	req(){
 		return E(1.246).pow(player.superGal).mul(1e6).floor();
 	},
-	reset(){
-		if(player.supernova.times.lt(SUPERNOVA_GALAXY.req()))return;
-		if(confirm("Are you sure to reset for a Supernova Galaxy? It will reset all previous, including Prestiges.")?!confirm("ARE YOU SURE ABOUT IT???"):true) return
-		player.superGal = player.superGal.add(1);
+	reset(force=false){
+		if(!force)if(player.supernova.times.lt(SUPERNOVA_GALAXY.req()))return;
+		if(!force)if((confirm("Are you sure to reset for a Supernova Galaxy? It will reset all previous, including Prestiges.")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
+		if(!force)player.superGal = player.superGal.add(1);
 		if(player.superGal.lt(11))player.prestiges=[E(0),E(0),E(0)];
 		if(player.superGal.lt(6))player.supernova.tree=[];
 		player.chal.comps[9] = E(0)
@@ -50,6 +50,8 @@ const SUPERNOVA_GALAXY = {
 		if(player.superGal.gte(3))player.mainUpg.rp=[4,5,6];
 		if(player.superGal.gte(3))player.mainUpg.bh=[4,5,6];
 		if(player.superGal.gte(3))player.mainUpg.atom=[2,3,4,5,6];
+		player.supernova.fermions.tiers[0]=[E(0),E(0),E(0),E(0),E(0),E(0)];
+		player.supernova.fermions.tiers[1]=[E(0),E(0),E(0),E(0),E(0),E(0)];
 		TABS.choose(0);
 		tmp.rank_tab = 0;
 		TABS.choose(5);
@@ -61,6 +63,7 @@ const SUPERNOVA_GALAXY = {
 		},
 		rp(){
 			if(player.superGal.lt(1))return new Decimal(1);
+			if(hasElement(240))return Decimal.pow(50, player.superGal.pow(2.5));
 			return Decimal.pow(2.5, player.superGal);
 		},
 		bh(){
@@ -93,6 +96,7 @@ const SUPERNOVA_GALAXY = {
 		},
 		entropyg(){
 			if(player.superGal.lt(1))return new Decimal(1);
+			if(hasElement(254))return Decimal.pow(1e100, player.superGal.pow(1.5));
 			return Decimal.pow(100, player.superGal);
 		},
 		entropy(){
@@ -136,7 +140,14 @@ const SUPERNOVA_GALAXY = {
 	galPow0_eff(){
 		let ret=Decimal.pow(1.01,player.galPow[0].add(1).log10());
 		if(hasPrestige(1,90))ret = ret.pow(2)
-		return overflow(overflow(overflow(ret,2,3),"e500",hasElement(228)?0.325:hasElement(225)?0.3:0.275),"e1500",0.25);
+		let ss1p=E(0.275);
+		if(hasElement(257))ss1p = E(1);
+		else{
+			if(hasElement(225))ss1p = ss1p.pow(0.9326007411640309);
+			if(hasElement(228))ss1p = ss1p.pow(0.9335178441025087);
+			if(hasElement(248))ss1p = ss1p.pow(0.92);
+		}
+		return overflow(overflow(overflow(ret,2,3),"e500",ss1p),"e1500",0.25);
 	},
 	galPow1_gain(){
 		if(player.superGal.lt(6))return E(0);
@@ -154,11 +165,13 @@ const SUPERNOVA_GALAXY = {
 	galPow2_eff(){
 		let ret=Decimal.pow(1.1,player.galPow[2].add(1).log10());
 		if(hasPrestige(1,136))ret = ret.pow(2.6)
-		return overflow(ret,2,3);
+		return overflow(overflow(ret,2,3),"1e43000",0.5);
 	},
 	galPow3_gain(){
 		if(player.superGal.lt(7))return E(0);
-		return player.supernova.bosons.photon.add(1).log10().add(1).log10().mul(player.supernova.bosons.gluon.add(1).log10().add(1).log10()).pow(player.superGal.sub(5));
+		let ret=player.supernova.bosons.photon.add(1).log10().add(1).log10().mul(player.supernova.bosons.gluon.add(1).log10().add(1).log10()).pow(player.superGal.sub(5))
+			ret = ret.mul(tmp.fermions.effs[3][1]||E(1));
+		return ret;
 	},
 	galPow3_eff(){
 		let ret=Decimal.pow(1.275,player.galPow[3].add(1).log10());
@@ -166,7 +179,12 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow4_gain(){
 		if(player.superGal.lt(9))return E(0);
-		return player.supernova.fermions.points[0].add(1).log10().add(1).log10().mul(player.supernova.fermions.points[1].add(1).log10().add(1).log10()).pow(player.superGal.sub(7));
+		let ret=player.supernova.fermions.points[0].add(1).log10().add(1).log10().mul(player.supernova.fermions.points[1].add(1).log10().add(1).log10()).pow(player.superGal.sub(7));
+		
+		for(var i = 2; i <= 3; i++)for(var j = 0;j < 6; j++){
+			ret = ret.mul(player.supernova.fermions.tiers[i][j].add(1).pow(2));
+		}
+		return ret;
 	},
 	galPow4_eff(){
 		let ret=Decimal.pow(1.3,player.galPow[4].add(1).log10());
@@ -182,7 +200,16 @@ const SUPERNOVA_GALAXY = {
 	},
 	galQkGain(){
 		if(player.superGal.lt(10))return E(0);
-		return player.supernova.fermions.points[0].add(1).log10().add(1).log10().add(1).log10().mul(player.atom.quarks.add(1).log10().add(1).log10().add(1).log10()).pow(player.superGal.div(3));
+		let ret=player.supernova.fermions.points[0].add(1).log10().add(1).log10().add(1).log10().mul(player.atom.quarks.add(1).log10().add(1).log10().add(1).log10());
+		if(hasElement(260)){
+			ret = ret.pow(player.superGal.div(2));
+		}else{
+			ret = ret.pow(player.superGal.div(3));
+		}
+		if(hasPrestige(1,242)){
+			ret = ret.mul(prestigeEff(1,242));
+		}
+		return ret;
 	},
 }
 

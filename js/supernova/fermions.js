@@ -1,5 +1,9 @@
 const FERMIONS = {
-    onActive(id) { return player.supernova.fermions.choosed == id },
+    onActive(id) { 
+		if(id.startsWith("0") && player.supernova.fermions.choosed.startsWith("2"))return true
+		if(id.startsWith("1") && player.supernova.fermions.choosed.startsWith("3"))return true
+		return player.supernova.fermions.choosed == id 
+	},
     gain(i) {
         if (!player.supernova.fermions.unl) return E(0)
         let x = E(1)
@@ -12,6 +16,11 @@ const FERMIONS = {
     },
     backNormal() {
         if (player.supernova.fermions.choosed != "") {
+			if(player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3")){
+				SUPERNOVA_GALAXY.reset(true)
+				player.supernova.fermions.tiers[0]=[E(0),E(0),E(0),E(0),E(0),E(0)];
+				player.supernova.fermions.tiers[1]=[E(0),E(0),E(0),E(0),E(0),E(0)];
+			}
             player.supernova.fermions.choosed = ""
             SUPERNOVA.reset(false,false,false,true)
         }
@@ -20,11 +29,20 @@ const FERMIONS = {
         if (player.confirms.sn) if (!confirm("您确定要切换费米子类型吗？")) return
         let id = i+""+x
         if (player.supernova.fermions.choosed != id) {
+			FERMIONS.backNormal()
             player.supernova.fermions.choosed = id
-            SUPERNOVA.reset(false,false,false,true)
+			if(id.startsWith("2") || id.startsWith("3")){
+				SUPERNOVA_GALAXY.reset(true)
+				player.supernova.fermions.tiers[0]=[E(0),E(0),E(0),E(0),E(0),E(0)];
+				player.supernova.fermions.tiers[1]=[E(0),E(0),E(0),E(0),E(0),E(0)];
+				player.supernova.fermions.choosed = id
+			}else{
+				SUPERNOVA.reset(false,false,false,true)
+			}
         }
     },
     bonus(i,j) {
+		if (i >= 2 || player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3"))return E(0)
         let x = E(0)
         if (hasTree("prim3")) x = x.add(tmp.prim.eff[5][1].min(j>(hasTree('fn15')?5:hasTree('fn14')?4:2)?4:1/0))
         return x
@@ -45,6 +63,20 @@ const FERMIONS = {
         }
         return x
     },
+    getGTierScaling(t, bulk=false) {
+        let x = t
+        let fp = E(1.2)
+		if(x.gt(10))fp = E(1)
+		if(x.gt(9) && bulk){
+			if(x.lt(11))return E(11); else fp = E(1)
+		}
+        if (bulk) {
+            x = t.scaleEvery('gfTier',true).mul(fp).add(1).floor()
+        } else {
+            x = t.div(fp).scaleEvery('gfTier')
+        }
+        return x
+    },
     getUnlLength(x) {
         let u = 2
         if (hasTree("fn2")) u++
@@ -53,7 +85,13 @@ const FERMIONS = {
         if (hasTree("fn8")) u++
         return u
     },
-    names: ['quark', 'lepton'],
+    getGUnlLength(x) {
+        let u = 1
+        if (hasElement(245)) u++
+        if (hasElement(261)) u++
+        return u
+    },
+    names: ['quark', 'lepton', 'gquark', 'glepton'],
     sub_names: [["Up","Down","Charm","Strange","Top","Bottom"],["Electron","Muon","Tau","Neutrino","Neut-Muon","Neut-Tau"]],
     types: [
         [
@@ -379,6 +417,152 @@ const FERMIONS = {
                 cons: "Placeholder",
             },
             */
+        ],[
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(1.5)).mul(30).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[0][0]
+                    if (res.lt(30)) return E(0)
+                    let x = res.div(30).max(1).log(1.03).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(1e10,t.pow(3))
+                    return x
+                },
+                desc(x) {
+                    return `Boost Atomic Powers gain by ^${format(x)}`
+                },
+                inc: "[Up] Tiers",
+                cons: "You are trapped in all U-Quarks and Challenge 13. Atomic Powers gain is set to log10(Atomic Powers gain).",
+            },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(2)).mul(55).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[0][1]
+                    if (res.lt(55)) return E(0)
+                    let x = res.div(55).max(1).log(1.03).max(0).root(2)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(1e10,t.pow(2))
+                    return x
+                },
+                desc(x) {
+                    return `Boost Dilated Mass gain by ^${format(x)}`
+                },
+                inc: "[Down] Tiers",
+                cons: "You are trapped in all U-Quarks and Challenge 13. Relativistic Particle gain is set to log10(Relativistic Particle gain).",
+            },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(1.5)).mul(55).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[0][2]
+                    if (res.lt(55)) return E(0)
+                    let x = res.div(55).max(1).log(1.03).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(1e100,t.pow(3))
+                    return x
+                },
+                desc(x) {
+                    return `Boost Mass gain by ^${format(x)}`
+                },
+                inc: "[Charm] Tiers",
+                cons: "You are trapped in all U-Quarks and Challenges 13,20.",
+            },
+        ],[
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(1.5)).mul(50).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[1][0]
+                    if (res.lt(50)) return E(0)
+                    let x = res.div(50).max(1).log(1.03).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(1e10,t.pow(3))
+                    return x
+                },
+                desc(x) {
+                    return `Boost Collapsed Star gain by ^${format(x)}`
+                },
+                inc: "[Electron] Tiers",
+                cons: "You are trapped in all U-Leptons and Challenges 13,16. Quark gain is set to log10(Quark gain).",
+            },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(1.5)).mul(30).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[1][1]
+                    if (res.lt(30)) return E(0)
+                    let x = res.div(30).max(1).log(1.03).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(1e3,t)
+                    return x
+                },
+                desc(x) {
+                    return `Boost Galactic Bosons gain by ${format(x)}x`
+                },
+                inc: "[Muon] Tiers",
+                cons: "You are trapped in all U-Leptons and Challenges 13,16. BH mass gain is set to log10(BH mass gain)^100.",
+            },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(1.5)).mul(30).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[1][2]
+                    if (res.lt(30)) return E(0)
+                    let x = res.div(30).max(1).log(1.03).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = t.add(1)
+                    return x
+                },
+                desc(x) {
+                    return `Accelerator effect softcap ^1-^2 starts ${format(x)}x later`
+                },
+                inc: "[Tau] Tiers",
+                cons: "You are trapped in all U-Leptons and Challenges 13,16. Dark Matter gain is set to log10(Dark Matter gain)^5.",
+            },
         ],
     ],
 }
@@ -393,6 +577,25 @@ function setupFermionsHTML() {
             table += `
             <button id="${id}_div" class="fermion_btn ${FERMIONS.names[i]}" onclick="FERMIONS.choose(${i},${x})">
                 <b>[${FERMIONS.sub_names[i][x]}]</b><br>[<span id="${id}_tier_scale"></span>Tier <span id="${id}_tier">0</span>]<br>
+                <span id="${id}_cur">Currently: X</span><br>
+                Next Tier at: <span id="${id}_nextTier">X</span><br>
+                (Increased by ${f.inc})<br><br>
+                Effect: <span id="${id}_desc">X</span><br>
+                On Active: ${f.cons}
+            </button>
+            `
+        }
+	    new_table.setHTML(table)
+    }
+    for (i = 2; i < 4; i++) {
+        let new_table = new Element("fermions_"+FERMIONS.names[i]+"_table")
+        let table = ""
+        for (let x = 0; x < FERMIONS.types[i].length; x++) {
+            let f = FERMIONS.types[i][x]
+            let id = `f${FERMIONS.names[i]}${x}`
+            table += `
+            <button id="${id}_div" class="fermion_btn ${FERMIONS.names[i].slice(1)}" onclick="FERMIONS.choose(${i},${x})">
+                <b>[G-${FERMIONS.sub_names[i-2][x]}]</b><br>[<span id="${id}_tier_scale"></span>Tier <span id="${id}_tier">0</span>]<br>
                 <span id="${id}_cur">Currently: X</span><br>
                 Next Tier at: <span id="${id}_nextTier">X</span><br>
                 (Increased by ${f.inc})<br><br>
@@ -422,6 +625,17 @@ function updateFermionsTemp() {
             tf.effs[i][x] = f.eff(player.supernova.fermions.points[i], (FERMIONS.onActive("04") && i == 0) || (FERMIONS.onActive("14") && i == 1) ? E(0) : player.supernova.fermions.tiers[i][x].add(tmp.fermions.bonuses[i][x]).mul(i==1?tmp.radiation.bs.eff[16]:1).mul(i==0?tmp.radiation.bs.eff[19]:1))
         }
     }
+    for (i = 2; i < 4; i++) {
+
+        for (let x = 0; x < FERMIONS.types[i].length; x++) {
+            let f = FERMIONS.types[i][x]
+
+            tf.bonuses[i][x] = FERMIONS.bonus(i,x)
+            tf.maxTier[i][x] = typeof f.maxTier == "function" ? f.maxTier() : f.maxTier||1/0
+            tf.tiers[i][x] = f.calcTier().min(tf.maxTier[i][x])
+            tf.effs[i][x] = f.eff(player.supernova.fermions.points[i],player.supernova.fermions.tiers[i][x])
+        }
+    }
 }
 
 function updateFermionsHTML() {
@@ -437,15 +651,16 @@ function updateFermionsHTML() {
             tmp.el[id+"_div"].setDisplay(unl)
 
             if (unl) {
-                let active = tmp.fermions.ch[0] == i && tmp.fermions.ch[1] == x
+                let active = (tmp.fermions.ch[0] == i && tmp.fermions.ch[1] == x) || tmp.fermions.ch[0] == i+2
+                let active2 = (tmp.fermions.ch[0] == i && tmp.fermions.ch[1] == x) || (tmp.fermions.ch[0] == i+2 && tmp.fermions.ch[1] == x)
                 tmp.el[id+"_div"].setClasses({fermion_btn: true, [FERMIONS.names[i]]: true, choosed: active})
                 tmp.el[id+"_nextTier"].setTxt(fm(f.nextTierAt(player.supernova.fermions.tiers[i][x])))
                 tmp.el[id+"_tier_scale"].setTxt(getScalingName('fTier', i, x))
                 tmp.el[id+"_tier"].setTxt(format(player.supernova.fermions.tiers[i][x],0)+(tmp.fermions.maxTier[i][x] < Infinity?"，上限为"+format(tmp.fermions.maxTier[i][x],0):"") + (tmp.fermions.bonuses[i][x].gt(0)?"，额外阶层为"+tmp.fermions.bonuses[i][x].format():""))
                 tmp.el[id+"_desc"].setHTML(f.desc(tmp.fermions.effs[i][x]))
 
-                tmp.el[id+"_cur"].setDisplay(active)
-                if (active) {
+                tmp.el[id+"_cur"].setDisplay(active2)
+                if (active2) {
                     tmp.el[id+"_cur"].setTxt(`当前为：${fm(
                         [
                             [player.atom.atomic, player.md.particles, player.mass, player.rp.points, player.md.mass, tmp.tickspeedEffect.eff],
@@ -455,5 +670,34 @@ function updateFermionsHTML() {
                 }
             }
         }
+    }
+    for (i = 2; i < 4; i++) {
+        tmp.el["f"+FERMIONS.names[i]+"Amt"].setTxt()
+        let unls = FERMIONS.getGUnlLength(i)
+		let total = E(0)
+        for (let x = 0; x < FERMIONS.types[i].length; x++) {
+            let unl = x < unls
+            let f = FERMIONS.types[i][x]
+            let id = `f${FERMIONS.names[i]}${x}`
+            let fm = f.isMass?formatMass:format
+
+            tmp.el[id+"_div"].setDisplay(unl)
+			
+			total = total.add(player.supernova.fermions.tiers[i][x])
+            if (unl) {
+                let active = tmp.fermions.ch[0] == i && tmp.fermions.ch[1] == x
+                tmp.el[id+"_div"].setClasses({fermion_btn: true, [FERMIONS.names[i].slice(1)]: true, choosed: active})
+                tmp.el[id+"_nextTier"].setTxt(format(f.nextTierAt(player.supernova.fermions.tiers[i][x]),0))
+                tmp.el[id+"_tier_scale"].setTxt(getScalingName('gfTier', i, x))
+                tmp.el[id+"_tier"].setTxt(format(player.supernova.fermions.tiers[i][x],0)+(tmp.fermions.maxTier[i][x] < Infinity?" / "+format(tmp.fermions.maxTier[i][x],0):"") + (tmp.fermions.bonuses[i][x].gt(0)?" + "+tmp.fermions.bonuses[i][x].format():""))
+                tmp.el[id+"_desc"].setHTML(f.desc(tmp.fermions.effs[i][x]))
+
+                tmp.el[id+"_cur"].setDisplay(active)
+                if (active) {
+                    tmp.el[id+"_cur"].setTxt(`Currently: ${format(player.supernova.fermions.tiers[i-2][x],0)}`)
+                }
+            }
+        }
+		tmp.el["f"+FERMIONS.names[i]+"Amt"].setTxt(format(total,0))
     }
 }
