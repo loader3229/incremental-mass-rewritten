@@ -906,7 +906,7 @@ const TREE_UPGS = {
             qf: true,
             branch: ["unl2"],
             unl() { return hasElement(118) },
-            desc: `Automatically evaporate resources. (Stronger than manual)`,
+            desc: `自动消耗资源以获取焓和黑洞辐射（效果比手动消耗资源要强）。`,
             cost: E(1e111),
         },
         qu_qol11: {

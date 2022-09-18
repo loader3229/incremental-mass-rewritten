@@ -84,13 +84,13 @@ function updateGCHTML() {
 	tmp.el.gc_trap2.setDisplay(hasElement(290));
     tmp.el.gc_nerf1.setTxt(tmp.gc.nerf);
     tmp.el.gc_nerf2.setTxt(tmp.gc.nerf);
-    tmp.el.gc_trapeff.setTxt(player.gc.trap==0?"":player.gc.trap==1?"You are trapped in C1":"You are trapped in C1-C"+player.gc.trap);
-    tmp.el.gc_btn.setTxt(player.gc.active?"Exit the Galactic Challenge":"Enter the Galactic Challenge");
+    tmp.el.gc_trapeff.setTxt(player.gc.trap==0?"":player.gc.trap==1?"您将强制进行挑战1":"您将强制进行挑战1-挑战"+player.gc.trap);
+    tmp.el.gc_btn.setTxt(player.gc.active?"退出星系挑战":"进入星系挑战");
 	if(player.supernova.times.gte(GC.goal()) && player.gc.active){
-		tmp.el.gc_btn.setTxt("Complete the challenge ("+format(tmp.gc.shards,0)+"/"+format(player.gc.shard,0)+" Galactic Shards)");
+		tmp.el.gc_btn.setTxt("完成星系挑战 ("+format(tmp.gc.shards,0)+"/"+format(player.gc.shard,0)+" 星系碎片)");
 	}
 	if(player.supernova.times.gte(GC.goal()) && player.gc.active && tmp.gc.shards.gt(player.gc.shard)){
-		tmp.el.gc_btn.setTxt("Complete the challenge to get "+format(tmp.gc.shards.sub(player.gc.shard),0)+" Galactic Shards");
+		tmp.el.gc_btn.setTxt("完成星系挑战以获得 "+format(tmp.gc.shards.sub(player.gc.shard),0)+" 星系碎片");
 	}
     tmp.el.gc_goal.setTxt(format(GC.goal(),0));
 }

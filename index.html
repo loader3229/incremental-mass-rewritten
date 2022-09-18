@@ -171,9 +171,8 @@
 			<span id="galPow5span">您有<span id="galPow5">0</span>星系辐射波（获取量基于频率），所有辐射波的获取变为原来的<span id="galPow5_eff">1</span>次方<br></span>
 			<span id="galQkspan">您有<span id="galQk">0</span>星系夸克（获取量基于夸克和U-夸克）</span>
         </div><div id="stab_frame5_5">
-            Choosing any Galactic Fermion will force a Supernova Galaxy reset!<br>
-            In Galactic Fermions, you can't gain Infinity and Eternity mass!<br>
-            Galactic Fermion tiers boost your Galactic U-Fermions gain.<br><br>
+            注意：选择任意星系费米子后，将强制进行星系重置！<br>
+            在进行星系费米子的时候，您不能获得无限和永恒质量。<br>
             <button class="btn" onclick="FERMIONS.backNormal()">Back to Normal</button><br><br>
             <div class="fermions">
                 <div class="f_quark sub_f">
@@ -446,15 +445,15 @@
                 </div>
                 
             </div><div id="stab_frame3_2">
-                You have <span id="gc_shard">0</span> Galactic Shards<br>
-				Which are raising Galactic Power gain by ^<span id="gc_shardeff">0</span><br><br>
-                While in Galactic Challenge, gains of Pre-Quantum resources are set to 10^^(slog(gain) - <span id="gc_nerf1"></span>)<br>
-                Pre-Quantum Global Speed is set to 10^^(slog(Pre-Quantum Global Speed) - <span id="gc_nerf2"></span>)<br>
-                Effect of Beta particles is softcapped.<br>
+                You have <span id="gc_shard">0</span>星系碎片<br>
+				它使星系能量的获取变为原来的<span id="gc_shardeff">0</span>次方<br><br>
+                星系挑战包含以下的效果：量子之前所有资源获取变为 10^^(slog(获取) - <span id="gc_nerf1"></span>)<br>
+                量子之前所有资源获取速度变为 10^^(slog(量子之前所有资源获取速度) - <span id="gc_nerf2"></span>)<br>
+                贝塔粒子的效果被软上限。<br>
                 <span id="gc_trapeff"></span><br><br>
-				You need to get <span id="gc_goal"></span> supernova to complete the challenge.<br>
-				Difficulty: <span id="gc_diff"></span>/<span id="gc_diff_max"></span><button class="btn" onclick="decGCdiff()">-1</button><button class="btn" onclick="incGCdiff()">+1</button><br>
-                <br><span id="gc_trap2">Trapped Challenges: <span id="gc_trap"></span>/<span id="gc_trap_max"></span><button class="btn" onclick="decGCtrap()">-1</button><button class="btn" onclick="incGCtrap()">+1</button></span><br>
+				您需要<span id="gc_goal"></span>超新星才能完成挑战。<br>
+				挑战难度：<span id="gc_diff"></span>/<span id="gc_diff_max"></span><button class="btn" onclick="decGCdiff()">-1</button><button class="btn" onclick="incGCdiff()">+1</button><br>
+                <br><span id="gc_trap2">强制进行的挑战数量：<span id="gc_trap"></span>/<span id="gc_trap_max"></span><button class="btn" onclick="decGCtrap()">-1</button><button class="btn" onclick="incGCtrap()">+1</button></span><br>
                 <br><button class="btn" onclick="GC.enter()" id="gc_btn">Enter the Galactic Challenge</button>
             </div>
         </div><div id="tab_frame4">
