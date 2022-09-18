@@ -135,7 +135,7 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow0_gain(){
 		if(player.superGal.lt(1))return E(0);
-		return player.supernova.stars.add(1).log10().pow(player.superGal);
+		return player.supernova.stars.add(1).log10().pow(player.superGal).pow(tmp.gc.GSeffect);
 	},
 	galPow0_eff(){
 		let ret=Decimal.pow(1.01,player.galPow[0].add(1).log10());
@@ -151,21 +151,21 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow1_gain(){
 		if(player.superGal.lt(6))return E(0);
-		return player.atom.points.add(1).log10().add(1).log10().pow(player.superGal);
+		return player.atom.points.add(1).log10().add(1).log10().pow(player.superGal).pow(hasElement(287)?tmp.gc.GSeffect:1);
 	},
 	galPow1_eff(){
 		let ret=Decimal.pow(1.1,player.galPow[1].add(1).log10())
 		if(hasElement(234))ret = ret.pow(1.8);
-		return overflow(ret,2,3);
+		return overflow(overflow(ret,2,3),"1e30000",0.1);
 	},
 	galPow2_gain(){
 		if(player.superGal.lt(6))return E(0);
-		return player.bh.dm.add(1).log10().add(1).log10().pow(player.superGal);
+		return player.bh.dm.add(1).log10().add(1).log10().pow(player.superGal).pow(hasElement(281)?tmp.gc.GSeffect:1);
 	},
 	galPow2_eff(){
 		let ret=Decimal.pow(1.1,player.galPow[2].add(1).log10());
 		if(hasPrestige(1,136))ret = ret.pow(2.6)
-		return overflow(overflow(ret,2,3),"1e43000",0.5);
+		return overflow(overflow(overflow(ret,2,3),"1e43000",0.5),"1e100000",0.5);
 	},
 	galPow3_gain(){
 		if(player.superGal.lt(7))return E(0);
@@ -175,6 +175,7 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow3_eff(){
 		let ret=Decimal.pow(1.275,player.galPow[3].add(1).log10());
+		if(hasElement(270))ret = ret.pow(1.2);
 		return overflow(overflow(ret,2,3),"1e50",0.5);
 	},
 	galPow4_gain(){
@@ -192,7 +193,9 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow5_gain(){
 		if(player.superGal.lt(9))return E(0);
-		return player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(player.superGal.sub(6));
+		let ret=player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(player.superGal.sub(6));
+		ret = ret.mul(tmp.fermions.effs[2][4]||E(1));
+		return ret;
 	},
 	galPow5_eff(){
 		let ret=Decimal.pow(1.1,player.galPow[5].add(1).log10().pow(2.5));

@@ -33,6 +33,7 @@ const FORMS = {
 		x = x.pow(calcShardsEffect())
 	
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
+		if (player.gc.active) x = GCeffect(x)
 			
 		return x
     },
@@ -94,6 +95,8 @@ const FORMS = {
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
+		if (player.gc.active) x = GCeffect(x)
+	
 		tmp.massOverflowStart = E("ee84")
 		if (player.ranks.hex.gte(120))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
 		if (hasUpgrade('rp',19))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
@@ -372,10 +375,16 @@ const FORMS = {
             if (CHALS.inChal(4) || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("03")) gain = gain.root(10)
             gain = gain.pow(tmp.prim.eff[1][0])
 
-		gain = gain.pow(SUPERNOVA_GALAXY.effects.rp())
+			gain = gain.pow(SUPERNOVA_GALAXY.effects.rp())
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
+		 gain = gain.pow(tmp.fermions.effs[2][3]||E(1))	
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
-            return gain.floor()
+            
+		
+			if (FERMIONS.onActive("23"))gain = gain.add(1).log10()
+				
+			if (player.gc.active) gain = GCeffect(gain)
+			return gain.floor()
         },
         reset() {
             if (tmp.rp.can) if (player.confirms.rp?confirm("您确定要重置吗？"):true) {
@@ -413,6 +422,9 @@ const FORMS = {
 			
 			if (FERMIONS.onActive("32"))gain = gain.add(1).log10().pow(5)
 				
+			
+			if (player.gc.active) gain = GCeffect(gain)
+				
             return gain.floor()
         },
         massPowerGain() {
@@ -445,6 +457,9 @@ const FORMS = {
 			
 			if (FERMIONS.onActive("31")) x = x.add(1).log10().pow(100)
 			
+		
+			if (player.gc.active) x = GCeffect(x)
+				
 			tmp.bhOverflowStart = E("e1e34")
 			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)
 			if (CHALS.inChal(15) || CHALS.inChal(19))tmp.bhOverflowStart = E(10)

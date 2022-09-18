@@ -161,6 +161,7 @@ const SCALING_RES = {
 	prestige0() { return player.prestiges[0] },
 	prestige1() { return player.prestiges[1] },
 	prestige2() { return player.prestiges[2] },
+	prestige3() { return player.prestiges[3] },
 }
 
 const NAME_FROM_RES = {
@@ -181,6 +182,7 @@ const NAME_FROM_RES = {
 	prestige0: "Prestige Level",
 	prestige1: "Honor",
 	prestige2: "Glory",
+	prestige3: "Renown",
 }
 
 function updateScalingHTML() {
@@ -331,6 +333,10 @@ function getScalingStart(type, name) {
             if (player.ranks.oct.gte(2))start = start.mul(RANKS.effect.oct[2]())
             if (hasElement(265))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
 		}
+		if (name=="pent") {
+            if (hasElement(272))start = start.mul(tmp.elements.effect[272])
+			if (hasElement(275))start = start.mul(tmp.fermions.effs[3][3]||1)
+		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
 			if (player.ranks.hex.gte(68)) start = start.mul(2)
@@ -350,6 +356,9 @@ function getScalingStart(type, name) {
 			
 		if (name=="fTier") {
 			if (hasPrestige(2,14)) start = start.mul(100)
+		}
+		if (name=="prestige0") {
+			if (hasElement(285)) start = start.mul(3.5)
 		}
 	}
 	if (name=='supernova') {
@@ -384,6 +393,11 @@ function getScalingStart(type, name) {
 	if (name=="tier") if (hasElement(239))return EINF;
 	if (name=="pent" && type=="super") if (hasPrestige(2,29))return EINF;
 	if (name=="fTier" && type=="super") if (hasPrestige(2,31))return EINF;
+	if (name=="prestige0" && type=="hyper") if (hasPrestige(3,1))return EINF;
+	if (name=="fTier" && type=="hyper") if (hasPrestige(3,2))return EINF;
+	if (name=="pent" && type=="hyper") if (player.ranks.oct.gte(4))return EINF;
+	if (name=="pent" && type=="ultra") if (player.ranks.oct.gte(5))return EINF;
+	if (name=="massUpg") if (hasPrestige(2,37))return EINF;
 	return start.floor()
 }
 
@@ -592,6 +606,7 @@ function getScalingPower(type, name) {
 			if (hasElement(78)) power = power.mul(0.8)
 			if (player.ranks.hex.gte(78)) power = power.mul(0.95)
 			if (hasPrestige(0,93)) power = power.mul(tmp.prestigeMassEffect)
+			if (hasElement(284))power = power.mul(tmp.fermions.effs[3][4])
 		}
 		if (name=="rank") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)

@@ -37,6 +37,7 @@ const MASS_DILATION = {
         if (CHALS.inChal(11)|| CHALS.inChal(14) || CHALS.inChal(19)) return E(0)
         let x = m.div(1.50005e56).max(1).log10().div(40).sub(14).max(0).pow(tmp.md.rp_exp_gain).mul(tmp.md.rp_mult_gain)
 		if (FERMIONS.onActive("21")) x = x.add(1).log10();
+		if (player.gc.active) x = GCeffect(x)
         return x.sub(player.md.particles).max(0).floor()
     },
     massGain() {
@@ -54,6 +55,8 @@ const MASS_DILATION = {
 			
 		x = x.pow(tmp.fermions.effs[2][1]||E(1))
 		if (!hasElement(158))x = x.softcap(mlt(1e12),0.5,0);
+		if (FERMIONS.onActive("24")) x = x.add(1).log10().pow(10);
+		if (player.gc.active) x = GCeffect(x)
 		tmp.dmOverflow = overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8).log(x);
         return overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8);
     },

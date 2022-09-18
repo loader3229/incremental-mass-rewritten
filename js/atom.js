@@ -15,6 +15,11 @@ const ATOM = {
 
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
         if (FERMIONS.onActive("10")) x = expMult(x,0.625)
+			
+		if (FERMIONS.onActive("34")) x = x.add(1).log10().pow(3000)
+		
+		if (player.gc.active) x = GCeffect(x)
+			
         return x.floor()
     },
     quarkGain() {
@@ -39,6 +44,10 @@ const ATOM = {
 			
 		
 		if (FERMIONS.onActive("30")) x = x.add(1).log10()
+		
+		
+		if (player.gc.active) x = GCeffect(x)
+			
         return x.floor();
     },
     canReset() { return tmp.atom.gain.gte(1) },
@@ -75,6 +84,8 @@ const ATOM = {
             
 			if (FERMIONS.onActive("20")) x = x.add(1).log10()
 			
+			if (player.gc.active) x = GCeffect(x)
+				
 			tmp.atomicOverflowPower = E(0.8)
 			tmp.atomicOverflow = overflow(x,"e1e3000",tmp.atomicOverflowPower).log(x);
 			return overflow(x,"e1e3000",tmp.atomicOverflowPower);
@@ -171,6 +182,7 @@ const ATOM = {
             if (player.mainUpg.atom.includes(7)) x = x.mul(tmp.upgs.main?tmp.upgs.main[3][7].effect:E(1))
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
 			x = x.pow(player.galParticles[i].add(1).log10().add(1).pow(3));
+		if (player.gc.active) x = GCeffect(x)
             return x
         },
         powerEffect: [
@@ -195,6 +207,8 @@ const ATOM = {
                 :hasElement(19)
                 ?player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(10).mul(x.max(1).log(10)).root(2.75))
                 :player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(100).mul(x.max(1).log(100)).root(3))
+				
+				b = overflow(b,"ee28000000",0.5);
 				
 				a = a.pow(player.galParticles[1].add(1).log10().add(1).pow(3));
 				b = b.pow(player.galParticles[1].add(1).log10().add(1).pow(3));

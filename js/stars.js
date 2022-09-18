@@ -9,6 +9,9 @@ const STARS = {
 		x = x.pow(tmp.fermions.effs[3][0]||E(1))
         x = x.softcap(tmp.stars.softGain,tmp.stars.softPower,0)
 	
+			if (FERMIONS.onActive("33"))x = x.add(1).log10()
+	
+		if (player.gc.active) x = GCeffect(x)
 	
 		tmp.starOverflowPower = E(0.8)
 		if (player.ranks.hept.gte(2))tmp.starOverflowPower = tmp.starOverflowPower.pow(RANKS.effect.hept[2]())
@@ -174,6 +177,7 @@ function updateStarsHTML() {
     if (player.supernova.times.gte(SUPERNOVA_GALAXY.req()))tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed)))
     tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x")
 	if (player.ranks.hex.gte(36))tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x, ^"+format(tmp.stars.effectPower))
+    if (player.ranks.hex.gte(36) && player.superGal.gte(10))tmp.el.stars_Eff.setTxt("^"+format(tmp.stars.effectPower))
     tmp.el.star_btn.setDisplay(hasTree("s4") || player.stars.unls < 5)
     tmp.el.star_btn.setHTML((player.stars.unls < 5 || !hasTree("s4"))
     ? `Unlock new type of Stars, require ${format(tmp.stars.generator_req)} Quark`

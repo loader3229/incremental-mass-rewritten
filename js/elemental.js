@@ -68,6 +68,8 @@ const ELEMENTS = {
 				if(player.ranks.hex.gte(3))x=x.pow(1.5);
                 if (x.gte('e1e4')) x = expMult(x.div('e1e4'),0.9).mul('e1e4')
 				if (x.gte('ee4000')) x = overflow(x,'ee4000',0.5);
+				if (x.gte('ee2250000')) x = overflow(x,'ee2250000',0.5);
+				if (x.gte('ee7500000')) x = overflow(x,'ee7500000',0.5);
                 return x
             },
             effDesc(x) { return format(x)+"x"+(x.gte('e1e4')?"<span class='soft'>(softcapped)</span>":"") },
@@ -78,7 +80,7 @@ const ELEMENTS = {
             effect() {
                 let x = player.atom?player.atom.powers[0].max(1).log10().pow(0.8).div(50).add(1):E(1)
 				if(player.ranks.hex.gte(4))x=x.pow(1.05);
-                return x
+				return x
             },
             effDesc(x) { return format(x)+"x stronger" },
         },
@@ -1010,6 +1012,7 @@ const ELEMENTS = {
 			et: true,
 			effect() {
 				let x = player.et.points.add(1).pow(0.2);
+				if(hasElement(271))x = x.pow(20)
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -1071,6 +1074,7 @@ const ELEMENTS = {
 			effect() {
 				let x = (player.massUpg[2]||E(0)).add(10).log10().pow(0.6);
 				if(hasElement(244))x = expMult((player.massUpg[2]||E(1)),0.4);
+				if(hasElement(283))x = overflow(expMult((player.massUpg[1]||E(1)),0.875),"e3500000",0.5);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1081,6 +1085,7 @@ const ELEMENTS = {
 			effect() {
 				let x = (player.massUpg[1]||E(0)).add(10).log10().pow(0.6);
 				if(hasElement(244))x = expMult((player.massUpg[1]||E(1)),0.4);
+				if(hasElement(283))x = overflow(expMult((player.massUpg[1]||E(1)),0.875),"e3500000",0.5);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1365,6 +1370,7 @@ const ELEMENTS = {
 			effect() {
 				let x = player.galQk.add(1);
 				if(hasElement(264))x = expMult(x,2);
+				if(hasElement(278))x = expMult(x,1.3);
 				return x
 			},
 			effDesc(x) { return "^"+format(x); },
@@ -1375,6 +1381,7 @@ const ELEMENTS = {
 			et: true,
 			effect() {
 				let x = player.ranks.tier.add(10).log10().sqrt();
+				if(hasElement(276))x = expMult(player.ranks.tier,0.55);
 				return x
 			},
 			effDesc(x) { return format(x)+"x later"; },
@@ -1412,6 +1419,7 @@ const ELEMENTS = {
 			cost: E("1.5e5256"),
 			effect() {
 				let x = tmp.radiation.bs.eff[14].add(1).log10().add(1).log10();
+				if(hasElement(276))x = tmp.radiation.bs.eff[14].add(1).log10().pow(0.2);
 				return x
 			},
 			effDesc(x) { return format(x)+"x later"; },
@@ -1553,8 +1561,121 @@ const ELEMENTS = {
 			cost: E("1.5e8116"),
 		},
 		{
-			desc: `Reach the current endgame.`,
+			desc: `Unlock Galactic Challenges.`,
 			cost: E(1e31),
+			galQk: true,
+		},
+		{
+			desc: `Enthalpy gain is better.`,
+			cost: E("1.5e839"),
+			et: true,
+		},
+		{
+			desc: `The softcap of Entropic Accelerator is weaker.`,
+			cost: E("1.5e8326"),
+		},
+		{
+			desc: `Effect of Galactic Bosons is better.`,
+			cost: E(2e31),
+			galQk: true,
+		},
+		{
+			desc: `Element 161 is better.`,
+			cost: E("1.5e842"),
+			et: true,
+		},
+		{
+			desc: `Meta-Pent starts later based on Tetr.`,
+			cost: E("1.5e8526"),
+			effect() {
+				let x = player.ranks.tetr.add(10).log10().sqrt();
+				return x
+			},
+			effDesc(x) { return format(x)+"x later"; },
+		},
+		{
+			desc: `Reduce Galactic Fermion Requirements.`,
+			cost: E(5e31),
+			galQk: true,
+		},
+		{
+			desc: `Green Chroma's softcap is weaker.`,
+			cost: E("1.5e854"),
+			et: true,
+		},
+		{
+			desc: `Unlock 2 new types of Galactic Fermions.`,
+			cost: E(5e32),
+			galQk: true,
+		},
+		{
+			desc: `Elements 232 and 239 are better.`,
+			cost: E("1.5e856"),
+			et: true,
+		},
+		{
+			desc: `Add 100 C20 completions. C20 effect is better.`,
+			cost: E("1.5e8856"),
+		},
+		{
+			desc: `Element 231 is better.`,
+			cost: E("1.5e33"),
+			galQk: true,
+		},
+		{
+			desc: `Dark Matter Upgrade 19 is better.`,
+			cost: E("1.5e886"),
+			et: true,
+		},
+		{
+			desc: `Add 500 C17-C19 completions.`,
+			cost: E("1.5e9356"),
+		},
+		{
+			desc: `Galactic Shards Effect affects Galactic Dark Energy.`,
+			cost: E("1e34"),
+			galQk: true,
+		},
+		{
+			desc: `Plutonium-94 is always active at 100% efficiency.`,
+			cost: E("1.5e900"),
+			et: true,
+		},
+		{
+			desc: `Elements 173 and 174 are better.`,
+			cost: E("1.5e9836"),
+		},
+		{
+			desc: `Unlock 2 new types of Galactic Fermions.`,
+			cost: E("1e35"),
+			galQk: true,
+		},
+		{
+			desc: `Meta-Prestige Level starts 3.5x later.`,
+			cost: E("1.5e926"),
+			et: true,
+		},
+		{
+			desc: `Auto-Complete Challenge 13.`,
+			cost: E("1.5e10056"),
+		},
+		{
+			desc: `Galactic Shards Effect affects Galactic Atoms.`,
+			cost: E("1e36"),
+			galQk: true,
+		},
+		{
+			desc: `Photon & Gluon Upgrade 3 are better.`,
+			cost: E("1.5e1006"),
+			et: true,
+		},
+		{
+			desc: `Uncap C14-15 max completions.`,
+			cost: E("1.5e10656"),
+		},
+		{
+			desc: `Unlock a Galactic Challenge Option.`,
+			cost: E("1e38"),
 			galQk: true,
 		},
 	],
@@ -1571,7 +1692,7 @@ const ELEMENTS = {
     */
     getUnlLength() {
 		
-		if(player.superGal.gte(10))return 267;
+		if(player.superGal.gte(10))return 290;
 		if(player.superGal.gte(1))return 218;
         let u = 4
         if (quUnl()) u = 77+3

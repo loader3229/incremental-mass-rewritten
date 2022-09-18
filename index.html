@@ -37,6 +37,7 @@
     <script src="js/supernova/bosons.js"></script>
     <script src="js/supernova/tree.js"></script>
     <script src="js/supernova/supernova.js"></script>
+    <script src="js/supernova/gc.js"></script>
 
     <script src="js/stars.js"></script>
     <script src="js/md.js"></script>
@@ -288,18 +289,23 @@
                             加速器倍率：<span id="accel_step">X</span><br>
                             加速器效果：<span id="accel_eff">X</span>
                         </div>
-                    </div><br><div>
-                    <span id="massSoft1" class="red">After <b id="massSoftStart1">X</b> of mass gain will softcap mass gain!</span><br>
-                    <span id="massSoft3" style="color: rgb(121, 0, 0)">After <b id="massSoftStart3">X</b> of mass gain will softcap^2 mass gain!</span><br>
-                    <span id="massSoft4" style="color: rgb(122, 0, 86)">After <b id="massSoftStart4">X</b> of mass gain will softcap^3 mass gain!</span><br>
-                    <span id="massSoft5" style="color: rgb(255, 94, 0)">After <b id="massSoftStart5">X</b> of mass gain will softcap^4 mass gain!</span><br>
-                    <span id="massSoft6" style="color: rgb(255, 238, 0)">After <b id="massSoftStart6">X</b> of mass gain will softcap^5 mass gain!</span><br>
-                    <span id="massSoft7" style="color: rgb(255, 0, 255)">After <b id="massSoftStart7">X</b> of mass gain will softcap^6 mass gain!</span><br>
-                    <span id="massSoft8" style="color: rgb(0, 255, 255)">After <b id="massSoftStart8">X</b> of mass gain will softcap^7 mass gain!</span><br>
-					<span id="massSoft9" style="color: rgb(255, 128, 128)">After <b id="massSoftStart9">X</b> of mass gain will softcap^8 mass gain!</span><br>
-					<span id="massSoft10" style="color: rgb(128, 255, 128)">After <b id="massSoftStart10">X</b> of mass gain will softcap^9 mass gain!</span><br>
+                    </div>
+                <div id="prestige_mass_upgs_table"></div><br><br><div id="mass_softcaps">
+                    <span id="massSoft1" class="red">After <b id="massSoftStart1">X</b> of mass gain will softcap mass gain!<br></span>
+                    <span id="massSoft3" style="color: rgb(121, 0, 0)">After <b id="massSoftStart3">X</b> of mass gain will softcap^2 mass gain!<br></span>
+                    <span id="massSoft4" style="color: rgb(122, 0, 86)">After <b id="massSoftStart4">X</b> of mass gain will softcap^3 mass gain!<br></span>
+                    <span id="massSoft5" style="color: rgb(255, 94, 0)">After <b id="massSoftStart5">X</b> of mass gain will softcap^4 mass gain!<br></span>
+                    <span id="massSoft6" style="color: rgb(255, 238, 0)">After <b id="massSoftStart6">X</b> of mass gain will softcap^5 mass gain!<br></span>
+                    <span id="massSoft7" style="color: rgb(255, 0, 255)">After <b id="massSoftStart7">X</b> of mass gain will softcap^6 mass gain!<br></span>
+                    <span id="massSoft8" style="color: rgb(0, 255, 255)">After <b id="massSoftStart8">X</b> of mass gain will softcap^7 mass gain!<br></span>
+					<span id="massSoft9" style="color: rgb(255, 128, 128)">After <b id="massSoftStart9">X</b> of mass gain will softcap^8 mass gain!<br></span>
+					<span id="massSoft10" style="color: rgb(128, 255, 128)">After <b id="massSoftStart10">X</b> of mass gain will softcap^9 mass gain!<br></span>
+					<br>
+					<br>
+					
                     <span id="massOverflow" style="color: rgb(255, 255, 255)">质量溢出使你的质量获取速度变为原来的<b id="massOverflow2">X</b>次方！</span><br>
 					<span id="rankCollapse" style="color: rgb(255, 255, 255)">级别坍缩使级别的元折算的开始点变为原来的<b id="rankCollapse2">X</b>分之一！</span>
+					<span id="strongerOverflow" style="color: rgb(255, 255, 255)">强化器溢出使强化器的效果变为原来的<b id="strongerOverflow2">X</b>次方！</span>
                 </div>
             </div><div id="stab_frame0_1">
                 You have <span id="bhMass2">X</span> of Black Hole<br>
@@ -439,6 +445,17 @@
                     <div id="QC_Presets_table"></div>
                 </div>
                 
+            </div><div id="stab_frame3_2">
+                You have <span id="gc_shard">0</span> Galactic Shards<br>
+				Which are raising Galactic Power gain by ^<span id="gc_shardeff">0</span><br><br>
+                While in Galactic Challenge, gains of Pre-Quantum resources are set to 10^^(slog(gain) - <span id="gc_nerf1"></span>)<br>
+                Pre-Quantum Global Speed is set to 10^^(slog(Pre-Quantum Global Speed) - <span id="gc_nerf2"></span>)<br>
+                Effect of Beta particles is softcapped.<br>
+                <span id="gc_trapeff"></span><br><br>
+				You need to get <span id="gc_goal"></span> supernova to complete the challenge.<br>
+				Difficulty: <span id="gc_diff"></span>/<span id="gc_diff_max"></span><button class="btn" onclick="decGCdiff()">-1</button><button class="btn" onclick="incGCdiff()">+1</button><br>
+                <br><span id="gc_trap2">Trapped Challenges: <span id="gc_trap"></span>/<span id="gc_trap_max"></span><button class="btn" onclick="decGCtrap()">-1</button><button class="btn" onclick="incGCtrap()">+1</button></span><br>
+                <br><button class="btn" onclick="GC.enter()" id="gc_btn">Enter the Galactic Challenge</button>
             </div>
         </div><div id="tab_frame4">
             <div id="stab_frame4_0">
@@ -551,8 +568,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.8.2c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的NG+, 汉化版) v0.8.2c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.8.3c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的NG+, 汉化版) v0.8.3c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

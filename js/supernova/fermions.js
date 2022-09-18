@@ -12,6 +12,7 @@ const FERMIONS = {
         for (let j = 0; j < FERMIONS.types[i].length; j++) x = x.mul(base.pow(player.supernova.fermions.tiers[i][j]))
         if (hasTree("fn1") && tmp.supernova) x = x.mul(tmp.supernova.tree_eff.fn1)
 		x = x.pow(SUPERNOVA_GALAXY.galPow4_eff())
+	if(player.gc.active)x = GCeffect(x)
         return x
     },
     backNormal() {
@@ -66,9 +67,11 @@ const FERMIONS = {
     getGTierScaling(t, bulk=false) {
         let x = t
         let fp = E(1.2)
-		if(x.gt(10))fp = E(1)
-		if(x.gt(9) && bulk){
-			if(x.lt(11))return E(11); else fp = E(1)
+		if(!hasElement(273)){
+			if(x.gt(10))fp = E(1)
+			if(x.gt(9) && bulk){
+				if(x.lt(11))return E(11); else fp = E(1)
+			}
 		}
         if (bulk) {
             x = t.scaleEvery('gfTier',true).mul(fp).add(1).floor()
@@ -89,6 +92,8 @@ const FERMIONS = {
         let u = 1
         if (hasElement(245)) u++
         if (hasElement(261)) u++
+        if (hasElement(275)) u++
+        if (hasElement(284)) u++
         return u
     },
     names: ['quark', 'lepton', 'gquark', 'glepton'],
@@ -490,6 +495,54 @@ const FERMIONS = {
                 inc: "[Charm] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenges 13,20.",
             },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(1.5)).mul(75).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[0][3]
+                    if (res.lt(75)) return E(0)
+                    let x = res.div(75).max(1).log(1.03).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(1e200,t.pow(3))
+                    return x
+                },
+                desc(x) {
+                    return `Boost Rage Power gain by ^${format(x)}`
+                },
+                inc: "[Strange] Tiers",
+                cons: "You are trapped in all U-Quarks and Challenge 13. Rage Power gain is set to log10(Rage Power gain).",
+            },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(2)).mul(15).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[0][4]
+                    if (res.lt(15)) return E(0)
+                    let x = res.div(15).max(1).log(1.03).max(0).root(2)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(100,t)
+                    return x
+                },
+                desc(x) {
+                    return `Boost Galactic Radiation gain by ${format(x)}x`
+                },
+                inc: "[Top] Tiers",
+                cons: "You are trapped in all U-Quarks and Challenge 13. Dilated Mass gain is set to log10(Dilated Mass gain)^10.",
+            },
         ],[
             {
                 maxTier() {
@@ -562,6 +615,54 @@ const FERMIONS = {
                 },
                 inc: "[Tau] Tiers",
                 cons: "You are trapped in all U-Leptons and Challenges 13,16. Dark Matter gain is set to log10(Dark Matter gain)^5.",
+            },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.03).pow(t.pow(1.5)).mul(45).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[1][3]
+                    if (res.lt(45)) return E(0)
+                    let x = res.div(45).max(1).log(1.03).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = t.add(1)
+                    return x
+                },
+                desc(x) {
+                    return `Meta-Pent starts ${format(x)}x later`
+                },
+                inc: "[Neutrino] Tiers",
+                cons: "You are trapped in all U-Quarks and Challenge 13. Collapsed Star gain is set to log10(Collapsed Star gain).",
+            },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.1).pow(t.pow(2)).mul(5).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[1][4]
+                    if (res.lt(5)) return E(0)
+                    let x = res.div(5).max(1).log(1.1).max(0).root(2)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = Decimal.pow(0.997,t.pow(0.5));
+                    return x
+                },
+                desc(x) {
+                    return `Meta-Supernova scaling is ${format(E(100).sub(x.mul(100)))}% weaker`
+                },
+                inc: "[Neut-Muon] Tiers",
+                cons: "You are trapped in all U-Quarks and Challenge 13. Atom gain is set to log10(Atom gain)^3000.",
             },
         ],
     ],

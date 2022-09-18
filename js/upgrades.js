@@ -143,7 +143,8 @@ const UPGS = {
                 let ret = step.mul(xx.mul(hasElement(80)?25:1)).add(1).softcap(ss,sp,0).softcap(1.8e5,hasPrestige(0,12)?0.525:0.5,0)
                 ret = ret.mul(tmp.prim.eff[0])
                 if (!player.ranks.pent.gte(15)) ret = ret.softcap(ss2,sp2,0)
-				ret = overflow(ret, "e4e6", 0.5);
+				tmp.strongerOverflow = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.7:0.5).log(ret);
+				ret = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.7:0.5);
                 return {step: step, eff: ret, ss: ss}
             },
             effDesc(eff) {
@@ -157,6 +158,109 @@ const UPGS = {
                 if (player.mainUpg.rp.includes(7)) x = x.add(tmp.upgs.main?tmp.upgs.main[1][7].effect:0)
                 x = x.mul(getEnRewardEff(4))
                 return x
+            },
+        },
+    },
+    prestigeMass: {
+        cols: 3,
+        temp() {
+            for (let x = this.cols; x >= 1; x--) {
+                let d = tmp.upgs.prestigeMass
+                let data = this.getData(x)
+                d[x].cost = data.cost
+                d[x].bulk = data.bulk
+                
+                d[x].bonus = this[x].bonus?this[x].bonus():E(0)
+                d[x].eff = this[x].effect(player.prestigeMassUpg[x]||E(0))
+                d[x].effDesc = this[x].effDesc(d[x].eff)
+            }
+        },
+        autoSwitch(x) {
+            player.autoprestigeMassUpg[x] = !player.autoprestigeMassUpg[x]
+        },
+        buy(x, manual=false) {
+            let cost = manual ? this.getData(x).cost : tmp.upgs.prestigeMass[x].cost
+            if (player.prestigeMass.gte(cost)) {
+                if (!player.prestigeMassUpg[x]) player.prestigeMassUpg[x] = E(0)
+                player.prestigeMassUpg[x] = player.prestigeMassUpg[x].add(1)
+            }
+        },
+        buyMax(x) {
+            let d = tmp.upgs.prestigeMass[x]
+            let bulk = d.bulk
+            let cost = d.cost
+            if (player.prestigeMass.gte(cost)) {
+                let m = player.prestigeMassUpg[x]
+                if (!m) m = E(0)
+                m = m.max(bulk.floor().max(m.plus(1)))
+                player.prestigeMassUpg[x] = m
+            }
+        },
+        getData(i) {
+            let upg = this[i]
+            let inc = upg.inc
+            let start = upg.start
+            let lvl = player.prestigeMassUpg[i]||E(0)
+            let cost, bulk
+
+            
+            cost = inc.pow(lvl).mul(start)
+            bulk = E(0)
+            if (player.prestigeMass.gte(start)) bulk = player.prestigeMass.div(start).max(1).log(inc).add(1).floor()
+        
+            return {cost: cost, bulk: bulk}
+        },
+        1: {
+            unl() { return hasPrestige(2,38) },
+            title: "Prestige Muscler",
+            start: E(10),
+            inc: E(1.5),
+            effect(x) {
+                let step = player.prestiges[0]
+                step = step.mul(tmp.upgs.prestigeMass[2]?tmp.upgs.prestigeMass[2].eff.eff:1)
+                let ret = step.mul(x).add(1)
+                return {step: step, eff: ret}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+"+format(eff.step),
+                    eff: "x"+format(eff.eff)+" to Prestige Mass gain"
+                }
+            },
+        },
+        2: {
+            unl() { return hasPrestige(2,39) },
+            title: "Prestige Booster",
+            start: E(100),
+            inc: E(4),
+            effect(x) {
+                let step = player.prestiges[1]
+                step = step.pow(tmp.upgs.prestigeMass[3]?tmp.upgs.prestigeMass[3].eff.eff:1)
+                let ret = step.mul(x).add(1)
+                return {step: step, eff: ret}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+"+format(eff.step)+"x",
+                    eff: "x"+format(eff.eff)+" to Prestige Muscler Power"
+                }
+            },
+        },
+        3: {
+            unl() { return hasPrestige(2,40) },
+            title: "Prestige Stronger",
+            start: E(1000),
+            inc: E(9),
+            effect(x) {
+                let step = E(0.001)
+				let ret = step.mul(x).add(1);
+                return {step: step, eff: ret}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+^"+format(eff.step),
+                    eff: "^"+format(eff.eff)+" to Prestige Booster Power"
+                }
             },
         },
     },
@@ -516,6 +620,7 @@ const UPGS = {
                 desc: "Black Hole effect exponentially boost mass gain.",
                 cost: E('e2e130'),
                 effect() {
+					if(hasElement(279))return expMult((tmp.bh?(tmp.bh.effect||E(1)):E(1)).add(1).log10(),0.8);
                     return (tmp.bh?(tmp.bh.effect||E(1)):E(1)).add(1).log10().add(1).log10().pow(0.1);
                 },
                 effDesc(x=this.effect()) {

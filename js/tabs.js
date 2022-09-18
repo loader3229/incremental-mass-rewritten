@@ -37,6 +37,7 @@ const TABS = {
         3: [
             { id: "Challenges" },
             { id: "Quantum Challenge", unl() { return hasTree("unl3") }, style: "qu" },
+            { id: "Galactic Challenge", unl() { return hasElement(267) }, style: "sn" },
             //{ id: "Big Rip", unl() { return hasTree("unl4") }, style: "qu" },
         ],
         4: [

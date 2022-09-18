@@ -133,6 +133,7 @@ const ETERNITY_LAYER = {
         if (hasPrestige(2,4)) x = x.mul(prestigeEff(2,4));
         if (hasPrestige(1,26)) x = x.mul(prestigeEff(1,26));
         if (hasPrestige(0,250)) x = x.mul(prestigeEff(0,250));
+        if (hasPrestige(2,42)) x = x.mul(prestigeEff(2,42));
 		if (hasElement(121)) x = x.mul(tmp.elements.effect[121]);
 		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
 		if (hasElement(127)) x = x.mul(tmp.elements.effect[127]);

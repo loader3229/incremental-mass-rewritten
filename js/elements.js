@@ -75,6 +75,27 @@ function setupHTML() {
 	}
 	mass_upgs_table.setHTML(table)
 
+	let prestige_mass_upgs_table = new Element("prestige_mass_upgs_table")
+	table = ""
+	for (let x = 1; x <= UPGS.prestigeMass.cols; x++) {
+		let upg = UPGS.prestigeMass[x]
+		table += `<div style="width: 100%; margin-bottom: 5px;" class="table_center" id="prestigeMassUpg_div_${x}">
+			<div style="width: 400px">
+				<div class="resources">
+					<img src="images/mass_upg${x}.png">
+					<span style="margin-left: 5px; text-align: left;"><span id="prestigeMassUpg_scale_${x}"></span>${upg.title} [<span id="prestigeMassUpg_lvl_${x}">X</span>]</span>
+				</div>
+			</div><button id="prestigeMassUpg_btn_${x}" class="btn" style="width: 200px;" onclick="UPGS.prestigeMass.buy(${x}, true)">Cost: <span id="prestigeMassUpg_cost_${x}">X</span></button>
+			<button class="btn" style="width: 120px;" onclick="UPGS.prestigeMass.buyMax(${x})">Buy Max</button>
+			<button id="prestigeMassUpg_auto_${x}" class="btn" style="width: 80px;" onclick="UPGS.prestigeMass.autoSwitch(${x})">OFF</button>
+			<div style="margin-left: 5px; text-align: left; width: 400px">
+				${upg.title} Power: <span id="prestigeMassUpg_step_${x}">X</span><br>
+				${upg.title} Effect: <span id="prestigeMassUpg_eff_${x}">X</span>
+			</div>
+		</div>`
+	}
+	prestige_mass_upgs_table.setHTML(table)
+
 	let ranks_rewards_table = new Element("ranks_rewards_table")
 	table = ""
 	for (let x = 0; x < RANKS.names.length; x++) {
@@ -236,7 +257,7 @@ function updateUpperHTML() {
 function updateMassUpgradesHTML() {
 	for (let x = 1; x <= UPGS.mass.cols; x++) {
 		let upg = UPGS.mass[x]
-		tmp.el["massUpg_div_"+x].setDisplay(upg.unl())
+		tmp.el["massUpg_div_"+x].setDisplay(upg.unl() && tmp.rank_tab == 0)
 		if (upg.unl()) {
 			tmp.el["massUpg_scale_"+x].setTxt(getScalingName("massUpg", x))
 			tmp.el["massUpg_lvl_"+x].setTxt(format(player.massUpg[x]||0,0)+(tmp.upgs.mass[x].bonus.gt(0)?" + "+format(tmp.upgs.mass[x].bonus,0):""))
@@ -248,11 +269,25 @@ function updateMassUpgradesHTML() {
 			tmp.el["massUpg_auto_"+x].setTxt(player.autoMassUpg[x]?"ON":"OFF")
 		}
 	}
+	for (let x = 1; x <= UPGS.prestigeMass.cols; x++) {
+		let upg = UPGS.prestigeMass[x]
+		tmp.el["prestigeMassUpg_div_"+x].setDisplay(upg.unl() && tmp.rank_tab == 1)
+		if (upg.unl()) {
+			tmp.el["prestigeMassUpg_scale_"+x].setTxt("")
+			tmp.el["prestigeMassUpg_lvl_"+x].setTxt(format(player.prestigeMassUpg[x]||0,0))
+			tmp.el["prestigeMassUpg_btn_"+x].setClasses({btn: true, locked: player.prestigeMass.lt(tmp.upgs.prestigeMass[x].cost)})
+			tmp.el["prestigeMassUpg_cost_"+x].setTxt(formatMass(tmp.upgs.prestigeMass[x].cost)+" Prestige Mass")
+			tmp.el["prestigeMassUpg_step_"+x].setTxt(tmp.upgs.prestigeMass[x].effDesc.step)
+			tmp.el["prestigeMassUpg_eff_"+x].setHTML(tmp.upgs.prestigeMass[x].effDesc.eff)
+			tmp.el["prestigeMassUpg_auto_"+x].setDisplay(true)
+			tmp.el["prestigeMassUpg_auto_"+x].setTxt(player.autoprestigeMassUpg[x]?"ON":"OFF")
+		}
+	}
 }
 
 function updateTickspeedHTML() {
 	let unl = player.rp.unl
-	tmp.el.tickspeed_div.setDisplay(unl)
+	tmp.el.tickspeed_div.setDisplay(unl && tmp.rank_tab == 0)
 	if (unl) {
 		let teff = tmp.tickspeedEffect
 		tmp.el.tickspeed_scale.setTxt(getScalingName('tickspeed'))
@@ -268,7 +303,7 @@ function updateTickspeedHTML() {
 		tmp.el.tickspeed_auto.setDisplay(FORMS.tickspeed.autoUnl())
 		tmp.el.tickspeed_auto.setTxt(player.autoTickspeed?"ON":"OFF")
 	}
-	tmp.el.accel_div.setDisplay(unl && hasElement(134));
+	tmp.el.accel_div.setDisplay(unl && hasElement(134) && tmp.rank_tab == 0);
 	if(hasElement(134)){
 		let eff = tmp.accelEffect
 		//tmp.el.accel_scale.setTxt(getScalingName('accel'))
@@ -415,6 +450,7 @@ function updateHTML() {
 				updateMassUpgradesHTML()
 				updateTickspeedHTML()
 				
+				tmp.el.mass_softcaps.setDisplay(tmp.rank_tab == 0);
 				tmp.el.massSoft1.setDisplay(tmp.massGain.gte(tmp.massSoftGain) && player.ranks.hex.lt(1))
 				tmp.el.massSoftStart1.setTxt(formatMass(tmp.massSoftGain))
 				tmp.el.massSoft3.setDisplay(tmp.massGain.gte(tmp.massSoftGain2) && player.ranks.hex.lt(4))
@@ -439,6 +475,8 @@ function updateHTML() {
 				tmp.el.massOverflow2.setTxt(format(tmp.massOverflow))
 				tmp.el.rankCollapse.setDisplay(tmp.rankCollapse.gt(1))
 				tmp.el.rankCollapse2.setTxt(format(tmp.rankCollapse))
+				tmp.el.strongerOverflow.setDisplay(tmp.strongerOverflow.lt(1))
+				tmp.el.strongerOverflow2.setTxt(format(tmp.strongerOverflow))
 			}
 			if (tmp.stab[0] == 1) {
 				updateBlackHoleHTML()

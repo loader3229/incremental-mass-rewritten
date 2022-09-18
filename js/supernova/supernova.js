@@ -71,6 +71,8 @@ const SUPERNOVA = {
 		x = x.mul(SUPERNOVA_GALAXY.effects.nsMult())
         if (hasTree("sn6")) x = x.pow(tmp.supernova.tree_eff.sn6)
 		x = x.pow(SUPERNOVA_GALAXY.effects.ns())
+	
+	if(player.gc.active)x = GCeffect(x)
         return x
     },
     req(x=player.supernova.times) {

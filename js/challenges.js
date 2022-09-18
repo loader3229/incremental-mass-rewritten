@@ -19,6 +19,8 @@ function updateChalHTML() {
 				if(hasPrestige(1,25) && x <= 11)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
 				if(hasElement(133) && x == 12)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
 				if(hasElement(222) && x == 13)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(289) && x == 14)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(289) && x == 15)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
             }
         }
         tmp.el.chal_enter.setVisible(player.chal.active != player.chal.choosed)
@@ -38,6 +40,9 @@ function updateChalHTML() {
     }
     if (tmp.stab[3]==1){
         updateQCHTML()
+    }
+    if (tmp.stab[3]==2){
+        updateGCHTML()
     }
 }
 
@@ -74,6 +79,8 @@ const CHALS = {
 		if(player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3"))if(x == 13)return true
 		if(player.supernova.fermions.choosed.startsWith("3"))if(x == 16)return true
 		if(FERMIONS.onActive("22"))if(x == 20)return true
+		if(player.gc.active && x <= player.gc.trap)return true
+		//if(player.gc.active)if(x == 13)return true
 		return player.chal.active == x
 	},
     reset(x, chal_reset=true) {
@@ -151,6 +158,11 @@ const CHALS = {
 		return "进入挑战时将强制进行永恒重置！"
     },
     getMax(i) {
+        if (hasPrestige(1,25) && (i<=11)) return EINF
+        if (hasElement(133) && (i==12)) return EINF
+        if (hasElement(222) && (i==13)) return EINF
+        if (hasElement(289) && (i==14||i==15)) return EINF
+		
         let x = this[i].max
         if (i <= 4) x = x.add(tmp.chal?tmp.chal.eff[7]:0)
         if (hasElement(13) && (i==5||i==6)) x = x.add(tmp.elements.effect[13])
@@ -188,8 +200,6 @@ const CHALS = {
         if (player.ranks.hex.gte(73) && (i==12)) x = x.add(1000)
         if (player.ranks.hex.gte(104) && (i==12)) x = x.add(2000)
         if (player.ranks.hex.gte(110) && (i==12)) x = x.add(2000)
-        if (hasPrestige(1,25) && (i<=11))  x = x.add(EINF)
-        if (hasElement(133) && (i==12))  x = x.add(EINF)
         if (hasElement(175) && (i==13||i==15))  x = x.add(100)
         if (hasElement(182) && (i==13||i==16))  x = x.add(100)
         if (hasElement(186) && (i==13||i==15))  x = x.add(300)
@@ -199,7 +209,6 @@ const CHALS = {
         if (hasElement(206) && (i==14||i==16))  x = x.add(100)
         if (hasElement(210) && (i==14||i==17))  x = x.add(100)
         if (hasElement(214) && (i==15||i==16))  x = x.add(200)
-        if (hasElement(222) && (i==13))  x = x.add(EINF)
 		if (i<=16)x = x.add(SUPERNOVA_GALAXY.effects.chal())
         if (hasElement(227) && (i==17))  x = x.add(300)
         if (hasElement(235) && (i==19))  x = x.add(300)
@@ -208,6 +217,8 @@ const CHALS = {
 		if (hasElement(249) && (i==18||i==19))  x = x.add(100)
 		if (hasElement(252) && (i==17||i==18||i==19))  x = x.add(250)
 		if (hasElement(258) && (i==17||i==18||i==19))  x = x.add(250)
+		if (hasElement(277) && (i==20))  x = x.add(100)
+		if (hasElement(280) && (i==17||i==18||i==19))  x = x.add(500)
         return x.floor()
     },
     getScaleName(i) {
@@ -548,7 +559,7 @@ const CHALS = {
         start: E('e2e12'),
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
-            let ret = E(0.97).pow(x.root(2).softcap(25,0.56,0))
+            let ret = E(0.97).pow(x.root(2).softcap(25,0.56,0).softcap(42,0.1,0))
             return ret
         },
         effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker"+(x.log(0.97).gte(25)?" <span class='soft'>(softcapped)</span>":"") },
@@ -641,6 +652,7 @@ const CHALS = {
         start: E("1e3149"),
         effect(x) {
 			if(hasPrestige(2,17))x = x.pow(2);
+			if(hasElement(277))x = x.pow(1.25);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
             return ret

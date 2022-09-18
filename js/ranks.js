@@ -266,6 +266,11 @@ const RANKS = {
 		oct: {
             '1': "Super/Hyper Hex scalings are weaker based on Oct.",
             '2': "Meta-Tetr starts later based on Oct.",
+            '3': "Tetr 2 softcap is weaker.",
+			'4': "Remove Hyper Pent scaling.",
+			'5': "Remove Ultra Pent scaling.",
+			'6': "Oct 2's effect is better.",
+			'8': "Stronger Overflow is weaker.",
 		},
     },
     effect: {
@@ -330,7 +335,7 @@ const RANKS = {
             '2'() {
                 let ret = E(player.massUpg[3]||0).div(400)
                 if (ret.gte(1) && hasPrestige(0,15)) ret = ret.pow(1.5)
-				ret = ret.softcap("e4.5e6", 0.5, 0);
+				ret = ret.softcap("e4.5e6", player.ranks.oct.gte(3)?0.8:0.5, 0);
                 return ret
             },
             '4'() {
@@ -450,6 +455,7 @@ const RANKS = {
             },
             '2'() {
                 let ret = E(10).pow(player.ranks.oct);
+				if(player.ranks.oct.gte(6))ret = E(10).pow(player.ranks.oct.pow(4));
                 return ret
             },
 			
@@ -528,7 +534,7 @@ const RANKS = {
 }
 
 const PRESTIGES = {
-    fullNames: ["转生等级", "荣耀", "辉煌"],
+    fullNames: ["转生等级", "荣耀", "辉煌", "名誉"],
     baseExponent() {
         let x = E(0)
         if (hasElement(100)) x = x.add(tmp.elements.effect[100])
@@ -560,6 +566,9 @@ const PRESTIGES = {
             case 2:
                 x = y.scaleEvery('prestige2').pow(1.25).mul(3).add(12)
                 break;
+            case 3:
+                x = y.scaleEvery('prestige3').pow(1.25).mul(3).add(33)
+                break;
             default:
                 x = EINF
                 break;
@@ -578,6 +587,9 @@ const PRESTIGES = {
             case 2:
                 if (y.gte(12)) x = y.sub(12).div(3).max(0).root(1.25).scaleEvery('prestige2',true).add(1)
                 break
+            case 3:
+                if (y.gte(33)) x = y.sub(33).div(3).max(0).root(1.25).scaleEvery('prestige3',true).add(1)
+                break
             default:
                 x = E(0)
                 break;
@@ -588,10 +600,12 @@ const PRESTIGES = {
         _=>true,
         _=>true,
         _=>hasPrestige(1,12) || hasPrestige(2,1),
+        _=>hasPrestige(2,33) || hasPrestige(3,1),
     ],
     noReset: [
         _=>hasUpgrade('br',11) || player.superGal.gte(9),
         _=>hasPrestige(2,2) || player.superGal.gte(9),
+        _=>player.superGal.gte(9),
         _=>player.superGal.gte(9),
     ],
     rewards: [
@@ -727,6 +741,17 @@ const PRESTIGES = {
             "29": `Remove Super Pent scaling.`,
             "30": `Unlock Oct.`,
             "31": `Remove Super Fermion Tier scaling.`,
+            "33": `Unlock Renown.`,
+            "37": `Remove All Mass Upgrades scaling.`,
+            "38": `Unlock Prestige Muscler.`,
+            "39": `Unlock Prestige Booster.`,
+            "41": `Glory 4 and Glory 5's effects are squared.`,
+            "42": `Renown boost Eternal Mass gain.`,
+		},
+		{
+            "1": `Remove Hyper Prestige Level scaling.`,
+            "2": `Remove Hyper Fermion Tier scaling.`,
+            "3": `Multiply Honor 9 reward by Renown.`,
 		},
     ],
     rewardEff: [
@@ -809,6 +834,7 @@ const PRESTIGES = {
 				if(hasPrestige(1,22))x = x.mul(2);
 				if(hasElement(212))x = x.mul(2);
 				if(hasElement(215))x = x.mul(2);
+				if(hasPrestige(3,3))x = x.mul(prestigeEff(3,3));
                 return x
             },x=>"+"+x.format()],
             "11": [_=>{
@@ -861,16 +887,28 @@ const PRESTIGES = {
             },x=>"x"+x.format()],
             "4": [_=>{
                 let x = player.prestiges[2].add(1).root(2)
+				if (hasPrestige(2,41)) x = player.prestiges[2].add(1)
                 return x
             },x=>"x"+x.format()],
             "5": [_=>{
                 let x = E(2).pow(player.prestiges[1]).pow(player.prestiges[2].sub(25).max(1));
+				if (hasPrestige(2,41)) x = x.pow(2)
                 return x
             },x=>"x"+x.format()],
             "25": [_=>{
                 let x = 5;
                 return x
             },x=>x+"% effectiveness"],
+            "42": [_=>{
+                let x = player.prestiges[3].add(1)
+                return x
+            },x=>"x"+x.format()],
+		},
+		{
+            "3": [_=>{
+                let x = player.prestiges[3];
+                return x
+            },x=>"x"+x.format()],
 		},
     ],
     reset(i) {
@@ -1071,6 +1109,7 @@ function prestigeMassGain(){
 	if (hasPrestige(1,31)) x = x.mul(player.prestiges[0].pow(0.15).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
 	if (hasElement(145)) x = x.mul(10);
 	if (hasElement(255)) x = x.mul(tmp.elements.effect[255]);
+	x = x.mul(tmp.upgs.prestigeMass[1].eff.eff);
 	return x;
 }
 

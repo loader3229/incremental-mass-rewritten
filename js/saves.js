@@ -77,7 +77,8 @@ function calc(dt, dt_offline) {
     if (tmp.pass) {
         player.mass = player.mass.add(tmp.massGain.mul(du_gs))
         if (player.mainUpg.rp.includes(3)) for (let x = 1; x <= UPGS.mass.cols; x++) if (player.autoMassUpg[x] && (player.ranks.rank.gte(x) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(x)
-        if (FORMS.tickspeed.autoUnl() && player.autoTickspeed) FORMS.tickspeed.buyMax()
+        for (let x = 1; x <= UPGS.prestigeMass.cols; x++) if (player.autoprestigeMassUpg[x] &&  UPGS.prestigeMass[x].unl()) UPGS.prestigeMass.buyMax(x)
+		if (FORMS.tickspeed.autoUnl() && player.autoTickspeed) FORMS.tickspeed.buyMax()
         if (FORMS.accel.autoUnl() && player.autoAccel) FORMS.accel.buyMax()
 		if (FORMS.bh.condenser.autoUnl() && player.bh.autoCondenser) FORMS.bh.condenser.buyMax()
         if (hasElement(18) && player.atom.auto_gr) ATOM.gamma_ray.buyMax()
@@ -128,7 +129,7 @@ function calc(dt, dt_offline) {
             if (hasTree("qu_qol5")) for (let x = 5; x <= 8; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))
             if (hasTree("qu_qol7a")) for (let x = 9; x <= 12; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))
         }
-	
+		if (hasElement(286)) player.chal.comps[13] = player.chal.comps[13].max(tmp.chal.bulk[13].min(tmp.chal.max[13]))
 		calcPrestigeMass(dt, dt_offline)
         calcInfinity(dt, dt_offline)
         calcSupernovaGalaxy(dt, dt_offline)
@@ -165,11 +166,13 @@ function getPlayerData() {
         },
         prestiges: [],
         prestigeMass: E(0),
+        prestigeMassUpg: [E(0), E(0), E(0), E(0)],
         auto_mainUpg: {
             
         },
         massUpg: {},
         autoMassUpg: [null,false,false,false],
+        autoprestigeMassUpg: [null,false,false,false],
         autoTickspeed: false,
         mainUpg: {
             
@@ -291,6 +294,12 @@ function getPlayerData() {
 		galQk: E(0),
 		galPow: [E(0),E(0),E(0),E(0),E(0),E(0)],
 		galParticles: [E(0), E(0), E(0)],
+		gc: {
+			depth: 0,
+			trap: 0,
+			shard: E(0),
+            active: false,
+		},
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {

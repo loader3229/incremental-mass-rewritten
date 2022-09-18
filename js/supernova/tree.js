@@ -132,7 +132,7 @@ const TREE_UPGS = {
         },
         sn6: {
             branch: ["sn4"],
-            desc: `Neutron Stars is raised to a power based on Supernovas, and [sn4]'s effect is better.`,
+            desc: `超新星加成中子星的获取，[sn4]的效果变得更好。`,
             unl() { return hasElement(118) },
             cost: E('e1.35e12'),
             effect() {
@@ -241,7 +241,7 @@ const TREE_UPGS = {
         s5: {
             unl() { return player.inf.times.gte(1) },
             branch: ["s4"],
-            desc: `Disable collapsed stars gain softcap.`,
+            desc: `移除坍缩星辰获取的软上限。`,
             cost: E("ee25"),
         },
         qol1: {
@@ -865,7 +865,7 @@ const TREE_UPGS = {
             qf: true,
             branch: ["qu_qol7"],
             unl() { return hasElement(118) },
-            desc: `You can now automatically complete Challenges 9-12 any Challenge.`,
+            desc: `您可以自动完成挑战9-挑战12中的任意挑战。`,
             cost: E(1e147),
         },
         qu_qol7: {

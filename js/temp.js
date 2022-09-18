@@ -35,6 +35,7 @@ function resetTemp() {
         upgs: {
             main: {},
             mass: {},
+            prestigeMass: {},
         },
 
         elements: {
@@ -107,9 +108,13 @@ function resetTemp() {
         et: {
             
         },
+        gc: {
+            
+        },
         prevSave: "",
     }
     for (let x = 0; x < PRES_LEN; x++) tmp.prestiges.eff[x] = {}
+    for (let x = UPGS.prestigeMass.cols; x >= 1; x--) tmp.upgs.prestigeMass[x] = {}
     for (let x = UPGS.mass.cols; x >= 1; x--) tmp.upgs.mass[x] = {}
     for (let x = 1; x <= UPGS.main.cols; x++) tmp.upgs.main[x] = {}
     for (let j = 0; j < TREE_TAB.length; j++) {
@@ -177,6 +182,7 @@ function updateTickspeedTemp() {
 function updateUpgradesTemp() {
     UPGS.main.temp()
     UPGS.mass.temp()
+    UPGS.prestigeMass.temp()
 }
 
 function updateRagePowerTemp() {
@@ -213,6 +219,8 @@ function updateTemp() {
     tmp.offlineActive = player.offline.time > 1
     tmp.offlineMult = tmp.offlineActive?player.offline.time+1:1
 
+    updateGCTemp()
+	
     updateInfinityTemp()
 	
     updateQuantumTemp()
