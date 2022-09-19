@@ -37,7 +37,7 @@ const BOSONS = {
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())
-            if (hasElement(288))x = x.pow(tmp.bosons.upgs.photon[2]?tmp.bosons.upgs.photon[2].effect:1)
+            if (hasElement(288))x = x.pow(player.stars.points.add(1).log10().add(1).log10().pow(player.supernova.b_upgs.photon[2].add(1).log10().pow(0.5)))
 	if(player.gc.active)x = GCeffect(x)
             return x
         },
@@ -49,7 +49,7 @@ const BOSONS = {
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[3])
             if (hasPrestige(1,3)) x = x.pow(prestigeEff(1,3))
 			x = x.pow(SUPERNOVA_GALAXY.galPow3_eff())
-            if (hasElement(288))x = x.pow(tmp.bosons.upgs.gluon[2]?tmp.bosons.upgs.gluon[2].effect:1)
+            if (hasElement(288))x = x.pow(player.atom.quarks.add(1).log10().add(1).log10().pow(player.supernova.b_upgs.gluon[2].add(1).log10().pow(0.5)))
 	if(player.gc.active)x = GCeffect(x)
             return x
         },
