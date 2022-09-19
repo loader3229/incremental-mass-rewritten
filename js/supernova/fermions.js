@@ -97,7 +97,7 @@ const FERMIONS = {
         return u
     },
     names: ['quark', 'lepton', 'gquark', 'glepton'],
-    sub_names: [["Up","Down","Charm","Strange","Top","Bottom"],["Electron","Muon","Tau","Neutrino","Neut-Muon","Neut-Tau"]],
+    sub_names: [["上夸克","下夸克","粲夸克","奇夸克","顶夸克","底夸克"],["电子","缪子","陶子","中微子","缪中微子","陶中微子"]],
     types: [
         [
             {
@@ -699,7 +699,7 @@ function setupFermionsHTML() {
                 <b>[G-${FERMIONS.sub_names[i-2][x]}]</b><br>[<span id="${id}_tier_scale"></span>Tier <span id="${id}_tier">0</span>]<br>
                 <span id="${id}_cur">Currently: X</span><br>
                 Next Tier at: <span id="${id}_nextTier">X</span><br>
-                (Increased by ${f.inc})<br><br>
+                (单位为[${FERMIONS.sub_names[i-2][x]}]阶层)<br><br>
                 Effect: <span id="${id}_desc">X</span><br>
                 On Active: ${f.cons}
             </button>

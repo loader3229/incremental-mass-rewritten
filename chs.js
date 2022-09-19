@@ -81,6 +81,9 @@ var cnItems = {
     'Booster [': '助推器[',
     'Stronger [': '强化器[',
     'Tickspeeds [': '时间速度[',
+    'Prestige Muscler [': '转生锻体器[',
+    'Prestige Booster [': '转生助推器[',
+    'Prestige Stronger [': '转生强化器[',
     ' Rage Points': '狂怒能量',
     'Tickspeed Power': '时间速度倍率',
     'Tickspeed Effect': '时间速度效果',
@@ -686,30 +689,6 @@ var cnItems = {
     ' You have ': '您拥有',
     ' U-Quark': 'U-夸克',
     ' U-Lepton': 'U-轻子',
-    '[Up]': '[上夸克]',
-    '[Down]': '[下夸克]',
-    '[Charm]': '[粲夸克]',
-    '[Strange]': '[奇夸克]',
-    '[Top]': '[顶夸克]',
-    '[Bottom]': '[底夸克]',
-    '[Electron]': '[电子]',
-    '[Muon]': '[缪子]',
-    '[Tau]': '[陶子]',
-    '[Neutrino]': '[中微子]',
-    '[Neut-Muon]': '[缪中微子]',
-    '[Neut-Tau]': '[陶中微子]',
-    '[G-Up]': '[G-上夸克]',
-    '[G-Down]': '[G-下夸克]',
-    '[G-Charm]': '[G-粲夸克]',
-    '[G-Strange]': '[G-奇夸克]',
-    '[G-Top]': '[G-顶夸克]',
-    '[G-Bottom]': '[G-底夸克]',
-    '[G-Electron]': '[G-电子]',
-    '[G-Muon]': '[G-缪子]',
-    '[G-Tau]': '[G-陶子]',
-    '[G-Neutrino]': '[G-中微子]',
-    '[G-Neut-Muon]': '[G-缪中微子]',
-    '[G-Neut-Tau]': '[G-陶中微子]',
     'Tier ': '阶层',
     'Next Tier at': '下一阶层需',
     '(Increased by Atomic Powers': '(单位为原子能量',
@@ -1040,9 +1019,6 @@ var cnRegReplace = new Map([
     [/^Boosts Dark Matter gain by (.+)x$/, '使暗物质获取速度变为原来的$1倍'], //原子等
     [/^Boosts Dark Matter gain by \^(.*)$/, '使暗物质获取速度变为原来的$1次方'], //原子等
     [/^Adds BH Condenser Power by\s*(.*)$/, '使黑洞压缩器倍率增加$1'], //原子等
-    [/^ Protons Powers, which:\s*$/, '质子能量，因此获得以下效果：'], //原子等
-    [/^ Neutrons Powers, which:\s*$/, '中子能量，因此获得以下效果：'], //原子等
-    [/^ Electrons Powers, which:\s*$/, '电子能量，因此获得以下效果：'], //原子等
     [/^Currently: (.+)x\s?$/, '目前效果：$1倍'], //原子等
     [/^Currently: (.+)x stronger$/, '目前效果：增加$1倍'], //原子等
     [/^Currently: (.+) later$/, '目前效果：延迟$1次出现'], //原子等

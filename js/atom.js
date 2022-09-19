@@ -132,7 +132,7 @@ const ATOM = {
         },
     },
     particles: {
-        names: ['Protons', 'Neutrons', 'Electrons'],
+        names: ['质子', '中子', '电子'],
         assign(x) {
             if (player.atom.quarks.lt(1) || CHALS.inChal(9) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) return
             let m = player.atom.ratio
@@ -283,8 +283,8 @@ function setupAtomHTML() {
         <div style="width: 30%"><button class="btn" onclick="ATOM.particles.assign(${x})">Assign</button><br><br>
             <div style="color: ${ATOM.particles.colors[x]}; min-height: 120px">
                 <h2><span id="particle_${x}_amt">X</span> ${ATOM.particles.names[x]}</h2><br>
-                Which generates <span id="particle_${x}_amtEff">X</span> ${ATOM.particles.names[x]} Powers<br>
-                You have <span id="particle_${x}_power">X</span> ${ATOM.particles.names[x]} Powers, which:
+                Which generates <span id="particle_${x}_amtEff">X</span>${ATOM.particles.names[x]}能量<br>
+                You have <span id="particle_${x}_power">X</span>${ATOM.particles.names[x]}能量，因此获得以下效果：
             </div><br><div id="particle_${x}_powerEff"></div>
         </div>
         `
@@ -296,7 +296,7 @@ function setupAtomHTML() {
         table += `
         <div style="width: 30%"><button class="btn" onclick="ATOM.particles.gassign(${x})">Assign</button><br><br>
             <div style="color: ${ATOM.particles.colors[x]}; min-height: 120px">
-                <h2><span id="gparticle_${x}_amt">X</span> Galactic ${ATOM.particles.names[x]}</h2><br>
+                <h2><span id="gparticle_${x}_amt">X</span>星系${ATOM.particles.names[x]}</h2><br>
 				<span id="gparticle_${x}_eff"></div>
 			</div><br>
         </div>
@@ -334,6 +334,6 @@ function updateAtomHTML() {
         tmp.el["particle_"+x+"_power"].setTxt(format(player.atom.powers[x])+formatGain(player.atom.powers[x],tmp.atom.particles[x].powerGain.mul(tmp.preQUGlobalSpeed)))
         tmp.el["particle_"+x+"_powerEff"].setHTML(ATOM.particles.desc[x](tmp.atom.particles[x].powerEffect))
         tmp.el["gparticle_"+x+"_amt"].setTxt(format(player.galParticles[x],0))
-        tmp.el["gparticle_"+x+"_eff"].setTxt("Which are raising "+ATOM.particles.names[x]+" Powers effect and gain by ^"+format(player.galParticles[x].add(1).log10().add(1).pow(3)))
+        tmp.el["gparticle_"+x+"_eff"].setHTML("使"+ATOM.particles.names[x]+"能量的获取和效果变为原来的"+format(player.galParticles[x].add(1).log10().add(1).pow(3))+"次方");
     }
 }
