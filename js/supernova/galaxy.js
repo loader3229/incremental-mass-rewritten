@@ -1,11 +1,18 @@
 const SUPERNOVA_GALAXY = {
 	req(){
+		if(hasElement(291))return E(1.24).pow(player.superGal).mul(1e6).floor();
 		return E(1.246).pow(player.superGal).mul(1e6).floor();
+	},
+	bulk(){
+		if(player.supernova.times.lt(1e6))return new Decimal(0);
+		if(hasElement(291))return player.supernova.times.div(1e6).log(1.24).add(1).floor();
+		return player.supernova.times.div(1e6).log(1.246).add(1).floor();
 	},
 	reset(force=false){
 		if(!force)if(player.supernova.times.lt(SUPERNOVA_GALAXY.req()))return;
 		if(!force)if((confirm("Are you sure to reset for a Supernova Galaxy? It will reset all previous, including Prestiges.")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
-		if(!force)player.superGal = player.superGal.add(1);
+		if(!force && hasElement(291))player.superGal = player.superGal.max(SUPERNOVA_GALAXY.bulk());
+		else if(!force)player.superGal = player.superGal.add(1);
 		if(player.superGal.lt(11))player.prestiges=[E(0),E(0),E(0)];
 		if(player.superGal.lt(6))player.supernova.tree=[];
 		player.chal.comps[9] = E(0)
@@ -52,9 +59,9 @@ const SUPERNOVA_GALAXY = {
 		if(player.superGal.gte(3))player.mainUpg.atom=[2,3,4,5,6];
 		player.supernova.fermions.tiers[0]=[E(0),E(0),E(0),E(0),E(0),E(0)];
 		player.supernova.fermions.tiers[1]=[E(0),E(0),E(0),E(0),E(0),E(0)];
-		TABS.choose(0);
-		tmp.rank_tab = 0;
-		TABS.choose(5);
+		if(!hasElement(291))TABS.choose(0);
+		if(!hasElement(291))tmp.rank_tab = 0;
+		if(!hasElement(291))TABS.choose(5);
 	},
 	effects:{
 		pqgs(){
@@ -106,6 +113,10 @@ const SUPERNOVA_GALAXY = {
 		chal(){
 			if(player.superGal.lt(1))return new Decimal(0);
 			return Decimal.mul(100, player.superGal).floor();
+		},
+		chal2(){
+			if(player.superGal.lt(34))return new Decimal(0);
+			return Decimal.mul(100, player.superGal.sub(30)).floor();
 		},
 		elem(){
 			if(player.superGal.gte(8))return 0;
@@ -212,6 +223,7 @@ const SUPERNOVA_GALAXY = {
 		if(hasPrestige(1,242)){
 			ret = ret.mul(prestigeEff(1,242));
 		}
+		if(hasElement(294))ret = ret.mul(player.supernova.fermions.tiers[3][5].add(1).pow(2));
 		return ret;
 	},
 }
@@ -251,6 +263,7 @@ function updateSupernovaGalaxyHTML() {
 		html += "<br>熵获取变为原来的"+format(SUPERNOVA_GALAXY.effects.entropyg())+"倍";
 		html += "<br>熵上限变为原来的"+format(SUPERNOVA_GALAXY.effects.entropy())+"倍";
 		html += "<br>挑战1-16的最大完成次数增加"+format(SUPERNOVA_GALAXY.effects.chal());
+		if(player.superGal.gte(34))html += "<br>挑战17-20的最大完成次数增加"+format(SUPERNOVA_GALAXY.effects.chal2());
 		if(player.superGal.lt(8))html += "<br>初始拥有元素"+SUPERNOVA_GALAXY.effects.elem().join("、");
 		else html += "<br>重置时保留元素";
 		html += "<br>初始拥有"+SUPERNOVA_GALAXY.effects.qs()+"量子碎片";
@@ -260,6 +273,7 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superGal.gte(2))html += "<br>量子次数、无限次数、永恒次数获取变为原来的"+format(SUPERNOVA_GALAXY.effects.qut2())+"倍";
 		if(player.superGal.gte(2))html += "<br>购买中子树升级不需要完成它们的额外条件";
 		if(player.superGal.gte(3))html += "<br>加速器效果的软上限和二重软上限延迟"+format(SUPERNOVA_GALAXY.effects.aesc())+"倍出现";
+
 		tmp.el.galPow0.setTxt(format(player.galPow[0])+player.galPow[0].formatGain(SUPERNOVA_GALAXY.galPow0_gain()))
 		tmp.el.galPow0_eff.setTxt(format(SUPERNOVA_GALAXY.galPow0_eff()))
 		if(player.superGal.gte(5))html += "<br>重置时保留中子树";

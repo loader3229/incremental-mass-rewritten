@@ -618,7 +618,7 @@ const ELEMENTS = {
             cost: E('e29500'),
             effect() {
                 let x = E(player.ranks.hex.gte(93)?2:(5/3)).pow(player.mass.add(1).log10().add(1).log10())
-				x = overflow(x,"e1e4",0.1);
+				x = overflow(x,"e1e4",hasElement(296)?0.2:0.1);
                 return x
             },
             effDesc(x) { return "x"+x.format()+(x.gte('e1e4')?" <span class='soft'>(softcapped)</span>":"")  },
@@ -1420,6 +1420,7 @@ const ELEMENTS = {
 			effect() {
 				let x = tmp.radiation.bs.eff[14].add(1).log10().add(1).log10();
 				if(hasElement(276))x = tmp.radiation.bs.eff[14].add(1).log10().pow(0.2);
+				if(hasElement(295))x = tmp.radiation.bs.eff[14].add(1).log10().pow(0.5);
 				return x
 			},
 			effDesc(x) { return format(x)+"x later"; },
@@ -1678,6 +1679,58 @@ const ELEMENTS = {
 			cost: E("1e38"),
 			galQk: true,
 		},
+		{
+			desc: `Break the maximum Supernova Limit, and reduce Supernova Galaxy requirement.`,
+			cost: E("5e39"),
+			galQk: true,
+		},
+		{
+			desc: `Remove a softcap of Stronger.`,
+			cost: E("1.5e11936"),
+		},
+		{
+			desc: `Ultra Glory starts 2 later.`,
+			cost: E("1.5e1031"),
+			et: true,
+		},
+		{
+			desc: `Unlock 2 new types of Galactic Fermions.`,
+			cost: E("1e41"),
+			galQk: true,
+		},
+		{
+			desc: `Element 239 is better.`,
+			cost: E("1.5e12366"),
+		},
+		{
+			desc: `Neptunium-93's softcap is weaker.`,
+			cost: E("1.5e1056"),
+			et: true,
+		},
+		{
+			desc: `Unlock a Galactic Challenge Option.`,
+			cost: E("5e42"),
+			galQk: true,
+		},
+		{
+			desc: `Green Chroma affects Pent at a reduced rate.`,
+			cost: E("1.5e12546"),
+			effect() {
+				let x = (tmp.qu.chroma_eff[1]||E(0)).add(10).log10().sqrt();
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Green Chroma's softcap is weaker.`,
+			cost: E("1.5e1066"),
+			et: true,
+		},
+		{
+			desc: `Reduce Galactic Challenge Goals.`,
+			cost: E("1e44"),
+			galQk: true,
+		},
 	],
     /*
     {
@@ -1692,6 +1745,8 @@ const ELEMENTS = {
     */
     getUnlLength() {
 		
+		if(hasElement(291))return 300;
+		if(hasElement(290))return 291;
 		if(player.superGal.gte(10))return 290;
 		if(player.superGal.gte(1))return 218;
         let u = 4

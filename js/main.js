@@ -290,6 +290,8 @@ const FORMS = {
 			if (hasUpgrade('rp',16)) ss = EINF
             else step = step.softcap(ss,p,0)
             
+			if(FERMIONS.onActive("25")||FERMIONS.onActive("35"))step = step.log10().add(1)
+			
             let eff = step.pow(t.add(bonus).mul(hasElement(80)?25:1))
             if (hasElement(18) && !hasElement(134)) eff = eff.pow(tmp.elements.effect[18])
             if (player.ranks.tetr.gte(3) && !hasElement(134)) eff = eff.pow(1.05)
@@ -349,7 +351,10 @@ const FORMS = {
 			ss = ss.mul(tmp.fermions.effs[3][2]||E(1))	
 		
 		
-			ss2 = ss2.mul(tmp.fermions.effs[3][2]||E(1))	
+			ss2 = ss2.mul(tmp.fermions.effs[3][2]||E(1))
+			
+			if(player.ranks.oct.gte(9))ss2 = ss2.mul(2.5)
+			if(player.ranks.oct.gte(9))p2 = p2 ** 0.9
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -579,7 +584,11 @@ const FORMS = {
         set(id) {
             if (id=="sn") {
                 player.reset_msg = "Reach over "+format(tmp.supernova.maxlimit)+" collapsed stars to be Supernova"
-				if (player.supernova.times.gte(SUPERNOVA_GALAXY.req())) player.reset_msg = "You reached the maximum Supernova limit!";
+				if (player.supernova.times.gte(SUPERNOVA_GALAXY.req()) && !hasElement(291)) player.reset_msg = "You reached the maximum Supernova limit!";
+                return
+            }
+            if (id=="superGal") {
+                player.reset_msg = "Reach over "+format(SUPERNOVA_GALAXY.req())+" Supernova to get a Supernova Galaxy"
                 return
             }
             if (id=="qu") {

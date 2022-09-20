@@ -51,6 +51,7 @@ const INFINITY_LAYER = {
 		if (hasElement(128)) x = x.mul(tmp.elements.effect[128]);
 		if (hasTree('im1')) x = x.mul(treeEff('im1'));
         if (player.ranks.hex.gte(127)) x = x.mul(RANKS.effect.hex[127]())
+        if (player.ranks.oct.gte(10)) x = x.mul(RANKS.effect.oct[10]())
 		x = x.mul(SUPERNOVA_GALAXY.effects.inf())
         return x
     },
@@ -137,6 +138,7 @@ const ETERNITY_LAYER = {
 		if (hasElement(121)) x = x.mul(tmp.elements.effect[121]);
 		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
 		if (hasElement(127)) x = x.mul(tmp.elements.effect[127]);
+        if (player.ranks.oct.gte(10)) x = x.mul(RANKS.effect.oct[10]())
 		x = x.mul(SUPERNOVA_GALAXY.effects.inf())
         return x
     },

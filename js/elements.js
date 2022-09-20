@@ -247,11 +247,15 @@ function updateUpperHTML() {
 	unl = (player.supernova.post_10 || player.superGal.gte(1))
 	tmp.el.sn_div.setDisplay(unl)
 	if (unl) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>(+"+format(tmp.supernova.bulk.sub(player.supernova.times).max(0),0)+")")
-		
+	if (hasElement(291)) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>(+"+format(tmp.supernova.bulk.sub(player.supernova.times).max(0).div(tmp.dt),0)+"/sec)")
 	
 	unl = (player.superGal.gte(10))
 	tmp.el.galQk_div.setDisplay(unl)
-	if (unl) tmp.el.galQkAmt.setHTML(format(player.galQk,0)+"<br>"+player.galQk.formatGain(SUPERNOVA_GALAXY.galQkGain(),0))
+	if (unl) tmp.el.galQkAmt.setHTML(format(player.galQk,0)+"<br>"+player.galQk.formatGain(SUPERNOVA_GALAXY.galQkGain(),0))	
+		
+	unl = (hasElement(291))
+	tmp.el.superGal_div.setDisplay(unl)
+	if (unl) tmp.el.superGalAmt.setHTML(format(player.superGal,0)+"<br>(+"+format(SUPERNOVA_GALAXY.bulk().sub(player.superGal).max(0),0)+")")
 }
 
 function updateMassUpgradesHTML() {

@@ -50,6 +50,7 @@ const SCALE_START = {
 		fTier: E(100),
 		prestige0: E(600),
 		prestige1: E(60),
+		prestige2: E(42),
 	},
 	meta: {
 		rank: E(1e4),
@@ -118,6 +119,7 @@ const SCALE_POWER= {
 		fTier: 6,
 		prestige0: 4,
 		prestige1: 4,
+		prestige2: 5,
 	},
 	meta: {
 		rank: 1.0025,
@@ -303,6 +305,9 @@ function getScalingStart(type, name) {
 		if (name=="tickspeed") {
 			if (player.ranks.tetr.gte(5)) start = start.add(RANKS.effect.tetr[5]())
 		}
+		if (name=="prestige2") {
+			if (hasElement(293)) start = start.add(2)
+		}
 	}
 	if (type=="meta") {
 		if (name=="rank") {
@@ -393,10 +398,12 @@ function getScalingStart(type, name) {
 	if (name=="tier") if (hasElement(239))return EINF;
 	if (name=="pent" && type=="super") if (hasPrestige(2,29))return EINF;
 	if (name=="fTier" && type=="super") if (hasPrestige(2,31))return EINF;
+	if (name=="prestige0" && type=="super") if (hasPrestige(2,43))return EINF;
 	if (name=="prestige0" && type=="hyper") if (hasPrestige(3,1))return EINF;
 	if (name=="fTier" && type=="hyper") if (hasPrestige(3,2))return EINF;
 	if (name=="pent" && type=="hyper") if (player.ranks.oct.gte(4))return EINF;
 	if (name=="pent" && type=="ultra") if (player.ranks.oct.gte(5))return EINF;
+	if (name=="fTier" && type=="ultra") if (hasPrestige(2,47))return EINF;
 	if (name=="massUpg") if (hasPrestige(2,37))return EINF;
 	return start.floor()
 }
@@ -599,6 +606,9 @@ function getScalingPower(type, name) {
 		}
 		if (name=="hex") {
 			if (hasPrestige(2,25)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+		}
+		if (name=="prestige2") {
+			if (hasPrestige(3,4)) power = power.mul(tmp.prestigeMassEffect)
 		}
 	}
 	if (type=="meta") {

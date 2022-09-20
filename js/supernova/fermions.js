@@ -1,7 +1,11 @@
 const FERMIONS = {
     onActive(id) { 
+		if(id.startsWith("0") && player.gc.trapu && player.gc.active)return true
+		if(id.startsWith("1") && player.gc.trapu && player.gc.active)return true
 		if(id.startsWith("0") && player.supernova.fermions.choosed.startsWith("2"))return true
 		if(id.startsWith("1") && player.supernova.fermions.choosed.startsWith("3"))return true
+		if(id.startsWith("2") && player.supernova.fermions.choosed == "25")return true
+		if(id.startsWith("3") && player.supernova.fermions.choosed == "35")return true
 		return player.supernova.fermions.choosed == id 
 	},
     gain(i) {
@@ -94,6 +98,7 @@ const FERMIONS = {
         if (hasElement(261)) u++
         if (hasElement(275)) u++
         if (hasElement(284)) u++
+        if (hasElement(294)) u++
         return u
     },
     names: ['quark', 'lepton', 'gquark', 'glepton'],
@@ -238,8 +243,10 @@ const FERMIONS = {
                     let x = i.add(1).log10().pow(0.5).div(150).add(1).pow(t)
 					if(hasTree('fn18') && x.gte(500)){
 						x = x.log(500).mul(500);
+						if(hasElement(294))return x.pow(player.supernova.fermions.tiers[2][5].add(1).pow(1.5));
 						return x;
 					}
+					if(hasElement(294))return x.min(500).pow(player.supernova.fermions.tiers[2][5].add(1).pow(1.5));
                     return x.min(500)
                 },
                 desc(x) {
@@ -543,6 +550,30 @@ const FERMIONS = {
                 inc: "[Top] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Dilated Mass gain is set to log10(Dilated Mass gain)^10.",
             },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.1).pow(t.pow(2)).mul(100).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[0][5]
+                    if (res.lt(100)) return E(0)
+                    let x = res.div(100).max(1).log(1.1).max(0).root(2)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = t.add(1).pow(1.5)
+                    return x
+                },
+                desc(x) {
+                    return `Raise [Bottom]'s effect to a power of `+format(x)+`.`
+                },
+                inc: "[Bottom] Tiers",
+                cons: "First 5 Galactic U-Quarks are applied at once. Also, Tickspeed Power is set to log10(Tickspeed Power).",
+            },
         ],[
             {
                 maxTier() {
@@ -664,6 +695,30 @@ const FERMIONS = {
                 inc: "[Neut-Muon] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Atom gain is set to log10(Atom gain)^3000.",
             },
+            {
+                maxTier() {
+					return 1/0;
+                },
+                nextTierAt(x) {
+                    let t = FERMIONS.getGTierScaling(x)
+                    return E(1.1).pow(t.pow(1.5)).mul(100).ceil()
+                },
+                calcTier() {
+                    let res = player.supernova.fermions.tiers[1][5]
+                    if (res.lt(100)) return E(0)
+                    let x = res.div(100).max(1).log(1.1).max(0).root(1.5)
+                    return FERMIONS.getGTierScaling(x, true)
+                },
+                eff(i, t) {
+                    let x = t.add(1).pow(2)
+                    return x
+                },
+                desc(x) {
+                    return `Boost Galactic Quark gain by `+format(x)+"x";
+                },
+                inc: "[Neut-Tau] Tiers",
+                cons: "First 5 Galactic U-Leptons are applied at once. Also, Tickspeed Power is set to log10(Tickspeed Power).",
+            },
         ],
     ],
 }
@@ -752,7 +807,7 @@ function updateFermionsHTML() {
             tmp.el[id+"_div"].setDisplay(unl)
 
             if (unl) {
-                let active = (tmp.fermions.ch[0] == i && tmp.fermions.ch[1] == x) || tmp.fermions.ch[0] == i+2
+                let active = (tmp.fermions.ch[0] == i && tmp.fermions.ch[1] == x) || tmp.fermions.ch[0] == i+2 || (player.gc.trapu && player.gc.active)
                 let active2 = (tmp.fermions.ch[0] == i && tmp.fermions.ch[1] == x) || (tmp.fermions.ch[0] == i+2 && tmp.fermions.ch[1] == x)
                 tmp.el[id+"_div"].setClasses({fermion_btn: true, [FERMIONS.names[i]]: true, choosed: active})
                 tmp.el[id+"_nextTier"].setTxt(fm(f.nextTierAt(player.supernova.fermions.tiers[i][x])))

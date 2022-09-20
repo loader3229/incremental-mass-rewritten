@@ -140,17 +140,18 @@ const UPGS = {
                     ss2 = ss2.mul(3)
                 }
 				if (hasUpgrade('rp',17))sp = sp ** 0.75
-                let ret = step.mul(xx.mul(hasElement(80)?25:1)).add(1).softcap(ss,sp,0).softcap(1.8e5,hasPrestige(0,12)?0.525:0.5,0)
+                let ret = step.mul(xx.mul(hasElement(80)?25:1)).add(1).softcap(ss,sp,0)
+				if (!hasElement(292))ret = ret.softcap(1.8e5,hasPrestige(0,12)?0.525:0.5,0)
                 ret = ret.mul(tmp.prim.eff[0])
-                if (!player.ranks.pent.gte(15)) ret = ret.softcap(ss2,sp2,0)
-				tmp.strongerOverflow = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.7:0.5).log(ret);
-				ret = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.7:0.5);
+                if (!player.ranks.pent.gte(15) && (!hasElement(292))) ret = ret.softcap(ss2,sp2,0)
+				tmp.strongerOverflow = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.6:0.5).log(ret);
+				ret = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.6:0.5);
                 return {step: step, eff: ret, ss: ss}
             },
             effDesc(eff) {
                 return {
                     step: "+"+format(eff.step)+"次方",
-                    eff: "^"+format(eff.eff)+" to Booster Power"+(eff.eff.gte(eff.ss)?`<span class='soft'>(softcapped${eff.eff.gte(1.8e5)?eff.eff.gte(5e15)&&!player.ranks.pent.gte(15)?"^3":"^2":""})</span>`:"")
+                    eff: "^"+format(eff.eff)+" to Booster Power"+(eff.eff.gte(eff.ss)?`<span class='soft'>(softcapped${(eff.eff.gte(1.8e5)&&(!hasElement(292)))?eff.eff.gte(5e15)&&!player.ranks.pent.gte(15)?"^3":"^2":""})</span>`:"")
                 }
             },
             bonus() {

@@ -210,6 +210,7 @@ const CHALS = {
         if (hasElement(210) && (i==14||i==17))  x = x.add(100)
         if (hasElement(214) && (i==15||i==16))  x = x.add(200)
 		if (i<=16)x = x.add(SUPERNOVA_GALAXY.effects.chal())
+		if (i<=20 && i>=17)x = x.add(SUPERNOVA_GALAXY.effects.chal2())
         if (hasElement(227) && (i==17))  x = x.add(300)
         if (hasElement(235) && (i==19))  x = x.add(300)
         if (hasElement(236) && (i==18))  x = x.add(300)
@@ -481,7 +482,7 @@ const CHALS = {
         pow: E(2),
         start: E('e9.9e4').mul(1.5e56),
         effect(x) {
-            let ret = x.root(hasTree("chal4a")?3.5:4).mul(0.1).add(1)
+            let ret = x.root(hasTree("chal4a")?3.5:4).mul(0.1).add(1).softcap(82,0.2,0)
             return ret
         },
         effDesc(x) { return "^"+format(x) },

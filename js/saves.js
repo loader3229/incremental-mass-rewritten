@@ -140,6 +140,8 @@ function calc(dt, dt_offline) {
     player.offline.time = Math.max(player.offline.time-tmp.offlineMult*dt_offline,0)
     player.time += dt
 
+	tmp.dt = dt
+
     tmp.tree_time = (tmp.tree_time+dt_offline) % 3
 
     if (player.chal.comps[10].gte(1) && !player.supernova.fermions.unl) {

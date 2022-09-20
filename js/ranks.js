@@ -271,6 +271,9 @@ const RANKS = {
 			'5': "Remove Ultra Pent scaling.",
 			'6': "Oct 2's effect is better.",
 			'8': "Stronger Overflow is weaker.",
+			'9': "Accelerator effect softcap^2 starts 2.5x later, and is weaker.",
+			'10': "Oct Boost Infinity/Eternal Mass.",
+			'12': "Oct Boost Hept 52's effect.",
 		},
     },
     effect: {
@@ -445,6 +448,7 @@ const RANKS = {
             },
             '52'() {
                 let ret = E(10).pow(player.ranks.hept);
+				if(player.ranks.oct.gte(12))ret = ret.pow(player.ranks.oct);
                 return ret
             },
 		},
@@ -458,7 +462,14 @@ const RANKS = {
 				if(player.ranks.oct.gte(6))ret = E(10).pow(player.ranks.oct.pow(4));
                 return ret
             },
-			
+            '10'() {
+                let ret = player.ranks.oct.pow(6);
+                return ret
+            },
+            '12'() {
+                let ret = player.ranks.oct;
+                return ret
+            },
 		},
     },
     effDesc: {
@@ -514,6 +525,8 @@ const RANKS = {
 		oct: {
             1(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
             2(x) { return format(x)+"x later" },
+            10(x) { return format(x)+"x" },
+            12(x) { return "^"+format(x) },
 		},
     },
     fp: {
@@ -747,11 +760,14 @@ const PRESTIGES = {
             "39": `Unlock Prestige Booster.`,
             "41": `Glory 4 and Glory 5's effects are squared.`,
             "42": `Renown boost Eternal Mass gain.`,
+            "43": `Remove Super Prestige Level scaling.`,
+            "47": `Remove Ultra Fermion Tier scaling.`,
 		},
 		{
             "1": `Remove Hyper Prestige Level scaling.`,
             "2": `Remove Hyper Fermion Tier scaling.`,
             "3": `Multiply Honor 9 reward by Renown.`,
+            "4": `Prestige Mass Effect is applied to Ultra Glory scaling.`,
 		},
     ],
     rewardEff: [
@@ -960,10 +976,11 @@ function updateRanksTemp() {
     tmp.ranks.tetr.req = player.ranks.tetr.div(fp2).scaleEvery('tetr').div(fp).pow(pow).mul(3).add(10).floor()
     tmp.ranks.tetr.bulk = player.ranks.tier.sub(10).div(3).max(0).root(pow).mul(fp).scaleEvery('tetr',true).mul(fp2).add(1).floor();
 
+	fp2 = hasElement(298)?tmp.elements.effect[298]:E(1)
     fp = E(1)
     pow = 1.5
-    tmp.ranks.pent.req = player.ranks.pent.scaleEvery('pent').div(fp).pow(pow).add(15).floor()
-    tmp.ranks.pent.bulk = player.ranks.tetr.sub(15).gte(0)?player.ranks.tetr.sub(15).max(0).root(pow).mul(fp).scaleEvery('pent',true).add(1).floor():E(0);
+    tmp.ranks.pent.req = player.ranks.pent.div(fp2).scaleEvery('pent').div(fp).pow(pow).add(15).floor()
+    tmp.ranks.pent.bulk = player.ranks.tetr.sub(15).gte(0)?player.ranks.tetr.sub(15).max(0).root(pow).mul(fp).scaleEvery('pent',true).mul(fp2).add(1).floor():E(0);
 
     fp = E(1)
     pow = 1.5

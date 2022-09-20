@@ -174,7 +174,7 @@ function updateStarsHTML() {
     tmp.el.starOverflow.setDisplay(tmp.stars.gain.gte("ee43"))
 	tmp.el.starOverflow1.setTxt(format(tmp.starOverflow))
     tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed))+"星辰，成为超新星需要"+format(tmp.supernova.maxlimit,2))
-    if (player.supernova.times.gte(SUPERNOVA_GALAXY.req()))tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed)))
+    if (player.supernova.times.gte(SUPERNOVA_GALAXY.req()) || hasElement(291))tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed)))
     tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x")
 	if (player.ranks.hex.gte(36))tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x, ^"+format(tmp.stars.effectPower))
     if (player.ranks.hex.gte(36) && player.superGal.gte(10))tmp.el.stars_Eff.setTxt("^"+format(tmp.stars.effectPower))

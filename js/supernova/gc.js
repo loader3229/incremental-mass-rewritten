@@ -13,6 +13,13 @@ const GC = {
 	goal(x=player.gc.depth){
 		let r=[1e6,1e6,4e5][x];
 		if(x>=3)r=x*1e5;
+		if(player.gc.trapu && hasElement(300)){
+			r=r/1.6;
+		}else if(player.gc.trapu){
+			r=r/1.5;
+		}else if(hasElement(300)){
+			r=r/1.3;
+		}
 		return r;
 	}
 }
@@ -84,6 +91,8 @@ function updateGCHTML() {
 	tmp.el.gc_trap2.setDisplay(hasElement(290));
     tmp.el.gc_nerf1.setTxt(tmp.gc.nerf);
     tmp.el.gc_nerf2.setTxt(tmp.gc.nerf);
+	tmp.el.gc_trapu2.setDisplay(hasElement(297));
+    tmp.el.gc_trapu.setTxt(player.gc.trapu?"ON":"OFF");
     tmp.el.gc_trapeff.setTxt(player.gc.trap==0?"":player.gc.trap==1?"您将强制进行挑战1":"您将强制进行挑战1-挑战"+player.gc.trap);
     tmp.el.gc_btn.setTxt(player.gc.active?"退出星系挑战":"进入星系挑战");
 	if(player.supernova.times.gte(GC.goal()) && player.gc.active){
