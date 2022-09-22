@@ -124,6 +124,7 @@ const UPGS = {
                 let ss = E(10)
                 if (player.ranks.rank.gte(34)) ss = ss.add(2)
                 if (player.mainUpg.bh.includes(9)) ss = ss.add(tmp.upgs.main?tmp.upgs.main[2][9].effect:E(0))
+                if (hasElement(331)) ss = EINF
                 let step = E(1)
 				if (player.ranks.tetr.gte(2) || player.superGal.lt(1)) step = step.add(RANKS.effect.tetr[2]())
                 if (player.mainUpg.rp.includes(9)) step = step.add(0.25)
@@ -144,8 +145,12 @@ const UPGS = {
 				if (!hasElement(292))ret = ret.softcap(1.8e5,hasPrestige(0,12)?0.525:0.5,0)
                 ret = ret.mul(tmp.prim.eff[0])
                 if (!player.ranks.pent.gte(15) && (!hasElement(292))) ret = ret.softcap(ss2,sp2,0)
-				tmp.strongerOverflow = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.6:0.5).log(ret);
-				ret = overflow(ret, "e4e6", player.ranks.oct.gte(8)?0.6:0.5);
+				tmp.strongerOverflowPower = player.ranks.oct.gte(8)?0.6:0.5;
+				if (hasElement(305))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.9;
+				if (hasElement(315))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.8;
+				if (hasPrestige(2,81))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.5;
+				tmp.strongerOverflow = overflow(ret, "e4e6", tmp.strongerOverflowPower).log(ret);
+				ret = overflow(ret, "e4e6", tmp.strongerOverflowPower);
                 return {step: step, eff: ret, ss: ss}
             },
             effDesc(eff) {
@@ -218,6 +223,7 @@ const UPGS = {
             inc: E(1.5),
             effect(x) {
                 let step = player.prestiges[0]
+                if (hasPrestige(2,51)) step = step.mul(prestigeEff(2,51))
                 step = step.mul(tmp.upgs.prestigeMass[2]?tmp.upgs.prestigeMass[2].eff.eff:1)
                 let ret = step.mul(x).add(1)
                 return {step: step, eff: ret}
@@ -236,6 +242,7 @@ const UPGS = {
             inc: E(4),
             effect(x) {
                 let step = player.prestiges[1]
+                if (hasPrestige(2,52)) step = step.mul(prestigeEff(2,52))
                 step = step.pow(tmp.upgs.prestigeMass[3]?tmp.upgs.prestigeMass[3].eff.eff:1)
                 let ret = step.mul(x).add(1)
                 return {step: step, eff: ret}
@@ -254,6 +261,8 @@ const UPGS = {
             inc: E(9),
             effect(x) {
                 let step = E(0.001)
+                if (hasPrestige(2,53)) step = step.mul(prestigeEff(2,53))
+                if (hasPrestige(3,11)) step = step.mul(prestigeEff(3,11))
 				let ret = step.mul(x).add(1);
                 return {step: step, eff: ret}
             },
@@ -930,6 +939,7 @@ const UPGS = {
                 cost: E("1e375"),
                 effect() {
                     let x = player.qu.rip.amt.add(1).log10().add(1).log10().add(1).pow(1.5);
+					if(hasElement(313))x = expMult(player.qu.rip.amt.add(100),0.75);
                     return x
                 },
                 effDesc(x=this.effect()) { return "^"+format(x) },
@@ -965,6 +975,7 @@ const UPGS = {
                     let x = player.inf.points.mul(20).add(1);
 					if(hasUpgrade('inf',16))x = x.pow(2);
 					if(hasElement(211))x = x.pow(1.2);
+					if(hasElement(321))x = x.pow(5);
                     return x
                 },
                 effDesc(x=this.effect()) { return "熵获取速度变为"+format(x.pow(0.1).mul(2))+"倍，熵上限变为"+format(x)+"倍" },
@@ -973,10 +984,11 @@ const UPGS = {
                 desc: `无限时保留升级和量子碎片。无限时初始拥有200量子次数。无限质量加成死寂碎片获取速度。`,
                 cost: E(1),
                 effect() {
+					if(hasElement(308))return player.inf.points.add(1).pow(2);
                     let x = overflow(player.inf.points.add(1).pow(2),1e10,hasUpgrade('inf',18)?0.6:0.5);
                     return x
                 },
-                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte(1e10)?" <span class='soft'>(softcapped)</span>":"") },
+                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte(1e10)&&!hasElement(308)?" <span class='soft'>(softcapped)</span>":"") },
             },
             4: {
                 desc: `无限次数加成无限质量获取。`,
@@ -1012,10 +1024,10 @@ const UPGS = {
                 desc: `Infinity Mass formula from normal mass is better. Infinity Mass boost Pre-Quantum Global Speed.`,
                 cost: E(10000),
                 effect() {
-                    let x = overflow(player.inf.points.add(1).pow(0.4),"1e2000",0.5);
+                    let x = overflow(player.inf.points.add(1).pow(hasElement(341)?1:0.4),"1e2000",hasElement(341)?1:0.5);
                     return x
                 },
-                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte("1e2000")?" <span class='soft'>(softcapped)</span>":"") },
+                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte("1e2000")&&!hasElement(341)?" <span class='soft'>(softcapped)</span>":"") },
             },
             10: {
                 desc: `Infinity Mass formula from Prestige mass is better. Mass gain softcap^8 is 50% weaker.`,

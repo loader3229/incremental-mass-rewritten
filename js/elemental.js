@@ -1074,7 +1074,8 @@ const ELEMENTS = {
 			effect() {
 				let x = (player.massUpg[2]||E(0)).add(10).log10().pow(0.6);
 				if(hasElement(244))x = expMult((player.massUpg[2]||E(1)),0.4);
-				if(hasElement(283))x = overflow(expMult((player.massUpg[1]||E(1)),0.875),"e3500000",0.5);
+				if(hasElement(283))x = overflow(expMult((player.massUpg[2]||E(1)),0.875),"e3500000",0.5);
+				if(hasElement(328))x = expMult((player.massUpg[2]||E(1)),0.875);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1086,6 +1087,7 @@ const ELEMENTS = {
 				let x = (player.massUpg[1]||E(0)).add(10).log10().pow(0.6);
 				if(hasElement(244))x = expMult((player.massUpg[1]||E(1)),0.4);
 				if(hasElement(283))x = overflow(expMult((player.massUpg[1]||E(1)),0.875),"e3500000",0.5);
+				if(hasElement(328))x = expMult((player.massUpg[1]||E(1)),0.875);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1382,6 +1384,7 @@ const ELEMENTS = {
 			effect() {
 				let x = player.ranks.tier.add(10).log10().sqrt();
 				if(hasElement(276))x = expMult(player.ranks.tier,0.55);
+				if(hasElement(311))x = expMult(player.ranks.tier,0.6);
 				return x
 			},
 			effDesc(x) { return format(x)+"x later"; },
@@ -1590,6 +1593,7 @@ const ELEMENTS = {
 			cost: E("1.5e8526"),
 			effect() {
 				let x = player.ranks.tetr.add(10).log10().sqrt();
+				if(hasElement(301))x = x.pow(2);
 				return x
 			},
 			effDesc(x) { return format(x)+"x later"; },
@@ -1731,6 +1735,235 @@ const ELEMENTS = {
 			cost: E("1e44"),
 			galQk: true,
 		},
+		{
+			desc: `Element 272 is better.`,
+			cost: E("1.5e12746"),
+		},
+		{
+			desc: `Auto-Complete Challenges 14-15, and uncap C16 completions.`,
+			cost: E("1.5e1071"),
+			et: true,
+		},
+		{
+			desc: `Super Galactic Fermion Tier starts 1.5x later.`,
+			cost: E("5e44"),
+			galQk: true,
+		},
+		{
+			desc: `Eternal Mass is added to base Infinity Mass gain formula.`,
+			cost: E("1.5e13676"),
+		},
+		{
+			desc: `Stronger Overflow is weaker.`,
+			cost: E("1.5e1126"),
+			et: true,
+		},
+		{
+			desc: `Galactic Quarks boost Prestige Mass gain.`,
+			cost: E("1e47"),
+			galQk: true,
+			effect() {
+				let x = player.galQk.add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Green Chroma's softcap is weaker.`,
+			cost: E("1.5e15036"),
+		},
+		{
+			desc: `Uncap C17 completions. Infinity Upgrade 3 is unsoftcapped.`,
+			cost: E("1.5e1186"),
+			et: true,
+		},
+		{
+			desc: `Super Galactic Fermion Tier starts 1.5x later.`,
+			cost: E("5e49"),
+			galQk: true,
+		},
+		{
+			desc: `Blue Chroma's softcap is weaker. Unsoftcap C3,C4,C8 effects.`,
+			cost: E("1.5e15381"),
+		},
+		{
+			desc: `Element 232 is better.`,
+			cost: E("1.5e1196"),
+			et: true,
+		},
+		{
+			desc: `Passively gain 100% of each galactic particle you would assign galactic quarks.`,
+			cost: E("3e50"),
+			galQk: true,
+		},
+		{
+			desc: `Big Rip Upgrade 20 is better.`,
+			cost: E("1.5e15756"),
+		},
+		{
+			desc: `Element 232 is better.`,
+			cost: E("1.5e1256"),
+			et: true,
+		},
+		{
+			desc: `Stronger Overflow is weaker.`,
+			cost: E("1.5e17056"),
+		},
+		{
+			desc: `Uncap C18-19 completions.`,
+			cost: E("1.5e1306"),
+			et: true,
+		},
+		{
+			desc: `Galactic Shards Effect affects base Galactic Bosons gain.`,
+			cost: E("2e55"),
+			galQk: true,
+		},
+		{
+			desc: `Auto-Complete C16-18.`,
+			cost: E("1.5e21056"),
+		},
+		{
+			desc: `Remove Green Chroma's softcap.`,
+			cost: E("1.5e1406"),
+			et: true,
+		},
+		{
+			desc: `[G-Tau]'s effect is raised by 1.75.`,
+			cost: E("5e61"),
+			galQk: true,
+		},
+		{
+			desc: `Infinity Upgrade 2 is raised by 5.`,
+			cost: E("1.5e24506"),
+		},
+		{
+			desc: `Auto-Complete C19.`,
+			cost: E("1.5e1506"),
+			et: true,
+		},
+		{
+			desc: `Reduce Supernova Galaxy Requirement.`,
+			cost: E("1e64"),
+			galQk: true,
+		},
+		{
+			desc: `Remove Meta-Tetr scaling. Radiation Booster 'Meta-Rank Boost' affects Meta-Pent at a reduced rate.`,
+			cost: E("1.5e25956"),
+			effect() {
+				let x = tmp.radiation.bs.eff[14].add(1).log10().add(1).log10().add(1).pow(0.5);
+				return x
+			},
+			effDesc(x) { return format(x)+"x later"; },
+		},
+		{
+			desc: `Meta-Hex starts 1.5x later.`,
+			cost: E("1.5e1556"),
+			et: true,
+		},
+		{
+			desc: `The effect softcap of Galactic Power is weaker.`,
+			cost: E(2e66),
+			galQk: true,
+		},
+		{
+			desc: `Remove First Black Hole Overflow effect.`,
+			cost: E("1.5e28206"),
+		},
+		{
+			desc: `Elements 173 and 174 are better.`,
+			cost: E("1.5e1606"),
+			et: true,
+		},
+		{
+			desc: `Galactic Shards Effect affects Galactic U-Fermions gain.`,
+			cost: E(5e67),
+			galQk: true,
+		},
+		{
+			desc: `Remove some softcaps of Star Boost's formula.`,
+			cost: E("1.5e28906"),
+		},
+		{
+			desc: `Remove Stronger Softcap.`,
+			cost: E("1.5e1626"),
+			et: true,
+		},
+		{
+			desc: `Unlock a Galactic Challenge Option.`,
+			cost: E(1e69),
+			galQk: true,
+		},
+		{
+			desc: `Reduce Galactic Challenge Goals.`,
+			cost: E(1e69),
+			galQk: true,
+		},
+		{
+			desc: `C20 effect is better.`,
+			cost: E("1.5e29906"),
+		},
+		{
+			desc: `Green Chroma effect is better.`,
+			cost: E("1.5e1666"),
+			et: true,
+		},
+		{
+			desc: `Reduce Galactic Challenge Goals.`,
+			cost: E(1e69),
+			galQk: true,
+		},
+		{
+			desc: `Remove some Cosmic Ray softcaps.`,
+			cost: E("1.5e30156"),
+		},
+		{
+			desc: `Meta-Prestige Level starts 2x later.`,
+			cost: E("1.5e1669"),
+			et: true,
+		},
+		{
+			desc: `Galactic Shards boost Galactic Quarks.`,
+			cost: E(1e72),
+			galQk: true,
+			effect() {
+				let x = player.gc.shard.add(1).sqrt();
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Remove [Neutrino]'s softcaps.`,
+			cost: E("1.5e31056"),
+		},
+		{
+			desc: `Infinity Upgrade 9 is better.`,
+			cost: E("1.5e1756"),
+			et: true,
+		},
+		{
+			desc: `Super Galactic Fermion Tier starts 1.5x later.`,
+			cost: E("1e75"),
+			galQk: true,
+		},
+		{
+			desc: `C20 effect is better.`,
+			cost: E("1.5e32756"),
+		},
+		{
+			desc: `Meta-Hex starts later.`,
+			cost: E("1.5e1836"),
+			et: true,
+		},
+		{
+			desc: `Galactic Shards Effect affects base Galactic Radiation gain.`,
+			cost: E("3e78"),
+			galQk: true,
+		},
+		{
+			desc: `Electron Power’s second effects are better.`,
+			cost: E("1.5e36556"),
+		},
 	],
     /*
     {
@@ -1745,7 +1978,7 @@ const ELEMENTS = {
     */
     getUnlLength() {
 		
-		if(hasElement(291))return 300;
+		if(hasElement(291))return 346;
 		if(hasElement(290))return 291;
 		if(player.superGal.gte(10))return 290;
 		if(player.superGal.gte(1))return 218;

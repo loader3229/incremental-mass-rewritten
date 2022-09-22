@@ -40,6 +40,13 @@ const STARS = {
             ,player.ranks.tier.softcap(1.5e5,0.25,0).softcap(1.3e6,0.25,0).mul(p)
             ,player.ranks.tetr.mul(p).softcap(5,hasTree("s2")?1.5:5,1).softcap(9,0.3,0)
             ,(hasElement(69)?player.ranks.pent.mul(pp):E(0)).softcap(9,0.5,0)]
+		
+		if(hasElement(330)){
+			r = player.ranks.rank.mul(p)
+			t1 = player.ranks.tier.mul(p)
+			t2 = player.ranks.tetr.mul(p)
+			t3 = player.ranks.pent.mul(pp)
+		}
         let x =
         s.max(1).log10().add(1).pow(r.mul(t1.pow(2)).add(1).pow(t2.add(1).pow(5/9).mul(0.25).mul(t3.pow(0.85).mul(0.0125).add(1))))
 		let l = E(145);
@@ -53,6 +60,7 @@ const STARS = {
 		tmp.stars.effectPowerRaw = x.add(1).mul(l2).log10().log10().div(l).sqrt()
 		if(player.ranks.hex.gte(69))tmp.stars.effectPowerRaw = tmp.stars.effectPowerRaw.pow(player.ranks.hex.sub(68).mul(0.01).add(1))
 		tmp.stars.effectPower = overflow(tmp.stars.effectPowerRaw,"ee3",0.5);
+		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee8",0.5);
 		tmp.stars.effectRaw = x
 		if(hasPrestige(1,24))return x.min("e1e85");
         return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");

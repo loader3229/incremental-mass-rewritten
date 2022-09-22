@@ -30,6 +30,7 @@ const QUANTUM = {
     },
     enter(auto=false,force=false,rip=false,bd=false) {
 		if(CHALS.inChal(14) || CHALS.inChal(19))rip = true, player.qu.rip.active = true;
+		if(player.gc.active && player.gc.rip)rip = true, player.qu.rip.active = true;
         if (tmp.qu.gain.gte(1) || force) {
             if (player.confirms.qu&&!auto&&!force) if (confirm("你确定要前往量子吗？除了部分qol升级以外您将失去绝大部分进度")?!confirm("您真的确定了吗？？？"):true) return
             if (QCs.active() && !rip && !bd && !player.qu.rip.active) {

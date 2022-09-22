@@ -348,10 +348,11 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = overflow(i.max(1).log10().add(1).mul(t).div(200).add(1).softcap(1.5,0.5,0),1e26,0.2)
+					if(hasElement(340))x = i.max(1).log10().add(1).mul(t).div(200).add(1);
                     return x
                 },
                 desc(x) {
-                    return `Tier requirement is ${format(x)}x cheaper`+(x.gte(1e26)?"<span class='soft'>(softcapped^2)</span>":x.gte(1.5)?"<span class='soft'>(softcapped)</span>":"")
+                    return `Tier requirement is ${format(x)}x cheaper`+(x.gte(1e26)&&!hasElement(340)?"<span class='soft'>(softcapped^2)</span>":x.gte(1.5)&&!hasElement(340)?"<span class='soft'>(softcapped)</span>":"")
                 },
                 inc: "Collapsed Star",
                 cons: "Star generators are decreased to ^0.5",
@@ -639,6 +640,7 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = t.add(1)
+					if(hasElement(320))x=x.pow(1.75)
                     return x
                 },
                 desc(x) {
@@ -710,7 +712,7 @@ const FERMIONS = {
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
-                    let x = t.add(1).pow(2)
+                    let x = overflow(t,10,3).add(1).pow(2)
                     return x
                 },
                 desc(x) {

@@ -29,9 +29,10 @@ const CHROMA = {
         },
         i => {
             let x = E(1.01).pow(i.add(1).log10().max(0).pow(0.8))
+			if(hasElement(335))x = E(1.01).pow(i.add(1).log10().max(0))
             if (hasUpgrade('br',10)) x = x.pow(1.1)
 			if (!hasElement(274))x = overflow(x,1000,0.5);
-			x = overflow(x,100000,hasElement(299)?0.8:hasElement(274)?0.75:0.5);
+			if (!hasElement(319))x = overflow(x,100000,hasElement(319)?1:hasElement(307)?0.85:hasElement(299)?0.8:hasElement(274)?0.75:0.5);
             if (hasUpgrade('br',7) && player.qu.rip.active) x = x.pow(2)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)
             if (hasElement(180) && !player.qu.rip.active) x = x.pow(1.5)
@@ -39,7 +40,7 @@ const CHROMA = {
         },
         i => {
             let x = E(1.1).pow(i.add(1).log10().max(0).pow(0.75))
-			x = overflow(x,"1e730",0.5)
+			if (!hasElement(310))x = overflow(x,"1e730",0.5)
 			if (!hasElement(250))x = x.min("1e1000");else x = overflow(x,"1e1000",0.2)
             if (hasUpgrade('br',10)) x = x.pow(1.1)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)

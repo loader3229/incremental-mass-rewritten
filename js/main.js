@@ -355,6 +355,8 @@ const FORMS = {
 			
 			if(player.ranks.oct.gte(9))ss2 = ss2.mul(2.5)
 			if(player.ranks.oct.gte(9))p2 = p2 ** 0.9
+			if(player.ranks.oct.gte(21))ss2 = ss2.mul(2)
+			if(player.ranks.oct.gte(21))p2 = p2 ** 0.9
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -470,14 +472,17 @@ const FORMS = {
 			if (CHALS.inChal(15) || CHALS.inChal(19))tmp.bhOverflowStart = E(10)
 			
 			let x_original = x
-			x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
+			if(!hasElement(327))x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
 				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(0.8).mul(bhOverflowStart2.log10().log10());
 				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
 			}
+			if(x.gte("eee10")){
+				x = Decimal.tetrate(10,x.slog().sub(4).div(1.1).add(4));
+			}
 			tmp.bhOverflow = x.log(x_original);
-		    
+		    if(hasElement(327))tmp.bhOverflow = x.add(100).log10().log(x_original.add(100).log10());
 			return x
         },
         f() {
@@ -560,6 +565,7 @@ const FORMS = {
                     pow = pow.mul(getEnRewardEff(3)[1])
                     if (hasTree('bs5')) pow = pow.mul(tmp.bosons.effect.z_boson[0])
                     if (hasTree("bh2")) pow = pow.pow(1.15)
+                    if (hasElement(346))pow = pow.pow(tmp.atom.particles[2].powerEffect.eff2)
                 
                 let eff = pow.pow(t.add(tmp.bh.condenser_bonus))
                 return {pow: pow, eff: eff}

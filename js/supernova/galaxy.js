@@ -1,19 +1,21 @@
 const SUPERNOVA_GALAXY = {
 	req(){
-		if(hasElement(291))return E(1.24).pow(player.superGal).mul(1e6).floor();
-		return E(1.246).pow(player.superGal).mul(1e6).floor();
+		if(hasElement(323))return E(1.23).pow(player.superGal.scaleEvery('superGal')).mul(1e6).floor();
+		if(hasElement(291))return E(1.24).pow(player.superGal.scaleEvery('superGal')).mul(1e6).floor();
+		return E(1.246).pow(player.superGal.scaleEvery('superGal')).mul(1e6).floor();
 	},
 	bulk(){
 		if(player.supernova.times.lt(1e6))return new Decimal(0);
-		if(hasElement(291))return player.supernova.times.div(1e6).log(1.24).add(1).floor();
-		return player.supernova.times.div(1e6).log(1.246).add(1).floor();
+		if(hasElement(323))return player.supernova.times.div(1e6).log(1.23).scaleEvery('superGal',true).add(1).floor();
+		if(hasElement(291))return player.supernova.times.div(1e6).log(1.24).scaleEvery('superGal',true).add(1).floor();
+		return player.supernova.times.div(1e6).log(1.246).scaleEvery('superGal',true).add(1).floor();
 	},
 	reset(force=false){
 		if(!force)if(player.supernova.times.lt(SUPERNOVA_GALAXY.req()))return;
 		if(!force)if((confirm("Are you sure to reset for a Supernova Galaxy? It will reset all previous, including Prestiges.")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
 		if(!force && hasElement(291))player.superGal = player.superGal.max(SUPERNOVA_GALAXY.bulk());
 		else if(!force)player.superGal = player.superGal.add(1);
-		if(player.superGal.lt(11))player.prestiges=[E(0),E(0),E(0)];
+		if(player.superGal.lt(11))player.prestiges=[E(0),E(0),E(0),E(0)];
 		if(player.superGal.lt(6))player.supernova.tree=[];
 		player.chal.comps[9] = E(0)
 		player.chal.comps[10] = E(0)
@@ -158,7 +160,9 @@ const SUPERNOVA_GALAXY = {
 			if(hasElement(228))ss1p = ss1p.pow(0.9335178441025087);
 			if(hasElement(248))ss1p = ss1p.pow(0.92);
 		}
-		return overflow(overflow(overflow(ret,2,3),"e500",ss1p),"e1500",0.25);
+		let ss2p=E(0.25);
+		if(hasElement(326))ss2p = ss2p.pow(0.9);
+		return overflow(overflow(overflow(ret,2,3),"e500",ss1p),"e1500",ss2p);
 	},
 	galPow1_gain(){
 		if(player.superGal.lt(6))return E(0);
@@ -181,6 +185,7 @@ const SUPERNOVA_GALAXY = {
 	galPow3_gain(){
 		if(player.superGal.lt(7))return E(0);
 		let ret=player.supernova.bosons.photon.add(1).log10().add(1).log10().mul(player.supernova.bosons.gluon.add(1).log10().add(1).log10()).pow(player.superGal.sub(5))
+		ret = ret.pow(hasElement(317)?tmp.gc.GSeffect:1)
 			ret = ret.mul(tmp.fermions.effs[3][1]||E(1));
 		return ret;
 	},
@@ -196,6 +201,8 @@ const SUPERNOVA_GALAXY = {
 		for(var i = 2; i <= 3; i++)for(var j = 0;j < 6; j++){
 			ret = ret.mul(player.supernova.fermions.tiers[i][j].add(1).pow(2));
 		}
+		ret = ret.pow(hasElement(329)?tmp.gc.GSeffect:1)
+		
 		return ret;
 	},
 	galPow4_eff(){
@@ -205,6 +212,7 @@ const SUPERNOVA_GALAXY = {
 	galPow5_gain(){
 		if(player.superGal.lt(9))return E(0);
 		let ret=player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(player.superGal.sub(6));
+		ret = ret.pow(hasElement(345)?tmp.gc.GSeffect:1)
 		ret = ret.mul(tmp.fermions.effs[2][4]||E(1));
 		return ret;
 	},
@@ -223,7 +231,11 @@ const SUPERNOVA_GALAXY = {
 		if(hasPrestige(1,242)){
 			ret = ret.mul(prestigeEff(1,242));
 		}
+		if(hasPrestige(3,12)){
+			ret = ret.mul(prestigeEff(3,12));
+		}
 		if(hasElement(294))ret = ret.mul(player.supernova.fermions.tiers[3][5].add(1).pow(2));
+		if(hasElement(339))ret = ret.mul(tmp.elements.effect[339]);
 		return ret;
 	},
 }
@@ -240,6 +252,7 @@ function calcSupernovaGalaxy(dt, dt_offline) {
 
 function updateSupernovaGalaxyHTML() {
     tmp.el.superGal.setTxt(format(player.superGal,0))
+	tmp.el.superGalScale.setTxt(getScalingName('superGal'));
     tmp.el.superGalReq.setTxt(format(SUPERNOVA_GALAXY.req(),0))
 	tmp.el.galPow0span.setDisplay(player.superGal.gte(1));
 	tmp.el.galPow1span.setDisplay(player.superGal.gte(6));

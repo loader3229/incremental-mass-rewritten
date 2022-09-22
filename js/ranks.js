@@ -11,6 +11,7 @@ const RANKS = {
             if (type == "pent" && hasTree("qol8")) reset = false
             if (type == "hex" && hasPrestige(1,27)) reset = false
             if (type == "hept" && hasPrestige(2,18)) reset = false
+            if (type == "oct" && hasPrestige(3,9)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -25,6 +26,7 @@ const RANKS = {
             if (type == "pent" && hasTree("qol8")) reset = false
             if (type == "hex" && hasPrestige(1,27)) reset = false
             if (type == "hept" && hasPrestige(2,18)) reset = false
+            if (type == "oct" && hasPrestige(3,9)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -274,6 +276,9 @@ const RANKS = {
 			'9': "Accelerator effect softcap^2 starts 2.5x later, and is weaker.",
 			'10': "Oct Boost Infinity/Eternal Mass.",
 			'12': "Oct Boost Hept 52's effect.",
+			'17': "Meta-Hex is 99.6% weaker.",
+			'20': "Remove Super Hex scaling. Oct 1's effect is applied to Ultra/Meta Hex scalings.",
+			'21': "Accelerator effect softcap^2 starts 2x later, and is weaker.",
 		},
     },
     effect: {
@@ -339,6 +344,7 @@ const RANKS = {
                 let ret = E(player.massUpg[3]||0).div(400)
                 if (ret.gte(1) && hasPrestige(0,15)) ret = ret.pow(1.5)
 				ret = ret.softcap("e4.5e6", player.ranks.oct.gte(3)?0.8:0.5, 0);
+				ret = overflow(ret, "e1.8e10", 0.8);
                 return ret
             },
             '4'() {
@@ -352,7 +358,7 @@ const RANKS = {
         },
         pent: {
             '2'() {
-                let ret = E(1.3).pow(player.ranks.tetr)
+                let ret = E(1.3).pow(player.ranks.tetr.softcap("1e2000000",0.6,2));
                 return ret
             },
             '4'() {
@@ -762,12 +768,33 @@ const PRESTIGES = {
             "42": `Renown boost Eternal Mass gain.`,
             "43": `Remove Super Prestige Level scaling.`,
             "47": `Remove Ultra Fermion Tier scaling.`,
+            "49": `Meta-Presige Level starts 1.2x later.`,
+            "51": `Prestige Muscler boost itself.`,
+            "52": `Prestige Booster boost itself.`,
+            "53": `Prestige Stronger boost itself.`,
+            "54": `Add +10% to Glory 25's effectiveness`,
+            "55": `Add +30% to Glory 25's effectiveness`,
+            "56": `Add +50% to Glory 25's effectiveness`,
+			"57": `Prestige Mass Effect is applied to Meta-Hex scaling.`,
+			"59": `Prestige Mass Effect is applied to Ultra Hept scaling at reduced rate.`,
+            "81": `Stronger Overflow is weaker.`,
+            "84": `Meta-Prestige Level starts 2x later.`,
+            "98": `Ultra Glory starts 6 later.`,
 		},
 		{
             "1": `Remove Hyper Prestige Level scaling.`,
             "2": `Remove Hyper Fermion Tier scaling.`,
             "3": `Multiply Honor 9 reward by Renown.`,
             "4": `Prestige Mass Effect is applied to Ultra Glory scaling.`,
+            "5": `Add +5% to Glory 25's effectiveness`,
+			"6": `Prestige Mass Effect is applied to Super Oct scaling.`,
+            "7": `Square the Renown 3 reward.`,
+            "8": `Automatically gain Glory.`,
+            "9": `Oct resets nothing.`,
+            "10": `The Tier requirement is broken.`,
+            "11": `Renown boost Prestige Stronger Power.`,
+            "12": `Renown boost Galactic Quarks gain.`,
+            "13": `Remove Super Honor scaling.`,
 		},
     ],
     rewardEff: [
@@ -913,16 +940,45 @@ const PRESTIGES = {
             },x=>"x"+x.format()],
             "25": [_=>{
                 let x = 5;
+				if (hasPrestige(3,5))x += 5;
+				if (hasPrestige(2,54))x += 10;
+				if (hasPrestige(2,55))x += 30;
+				if (hasPrestige(2,56))x += 50;
                 return x
             },x=>x+"% effectiveness"],
             "42": [_=>{
                 let x = player.prestiges[3].add(1)
                 return x
             },x=>"x"+x.format()],
+            "51": [_=>{
+                let x = player.prestigeMassUpg[1].add(1)
+                return x
+            },x=>"x"+x.format()+" to power"],
+            "52": [_=>{
+                let x = player.prestigeMassUpg[2].add(1)
+                return x
+            },x=>"x"+x.format()+" to power"],
+            "53": [_=>{
+                let x = player.prestigeMassUpg[2].add(1).log10().add(1).sqrt()
+                return x
+            },x=>"x"+x.format()+" to power"],
+            "59": [_=>{
+                let x = 5;
+                return x
+            },x=>x+"% effectiveness"],
 		},
 		{
             "3": [_=>{
                 let x = player.prestiges[3];
+				if(x.gte(7))x = x.pow(2);
+                return x
+            },x=>"x"+x.format()],
+            "11": [_=>{
+                let x = player.prestiges[3].log10();
+                return x
+            },x=>"x"+x.format()+" to power"],
+            "12": [_=>{
+                let x = player.prestiges[3].add(1).pow(2);
                 return x
             },x=>"x"+x.format()],
 		},
@@ -960,8 +1016,8 @@ function updateRanksTemp() {
     tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(5) && !CHALS.inChal(10) && !CHALS.inChal(14) && !CHALS.inChal(19) && !FERMIONS.onActive("03")
 
     fp = RANKS.fp.tier()
-    tmp.ranks.tier.req = player.ranks.tier.div(fp2).scaleEvery('tier').div(fp).add(2).pow(2).floor()
-    tmp.ranks.tier.bulk = player.ranks.rank.max(0).root(2).sub(2).mul(fp).scaleEvery('tier',true).mul(fp2).add(1).floor();
+    tmp.ranks.tier.req = player.ranks.tier.div(fp2).scaleEvery('tier').div(fp).add(2).pow(hasPrestige(3,10)?1.8:2).floor()
+    tmp.ranks.tier.bulk = player.ranks.rank.max(0).root(hasPrestige(3,10)?1.8:2).sub(2).mul(fp).scaleEvery('tier',true).mul(fp2).add(1).floor();
 
     fp = E(1)
     let pow = 2
@@ -1026,6 +1082,9 @@ function updateRanksTemp() {
 	}
 	if(hasPrestige(2,10)){
 		player.prestiges[1] = player.prestiges[1].max(PRESTIGES.bulk(1));
+	}
+	if(hasPrestige(3,8)){
+		player.prestiges[2] = player.prestiges[2].max(PRESTIGES.bulk(2));
 	}
 }
 
@@ -1126,6 +1185,7 @@ function prestigeMassGain(){
 	if (hasPrestige(1,31)) x = x.mul(player.prestiges[0].pow(0.15).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
 	if (hasElement(145)) x = x.mul(10);
 	if (hasElement(255)) x = x.mul(tmp.elements.effect[255]);
+	if (hasElement(306)) x = x.mul(tmp.elements.effect[306]);
 	x = x.mul(tmp.upgs.prestigeMass[1].eff.eff);
 	return x;
 }
@@ -1134,6 +1194,7 @@ function prestigeMassEffect(){
 	let p = player.prestigeMass.add(1).log10();
 	if(p.gte(104))p = p.softcap(104,(hasElement(135)?0.55:0.5)**(hasElement(168)?tmp.chal.eff[16]:1),0);
 	if(p.gte(145))p = p.softcap(145,0.3,0);
+	if(p.gte(680))p = p.softcap(680,0.4,0);
 	if(hasTree("qu12"))return E(0.98).pow(p.pow(0.725));
 	return E(0.965).pow(p.sqrt());
 }

@@ -13,6 +13,7 @@ const GC = {
 	goal(x=player.gc.depth){
 		let r=[1e6,1e6,4e5][x];
 		if(x>=3)r=x*1e5;
+		if(hasElement(333))r=x*9e4;
 		if(player.gc.trapu && hasElement(300)){
 			r=r/1.6;
 		}else if(player.gc.trapu){
@@ -76,6 +77,7 @@ function updateGCTemp() {
 		tmp.gc.shards = player.supernova.times.log10().sub(E(GC.goal()).log10()).mul(10**(player.gc.depth*0.9+1.1)).add(1).pow(player.gc.depth);
 		if(tmp.gc.shards.gte(100))tmp.gc.shards = tmp.gc.shards.log10().mul(50);
 		tmp.gc.shards = tmp.gc.shards.mul(1+player.gc.trap/20);
+		tmp.gc.shards = tmp.gc.shards.mul(player.gc.rip?2:1);
 		tmp.gc.shards = tmp.gc.shards.floor();
 	}
 	tmp.gc.GSeffect=GSeffect()
@@ -93,6 +95,8 @@ function updateGCHTML() {
     tmp.el.gc_nerf2.setTxt(tmp.gc.nerf);
 	tmp.el.gc_trapu2.setDisplay(hasElement(297));
     tmp.el.gc_trapu.setTxt(player.gc.trapu?"ON":"OFF");
+	tmp.el.gc_rip2.setDisplay(hasElement(332));
+    tmp.el.gc_rip.setTxt(player.gc.rip?"ON":"OFF");
     tmp.el.gc_trapeff.setTxt(player.gc.trap==0?"":player.gc.trap==1?"您将强制进行挑战1":"您将强制进行挑战1-挑战"+player.gc.trap);
     tmp.el.gc_btn.setTxt(player.gc.active?"退出星系挑战":"进入星系挑战");
 	if(player.supernova.times.gte(GC.goal()) && player.gc.active){

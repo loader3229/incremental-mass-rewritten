@@ -99,6 +99,7 @@ function calc(dt, dt_offline) {
         if (hasElement(24)) player.atom.points = player.atom.points.add(tmp.atom.gain.mul(du_gs))
         if (hasElement(30) && !(CHALS.inChal(9) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12"))) for (let x = 0; x < 3; x++) player.atom.particles[x] = player.atom.particles[x].add(player.atom.quarks.mul(du_gs).div(10))
         if (hasElement(43)) for (let x = 0; x < MASS_DILATION.upgs.ids.length; x++) if ((hasTree("qol3") || player.md.upgs[x].gte(1)) && (MASS_DILATION.upgs.ids[x].unl?MASS_DILATION.upgs.ids[x].unl():true)) MASS_DILATION.upgs.buy(x)
+        if (hasElement(312)) for (let x = 0; x < 3; x++) player.galParticles[x] = player.galParticles[x].add(player.galQk.mul(dt))
         if (hasTree("qu_qol13")) for (let x = 0; x < MASS_DILATION.break.upgs.ids.length; x++) MASS_DILATION.break.upgs.buy(x)
         if (player.bh.unl && !player.qu.en.hr[0]) player.bh.mass = player.bh.mass.add(tmp.bh.mass_gain.mul(du_gs))
         if (player.atom.unl) {
@@ -130,6 +131,12 @@ function calc(dt, dt_offline) {
             if (hasTree("qu_qol7a")) for (let x = 9; x <= 12; x++) player.chal.comps[x] = player.chal.comps[x].max(tmp.chal.bulk[x].min(tmp.chal.max[x]))
         }
 		if (hasElement(286)) player.chal.comps[13] = player.chal.comps[13].max(tmp.chal.bulk[13].min(tmp.chal.max[13]))
+		if (hasElement(302)) player.chal.comps[14] = player.chal.comps[14].max(tmp.chal.bulk[14].min(tmp.chal.max[14]))
+		if (hasElement(302)) player.chal.comps[15] = player.chal.comps[15].max(tmp.chal.bulk[15].min(tmp.chal.max[15]))
+		if (hasElement(318)) player.chal.comps[16] = player.chal.comps[16].max(tmp.chal.bulk[16].min(tmp.chal.max[16]))
+		if (hasElement(318)) player.chal.comps[17] = player.chal.comps[17].max(tmp.chal.bulk[17].min(tmp.chal.max[17]))
+		if (hasElement(318)) player.chal.comps[18] = player.chal.comps[18].max(tmp.chal.bulk[18].min(tmp.chal.max[18]))
+		if (hasElement(322)) player.chal.comps[19] = player.chal.comps[19].max(tmp.chal.bulk[19].min(tmp.chal.max[19]))
 		calcPrestigeMass(dt, dt_offline)
         calcInfinity(dt, dt_offline)
         calcSupernovaGalaxy(dt, dt_offline)

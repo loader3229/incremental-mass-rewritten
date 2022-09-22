@@ -155,7 +155,7 @@
             <span id="nr_div">At <span id="next_radiation">0</span> of frequency, unlock <span id="unl_radiation">X</span></span><br><br>
             <div id="radiation_table"></div>
         </div><div id="stab_frame5_4">
-			您有<span id="superGal">0</span>超新星星系<br>
+			您有<span id="superGal">0</span><span id="superGalScale"></span>超新星星系<br>
 			下一个在<span id="superGalReq">0</span>超新星<br>
             <button class="btn" onclick="SUPERNOVA_GALAXY.reset()">重置以得到超新星星系</button><br>
 			<hr>
@@ -215,7 +215,7 @@
                     </div><div class="resources sml green" id="md_div">
                         <div tooltip="质量膨胀" t-size="small"><img class="res_img" src="images/md.png" onclick="MASS_DILATION.onactive()" onmousemove="FORMS.reset_msg.set('md')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="md_massAmt">X</span>
-                    </div> <div class="resources sml magenta" id="sn_div">
+                    </div><div class="resources sml" id="sn_div" style="color:#ff009d;">
                         <div tooltip="超新星" t-size="small"><img class="res_img" src="images/sn.png" onclick="SUPERNOVA.reset(false,false,true)" onmousemove="FORMS.reset_msg.set('sn')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="supernovaAmt">X</span>
                     </div><div class="resources sml light_green" id="qu_div">
@@ -230,11 +230,11 @@
                     </div><div class="resources sml" id="infinity_div">
                         <div tooltip="无限质量" t-size="small"><img class="res_img" src="images/inf.png" onclick="INFINITY_LAYER.enter()" onmousemove="FORMS.reset_msg.set('infinity')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="infAmt">X</span>
-                    </div><div class="resources sml" id="eternity_div" style="color:rgb(255,0,255);">
+                    </div><div class="resources sml" id="eternity_div" style="color:#ff00ff;">
                         <div tooltip="永恒质量" t-size="small"><img class="res_img" src="images/et.png" onclick="ETERNITY_LAYER.enter()" onmousemove="FORMS.reset_msg.set('eternity')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="etAmt">X</span>
-                    </div><div class="resources sml magenta" id="superGal_div">
-                        <div tooltip="Supernova Galaxies" t-size="small"><img class="res_img" src="images/sg.png" onclick="SUPERNOVA_GALAXY.reset()" onmousemove="FORMS.reset_msg.set('superGal')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
+                    </div><div class="resources sml" id="superGal_div" style="color:#ff009d;">
+                        <div tooltip="超新星星系" t-size="small"><img class="res_img" src="images/sg.png" onclick="SUPERNOVA_GALAXY.reset()" onmousemove="FORMS.reset_msg.set('superGal')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="superGalAmt">X</span>
                     </div><div class="resources sml quark_color" id="galQk_div">
                         <div tooltip="星系夸克" t-size="small"><img class="res_img" src="images/sgq.png"></div>
@@ -331,7 +331,7 @@
                         The formula (x + 1)<sup id="bhMassPower2">0.33</sup> softcaps at <b id="bhFSoftStart1">X</b>
                     </span>
 					<br><br>
-                    <span id="bhOverflow" style="color: rgb(255, 255, 255)">黑洞溢出使你的黑洞质量获取速度变为原来的<b id="bhOverflow2">X</b>次方！</span>
+                    <span id="bhOverflow" style="color: rgb(255, 255, 255)">黑洞溢出使你的黑洞质量获取速度<span id="bhOverflow3">的指数</span>变为原来的<b id="bhOverflow2">X</b>次方！</span>
                 </div>
             </div><div id="stab_frame0_2">
                 You have <span id="atomicAmt">X</span> Atomic Power<br>
@@ -457,7 +457,8 @@
 				您需要<span id="gc_goal"></span>超新星才能完成挑战。<br>
 				挑战难度：<span id="gc_diff"></span>/<span id="gc_diff_max"></span><button class="btn" onclick="decGCdiff()">-1</button><button class="btn" onclick="incGCdiff()">+1</button><br>
                 <br><span id="gc_trap2">强制进行的挑战数量：<span id="gc_trap"></span>/<span id="gc_trap_max"></span><button class="btn" onclick="decGCtrap()">-1</button><button class="btn" onclick="incGCtrap()">+1</button></span><br>
-                <span id="gc_trapu2">强制进行所有U-费米子：<span id="gc_trapu"></span><button class="btn" onclick="if(!player.gc.active)player.gc.trapu=!player.gc.trapu">切换</button><br></span><button class="btn" onclick="GC.enter()" id="gc_btn">Enter the Galactic Challenge</button>
+                <span id="gc_trapu2">强制进行所有U-费米子：<span id="gc_trapu"></span><button class="btn" onclick="if(!player.gc.active)player.gc.trapu=!player.gc.trapu">切换</button><br></span>
+                <span id="gc_rip2">强制进行大撕裂：<span id="gc_rip"></span><button class="btn" onclick="if(!player.gc.active)player.gc.rip=!player.gc.rip">切换</button><br></span><button class="btn" onclick="GC.enter()" id="gc_btn">Enter the Galactic Challenge</button>
             </div>
         </div><div id="tab_frame4">
             <div id="stab_frame4_0">
@@ -570,8 +571,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.8.3.1c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的NG+, 汉化版) v0.8.3.1c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.8.4c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的NG+, 汉化版) v0.8.4c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

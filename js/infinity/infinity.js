@@ -23,7 +23,12 @@ const INFINITY_LAYER = {
 			x = x.mul(z)
 		}
 		if (hasElement(189)){
-			let z = overflow(player.inf.points.add(1).log(Number.MAX_VALUE),1000,0.5);
+			let z = player.inf.points.add(1).log(Number.MAX_VALUE);
+			if (z.lt(1)) z=E(1)
+			x = x.mul(z)
+		}
+		if (hasElement(304)){
+			let z = player.et.points.add(1).log(Number.MAX_VALUE);
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
@@ -101,7 +106,7 @@ const INFINITY_LAYER = {
 		player.qu.en.eth = [false,E(0),E(0),0]
 		player.qu.en.hr = [false,E(0),E(0),0]
 		player.qu.en.rewards = []
-		player.qu.rip.active = false
+		player.qu.rip.active = player.gc.active && player.gc.rip
 		player.qu.rip.amt = E(0)
 		for (let x = 0; x < ENTROPY.rewards.length; x++) player.qu.en.rewards.push(E(0))
 		if(!hasUpgrade('inf',3))player.mainUpg.br = []
@@ -187,7 +192,7 @@ const ETERNITY_LAYER = {
 		player.qu.en.eth = [false,E(0),E(0),0]
 		player.qu.en.hr = [false,E(0),E(0),0]
 		player.qu.en.rewards = []
-		player.qu.rip.active = false
+		player.qu.rip.active = player.gc.active && player.gc.rip
 		player.qu.rip.amt = E(0)
 		for (let x = 0; x < ENTROPY.rewards.length; x++) player.qu.en.rewards.push(E(0))
 		if(!hasUpgrade('inf',3))player.mainUpg.br = []

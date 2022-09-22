@@ -247,7 +247,7 @@ function updateUpperHTML() {
 	unl = (player.supernova.post_10 || player.superGal.gte(1))
 	tmp.el.sn_div.setDisplay(unl)
 	if (unl) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>(+"+format(tmp.supernova.bulk.sub(player.supernova.times).max(0),0)+")")
-	if (hasElement(291)) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>(+"+format(tmp.supernova.bulk.sub(player.supernova.times).max(0).div(tmp.dt),0)+"/sec)")
+	if (hasElement(291)) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>"+player.supernova.times.formatGain(tmp.supernova.bulk.sub(player.supernova.times).max(0).div(tmp.dt),0))
 	
 	unl = (player.superGal.gte(10))
 	tmp.el.galQk_div.setDisplay(unl)
@@ -393,6 +393,7 @@ function updateBlackHoleHTML() {
 	tmp.el.massSoftStart2.setTxt(formatMass(tmp.bh.massSoftGain))
 
 	tmp.el.bhOverflow.setDisplay(tmp.bh.mass_gain.gte(tmp.bhOverflowStart))
+	tmp.el.bhOverflow3.setDisplay(hasElement(327));
 	tmp.el.bhOverflow2.setTxt(format(tmp.bhOverflow))
 	tmp.el.bhEffect.setTxt(format(tmp.bh.effect))
 

@@ -21,6 +21,10 @@ function updateChalHTML() {
 				if(hasElement(222) && x == 13)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
 				if(hasElement(289) && x == 14)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
 				if(hasElement(289) && x == 15)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(302) && x == 16)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(308) && x == 17)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(316) && x == 18)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
+				if(hasElement(316) && x == 19)tmp.el["chal_comp_"+x].setTxt(format(player.chal.comps[x],0));
             }
         }
         tmp.el.chal_enter.setVisible(player.chal.active != player.chal.choosed)
@@ -162,6 +166,9 @@ const CHALS = {
         if (hasElement(133) && (i==12)) return EINF
         if (hasElement(222) && (i==13)) return EINF
         if (hasElement(289) && (i==14||i==15)) return EINF
+        if (hasElement(302) && (i==16)) return EINF
+        if (hasElement(308) && (i==17)) return EINF
+        if (hasElement(316) && (i==18||i==19)) return EINF
 		
         let x = this[i].max
         if (i <= 4) x = x.add(tmp.chal?tmp.chal.eff[7]:0)
@@ -383,9 +390,10 @@ const CHALS = {
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
             let ret = x.root(1.5).mul(0.01).add(1)
+			if(hasElement(310))return ret;
             return ret.softcap(3,E(0.25).pow(tmp.chal.eff[17]||1),0)
         },
-        effDesc(x) { return "^"+format(x)+(x.gte(3)?"<span class='soft'>(softcapped)</span>":"") },
+        effDesc(x) { return "^"+format(x)+(x.gte(3)&&!hasElement(310)?"<span class='soft'>(softcapped)</span>":"") },
     },
     4: {
         unl() { return player.chal.comps[3].gte(1) || player.atom.unl },
@@ -399,10 +407,11 @@ const CHALS = {
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
             let ret = x.root(1.5).mul(0.01).add(1)
+			if(hasElement(310))return ret;
 			if (player.ranks.hex.gte(39))return ret.softcap(3,E(0.26).pow(tmp.chal.eff[17]||1),0);
             return ret.softcap(3,E(0.25).pow(tmp.chal.eff[17]||1),0)
         },
-        effDesc(x) { return "^"+format(x)+(x.gte(3)?"<span class='soft'>(softcapped)</span>":"") },
+        effDesc(x) { return "^"+format(x)+(x.gte(3)&&!hasElement(310)?"<span class='soft'>(softcapped)</span>":"") },
     },
     5: {
         unl() { return player.atom.unl },
@@ -468,9 +477,10 @@ const CHALS = {
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
             let ret = x.root(1.75).mul(0.02).add(1)
+			if(hasElement(310))return ret;
             return ret.softcap(2.3,0.25,0)
         },
-        effDesc(x) { return "^"+format(x)+(x.gte(2.3)?"<span class='soft'>(softcapped)</span>":"") },
+        effDesc(x) { return "^"+format(x)+(x.gte(2.3)&&!hasElement(310)?"<span class='soft'>(softcapped)</span>":"") },
     },
     9: {
         unl() { return hasTree("chal4") },
@@ -656,6 +666,8 @@ const CHALS = {
 			if(hasElement(277))x = x.pow(1.25);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
+			if(hasElement(334))ret = Decimal.pow(10,Decimal.pow(2.6,x.root(4)));
+			if(hasElement(343))ret = Decimal.pow(10,Decimal.pow(1.44,x.root(3)));
             return ret
         },
         effDesc(x) { return "^"+format(x) },
