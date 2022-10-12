@@ -110,6 +110,7 @@ const SUPERNOVA_GALAXY = {
 		},
 		entropy(){
 			if(player.superGal.lt(1))return new Decimal(1);
+			if(hasElement(356))return Decimal.pow(1e5, player.superGal.pow(3));
 			return Decimal.pow(1e100, player.superGal.pow(2));
 		},
 		chal(){
@@ -162,6 +163,7 @@ const SUPERNOVA_GALAXY = {
 		}
 		let ss2p=E(0.25);
 		if(hasElement(326))ss2p = ss2p.pow(0.9);
+		if(hasElement(353))ss2p = ss2p.pow(0.9);
 		return overflow(overflow(overflow(ret,2,3),"e500",ss1p),"e1500",ss2p);
 	},
 	galPow1_gain(){
@@ -180,6 +182,7 @@ const SUPERNOVA_GALAXY = {
 	galPow2_eff(){
 		let ret=Decimal.pow(1.1,player.galPow[2].add(1).log10());
 		if(hasPrestige(1,136))ret = ret.pow(2.6)
+		if(hasElement(347))return overflow(ret.pow(3),2,3);
 		return overflow(overflow(overflow(ret,2,3),"1e43000",0.5),"1e100000",0.5);
 	},
 	galPow3_gain(){
@@ -192,6 +195,7 @@ const SUPERNOVA_GALAXY = {
 	galPow3_eff(){
 		let ret=Decimal.pow(1.275,player.galPow[3].add(1).log10());
 		if(hasElement(270))ret = ret.pow(1.2);
+		if(hasElement(347))return overflow(overflow(ret,2,3),"1e50",0.7);
 		return overflow(overflow(ret,2,3),"1e50",0.5);
 	},
 	galPow4_gain(){

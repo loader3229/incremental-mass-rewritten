@@ -356,12 +356,13 @@ function getScalingStart(type, name) {
             if (hasElement(239))start = start.mul(tmp.elements.effect[239])
             if (hasElement(242))start = start.mul(10)
             if (player.ranks.oct.gte(2))start = start.mul(RANKS.effect.oct[2]())
-            if (hasElement(265))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
+            if (hasElement(265) && !hasElement(348))start = start.mul(tmp.chal?tmp.chal.eff[5]:1)
 		}
 		if (name=="pent") {
             if (hasElement(272))start = start.mul(tmp.elements.effect[272])
 			if (hasElement(275))start = start.mul(tmp.fermions.effs[3][3]||1)
             if (hasElement(324))start = start.mul(tmp.elements.effect[324])
+            if (hasElement(348))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
 		}
 		if (name=="hex") {
             if (hasElement(325))start = start.mul(1.5)
@@ -377,6 +378,7 @@ function getScalingStart(type, name) {
 			start = start.mul(tmp.fermions.effs[0][5])
 			start = start.mul(getEnRewardEff(0))
 			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
+			if (hasElement(348))start = start.mul(tmp.chal?tmp.chal.eff[1].rank.add(1):1)
 		}
 		if (name=="bh_condenser" || name=="gamma_ray") {
 			start = start.mul(getEnRewardEff(0))
@@ -648,6 +650,7 @@ function getScalingPower(type, name) {
 		}
 		if (name=="hept") {
 			if (hasPrestige(2,59)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+			if (hasPrestige(3,18)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 		}
 		if (name=="prestige2") {
 			if (hasPrestige(3,4)) power = power.mul(tmp.prestigeMassEffect)

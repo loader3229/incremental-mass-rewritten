@@ -45,7 +45,7 @@ const FORMS = {
         x = x.mul(tmp.tickspeedEffect.eff||E(1))
         if (player.bh.unl) x = x.mul(tmp.bh.effect)
         if (player.mainUpg.bh.includes(10)) x = x.mul(tmp.upgs.main?tmp.upgs.main[2][10].effect:E(1))
-        x = x.mul(tmp.atom.particles[1].powerEffect.eff2)
+        if (!hasElement(355)) x = x.mul(tmp.atom.particles[1].powerEffect.eff2)
         if (player.ranks.rank.gte(380)) x = x.mul(RANKS.effect.rank[380]())
         x = x.mul(tmp.stars.effect)
         if (hasTree("m1")) x = x.mul(tmp.supernova.tree_eff.m1)
@@ -59,6 +59,7 @@ const FORMS = {
 		if (!hasElement(134)) x = x.mul(tmp.tickspeedEffect.eff||E(1))
         else x = x.pow(tmp.tickspeedEffect.eff||E(1))
 	
+        if (hasElement(355)) x = x.pow(tmp.atom.particles[1].powerEffect.eff2)
         if (player.ranks.tier.gte(2)) x = x.pow(1.15)
         if (player.ranks.rank.gte(180)) x = x.pow(1.025)
         if (!(player.chal.active == 3)) x = x.pow(tmp.chal.eff[3])
@@ -298,7 +299,8 @@ const FORMS = {
 		
 			let eff_bottom = eff
 			if (hasElement(134)){
-				eff = eff.add(9).log10().add(9).log10().pow(tmp.accelEffect.eff.mul(0.1));
+				if(hasElement(357))eff = E(10).pow(eff.add(10).log10().add(10).log10().pow(0.15));else eff = eff.add(9).log10().add(9).log10();
+				eff = eff.pow(tmp.accelEffect.eff.mul(0.1));
 				eff_bottom = eff_bottom.pow(tmp.accelEffect.eff);
 				if (player.ranks.tetr.gte(3)) eff = eff.pow(1.05),eff_bottom = eff_bottom.pow(1.05);
 			}
@@ -385,6 +387,8 @@ const FORMS = {
 			gain = gain.pow(SUPERNOVA_GALAXY.effects.rp())
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
 		 gain = gain.pow(tmp.fermions.effs[2][3]||E(1))	
+	 
+			if(hasElement(348))gain = gain.pow(E(2).pow(player.chal.comps[7].mul((tmp.chal?tmp.chal.eff[7]:E(1)).add(1).log10()).pow(0.625).add(1)));
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
             
 		

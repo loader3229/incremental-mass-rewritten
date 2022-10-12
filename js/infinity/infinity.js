@@ -44,6 +44,7 @@ const INFINITY_LAYER = {
 		if (hasUpgrade('inf',10))x = x.mul(p)
         if (hasUpgrade('inf',4)) x = x.mul(upgEffect(5,4))
 		if (hasUpgrade('inf',7)) x = x.mul(2)
+        if (hasPrestige(3,17)) x = x.mul(prestigeEff(3,17));
         if (hasPrestige(2,3)) x = x.mul(prestigeEff(2,3));
         if (hasPrestige(1,18)) x = x.mul(prestigeEff(1,18));
         if (hasPrestige(0,165)) x = x.mul(prestigeEff(0,165));
@@ -136,6 +137,7 @@ const ETERNITY_LAYER = {
         x = x.pow(power).sub(1);
 		x = overflow(x,10,2);
 		
+        if (hasPrestige(3,17)) x = x.mul(prestigeEff(3,17));
         if (hasPrestige(2,4)) x = x.mul(prestigeEff(2,4));
         if (hasPrestige(1,26)) x = x.mul(prestigeEff(1,26));
         if (hasPrestige(0,250)) x = x.mul(prestigeEff(0,250));

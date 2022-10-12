@@ -76,6 +76,7 @@ const ENTROPY = {
             inc: E(20),
 
             eff(i) {
+				if(hasElement(352))return i.pow(0.5).div(5).add(1)
                 let x = i.pow(0.5).div(5).add(1).softcap(11,hasElement(269)?0.95:0.1,0).softcap(52,0.1,0)
                 return x
             },
@@ -127,8 +128,8 @@ const ENTROPY = {
 
             eff(i) {
                 let x = i.root(2).div(10).add(1).pow(-1)
-				if(x.lt(0.07))x = x.mul(0.0049).cbrt()
-				if(x.lt(0.05))x = x.mul(0.0025).cbrt()
+				if(x.lt(0.07)&&!hasElement(352))x = x.mul(0.0049).cbrt()
+				if(x.lt(0.05)&&!hasElement(352))x = x.mul(0.0025).cbrt()
                 return x
             },
             desc(x) { return `All pre-Supernova scaling is <b>${formatReduction(x)}</b> weaker before Meta scaling (not including Pent).` },
@@ -199,6 +200,7 @@ const ENTROPY = {
 				if (i == 7 && hasElement(208)) p = p ** 0.5
 				if (i == 6 && hasElement(266)) p = p ** 0.1
 				if (i == 7 && hasElement(266)) p = p ** 0.1
+				if (i == 2 && hasElement(352)) p = p ** 0.25
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -231,6 +233,7 @@ const ENTROPY = {
 				if (i == 7 && hasElement(208)) p = p ** 0.5
 				if (i == 6 && hasElement(266)) p = p ** 0.1
 				if (i == 7 && hasElement(266)) p = p ** 0.1
+				if (i == 2 && hasElement(352)) p = p ** 0.25
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()

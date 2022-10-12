@@ -1013,6 +1013,7 @@ const ELEMENTS = {
 			effect() {
 				let x = player.et.points.add(1).pow(0.2);
 				if(hasElement(271))x = x.pow(20)
+				if(hasElement(349))x = x.pow(3)
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -1951,7 +1952,7 @@ const ELEMENTS = {
 			cost: E("1.5e32756"),
 		},
 		{
-			desc: `Meta-Hex starts later.`,
+			desc: `Meta-Hex starts 1.5x later.`,
 			cost: E("1.5e1836"),
 			et: true,
 		},
@@ -1961,8 +1962,69 @@ const ELEMENTS = {
 			galQk: true,
 		},
 		{
-			desc: `Electron Power’s second effects are better.`,
+			desc: `Electron Power’s second effect is better.`,
 			cost: E("1.5e36556"),
+		},
+		{
+			desc: `Effects of Galactic Dark Energy and Galactic Bosons are better.`,
+			cost: E("3e81"),
+			galQk: true,
+		},
+		{
+			desc: `C1, C5 and C7 effects are changed.`,
+			cost: E("1.5e37556"),
+		},
+		{
+			desc: `Element 161 is cubed.`,
+			cost: E("1.5e2056"),
+			et: true,
+		},
+		{
+			desc: `Galactic Shards Effect affects base Galactic Radiation gain.`,
+			cost: E("1e83"),
+			galQk: true,
+		},
+		{
+			desc: `C18 effect is better.`,
+			cost: E("1.5e38206"),
+		},
+		{
+			desc: `Entropic Evaporation^2 is 75% weaker. Remove some Entropic softcaps.`,
+			cost: E("1.5e2056"),
+			et: true,
+		},
+		{
+			desc: `The effect softcap of Galactic Power is weaker.`,
+			cost: E("2e84"),
+			galQk: true,
+		},
+		{
+			desc: `Particle Power’s first effects are squared.`,
+			cost: E("1.5e57386"),
+		},
+		{
+			desc: `Neutron Power’s second effect is better.`,
+			cost: E("1.5e2156"),
+			et: true,
+		},
+		{
+			desc: `The Entropy Cap boost of Supernova Galaxies is better.`,
+			cost: E("4e85"),
+			galQk: true,
+		},
+		{
+			desc: `Tickspeed Effect is better.`,
+			cost: E("1.5e64256"),
+		},
+		{
+			desc: `Atomic Power softcaps are weaker.`,
+			cost: E("1.5e2216"),
+			et: true,
+		},
+		{
+			desc: `Reach the current endgame.`,//`Unlock a new layer.`,
+			cost: E("5e86"),
+			galQk: true,
 		},
 	],
     /*
@@ -1978,7 +2040,7 @@ const ELEMENTS = {
     */
     getUnlLength() {
 		
-		if(hasElement(291))return 346;
+		if(hasElement(291))return 359;
 		if(hasElement(290))return 291;
 		if(player.superGal.gte(10))return 290;
 		if(player.superGal.gte(1))return 218;

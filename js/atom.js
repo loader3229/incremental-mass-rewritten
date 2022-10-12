@@ -94,7 +94,7 @@ const ATOM = {
             let x = player.atom.atomic.max(1).log(player.ranks.hex.gte(23)?1.2:hasElement(23)?1.5:1.75).pow(getEnRewardEff(1))
             if (!hasElement(75)) x = x.softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?6e5:5e4,hasUpgrade("atom",19)?0.9:0.75,0).softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?4.8e7:4e6,hasUpgrade("atom",19)?0.5:0.25,0)
             if (!hasElement(337)) x = x.softcap(hasUpgrade("atom",13)?(player.prestiges[0].gte(50)?1.2e11:1e11):1e10,hasUpgrade("atom",19)?0.105:0.1,0)
-			x = overflow(x,"ee9",hasElement(337)?0.3:0.25);
+			x = overflow(x,"ee9",hasElement(358)?0.5:hasElement(337)?0.3:0.25);
             return x.floor()
         },
     },
@@ -195,6 +195,7 @@ const ATOM = {
 					a = a.pow(5);
 					b = a;
 					if(player.ranks.hex.gte(29))b = b.pow(2);
+					if(hasElement(354))a = a.pow(2);
 				}
 				
 				a = a.pow(galParticleEffect(0));
@@ -210,6 +211,8 @@ const ATOM = {
                 :player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(100).mul(x.max(1).log(100)).root(3))
 				
 				b = overflow(b,"ee28000000",0.5);
+				if(hasElement(354))a = a.pow(2);
+				if(hasElement(355))b = b.add(1).log10().add(1).log10().add(1);
 				
 				a = a.pow(galParticleEffect(1));
 				b = b.pow(galParticleEffect(1));
@@ -220,6 +223,7 @@ const ATOM = {
                 let b = hasElement(30) ? x.add(1).log2().pow(1.2).mul(0.01) : x.add(1).pow(2).log2().mul(0.01)
 				if(player.ranks.hex.gte(30))b = x.add(1).log2().pow(2);
 				if(hasElement(346))b = a;
+				if(hasElement(354))a = a.pow(2);
 				
 				a = a.pow(galParticleEffect(2));
 				b = b.pow(galParticleEffect(2));
@@ -233,9 +237,10 @@ const ATOM = {
                 `Adds Tickspeed Power by ${format(x.eff2.mul(100))}%`)
 			},
             x=>{ return `
-                Boosts Rage Power gain by ${hasElement(105)?"^"+format(x.eff1):format(x.eff1)+"x"}<br><br>
-                Makes Mass gain boosted by Rage Powers - ${format(x.eff2)}x<br><br>
-            ` },
+                Boosts Rage Power gain by ${hasElement(105)?"^"+format(x.eff1):format(x.eff1)+"x"}<br><br>`+
+				(hasElement(355)?`Makes Mass gain boosted by Rage Powers - ^`+format(x.eff2):
+                `Makes Mass gain boosted by Rage Powers - ${format(x.eff2)}x<br><br>`)
+            },
             x=>{ return `
                 Boosts Dark Matter gain by ${hasElement(105)?"^"+format(x.eff1):format(x.eff1)+"x"}<br><br>`+
 				(hasElement(346)?` Boosts BH Condenser Power by ^`+format(x.eff2):
@@ -346,6 +351,6 @@ function galParticleEffect(x){
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
 	ret=overflow(ret,1e7,0.2);
-	//ret=ret.min(2e9);
+	ret=overflow(ret,5252525252,0.05); // remove it
 	return ret;
 }

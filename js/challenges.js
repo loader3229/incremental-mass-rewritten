@@ -38,7 +38,9 @@ function updateChalHTML() {
             tmp.el.chal_ch_reset.setTxt(CHALS.getReset(player.chal.choosed))
             tmp.el.chal_ch_goal.setTxt("目标："+CHALS.getFormat(player.chal.choosed)(tmp.chal.goal[player.chal.choosed])+CHALS.getResName(player.chal.choosed))
             tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward)
+			if(player.chal.choosed == 1)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
 			if(player.chal.choosed == 5)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
+			if(player.chal.choosed == 7)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
             tmp.el.chal_ch_eff.setHTML("Currently: "+chal.effDesc(tmp.chal.eff[player.chal.choosed]))
         }
     }
@@ -348,7 +350,10 @@ const CHALS = {
     1: {
         title: "即时折算",
         desc: "Super Ranks, Mass Upgrades starts at 25. In addtional, Super Tickspeed start at 50.",
-        reward: `Super Ranks starts later, Super Tickspeed scaling weaker by completions.`,
+        reward() {
+			if(hasElement(348))return `Meta-Tickspeed scaling starts later.`;
+			return `Super Ranks starts later, Super Tickspeed scaling weaker by completions.`
+		},
         max: E(100),
         inc: E(5),
         pow: E(1.3),
@@ -358,7 +363,7 @@ const CHALS = {
             let tick = E(0.96).pow(x.root(2))
             return {rank: rank, tick: tick}
         },
-        effDesc(x) { return "+"+format(x.rank,0)+" later to Super Ranks, Super Tickspeed scaling "+format(E(1).sub(x.tick).mul(100))+"% weaker" },
+        effDesc(x) { if(hasElement(348))return format(x.rank.add(1),0)+"x later";return "+"+format(x.rank,0)+" later to Super Ranks, Super Tickspeed scaling "+format(E(1).sub(x.tick).mul(100))+"% weaker" },
     },
     2: {
         unl() { return player.chal.comps[1].gte(1) || player.atom.unl },
@@ -418,6 +423,7 @@ const CHALS = {
         title: "移除级别",
         desc: "You cannot rank up.",
         reward() {
+			if(hasElement(348))return `Meta-Pent scaling starts later. Blue chroma affects this effect, but at a reduced rate.`;
 			if(hasElement(265))return `Meta-Tetr scaling starts later.`;
 			if(hasElement(230))return `Meta-Tier scaling starts later.`;
 			if(hasElement(170))return `Meta-Rank scaling starts later.`;
@@ -428,6 +434,7 @@ const CHALS = {
         pow: E(1.25),
         start: E(1.5e136),
         effect(x) {
+			if(hasElement(348))return x.add(1).log10().mul(player.chal.comps[5]).cbrt().add(1);
 			if(hasElement(170))return x.pow(hasElement(230)?1:hasElement(199)?0.8:0.6).add(1);
             let ret = E(0.97).pow(x.root(2).softcap(5,0.5,0));
             return ret
@@ -453,7 +460,10 @@ const CHALS = {
         unl() { return player.chal.comps[6].gte(1) || player.supernova.times.gte(1) || quUnl() },
         title: "明镜止水",
         desc: "You cannot gain Rage Powers, but Dark Matters are gained by mass instead of Rage Powers at a reduced rate.<br>In addtional, mass gain softcap is stronger.",
-        reward: `Completions adds 2 maximum completions of 1-4 Challenge.<br><span class="yellow">On 16th completion, unlock Elements</span>`,
+        reward() {
+			if(hasElement(348))return `Rage Powers gain are raised by completions. Blue chroma affects this effect, but at a reduced rate.<br><span class="yellow">On 16th completion, unlock Elements</span>`;
+			return `Completions adds 2 maximum completions of 1-4 Challenge.<br><span class="yellow">On 16th completion, unlock Elements</span>`
+		},
         max: E(50),
         inc: E(64),
         pow: E(1.25),
@@ -463,7 +473,7 @@ const CHALS = {
             if (hasElement(5)) ret = ret.mul(2)
             return ret.floor()
         },
-        effDesc(x) { return "+"+format(x,0) },
+        effDesc(x) { if(hasElement(348))return "^"+format(E(2).pow(player.chal.comps[7].mul(x.add(1).log10()).pow(0.625).add(1)));return "+"+format(x,0) },
     },
     8: {
         unl() { return player.chal.comps[7].gte(1) || player.supernova.times.gte(1) || quUnl() },
@@ -632,6 +642,7 @@ const CHALS = {
         pow: E(9),
         start: E('ee2683'),
         effect(x) {
+			if(hasElement(351))return x.add(1).log10().add(1).log10().mul(1.75).pow(2);
             let ret = x.add(1).log10().add(1).log10().add(1).log10().softcap(0.09,hasElement(233)?1:0.25,0).mul(hasElement(233)?4.2:1);
             return ret
         },

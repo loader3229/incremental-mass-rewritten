@@ -795,6 +795,8 @@ const PRESTIGES = {
             "11": `Renown boost Prestige Stronger Power.`,
             "12": `Renown boost Galactic Quarks gain.`,
             "13": `Remove Super Honor scaling.`,
+            "17": `Renown boost Infinity and Eternal Mass gain.`,
+            "18": `Add +5% to Glory 59's effectiveness`,
 		},
     ],
     rewardEff: [
@@ -964,6 +966,7 @@ const PRESTIGES = {
             },x=>"x"+x.format()+" to power"],
             "59": [_=>{
                 let x = 5;
+				if (hasPrestige(3,18))x += 5;
                 return x
             },x=>x+"% effectiveness"],
 		},
@@ -979,6 +982,10 @@ const PRESTIGES = {
             },x=>"x"+x.format()+" to power"],
             "12": [_=>{
                 let x = player.prestiges[3].add(1).pow(2);
+                return x
+            },x=>"x"+x.format()],
+            "17": [_=>{
+                let x = Decimal.pow(4,player.prestiges[3]);
                 return x
             },x=>"x"+x.format()],
 		},
