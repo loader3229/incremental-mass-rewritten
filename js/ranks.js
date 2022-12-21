@@ -827,7 +827,7 @@ const PRESTIGES = {
                 return [player.prestigeMass.add(1),(player.qu.points||E(0)).add(10).log10().sqrt()];
             },x=>x[0].format()+"x to Quantum Foams, "+x[1].format()+"x to Prestige Mass"],
             "98": [_=>{
-                return [player.prestigeMass.add(1).log10().pow(2),(player.qu.rip.amt||E(0)).add(10).log10().sqrt()];
+                return [player.prestigeMass.add(10).log10().pow(2),(player.qu.rip.amt||E(0)).add(10).log10().sqrt()];
             },x=>x[0].format()+"x to Death Shards, "+x[1].format()+"x to Prestige Mass"],
 			"110": [_=>{
                 let x = player.atom.powers[0].add(1).log10().add(1).log10();

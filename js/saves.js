@@ -345,6 +345,15 @@ function loadPlayer(load) {
 		alert("Saves from Incremental Mass Rewritten Vanilla 1.0 beta or above is not supported in this NG+ Version!");
 		return true;
 	}
+	if(load.dark){
+		let check=false;
+		if(new Decimal(load.dark.rays).gt(0))check=true;
+		if(new Decimal(load.dark.shadow).gt(0))check=true;
+		if(check){
+			alert("Saves from Incremental Mass Rewritten Vanilla 0.6 or above is not supported in this NG+ Version!");
+			return true;
+		}else delete load.dark;
+	}
     player = deepNaN(load, DATA)
     player = deepUndefinedAndDecimal(player, DATA)
     convertStringToDecimal()
