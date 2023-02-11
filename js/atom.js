@@ -351,6 +351,6 @@ function galParticleEffect(x){
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
 	ret=overflow(ret,1e7,0.2);
-	ret=overflow(ret,5252525252,0.05); // remove it
+	ret=overflow(ret,5.1e9,0.4);
 	return ret;
 }

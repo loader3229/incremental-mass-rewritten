@@ -240,6 +240,8 @@ const SUPERNOVA_GALAXY = {
 		}
 		if(hasElement(294))ret = ret.mul(player.supernova.fermions.tiers[3][5].add(1).pow(2));
 		if(hasElement(339))ret = ret.mul(tmp.elements.effect[339]);
+		
+		if (player.exotic.times.gte(3))ret = ret.mul(player.exotic.times);
 		return ret;
 	},
 }

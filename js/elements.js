@@ -129,7 +129,7 @@ function setupHTML() {
 		for (let y = 1; y <= UPGS.main[x].lens; y++) {
 			let key = UPGS.main[x][y]
 			table += `<img onclick="UPGS.main[${x}].buy(${y})" onmouseover="UPGS.main.over(${x},${y})" onmouseleave="UPGS.main.reset()"
-			 style="margin: 3px;" class="img_btn" id="main_upg_${x}_${y}" src="images/main_upg_${id+y}.png">`
+			 style="margin: 3px;" class="img_btn" id="main_upg_${x}_${y}" src="images/main_upg_${x==6?'placeholder':(id+y)}.png">`
 		}
 		table += `</div><br><button id="main_upg_${x}_auto" class="btn" style="width: 80px;" onclick="player.auto_mainUpg.${id} = !player.auto_mainUpg.${id}">OFF</button></div>`
 	}
@@ -157,6 +157,7 @@ function setupHTML() {
 	setupFermionsHTML()
 	setupRadiationHTML()
 	setupQuantumHTML()
+	setupExoticHTML()
 
 	/*
 	function setupTestHTML() {
@@ -256,6 +257,10 @@ function updateUpperHTML() {
 	unl = (hasElement(291))
 	tmp.el.superGal_div.setDisplay(unl)
 	if (unl) tmp.el.superGalAmt.setHTML(format(player.superGal,0)+"<br>(+"+format(SUPERNOVA_GALAXY.bulk().sub(player.superGal).max(0),0)+")")
+		
+	unl = (hasElement(359))
+	tmp.el.exotic_div.setDisplay(unl)
+	if (unl) tmp.el.exoticAmt.setHTML(format(player.exotic.points,0)+"<br>(+"+format(EXOTIC.gain(),0)+")")
 }
 
 function updateMassUpgradesHTML() {
@@ -264,6 +269,7 @@ function updateMassUpgradesHTML() {
 		tmp.el["massUpg_div_"+x].setDisplay(upg.unl() && tmp.rank_tab == 0)
 		if (upg.unl()) {
 			tmp.el["massUpg_scale_"+x].setTxt(getScalingName("massUpg", x))
+			if(x==4)tmp.el["massUpg_scale_"+x].setTxt(getScalingName("massUpg4", x))
 			tmp.el["massUpg_lvl_"+x].setTxt(format(player.massUpg[x]||0,0)+(tmp.upgs.mass[x].bonus.gt(0)?" + "+format(tmp.upgs.mass[x].bonus,0):""))
 			tmp.el["massUpg_btn_"+x].setClasses({btn: true, locked: player.mass.lt(tmp.upgs.mass[x].cost)})
 			tmp.el["massUpg_cost_"+x].setTxt(formatMass(tmp.upgs.mass[x].cost))
@@ -476,7 +482,7 @@ function updateHTML() {
 				tmp.el.massSoftStart10.setTxt(formatMass(tmp.massSoftGain9))
 				
 				
-				tmp.el.massOverflow.setDisplay(tmp.massGain.gte(tmp.massOverflowStart))
+				tmp.el.massOverflow.setDisplay(tmp.massGain.gte(tmp.massOverflowStart) && !hasUpgrade('exotic',1))
 				tmp.el.massOverflow2.setTxt(format(tmp.massOverflow))
 				tmp.el.rankCollapse.setDisplay(tmp.rankCollapse.gt(1))
 				tmp.el.rankCollapse2.setTxt(format(tmp.rankCollapse))
@@ -512,6 +518,9 @@ function updateHTML() {
 			if (tmp.stab[4] == 4) updateAtomHTML()
 		}
 		if (tmp.tab == 7) {
+			updateExoticHTML()
+		}
+		if (tmp.tab == 8) {
 			updateOptionsHTML()
 		}
 	}

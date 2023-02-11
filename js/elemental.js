@@ -1077,6 +1077,7 @@ const ELEMENTS = {
 				if(hasElement(244))x = expMult((player.massUpg[2]||E(1)),0.4);
 				if(hasElement(283))x = overflow(expMult((player.massUpg[2]||E(1)),0.875),"e3500000",0.5);
 				if(hasElement(328))x = expMult((player.massUpg[2]||E(1)),0.875);
+				if(hasElement(360))x = expMult((player.massUpg[2]||E(1)),0.886);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1089,6 +1090,7 @@ const ELEMENTS = {
 				if(hasElement(244))x = expMult((player.massUpg[1]||E(1)),0.4);
 				if(hasElement(283))x = overflow(expMult((player.massUpg[1]||E(1)),0.875),"e3500000",0.5);
 				if(hasElement(328))x = expMult((player.massUpg[1]||E(1)),0.875);
+				if(hasElement(360))x = expMult((player.massUpg[1]||E(1)),0.886);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -2022,8 +2024,22 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Reach the current endgame.`,//`Unlock a new layer.`,
+			desc: `Unlock a new layer.`,
 			cost: E("5e86"),
+			galQk: true,
+		},
+		{
+			desc: `Effects of elements 173 and 174 are better.`,
+			cost: E("1.5e70056"),
+		},
+		{
+			desc: `Meta-Hex starts 1.5x later.`,
+			cost: E("1.5e2556"),
+			et: true,
+		},
+		{
+			desc: `Reach the current endgame.`,
+			cost: E("1e100"),
 			galQk: true,
 		},
 	],
@@ -2040,6 +2056,7 @@ const ELEMENTS = {
     */
     getUnlLength() {
 		
+		if(player.exotic.times.gte(1))return 362;
 		if(hasElement(291))return 359;
 		if(hasElement(290))return 291;
 		if(player.superGal.gte(10))return 290;

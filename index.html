@@ -22,6 +22,8 @@
     <script src="js/saves.js"></script>
     <script src="js/challenges.js"></script>
 	
+    <script src="js/exotic/exotic.js"></script>
+	
     <script src="js/infinity/infinity.js"></script>
 	
     <script src="js/quantum/big_rip.js"></script>
@@ -239,6 +241,9 @@
                     </div><div class="resources sml quark_color" id="galQk_div">
                         <div tooltip="星系夸克" t-size="small"><img class="res_img" src="images/sgq.png"></div>
                         <span style="margin-left: 5px; text-align: left;" id="galQkAmt">X</span>
+                    </div><div class="resources sml red" id="exotic_div">
+                        <div tooltip="Exotic Matter" t-size="small"><img class="res_img" src="images/exotic.png" onclick="EXOTIC.enter()" onmousemove="FORMS.reset_msg.set('exotic')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
+                        <span style="margin-left: 5px; text-align: left;" id="exoticAmt">X</span>
                     </div>
                 </div>
             </div>
@@ -553,6 +558,55 @@
                 <div id="en_table" class="table_center"></div>
             </div>
         </div><div id="tab_frame7">
+            <div id="stab_frame7_0">
+                You have <span id="exotic_times">0</span> Exotic resets.<br><br>
+                <div id="ex_milestones_table"></div>
+            </div>
+            <div id="stab_frame7_1">
+                You Quantized <span id="rcb0_times">0</span> times.<br>
+                You Infinitied <span id="rcb1_times">0</span> times.<br>
+                You Eternitied <span id="rcb2_times">0</span> times.<br><br>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/qu.png">
+                            <span style="margin-left: 5px; text-align: left;"><span id="rcb0_scale"></span>Quantum Count Boosters [<span id="rcb0_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="rcb0_btn" class="btn" style="width: 200px;" onclick="EXOTIC.rcb.buy(0)">Cost: <span id="rcb0_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.rcb.buyMax(0)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Quantum Count Boosters Power: <span id="rcb0_pow">X</span>x<br>
+                        Quantum Count Boosters Effect: <span id="rcb0_eff">X</span>x
+                    </div>
+                </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/inf.png">
+                            <span style="margin-left: 5px; text-align: left;"><span id="rcb1_scale"></span>Infinity Count Boosters [<span id="rcb1_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="rcb1_btn" class="btn" style="width: 200px;" onclick="EXOTIC.rcb.buy(1)">Cost: <span id="rcb1_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.rcb.buyMax(1)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Infinity Count Boosters Power: <span id="rcb1_pow">X</span>x<br>
+                        Infinity Count Boosters Effect: <span id="rcb1_eff">X</span>x
+                    </div>
+                </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/et.png">
+                            <span style="margin-left: 5px; text-align: left;"><span id="rcb2_scale"></span>Eternity Count Boosters [<span id="rcb2_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="rcb2_btn" class="btn" style="width: 200px;" onclick="EXOTIC.rcb.buy(2)">Cost: <span id="rcb2_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.rcb.buyMax(2)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Eternity Count Boosters Power: <span id="rcb2_pow">X</span>x<br>
+                        Eternity Count Boosters Effect: <span id="rcb2_eff">X</span>x
+                    </div>
+                </div>
+            </div>
+        </div><div id="tab_frame8">
             <button class="btn" onclick="save()">Save</button>
             <button class="btn" onclick="if (confirm('您想要彻底重置当前的进度，从头开始玩吗？')) {wipe(true)}">Hard Reset</button>
             <button class="btn" onclick="exporty()">Export</button>

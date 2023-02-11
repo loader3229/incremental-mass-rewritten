@@ -175,7 +175,7 @@ function getPlayerData() {
         },
         prestiges: [],
         prestigeMass: E(0),
-        prestigeMassUpg: [E(0), E(0), E(0), E(0)],
+        prestigeMassUpg: [E(0), E(0), E(0), E(0), E(0)],
         auto_mainUpg: {
             
         },
@@ -308,6 +308,11 @@ function getPlayerData() {
 			trap: 0,
 			shard: E(0),
             active: false,
+		},
+		exotic: {
+			points: E(0),
+			times: E(0),
+			rcb: [E(0), E(0), E(0), E(0)],
 		},
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))

@@ -19,6 +19,7 @@ const SCALE_START = {
 		prestige1: E(7),
 		prestige2: E(10),
 		superGal: E(50),
+		massUpg4: E(1000),
     },
 	hyper: {
 		rank: E(120),
@@ -93,6 +94,7 @@ const SCALE_POWER= {
 		prestige1: 1.5,
 		prestige2: 1.3,
 		superGal: 1.5,
+		massUpg4: 3,
     },
 	hyper: {
 		rank: 2.5,
@@ -165,6 +167,7 @@ const SCALING_RES = {
 	oct(x=0) { return player.ranks.oct },
 	tickspeed(x=0) { return player.tickspeed },
     massUpg(x=1) { return E(player.massUpg[x]||0) },
+    massUpg4(x=4) { return E(player.massUpg[x]||0) },
 	bh_condenser(x=0) { return player.bh.condenser },
 	gamma_ray(x=0) { return player.atom.gamma_ray },
 	supernova(x=0) { return player.supernova.times },
@@ -187,6 +190,7 @@ const NAME_FROM_RES = {
 	hept: "Hept",
 	oct: "Oct",
 	massUpg: "Mass Upgrades",
+	massUpg4: "Overpower",
 	tickspeed: "Tickspeed",
 	bh_condenser: "Black Hole Condenser",
 	gamma_ray: "Cosmic Ray",
@@ -307,6 +311,10 @@ function getScalingStart(type, name) {
 			if (hasElement(309)) start = start.mul(1.5)
 			if (hasElement(342)) start = start.mul(1.5)
 		}
+		if (name=="superGal") {
+			if (hasUpgrade('exotic',1)) start = start.add(5)
+			if (hasPrestige(3,19)) start = start.add(5)
+		}
 	}
 	if (type=="hyper") {
 		if (name=="tickspeed") {
@@ -363,10 +371,13 @@ function getScalingStart(type, name) {
 			if (hasElement(275))start = start.mul(tmp.fermions.effs[3][3]||1)
             if (hasElement(324))start = start.mul(tmp.elements.effect[324])
             if (hasElement(348))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
+				
+            if (player.qu.times.gte(1e275) && player.exotic.times.gte(1))start = start.mul(100)
 		}
 		if (name=="hex") {
             if (hasElement(325))start = start.mul(1.5)
             if (hasElement(344))start = start.mul(1.5)
+            if (hasElement(361))start = start.mul(1.5)
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -438,6 +449,8 @@ function getScalingStart(type, name) {
 	if (name=="hex" && type=="super") if (player.ranks.oct.gte(20))return EINF;
 	if (name=="fTier" && type=="ultra") if (hasPrestige(2,47))return EINF;
 	if (name=="massUpg") if (hasPrestige(2,37))return EINF;
+	if (name=="hex" && type=="hyper") if (hasPrestige(2,145))return EINF;
+	if (name=="hept" && type=="super") if (hasPrestige(3,20))return EINF;
 	return start.floor()
 }
 
@@ -651,6 +664,7 @@ function getScalingPower(type, name) {
 		if (name=="hept") {
 			if (hasPrestige(2,59)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(3,18)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+			if (hasPrestige(2,140)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 		}
 		if (name=="prestige2") {
 			if (hasPrestige(3,4)) power = power.mul(tmp.prestigeMassEffect)

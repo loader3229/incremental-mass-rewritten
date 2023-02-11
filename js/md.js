@@ -223,7 +223,7 @@ const MASS_DILATION = {
         upgs: {
             buy(x) {
                 if (tmp.bd.upgs[x].can) {
-                    player.md.break.mass = player.md.break.mass.sub(this.ids[x].cost(tmp.bd.upgs[x].bulk.sub(1))).max(0)
+					if (!player.md.break.mass.gte("ee14"))player.md.break.mass = player.md.break.mass.sub(this.ids[x].cost(tmp.bd.upgs[x].bulk.sub(1))).max(0)
                     player.md.break.upgs[x] = player.md.break.upgs[x].max(tmp.bd.upgs[x].bulk)
 
                     if (x == 2) {

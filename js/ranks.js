@@ -279,6 +279,7 @@ const RANKS = {
 			'17': "Meta-Hex is 99.6% weaker.",
 			'20': "Remove Super Hex scaling. Oct 1's effect is applied to Ultra/Meta Hex scalings.",
 			'21': "Accelerator effect softcap^2 starts 2x later, and is weaker.",
+			'29': "Accelerator effect softcap^2 starts 2x later, and is weaker.",
 		},
     },
     effect: {
@@ -780,6 +781,12 @@ const PRESTIGES = {
             "81": `Stronger Overflow is weaker.`,
             "84": `Meta-Prestige Level starts 2x later.`,
             "98": `Ultra Glory starts 6 later.`,
+            "140": `Add +5% to Glory 59's effectiveness`,
+            "141": `Glory boost Exotic Matter gain.`,
+            "145": `Remove Hyper Hex scaling.`,
+            "146": `Galactic Shards boost Quantizes.`,
+            "147": `Galactic Shards boost Infinities.`,
+            "148": `Galactic Shards boost Eternities.`,
 		},
 		{
             "1": `Remove Hyper Prestige Level scaling.`,
@@ -797,6 +804,8 @@ const PRESTIGES = {
             "13": `Remove Super Honor scaling.`,
             "17": `Renown boost Infinity and Eternal Mass gain.`,
             "18": `Add +5% to Glory 59's effectiveness`,
+            "19": `Super Supernova Galaxies starts 5 later.`,
+            "20": `Remove Super Hept scaling.`,
 		},
     ],
     rewardEff: [
@@ -967,8 +976,25 @@ const PRESTIGES = {
             "59": [_=>{
                 let x = 5;
 				if (hasPrestige(3,18))x += 5;
+				if (hasPrestige(2,140))x += 5;
                 return x
             },x=>x+"% effectiveness"],
+            "141": [_=>{
+                let x = player.prestiges[2].div(100).add(1);
+                return x
+            },x=>"x"+x],
+            "146": [_=>{
+                let x = player.gc.shard.add(1);
+                return x
+            },x=>"x"+x],
+            "147": [_=>{
+                let x = player.gc.shard.add(1);
+                return x
+            },x=>"x"+x],
+            "148": [_=>{
+                let x = player.gc.shard.add(1);
+                return x
+            },x=>"x"+x],
 		},
 		{
             "3": [_=>{
@@ -1084,14 +1110,17 @@ function updateRanksTemp() {
 	tmp.prestigeMassGain = prestigeMassGain()
 	tmp.prestigeMassEffect = prestigeMassEffect()
 	
-	if(hasPrestige(2,1)){
+	if(hasPrestige(2,1) || player.exotic.times.gte(2)){
 		player.prestiges[0] = player.prestiges[0].max(PRESTIGES.bulk(0));
 	}
-	if(hasPrestige(2,10)){
+	if(hasPrestige(2,10) || player.exotic.times.gte(2)){
 		player.prestiges[1] = player.prestiges[1].max(PRESTIGES.bulk(1));
 	}
-	if(hasPrestige(3,8)){
+	if(hasPrestige(3,8) || player.exotic.times.gte(2)){
 		player.prestiges[2] = player.prestiges[2].max(PRESTIGES.bulk(2));
+	}
+	if(player.exotic.times.gte(2)){
+		player.prestiges[3] = player.prestiges[3].max(PRESTIGES.bulk(3));
 	}
 }
 

@@ -111,6 +111,9 @@ function resetTemp() {
         gc: {
             
         },
+        ex: {
+			rcb_cost:{},rcb_can:{},rcb_eff:{},rcb_bulk:{},
+        },
         prevSave: "",
     }
     for (let x = 0; x < PRES_LEN; x++) tmp.prestiges.eff[x] = {}
@@ -219,6 +222,8 @@ function updateTemp() {
     tmp.offlineActive = player.offline.time > 1
     tmp.offlineMult = tmp.offlineActive?player.offline.time+1:1
 
+    updateExoticTemp()
+	
     updateGCTemp()
 	
     updateInfinityTemp()

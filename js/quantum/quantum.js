@@ -24,8 +24,12 @@ const QUANTUM = {
         if (hasTree("qu_qol11")) x = x.mul(10)
         if (hasUpgrade('inf',1)) x = x.mul(player.inf.times.add(200))
         if (hasElement(216)) x = x.mul(tmp.elements.effect[216])
-			
+		if (player.exotic.times.gte(3)) x = x.mul(player.exotic.times);
+	
         x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
+		
+		if (hasUpgrade('exotic',5)) x = x.mul(tmp.ex.rcb_eff[0].eff);
+        if (hasPrestige(2,146)) x = x.mul(prestigeEff(2,146,E(1)));
         return x
     },
     enter(auto=false,force=false,rip=false,bd=false) {
@@ -158,6 +162,9 @@ const QUANTUM = {
         [E(6), `Double Quantum Foam gain.`],
         [E(8), `Pre-Quantum global speed can affect Blueprint Particle & Chroma at a reduced rate.`],
         [E(10), `Supernova stars are boosted by Quantum times (capped at 1e10). Unlock Auto-Quantum.`],
+        [E(1e255), `Triple Exotic Matter gain.`],
+        [E(1e275), `Meta-Pent starts 100x later.`],
+        [E(Number.MAX_VALUE), `Quantum times add to Infinity Mass gain formula.`],
     ],
     auto: {
         mode: ["Amount","Time"],
@@ -348,6 +355,9 @@ function updateQuantumHTML() {
             for (let x = 0; x < QUANTUM.mils.length; x++) {
                 tmp.el['qu_mil'+x].changeStyle('background-color',tmp.qu.mil_reached[x]?'#2f22':'#4442')
                 tmp.el['qu_mil_goal'+x].setTxt(format(QUANTUM.mils[x][0],0))
+            }
+			for (let x = 7; x < QUANTUM.mils.length; x++) {
+                tmp.el['qu_mil'+x].changeStyle('display',player.exotic.times.gte(1)?'':'none')
             }
         }
         if (tmp.stab[6] == 2) {

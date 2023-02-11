@@ -67,6 +67,8 @@ const INFINITY_LAYER = {
 		if (hasElement(120)) x = x.mul(tmp.elements.effect[120]);
 		if (hasElement(123)) x = x.mul(tmp.elements.effect[123]);
         x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
+        if (hasUpgrade('exotic',5)) x = x.mul(tmp.ex.rcb_eff[1].eff);
+        if (hasPrestige(2,147)) x = x.mul(prestigeEff(2,147,E(1)));
         return x
     },
     enter() {
@@ -154,6 +156,9 @@ const ETERNITY_LAYER = {
 		if (hasElement(217)) x = x.mul(tmp.elements.effect[217]);
 		if (hasElement(243)) x = x.mul(tmp.elements.effect[243]);
         x = x.mul(SUPERNOVA_GALAXY.effects.qut2())
+		if (hasUpgrade('exotic',1))x = x.mul(player.exotic.times.add(200))
+        if (hasUpgrade('exotic',5)) x = x.mul(tmp.ex.rcb_eff[2].eff);
+        if (hasPrestige(2,148)) x = x.mul(prestigeEff(2,148,E(1)));
         return x
     },
     enter() {

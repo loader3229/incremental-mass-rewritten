@@ -18,6 +18,7 @@ const TABS = {
         { id: "Atom", unl() { return player.atom.unl }, style: "atom" },
         { id: "Supernova", unl() { return player.supernova.times.gte(1) || quUnl() || player.superGal.gte(1)}, style: "sn" },
         { id: "Quantum", unl() { return quUnl() }, style: "qu" },
+        { id: "Exotic", unl() { return player.exotic.times.gte(1) }, style: "red" },
         { id: "Options" },
     ],
     2: {
@@ -61,6 +62,10 @@ const TABS = {
             { id: "Auto-Quantum", unl() { return tmp.qu.mil_reached[6] } },
             { id: "Primordium", unl() { return PRIM.unl() } },
             { id: "Entropy", unl() { return player.qu.en.unl } },
+        ],
+        7: [
+            { id: "Exotic Milestones" },
+            { id: "RC Boosters", unl() { return hasUpgrade("exotic",5) } },
         ],
     },
 }
