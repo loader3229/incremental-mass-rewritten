@@ -126,6 +126,8 @@ var cnItems = {
     ' Quantum Foam': '量子泡沫',
     'Cosmic Strings Power': '宇宙弦倍率',
     'Cosmic Strings Effect': '宇宙弦效果',
+    'Exotic Matter': '奇异物质',
+    ' Exotic Matter': '奇异物质',
     //#endregion
     //#region 统计
     'Rank': '级别',
@@ -189,6 +191,8 @@ var cnItems = {
     'Cosmic Ray effect softcap starts x10 later.': '使宇宙射线效果的软上限延迟10倍出现。',
     'Tickspeed, Black Hole Condenser and Cosmic Ray scalings up to Meta start x10 later.': '使时间速度、黑洞压缩器和宇宙射线到元折算为止的所有折算延迟10倍出现。',
     'Reduce Cosmic Ray scaling by 20%.': '使宇宙射线的所有折算弱化20%。',
+    'Tickspeed, Black Hole Condenser and Cosmic Ray scalings up to Meta start x12 later.': '使时间速度、黑洞压缩器和宇宙射线到元折算为止的所有折算延迟12倍出现。',
+    'Reduce Cosmic Ray scaling by 24%.': '使宇宙射线的所有折算弱化24%。',
     'Big Rip Upgrades': '大撕裂升级',
     'Start with Hydrogen-1 unlocked in Big Rip.': '在大撕裂中，初始状态下就解锁氢(1H)。',
     'Mass Upgrades & Ranks are no longer nerfed by 8th QC modifier.': '使质量升级和级别不再受到量子挑战8的削弱。',
@@ -769,6 +773,10 @@ var cnItems = {
     'Double Quantum Foam gain.': '使量子泡沫获取速度翻倍。',
     'Pre-Quantum global speed can affect Blueprint Particle & Chroma at a reduced rate.': '使量子之前所有资源获取速度可以加成蓝图粒子和色度获取速度，只是效果倍率降低。',
     'Supernova stars are boosted by Quantum times (capped at 1e10). Unlock Auto-Quantum.': '使前往量子次数可以加成超新星星辰(上限为1e10)。解锁自动前往量子。',
+
+    'Triple Exotic Matter gain.': '使奇异物质获取变为原来的3倍。',
+    'Meta-Pent starts 100x later.': '使五重阶层的元折算延迟100倍出现。',
+	
     'Auto-Quantum': '自动前往量子',
     'Auto-Quantum Mode': '自动前往量子模式',
     'Amount': '数量',
@@ -1016,9 +1024,11 @@ var cnRegReplace = new Map([
     [/^Boosts Rage Power gain by (.+)x$/, '使狂怒能量获取速度变为原来的$1倍'], //原子等
     [/^Boosts Rage Power gain by \^(.*)$/, '使狂怒能量获取速度变为原来的$1次方'], //原子等
     [/^Makes Mass gain boosted by Rage Powers - (.+)x$/, '使狂怒能量可以加成质量获取速度 - 倍率为$1倍'], //原子等
+    [/^Makes Mass gain boosted by Rage Powers - \^(.*)$/, '使狂怒能量可以加成质量获取速度 - 质量获取速度变为原来的$1次方'], //原子等
     [/^Boosts Dark Matter gain by (.+)x$/, '使暗物质获取速度变为原来的$1倍'], //原子等
     [/^Boosts Dark Matter gain by \^(.*)$/, '使暗物质获取速度变为原来的$1次方'], //原子等
     [/^Adds BH Condenser Power by\s*(.*)$/, '使黑洞压缩器倍率增加$1'], //原子等
+    [/^ Boosts BH Condenser Power by \^(.*)$/, '使黑洞压缩器倍率变为原来的$1次方'], //原子等
     [/^Currently: (.+)x\s?$/, '目前效果：$1倍'], //原子等
     [/^Currently: (.+)x stronger$/, '目前效果：增加$1倍'], //原子等
     [/^Currently: (.+) later$/, '目前效果：延迟$1次出现'], //原子等

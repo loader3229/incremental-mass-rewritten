@@ -477,17 +477,17 @@ const UPGS = {
             },
             16: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "Remove Tickspeed Power Softcap.",
+                desc: "移除时间速度倍率的软上限。",
                 cost: E('ee99'),
             },
             17: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "The first Stronger Softcap is weaker.",
+                desc: "弱化第1个强化器软上限。",
                 cost: E('e2e101'),
             },
             18: {
                 unl() { return hasUpgrade('inf',15) },
-                desc() {return "Rage Power boost Infinity Mass."},
+                desc: "使狂怒能量可以加成无限质量获取速度。",
                 cost: E('e1e113'),
                 effect() {
                     let ret = player.rp.points.add(1).log10().add(1).log10().sub(111).max(1).log2().add(1);
@@ -499,12 +499,12 @@ const UPGS = {
             },
             19: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "Mass Overflow starts ^10 later.",
+                desc: "使质量溢出延迟10次方出现。",
                 cost: E('e2e123'),
             },
             20: {
                 unl() { return hasUpgrade('inf',15) && hasElement(134) },
-                desc() {return "Rage Power boost Accelerator Power."},
+                desc: "使狂怒能量可以加成加速器倍率。",
                 cost: E('ee151'),
                 effect() {
                     let ret = player.rp.points.add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.1);
@@ -656,17 +656,17 @@ const UPGS = {
             },
             16: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "The start of Black Hole Overflow is raised by 10.",
+                desc: "使黑洞溢出延迟10次方出现。",
                 cost: E('ee100'),
             },
             17: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "Remove mass of Black Hole formula softcap. Mass of Black Hole gain softcap is 10% weaker.",
+                desc: "移除黑洞质量公式软上限。使黑洞质量获取的软上限弱化10%。",
                 cost: E('e3e102'),
             },
             18: {
                 unl() { return hasUpgrade('inf',15) },
-                desc() {return "Dark Matter boost Infinity Mass."},
+                desc: "使暗物质可以加成无限质量获取速度。",
                 cost: E('e1e116'),
                 effect() {
                     let ret = player.bh.dm.add(1).log10().add(1).log10().sub(113).max(1).log2().add(1);
@@ -678,7 +678,7 @@ const UPGS = {
             },
             19: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "Black Hole effect exponentially boost mass gain.",
+                desc: "使暗物质可以加成质量获取速度。",
                 cost: E('e2e130'),
                 effect() {
 					if(hasElement(279))return expMult((tmp.bh?(tmp.bh.effect||E(1)):E(1)).add(1).log10(),0.8);
@@ -690,7 +690,7 @@ const UPGS = {
             },
             20: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "The first Black Hole Overflow effect is weaker.",
+                desc: "弱化第1个黑洞溢出效果。",
                 cost: E('ee170'),
             },
         },
@@ -826,17 +826,17 @@ const UPGS = {
             },
             16: {
                 unl() { return hasUpgrade('inf',15) },
-                desc() {return "Unlock more elements."},
+                desc: "解锁新的元素。",
                 cost: E('e1e88'),
             },
             17: {
                 unl() { return hasUpgrade('inf',15) },
-                desc() {return "Ultra Tier scaling is 20% weaker."},
+                desc: "使阶层的超究折算弱化20%。",
                 cost: E('e5e89'),
             },
             18: {
                 unl() { return hasUpgrade('inf',15) },
-                desc() {return "Atoms boost Infinity Mass."},
+                desc: "使原子可以加成无限质量获取速度。",
                 cost: E('e1e101'),
                 effect() {
                     let ret = player.atom.points.add(1).log10().add(1).log10().sub(99).max(1).log2().add(1);
@@ -848,12 +848,12 @@ const UPGS = {
             },
             19: {
                 unl() { return hasUpgrade('inf',15) },
-                desc() {return "Cosmic Ray effect softcaps are weaker."},
+                desc: "弱化宇宙射线效果的软上限。",
                 cost: E('e3e108'),
             },
             20: {
                 unl() { return hasUpgrade('inf',15) && hasElement(134) },
-                desc() {return "Atomic Powers boost Accelerator Power."},
+                desc: "使原子可以加成加速器倍率。",
                 cost: E('e2e124'),
                 effect() {
                     let ret = player.atom.atomic.add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.1);
@@ -986,7 +986,7 @@ const UPGS = {
             },
             20: {
                 unl() { return hasUpgrade('inf',15) },
-                desc: "Death Shards boost mass gain.",
+                desc: "使死寂碎片可以加成质量获取速度。",
                 cost: E("1e375"),
                 effect() {
                     let x = player.qu.rip.amt.add(1).log10().add(1).log10().add(1).pow(1.5);

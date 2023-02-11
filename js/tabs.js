@@ -18,7 +18,7 @@ const TABS = {
         { id: "Atom", unl() { return player.atom.unl }, style: "atom" },
         { id: "Supernova", unl() { return player.supernova.times.gte(1) || quUnl() || player.superGal.gte(1)}, style: "sn" },
         { id: "Quantum", unl() { return quUnl() }, style: "qu" },
-        { id: "Exotic", unl() { return player.exotic.times.gte(1) }, style: "red" },
+        { id: "奇异层级", unl() { return player.exotic.times.gte(1) }, style: "red" },
         { id: "Options" },
     ],
     2: {
