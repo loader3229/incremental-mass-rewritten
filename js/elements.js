@@ -326,6 +326,19 @@ function updateTickspeedHTML() {
 		tmp.el.accel_auto.setDisplay(FORMS.accel.autoUnl())
 		tmp.el.accel_auto.setTxt(player.autoAccel?"ON":"OFF")
 	}
+	tmp.el.prestige_tickspeed_div.setDisplay(hasPrestige(2,165) && tmp.rank_tab == 1)
+	if(hasPrestige(2,165)){
+		
+		let teff = tmp.prestigeTickspeedEffect
+		tmp.el.prestige_tickspeed_lvl.setTxt(format(player.prestigeTickspeed,0)+(teff.bonus.gte(1)?" + "+format(teff.bonus,0):""))
+		tmp.el.prestige_tickspeed_btn.setClasses({btn: true, locked: !FORMS.prestige_tickspeed.can()})
+		tmp.el.prestige_tickspeed_cost.setTxt(format(tmp.prestigeTickspeedCost,0))
+		tmp.el.prestige_tickspeed_step.setHTML(format(teff.step)+"x"
+		+(teff.step.gte(teff.ss)?" <span class='soft'>(softcapped)</span>":""))
+		tmp.el.prestige_tickspeed_eff.setTxt(format(teff.eff)+"x")
+		tmp.el.prestige_tickspeed_auto.setDisplay(FORMS.prestige_tickspeed.autoUnl())
+		tmp.el.prestige_tickspeed_auto.setTxt(player.autoPrestigeTickspeed?"ON":"OFF")
+	}
 }
 
 function updateRanksRewardHTML() {
@@ -426,6 +439,10 @@ function updateOptionsHTML() {
 		?(player.inf.times.gte(1) || player.superGal.gte(1))
 		:CONFIRMS[x] == "et"
 		?(player.et.times.gte(1) || player.superGal.gte(1))
+		:CONFIRMS[x] == "sg"
+		?(player.superGal.gte(1))
+		:CONFIRMS[x] == "exotic"
+		?(player.exotic.times.gte(1))
 		:(player[CONFIRMS[x]].unl || player.superGal.gte(1))
 
 		tmp.el["confirm_div_"+x].setDisplay(unl)

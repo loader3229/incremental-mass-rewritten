@@ -112,7 +112,7 @@ function resetTemp() {
             
         },
         ex: {
-			rcb_cost:{},rcb_can:{},rcb_eff:{},rcb_bulk:{},
+			rcb_cost:{},rcb_can:{},rcb_eff:{},rcb_bulk:{},exb_eff:{},
         },
         prevSave: "",
     }
@@ -168,6 +168,12 @@ function updateMassTemp() {
 }
 
 function updateTickspeedTemp() {
+	
+    tmp.prestigeTickspeedCost = E(2).pow(player.prestigeTickspeed).floor()
+    tmp.prestigeTickspeedBulk = E(0)
+    if (player.prestigeRP.gte(1)) tmp.prestigeTickspeedBulk = player.prestigeRP.max(1).log(2).add(1).floor()
+    tmp.prestigeTickspeedEffect = FORMS.prestige_tickspeed.effect()
+	
     tmp.accelUnl = hasElement(134)
 
     tmp.accelCost = FORMS.accel.cost()

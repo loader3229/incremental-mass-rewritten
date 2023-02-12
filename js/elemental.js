@@ -2038,7 +2038,7 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Reach the current endgame.`,
+			desc: `Softcap of effect of Beta Particles in Galactic Challange starts later. Double Galactic Shards gain.`,
 			cost: E("1e100"),
 			galQk: true,
 		},

@@ -13,6 +13,10 @@ const ATOM = {
         x = x.pow(tmp.prim.eff[3][0])
         if (hasElement(111)) x = x.pow(tmp.elements.effect[111])
 
+			
+			if(hasUpgrade('exotic',11) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[2])
+				
+			
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
         if (FERMIONS.onActive("10")) x = expMult(x,0.625)
 			
@@ -216,6 +220,10 @@ const ATOM = {
 				
 				a = a.pow(galParticleEffect(1));
 				b = b.pow(galParticleEffect(1));
+				
+				if(hasUpgrade('exotic',13))a = a.pow(5);
+				if(hasUpgrade('exotic',13))b = b.pow(5);
+				
                 return {eff1: a, eff2: b}
             },
             x=>{
@@ -227,6 +235,11 @@ const ATOM = {
 				
 				a = a.pow(galParticleEffect(2));
 				b = b.pow(galParticleEffect(2));
+				
+				
+				if(hasUpgrade('exotic',13))a = a.pow(5);
+				if(hasUpgrade('exotic',13))b = b.pow(5);
+				
                 return {eff1: a, eff2: b}
             },
         ],

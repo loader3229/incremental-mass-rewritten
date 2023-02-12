@@ -260,7 +260,8 @@ function calcEntropy(dt, dt_offline) {
 		s1 = s1.mul(getEnRewardEff(2));
 		if(player.qu.en.eth[2].lt(s1))player.qu.en.eth[2] = s1;
 		s1 = Decimal.pow(4,player.bh.mass.add(1).log10().add(1).log10().add(1).log10().add(1)).mul(2.25);
-		if (hasTree("en1")) s1 = s1.add(s1.pow(2)).add(s1.pow(3).div(3)); else s1 = s1.add(s1.pow(2).div(2));
+		if(hasUpgrade('exotic',8))s1 = Decimal.pow(10,player.bh.mass.add(1).log10().add(1).log10().pow(0.5).mul(2));
+		else if (hasTree("en1")) s1 = s1.add(s1.pow(2)).add(s1.pow(3).div(3)); else s1 = s1.add(s1.pow(2).div(2));
 		s1 = s1.mul(getEnRewardEff(2));
 		if(player.qu.en.hr[2].lt(s1))player.qu.en.hr[2] = s1;
 	}
@@ -277,11 +278,16 @@ function calcEntropy(dt, dt_offline) {
 		}
     }
     if (player.qu.en.hr[0]) {
-        player.qu.en.hr[3] += dt
-        player.qu.en.hr[1] = player.qu.en.hr[1].add(tmp.en.gain.hr.mul(dt))
-        let s = player.bh.mass.div(player.bh.mass.max(1).pow(dt).pow(player.qu.en.hr[3]**(2/3))).sub(1)
-        if (s.lt(1)) ENTROPY.switch(1)
-        else player.bh.mass = s
+		if(hasUpgrade('exotic',8)){
+			player.qu.en.hr[1] = Decimal.pow(10,player.bh.mass.add(1).log10().add(1).log10().pow(0.5).mul(2)).mul(getEnRewardEff(2));
+			ENTROPY.switch(1)
+		}else{
+			player.qu.en.hr[3] += dt
+			player.qu.en.hr[1] = player.qu.en.hr[1].add(tmp.en.gain.hr.mul(dt))
+			let s = player.bh.mass.div(player.bh.mass.max(1).pow(dt).pow(player.qu.en.hr[3]**(2/3))).sub(1)
+			if (s.lt(1)) ENTROPY.switch(1)
+			else player.bh.mass = s
+		}
     }
     player.qu.en.amt = player.qu.en.amt.add(tmp.en.gain.amt.mul(dt)).min(tmp.en.cap)
     for (let x = 0; x < ENTROPY.rewards.length; x++) player.qu.en.rewards[x] = player.qu.en.rewards[x].max(tmp.en.rewards[x])

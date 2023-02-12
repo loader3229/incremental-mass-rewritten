@@ -280,6 +280,8 @@ const RANKS = {
 			'20': "Remove Super Hex scaling. Oct 1's effect is applied to Ultra/Meta Hex scalings.",
 			'21': "Accelerator effect softcap^2 starts 2x later, and is weaker.",
 			'29': "Accelerator effect softcap^2 starts 2x later, and is weaker.",
+			'33': "Accelerator effect softcap^2 is weaker.",
+			'34': "Oct Boost Exotic Matter gain.",
 		},
     },
     effect: {
@@ -477,6 +479,10 @@ const RANKS = {
                 let ret = player.ranks.oct;
                 return ret
             },
+            '34'() {
+                let ret = player.ranks.oct.add(1).log10().pow(2);
+                return ret
+            },
 		},
     },
     effDesc: {
@@ -534,6 +540,7 @@ const RANKS = {
             2(x) { return format(x)+"x later" },
             10(x) { return format(x)+"x" },
             12(x) { return "^"+format(x) },
+            34(x) { return format(x)+"x" },
 		},
     },
     fp: {
@@ -787,6 +794,11 @@ const PRESTIGES = {
             "146": `Galactic Shards boost Quantizes.`,
             "147": `Galactic Shards boost Infinities.`,
             "148": `Galactic Shards boost Eternities.`,
+            "155": `Square the effect of Glory 141.`,
+            "156": `Meta-Prestige Level starts 1.2x later.`,
+            "162": `Super Overpower starts (10/9)x later.`,
+            "163": `Meta-Pent starts 1e10x later.`,
+            "165": `Unlock Prestige Rage Power.`,
 		},
 		{
             "1": `Remove Hyper Prestige Level scaling.`,
@@ -806,6 +818,8 @@ const PRESTIGES = {
             "18": `Add +5% to Glory 59's effectiveness`,
             "19": `Super Supernova Galaxies starts 5 later.`,
             "20": `Remove Super Hept scaling.`,
+            "21": `Supernova Galaxies boost Exotic Matter gain.`,
+            "22": `Renown boost Exotic Matter gain.`,
 		},
     ],
     rewardEff: [
@@ -981,8 +995,9 @@ const PRESTIGES = {
             },x=>x+"% effectiveness"],
             "141": [_=>{
                 let x = player.prestiges[2].div(100).add(1);
+				if (hasPrestige(2,155))x = x.pow(2);
                 return x
-            },x=>"x"+x],
+            },x=>"x"+x.format()],
             "146": [_=>{
                 let x = player.gc.shard.add(1);
                 return x
@@ -1012,6 +1027,14 @@ const PRESTIGES = {
             },x=>"x"+x.format()],
             "17": [_=>{
                 let x = Decimal.pow(4,player.prestiges[3]);
+                return x
+            },x=>"x"+x.format()],
+            "21": [_=>{
+                let x = player.superGal.add(10).log10().pow(2);
+                return x
+            },x=>"x"+x.format()],
+            "22": [_=>{
+                let x = player.prestiges[3].div(10).add(1);
                 return x
             },x=>"x"+x.format()],
 		},
@@ -1109,6 +1132,8 @@ function updateRanksTemp() {
 	
 	tmp.prestigeMassGain = prestigeMassGain()
 	tmp.prestigeMassEffect = prestigeMassEffect()
+	tmp.prestigeRPGain = prestigeRPGain()
+	tmp.prestigeRPEffect = prestigeRPEffect()
 	
 	if(hasPrestige(2,1) || player.exotic.times.gte(2)){
 		player.prestiges[0] = player.prestiges[0].max(PRESTIGES.bulk(0));
@@ -1192,6 +1217,14 @@ function updateRanksHTML() {
 		}else{
 			tmp.el["pres_mass"].setDisplay(false);
 		}
+		
+		if (player.prestiges[2].gte(165)){
+			tmp.el["pres_rp"].setDisplay(true);
+			tmp.el["pres_rp2"].setTxt(format(player.prestigeRP,0)+" "+formatGain(player.prestigeRP, tmp.prestigeRPGain))
+			tmp.el["pres_rp3"].setTxt(format(prestigeRPEffect()));
+		}else{
+			tmp.el["pres_rp"].setDisplay(false);
+		}
     }
 }
 
@@ -1223,6 +1256,16 @@ function prestigeMassGain(){
 	if (hasElement(255)) x = x.mul(tmp.elements.effect[255]);
 	if (hasElement(306)) x = x.mul(tmp.elements.effect[306]);
 	x = x.mul(tmp.upgs.prestigeMass[1].eff.eff);
+	if (player.prestiges[2].gte(165)) x = x.mul(tmp.prestigeTickspeedEffect.eff);
+	return x;
+}
+
+function prestigeRPGain(){
+	if(player.prestiges[2].lt(165)){
+		return E(0);
+	}
+	let p = player.prestigeMass.add(1).log10().div(20).pow(0.5);
+	let x = Decimal.pow(10,p);
 	return x;
 }
 
@@ -1235,6 +1278,12 @@ function prestigeMassEffect(){
 	return E(0.965).pow(p.sqrt());
 }
 
+function prestigeRPEffect(){
+	let p = player.prestigeRP.add(1).log10();
+	return p.div(1e5);
+}
+
 function calcPrestigeMass(dt){
 	player.prestigeMass = player.prestigeMass.add(tmp.prestigeMassGain.mul(dt))
+	player.prestigeRP = player.prestigeRP.add(tmp.prestigeRPGain.mul(dt))
 }

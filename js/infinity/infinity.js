@@ -32,6 +32,11 @@ const INFINITY_LAYER = {
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
+		if (player.qu.times.gte(Number.MAX_VALUE) && player.exotic.times.gte(1)){
+			let z = player.qu.times.add(1).log(Number.MAX_VALUE).pow(2);
+			if (z.lt(1)) z=E(1)
+			x = x.mul(z)
+		}
         x = x.mul(y).pow(power).sub(1);
 		x = overflow(x,1e5,2);
 
@@ -292,7 +297,7 @@ function updateInfinityTemp() {
 
 function updateInfinityHTML() {
     let gain2 = hasUpgrade('inf',11)
-    let unl = player.inf.reached
+    let unl = player.inf.reached || player.exotic.times.gte(1)
     tmp.el.infinity_div.setDisplay(unl)
     tmp.el.eternity_div.setDisplay(hasUpgrade('inf',14))
 	tmp.el.etAmt.setHTML(formatMass(player.et.points,0)+"<br>"+(hasElement(195)?player.et.points.formatGain(tmp.et.gain,1):"(+"+formatMass(tmp.et.gain,0)+")"));

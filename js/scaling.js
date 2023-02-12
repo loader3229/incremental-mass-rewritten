@@ -314,6 +314,10 @@ function getScalingStart(type, name) {
 		if (name=="superGal") {
 			if (hasUpgrade('exotic',1)) start = start.add(5)
 			if (hasPrestige(3,19)) start = start.add(5)
+			if (player.qu.times.gte(Number.MAX_VALUE) && player.exotic.times.gte(1)) start = start.add(5)
+		}
+		if (name=="massUpg4") {
+			if (hasPrestige(2,162)) start = start.mul(10/9)
 		}
 	}
 	if (type=="hyper") {
@@ -372,7 +376,12 @@ function getScalingStart(type, name) {
             if (hasElement(324))start = start.mul(tmp.elements.effect[324])
             if (hasElement(348))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
 				
+            if (hasUpgrade('exotic',12))start = start.mul(tmp.bd.upgs[4].eff)
+			
+			if (hasPrestige(2,163)) start = start.mul(1e10)
+				
             if (player.qu.times.gte(1e275) && player.exotic.times.gte(1))start = start.mul(100)
+            if (player.qu.times.gte(1e303) && player.exotic.times.gte(1))start = start.mul(1e25)
 		}
 		if (name=="hex") {
             if (hasElement(325))start = start.mul(1.5)
@@ -405,6 +414,7 @@ function getScalingStart(type, name) {
 			if (hasPrestige(2,49)) start = start.mul(1.2)
 			if (hasPrestige(2,84)) start = start.mul(2)
 			if (hasElement(338)) start = start.mul(2)
+			if (hasPrestige(2,156)) start = start.mul(1.2)
 		}
 	}
 	if (name=='supernova') {

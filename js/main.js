@@ -14,7 +14,7 @@ const ST_NAMES = [
 		["","Hc","DHe","THt","TeH","PHc","HHe","HpH","OHt","EHc"]
 	]
 ]
-const CONFIRMS = ['rp', 'bh', 'atom', 'sn', 'qu', 'br', 'inf', 'et']
+const CONFIRMS = ['rp', 'bh', 'atom', 'sn', 'qu', 'br', 'inf', 'et', 'sg', 'exotic']
 
 const FORMS = {
     getPreQUGlobalSpeed() {
@@ -361,12 +361,40 @@ const FORMS = {
 			if(player.ranks.oct.gte(21))p2 = p2 ** 0.9
 			if(player.ranks.oct.gte(29))ss2 = ss2.mul(2)
 			if(player.ranks.oct.gte(29))p2 = p2 ** 0.98
+			if(player.ranks.oct.gte(33))p2 = p2 ** 0.969
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
         },
         autoUnl() { return true },
         autoSwitch() { player.autoAccel = !player.autoAccel },
+    },
+    prestige_tickspeed: {
+        cost(x=player.tickspeed) { return E(2).pow(x).floor() },
+        can() { return player.prestigeRP.gte(tmp.prestigeTickspeedCost) },
+        buy() {
+            if (this.can()) {
+                player.prestigeTickspeed = player.prestigeTickspeed.add(1)
+            }
+        },
+        buyMax() { 
+            if (this.can()) {
+                player.prestigeTickspeed = tmp.prestigeTickspeedBulk
+            }
+        },
+        effect() {
+            let t = player.prestigeTickspeed
+			let step = player.prestiges[0].max(1).mul(player.prestiges[1].max(1).mul(player.prestiges[2].max(1).mul(player.prestiges[3].max(1))));
+			let ss = E(1e100)
+            let p = 0.1
+			step = step.softcap(ss,p,0)
+			let bonus = E(0)
+            let eff = step.pow(t.add(bonus))
+			
+			return {step: step, eff: eff, bonus: bonus, ss: ss}
+        },
+        autoUnl() { return true },
+        autoSwitch() { player.autoPrestigeTickspeed = !player.autoPrestigeTickspeed },
     },
     rp: {
         gain() {
@@ -391,6 +419,9 @@ const FORMS = {
 		 gain = gain.pow(tmp.fermions.effs[2][3]||E(1))	
 	 
 			if(hasElement(348))gain = gain.pow(E(2).pow(player.chal.comps[7].mul((tmp.chal?tmp.chal.eff[7]:E(1)).add(1).log10()).pow(0.625).add(1)));
+			
+			if(hasUpgrade('exotic',10) && gain.gte(10))gain = expMult(gain,tmp.ex.exb_eff[0])
+			
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
             
 		
@@ -430,6 +461,12 @@ const FORMS = {
             gain = gain.pow(tmp.prim.eff[2][0])
 
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
+			
+
+			
+			if(hasUpgrade('exotic',10) && gain.gte(10))gain = expMult(gain,tmp.ex.exb_eff[1])	
+				
+			
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
 				
 			

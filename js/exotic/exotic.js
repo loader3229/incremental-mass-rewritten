@@ -4,7 +4,11 @@ const EXOTIC = {
         if (x.lt(1)) return E(0)
         x = x.max(0).pow(2)
 		if (player.qu.times.gte(1e255) && player.exotic.times.gte(1))x = x.mul(3)
+		if (player.qu.times.gte(1e295) && player.exotic.times.gte(1))x = x.mul(5)
         if (hasPrestige(2,141)) x = x.mul(prestigeEff(2,141,E(1)));
+        if (hasPrestige(3,21)) x = x.mul(prestigeEff(3,21,E(1)));
+        if (hasPrestige(3,22)) x = x.mul(prestigeEff(3,22,E(1)));
+		if (player.ranks.oct.gte(34)) x = x.mul(RANKS.effect.oct[34]())
         return x.floor()
     },
     gainTimes() {
@@ -18,10 +22,11 @@ const EXOTIC = {
         [E(4), `Keep Galactic Fermion Tiers on Exotic resets.`],
         [E(5), `Keep Galactic Shards on Exotic resets.`],
         [E(10), `You start with 15 Supernova Galaxies, and keep C20 completions on Exotic resets.`],
+        [E(50), `Automatically Gain Supernova Galaxies, Supernova Galaxies don't reset anything.`],
     ],
     enter() {
         if (EXOTIC.gain().gte(1)) {
-            if (confirm("Are you sure to reset for Exotic Matter? This will reset all previous except QoL mechanicals")?!confirm("ARE YOU SURE ABOUT IT???"):true) return
+            if (player.confirms.exotic) if (confirm("Are you sure to reset for Exotic Matter? This will reset all previous except QoL mechanicals")?!confirm("ARE YOU SURE ABOUT IT???"):true) return
 			player.exotic.points = player.exotic.points.add(EXOTIC.gain())
             player.exotic.times = player.exotic.times.add(EXOTIC.gainTimes())
             this.doReset()
@@ -36,6 +41,8 @@ const EXOTIC = {
 		if(player.exotic.times.lt(4))player.supernova.fermions.tiers[2]=[E(0),E(0),E(0),E(0),E(0),E(0)]
 		if(player.exotic.times.lt(4))player.supernova.fermions.tiers[3]=[E(0),E(0),E(0),E(0),E(0),E(0)]
 		player.prestigeMassUpg=[E(0),E(0),E(0),E(0),E(0)]
+		player.prestigeRP=E(0)
+		player.prestigeTickspeed=E(0)
 		if(player.exotic.times.lt(10)){
 			for (let x = 1; x <= 20; x++) player.chal.comps[x] = E(0)
 		}else{
@@ -76,6 +83,14 @@ function updateExoticTemp() {
 		tmp.ex.rcb_can[i] = player.exotic.points.gte(tmp.ex.rcb_cost[i])
 		tmp.ex.rcb_eff[i] = EXOTIC.rcb.eff(i)
 	}
+	
+	player.exotic.bp = player.exotic.bp.max(EXOTIC_BOOST.gain());
+	tmp.ex.exb_can = player.exotic.bp.gt(EXOTIC_BOOST.used_bp());
+	
+	for(let i=0;i<=3;i++){
+		tmp.ex.exb_eff[i] = EXOTIC_BOOST.effect(i)
+	}
+	
 }
 
 function updateExoticHTML(){
@@ -96,6 +111,16 @@ function updateExoticHTML(){
 				tmp.el["rcb"+i+"_cost"].setTxt(format(tmp.ex.rcb_cost[i],0))
 				tmp.el["rcb"+i+"_pow"].setTxt(format(tmp.ex.rcb_eff[i].pow))
 				tmp.el["rcb"+i+"_eff"].setTxt(format(tmp.ex.rcb_eff[i].eff))
+			}
+        }
+        if (tmp.stab[7] == 2) {
+            tmp.el.ex_bp.setTxt(EXOTIC_BOOST.used_bp().format(0)+" / "+player.exotic.bp.format(0));
+            tmp.el.ex_bp2.setTxt(Decimal.pow(1e3,player.exotic.bp.add(1)).format(0));
+			for(let i=0;i<=2;i++){
+				tmp.el["exb"+i+"_lvl"].setTxt(format(player.exotic.boosts[i],0))
+				tmp.el["exb"+i+"_btn"].setClasses({btn: true, locked: !tmp.ex.exb_can})
+				tmp.el["exb"+i+"_eff"].setTxt(format(tmp.ex.exb_eff[i]))
+				if(i==2)tmp.el["exb"+i+"_div"].changeStyle('display',hasUpgrade('exotic',11)?'':'none');
 			}
         }
 }

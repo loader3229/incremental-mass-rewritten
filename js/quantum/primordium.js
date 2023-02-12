@@ -54,10 +54,14 @@ const PRIM = {
             p=>{
                 if (hasElement(107)) p = p.mul(2)
                 let x = p.pow(0.9).mul(2)
-				if (player.gc.active && x.gte(200000))x = x.div(2).log10().mul(40000);
-				if (player.gc.active && x.gte(300000))x = x.div(3).log10().mul(60000);
-				if (player.gc.active && x.gte(400000))x = x.div(4).log10().mul(80000);
-				if (player.gc.active && x.gte(500000))x = E(500000);
+				if (player.gc.active){
+					let y = new Decimal(200000);
+					if(hasElement(362))y = y.add(150000);
+					while(x.gte(y)){
+						x = x.div(y.div(100000)).log10().mul(y.div(5));
+						y = y.add(100000);
+					}
+				}
                 return x
             },
         ],

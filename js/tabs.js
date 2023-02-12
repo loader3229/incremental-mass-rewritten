@@ -66,6 +66,7 @@ const TABS = {
         7: [
             { id: "Exotic Milestones" },
             { id: "RC Boosters", unl() { return hasUpgrade("exotic",5) } },
+            { id: "Exotic Boosts", unl() { return hasUpgrade("exotic",10) } },
         ],
     },
 }

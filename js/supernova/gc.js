@@ -78,6 +78,9 @@ function updateGCTemp() {
 		if(tmp.gc.shards.gte(100))tmp.gc.shards = tmp.gc.shards.log10().mul(50);
 		tmp.gc.shards = tmp.gc.shards.mul(1+player.gc.trap/20);
 		tmp.gc.shards = tmp.gc.shards.mul(player.gc.rip?2:1);
+		if(hasElement(362)){
+			tmp.gc.shards = tmp.gc.shards.mul(2);
+		}
 		tmp.gc.shards = tmp.gc.shards.floor();
 	}
 	tmp.gc.GSeffect=GSeffect()

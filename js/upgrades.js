@@ -177,6 +177,7 @@ const UPGS = {
             effect(x) {
                 let xx = x.add(tmp.upgs.mass[4].bonus)
 				let step = E(0.03)
+				if (player.prestiges[2].gte(165))step = step.add(tmp.prestigeRPEffect)
                 let ss = E(10)
 				let sp = 0.5
                 
@@ -297,13 +298,13 @@ const UPGS = {
                 if (hasPrestige(2,53)) step = step.mul(prestigeEff(2,53))
                 if (hasPrestige(3,11)) step = step.mul(prestigeEff(3,11))
                 step = step.mul(tmp.upgs.prestigeMass[4]?tmp.upgs.prestigeMass[4].eff.eff:1)
-				let ret = step.mul(x).add(1);
-                return {step: step, eff: ret}
+				let ret = step.mul(x).add(1).softcap(2000,0.5,0);
+                return {step: step, eff: ret, ss: 2000}
             },
             effDesc(eff) {
                 return {
                     step: "+^"+format(eff.step),
-                    eff: "^"+format(eff.eff)+" to Prestige Booster Power"
+                    eff: "^"+format(eff.eff)+" to Prestige Booster Power"+(eff.eff.gte(eff.ss)?` <span class='soft'>(softcapped)</span>`:"")
                 }
             },
         },
@@ -1153,7 +1154,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 7,
+            lens: 14,
             1: {
                 desc: `Multiply your Eternity times gain by (200+Exotic reset times). Remove Mass and Star Overflow.`,
                 cost: E(1),
@@ -1181,6 +1182,8 @@ const UPGS = {
                 effect() {
                     let ret = player.prestigeMassUpg[4].div(40);
 					if(hasUpgrade('exotic',7))ret = ret.mul(2);
+					if(hasUpgrade('exotic',9))ret = ret.mul(2.5);
+					if(hasUpgrade('exotic',14))ret = ret.mul(2);
                     return ret.floor()
                 },
                 effDesc(x=this.effect()) {
@@ -1191,6 +1194,46 @@ const UPGS = {
                 unl() { return hasUpgrade('exotic',5) },
                 desc: "Double the effect of Exotic Upgrade 6.",
                 cost: E(10000)
+            },
+            8: {
+                unl() { return hasUpgrade('exotic',5) },
+                desc: "Hawking Radiation gain is better.",
+                cost: E(25000)
+            },
+            9: {
+                unl() { return hasUpgrade('exotic',5) },
+                desc: "Multiply the effect of Exotic Upgrade 6 by 2.5.",
+                cost: E(50000)
+            },
+            10: {
+                unl() { return hasUpgrade('exotic',5) },
+                desc: "Unlock Exotic Boosts.",
+                cost: E(200000)
+            },
+            11: {
+                unl() { return hasUpgrade('exotic',10) },
+                desc: "Unlock a new Exotic Boost type.",
+                cost: E(800000)
+            },
+            12: {
+                unl() { return hasUpgrade('exotic',10) },
+                desc: "Break Dilation Upgrade 5 affects Meta-Pent.",
+                cost: E(2000000)
+            },
+            13: {
+                unl() { return hasUpgrade('exotic',10) },
+                desc: "Raise Neutron and Electron Power effects by 5.",
+                cost: E(4000000)
+            },
+            14: {
+                unl() { return hasUpgrade('exotic',10) },
+                desc: "Double the effect of Exotic Upgrade 6.",
+                cost: E(10000000)
+            },
+            15: {
+                unl() { return hasUpgrade('exotic',10) },
+                desc: "Reach the current endgame.",
+                cost: E(50000000)
             },
         },
     },

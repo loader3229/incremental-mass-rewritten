@@ -12,7 +12,7 @@ const SUPERNOVA_GALAXY = {
 	},
 	reset(force=false){
 		if(!force)if(player.supernova.times.lt(SUPERNOVA_GALAXY.req()))return;
-		if(!force)if((confirm("Are you sure to reset for a Supernova Galaxy? It will reset all previous, including Prestiges.")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
+		if(!force)if (player.confirms.sg) if((confirm("Are you sure to reset for a Supernova Galaxy? It will reset all previous, including Prestiges.")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
 		if(!force && hasElement(291))player.superGal = player.superGal.max(SUPERNOVA_GALAXY.bulk());
 		else if(!force)player.superGal = player.superGal.add(1);
 		if(player.superGal.lt(11))player.prestiges=[E(0),E(0),E(0),E(0)];
@@ -254,6 +254,7 @@ function calcSupernovaGalaxy(dt, dt_offline) {
 	player.galPow[4] = player.galPow[4].add(SUPERNOVA_GALAXY.galPow4_gain().mul(dt));
 	player.galPow[5] = player.galPow[5].add(SUPERNOVA_GALAXY.galPow5_gain().mul(dt));
 	player.galQk = player.galQk.add(SUPERNOVA_GALAXY.galQkGain().mul(dt));
+	if(player.exotic.times.gte(50))player.superGal = player.superGal.max(SUPERNOVA_GALAXY.bulk());
 }
 
 function updateSupernovaGalaxyHTML() {

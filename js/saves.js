@@ -80,7 +80,8 @@ function calc(dt, dt_offline) {
         for (let x = 1; x <= UPGS.prestigeMass.cols; x++) if (player.autoprestigeMassUpg[x] &&  UPGS.prestigeMass[x].unl()) UPGS.prestigeMass.buyMax(x)
 		if (FORMS.tickspeed.autoUnl() && player.autoTickspeed) FORMS.tickspeed.buyMax()
         if (FORMS.accel.autoUnl() && player.autoAccel) FORMS.accel.buyMax()
-		if (FORMS.bh.condenser.autoUnl() && player.bh.autoCondenser) FORMS.bh.condenser.buyMax()
+		if (FORMS.prestige_tickspeed.autoUnl() && player.autoPrestigeTickspeed) FORMS.prestige_tickspeed.buyMax()
+        if (FORMS.bh.condenser.autoUnl() && player.bh.autoCondenser) FORMS.bh.condenser.buyMax()
         if (hasElement(18) && player.atom.auto_gr) ATOM.gamma_ray.buyMax()
         if (hasElement(131) && player.qu.auto_cs) QUANTUM.cosmic_str.buyMax()
         if (player.mass.gte(1.5e136)) player.chal.unl = true
@@ -176,6 +177,8 @@ function getPlayerData() {
         prestiges: [],
         prestigeMass: E(0),
         prestigeMassUpg: [E(0), E(0), E(0), E(0), E(0)],
+		prestigeRP: E(0),
+		prestigeTickspeed: E(0),
         auto_mainUpg: {
             
         },
@@ -183,6 +186,7 @@ function getPlayerData() {
         autoMassUpg: [null,false,false,false],
         autoprestigeMassUpg: [null,false,false,false],
         autoTickspeed: false,
+		autoPrestigeTickspeed: false,
         mainUpg: {
             
         },
@@ -313,6 +317,8 @@ function getPlayerData() {
 			points: E(0),
 			times: E(0),
 			rcb: [E(0), E(0), E(0), E(0)],
+			bp: E(0),
+			boosts: [E(0), E(0), E(0), E(0)],
 		},
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
