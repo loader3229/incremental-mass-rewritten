@@ -29,8 +29,8 @@ const ATOM = {
     quarkGain() {
         if (tmp.atom.gain.lt(1)) return E(0)
         x = tmp.atom.gain.max(1).log10().pow(1.1).add(1)
-        if (hasElement(1)) x = E(1.25).pow(tmp.atom.gain.max(1).log10())
-        if (hasElement(1) && player.ranks.hex.gte(1)) x = E(1.5).pow(tmp.atom.gain.max(1).log10())
+        if (hasElement(1)) x = E(1.25).pow(tmp.atom.gain.max(1).log10().pow(hasUpgrade('atom',21)?1.1:1))
+        if (hasElement(1) && player.ranks.hex.gte(1)) x = E(1.5).pow(tmp.atom.gain.max(1).log10().pow(hasUpgrade('atom',21)?1.1:1))
         if (player.mainUpg.bh.includes(13)) x = x.mul(10)
         if (player.mainUpg.atom.includes(8)) x = x.mul(tmp.upgs.main?tmp.upgs.main[3][8].effect:E(1))
         if (player.ranks.rank.gte(300)) x = x.mul(RANKS.effect.rank[300]())
@@ -70,7 +70,8 @@ const ATOM = {
         let keep = []
         for (let x = 0; x < player.mainUpg.bh.length; x++) if ([5].includes(player.mainUpg.bh[x])) keep.push(player.mainUpg.bh[x])
         if(player.qu.times.gt(0))for (let x = 0; x < player.mainUpg.bh.length; x++) if ([6].includes(player.mainUpg.bh[x])) keep.push(player.mainUpg.bh[x])
-        player.mainUpg.bh = keep
+        if (player.mainUpg.exotic.includes(19))keep = player.mainUpg.bh
+		player.mainUpg.bh = keep
         if (chal_reset && !player.mainUpg.atom.includes(4) && !hasTree("chal2") ) for (let x = 1; x <= 4; x++) player.chal.comps[x] = E(0)
         FORMS.bh.doReset()
     },
@@ -239,6 +240,8 @@ const ATOM = {
 				
 				if(hasUpgrade('exotic',13))a = a.pow(5);
 				if(hasUpgrade('exotic',13))b = b.pow(5);
+				
+				if(hasUpgrade('atom',21))b = b.pow(4);
 				
                 return {eff1: a, eff2: b}
             },

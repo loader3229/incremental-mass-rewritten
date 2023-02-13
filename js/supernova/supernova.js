@@ -27,7 +27,7 @@ const SUPERNOVA = {
         if (hasTree("qol2")) list_keep.push(6)
         let keep = []
         for (let x = 0; x < player.mainUpg.atom.length; x++) if (list_keep.includes(player.mainUpg.atom[x])) keep.push(player.mainUpg.atom[x])
-        player.mainUpg.atom = keep
+		if (player.mainUpg.exotic.includes(19))keep = player.mainUpg.atom
 
         list_keep = [21,36]
         if (player.mainUpg.br.includes(1)) list_keep.push(1)

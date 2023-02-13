@@ -312,12 +312,13 @@ function getScalingStart(type, name) {
 			if (hasElement(342)) start = start.mul(1.5)
 		}
 		if (name=="superGal") {
-			if (hasUpgrade('exotic',1)) start = start.add(5)
+			if (hasUpgrade('exotic',2)) start = start.add(5)
 			if (hasPrestige(3,19)) start = start.add(5)
 			if (player.qu.times.gte(Number.MAX_VALUE) && player.exotic.times.gte(1)) start = start.add(5)
 		}
 		if (name=="massUpg4") {
 			if (hasPrestige(2,162)) start = start.mul(10/9)
+			if (hasUpgrade('rp',21)) start = start.mul(1.08)
 		}
 	}
 	if (type=="hyper") {
@@ -379,6 +380,7 @@ function getScalingStart(type, name) {
             if (hasUpgrade('exotic',12))start = start.mul(tmp.bd.upgs[4].eff)
 			
 			if (hasPrestige(2,163)) start = start.mul(1e10)
+			if (hasPrestige(2,175)) start = start.mul(1e20)
 				
             if (player.qu.times.gte(1e275) && player.exotic.times.gte(1))start = start.mul(100)
             if (player.qu.times.gte(1e303) && player.exotic.times.gte(1))start = start.mul(1e25)
@@ -415,6 +417,7 @@ function getScalingStart(type, name) {
 			if (hasPrestige(2,84)) start = start.mul(2)
 			if (hasElement(338)) start = start.mul(2)
 			if (hasPrestige(2,156)) start = start.mul(1.2)
+			if (hasAscension(0,1)) start = start.mul(1.2)
 		}
 	}
 	if (name=='supernova') {
@@ -675,6 +678,7 @@ function getScalingPower(type, name) {
 			if (hasPrestige(2,59)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(3,18)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(2,140)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+			if (hasPrestige(2,173)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 		}
 		if (name=="prestige2") {
 			if (hasPrestige(3,4)) power = power.mul(tmp.prestigeMassEffect)

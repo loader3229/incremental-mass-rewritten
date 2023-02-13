@@ -34,6 +34,7 @@ const TABS = {
             { id: "Ranks Rewards" },
             { id: "Scaling", unl() { return tmp.scaling ? tmp.scaling.super.length>0 : false } },
             { id: "Prestige Rewards", unl() { return hasUpgrade("br",9) } },
+            { id: "Ascension Rewards", unl() { return hasAscension(0,1) } },
         ],
         3: [
             { id: "Challenges" },
@@ -67,6 +68,7 @@ const TABS = {
             { id: "Exotic Milestones" },
             { id: "RC Boosters", unl() { return hasUpgrade("exotic",5) } },
             { id: "Exotic Boosts", unl() { return hasUpgrade("exotic",10) } },
+            { id: "IMR v0.6?", unl() { return hasUpgrade("exotic",15) } },
         ],
     },
 }

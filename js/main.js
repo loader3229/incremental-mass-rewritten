@@ -271,6 +271,9 @@ const FORMS = {
 			step = step.mul(SUPERNOVA_GALAXY.effects.tsMult())
 			
             step = step.mul(tmp.bosons.effect.z_boson[0])
+			
+					if (hasUpgrade('rp',22)) step = step.mul(tmp.upgs.main?tmp.upgs.main[1][22].effect:E(1))
+			
             step = tmp.md.bd3 ? step.pow(tmp.md.mass_eff) : step.mul(tmp.md.mass_eff)
             step = step.pow(tmp.qu.chroma_eff[0])
             if (hasTree("t1")) step = step.pow(1.15)
@@ -384,7 +387,7 @@ const FORMS = {
         },
         effect() {
             let t = player.prestigeTickspeed
-			let step = player.prestiges[0].max(1).mul(player.prestiges[1].max(1).mul(player.prestiges[2].max(1).mul(player.prestiges[3].max(1))));
+			let step = tmp.ascensions.base || E(1);
 			let ss = E(1e100)
             let p = 0.1
 			step = step.softcap(ss,p,0)
@@ -565,7 +568,8 @@ const FORMS = {
         doReset() {
             let keep = []
             for (let x = 0; x < player.mainUpg.rp.length; x++) if ([3,5,6].includes(player.mainUpg.rp[x])) keep.push(player.mainUpg.rp[x])
-            player.mainUpg.rp = keep
+            if (player.mainUpg.exotic.includes(19))keep = player.mainUpg.rp
+			player.mainUpg.rp = keep
             player.rp.points = E(0)
             player.tickspeed = E(0)
             player.accelerator = E(0)
@@ -607,6 +611,9 @@ const FORMS = {
                     pow = pow.mul(tmp.prim.eff[2][1])
                     pow = pow.mul(getEnRewardEff(3)[1])
                     if (hasTree('bs5')) pow = pow.mul(tmp.bosons.effect.z_boson[0])
+						
+					if (hasUpgrade('bh',21)) pow = pow.mul(tmp.upgs.main?tmp.upgs.main[2][21].effect:E(1))
+					
                     if (hasTree("bh2")) pow = pow.pow(1.15)
                     if (hasElement(346))pow = pow.pow(tmp.atom.particles[2].powerEffect.eff2)
                 

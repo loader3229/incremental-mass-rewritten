@@ -1,14 +1,17 @@
 const SUPERNOVA_GALAXY = {
+	req_base(){
+		let ret = 1.246;
+		if(hasElement(291))ret -= 0.006;
+		if(hasElement(323))ret -= 0.01;
+		if(hasUpgrade('inf',21))ret -= 0.01;
+		return ret;
+	},
 	req(){
-		if(hasElement(323))return E(1.23).pow(player.superGal.scaleEvery('superGal')).mul(1e6).floor();
-		if(hasElement(291))return E(1.24).pow(player.superGal.scaleEvery('superGal')).mul(1e6).floor();
-		return E(1.246).pow(player.superGal.scaleEvery('superGal')).mul(1e6).floor();
+		return E(SUPERNOVA_GALAXY.req_base()).pow(player.superGal.scaleEvery('superGal')).mul(1e6).floor();
 	},
 	bulk(){
 		if(player.supernova.times.lt(1e6))return new Decimal(0);
-		if(hasElement(323))return player.supernova.times.div(1e6).log(1.23).scaleEvery('superGal',true).add(1).floor();
-		if(hasElement(291))return player.supernova.times.div(1e6).log(1.24).scaleEvery('superGal',true).add(1).floor();
-		return player.supernova.times.div(1e6).log(1.246).scaleEvery('superGal',true).add(1).floor();
+		return player.supernova.times.div(1e6).log(SUPERNOVA_GALAXY.req_base()).scaleEvery('superGal',true).add(1).floor();
 	},
 	reset(force=false){
 		if(!force)if(player.supernova.times.lt(SUPERNOVA_GALAXY.req()))return;
@@ -56,9 +59,9 @@ const SUPERNOVA_GALAXY = {
 		if(player.superGal.lt(2))player.supernova.post_10 = false;
 		player.md.break.upgs=[E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0),E(0)];
 		player.prestigeMass=new Decimal(0);
-		if(player.superGal.gte(3))player.mainUpg.rp=[4,5,6];
-		if(player.superGal.gte(3))player.mainUpg.bh=[4,5,6];
-		if(player.superGal.gte(3))player.mainUpg.atom=[2,3,4,5,6];
+		if(player.superGal.gte(3) && !hasUpgrade('exotic',19))player.mainUpg.rp=[4,5,6];
+		if(player.superGal.gte(3) && !hasUpgrade('exotic',19))player.mainUpg.bh=[4,5,6];
+		if(player.superGal.gte(3) && !hasUpgrade('exotic',19))player.mainUpg.atom=[2,3,4,5,6];
 		player.supernova.fermions.tiers[0]=[E(0),E(0),E(0),E(0),E(0),E(0)];
 		player.supernova.fermions.tiers[1]=[E(0),E(0),E(0),E(0),E(0),E(0)];
 		if(!hasElement(291))TABS.choose(0);
@@ -238,10 +241,12 @@ const SUPERNOVA_GALAXY = {
 		if(hasPrestige(3,12)){
 			ret = ret.mul(prestigeEff(3,12));
 		}
-		if(hasElement(294))ret = ret.mul(player.supernova.fermions.tiers[3][5].add(1).pow(2));
+		if(hasElement(294))ret = ret.mul(overflow(player.supernova.fermions.tiers[3][5],11,2).add(1).pow(2));
 		if(hasElement(339))ret = ret.mul(tmp.elements.effect[339]);
 		
 		if (player.exotic.times.gte(3))ret = ret.mul(player.exotic.times);
+		
+		if(hasUpgrade('bh',22))ret = ret.mul(upgEffect(2,18));
 		return ret;
 	},
 }

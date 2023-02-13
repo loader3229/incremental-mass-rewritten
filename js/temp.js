@@ -28,6 +28,12 @@ function resetTemp() {
             eff: [],
         },
 
+        ascensions: {
+            req: [],
+            bulk: [],
+            eff: [],
+        },
+
         bd: {
             upgs: [],
         },
@@ -117,6 +123,7 @@ function resetTemp() {
         prevSave: "",
     }
     for (let x = 0; x < PRES_LEN; x++) tmp.prestiges.eff[x] = {}
+    for (let x = 0; x < AS_LEN; x++) tmp.ascensions.eff[x] = {}
     for (let x = UPGS.prestigeMass.cols; x >= 1; x--) tmp.upgs.prestigeMass[x] = {}
     for (let x = UPGS.mass.cols; x >= 1; x--) tmp.upgs.mass[x] = {}
     for (let x = 1; x <= UPGS.main.cols; x++) tmp.upgs.main[x] = {}

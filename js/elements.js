@@ -54,6 +54,20 @@ function setupHTML() {
 	}
 	pres_table.setHTML(table)
 
+	let as_table = new Element("as_table")
+	table = ""
+	for (let x = 0; x < AS_LEN; x++) {
+		table += `<div style="width: 300px" id="as_div_${x}">
+			<button id="as_auto_${x}" class="btn" style="width: 80px;" onclick="RANKS.autoSwitch(${x})">OFF</button>
+			<span id="as_scale_${x}""></span>${ASCENSIONS.fullNames[x]} <span id="as_amt_${x}">X</span><br><br>
+			<button onclick="ASCENSIONS.reset(${x})" class="btn reset" id="as_${x}">
+				${x>0?"Reset your "+ASCENSIONS.fullNames[x-1]+"s":'Force an Exotic reset'}, but ${ASCENSIONS.fullNames[x]} up.<span id="as_desc_${x}"></span><br>
+				Req: <span id="as_req_${x}">X</span>
+			</button>
+		</div>`
+	}
+	as_table.setHTML(table)
+
 	let mass_upgs_table = new Element("mass_upgs_table")
 	table = ""
 	for (let x = 1; x <= UPGS.mass.cols; x++) {
@@ -121,6 +135,18 @@ function setupHTML() {
 	}
 	pres_rewards_table.setHTML(table)
 
+	let as_rewards_table = new Element("as_rewards_table")
+	table = ""
+	for (let x = 0; x < AS_LEN; x++) {
+		table += `<div id="as_reward_div_${x}">`
+		let keys = Object.keys(ASCENSIONS.rewards[x])
+		for (let y = 0; y < keys.length; y++) {
+			table += `<span id="as_reward_${x}_${y}"><b>${ASCENSIONS.fullNames[x]} ${keys[y]}:</b> ${ASCENSIONS.rewards[x][keys[y]]}${ASCENSIONS.rewardEff[x][keys[y]]?` Currently: <span id='as_eff_${x}_${y}'></span></span>`:""}<br>`
+		}
+		table += `</div>`
+	}
+	as_rewards_table.setHTML(table)
+
 	let main_upgs_table = new Element("main_upgs_table")
 	table = ""
 	for (let x = 1; x <= UPGS.main.cols; x++) {
@@ -129,7 +155,7 @@ function setupHTML() {
 		for (let y = 1; y <= UPGS.main[x].lens; y++) {
 			let key = UPGS.main[x][y]
 			table += `<img onclick="UPGS.main[${x}].buy(${y})" onmouseover="UPGS.main.over(${x},${y})" onmouseleave="UPGS.main.reset()"
-			 style="margin: 3px;" class="img_btn" id="main_upg_${x}_${y}" src="images/main_upg_${x==6?'placeholder':(id+y)}.png">`
+			 style="margin: 3px;" class="img_btn" id="main_upg_${x}_${y}" src="images/main_upg_${(x==6||y>15)?'placeholder':(id+y)}.png">`
 		}
 		table += `</div><br><button id="main_upg_${x}_auto" class="btn" style="width: 80px;" onclick="player.auto_mainUpg.${id} = !player.auto_mainUpg.${id}">OFF</button></div>`
 	}
@@ -373,6 +399,21 @@ function updatePrestigesRewardHTML() {
 			}
 		}
 	}
+	tmp.el["as_reward_name"].setTxt(ASCENSIONS.fullNames[player.as_reward])
+	for (let x = 0; x < AS_LEN; x++) {
+		tmp.el["as_reward_div_"+x].setDisplay(player.as_reward == x)
+		if (player.as_reward == x) {
+			let keys = Object.keys(ASCENSIONS.rewards[x])
+			for (let y = 0; y < keys.length; y++) {
+				let unl = player.ascensions[x].gte(keys[y])
+				tmp.el["as_reward_"+x+"_"+y].setDisplay(unl)
+				if (unl) if (tmp.el["as_eff_"+x+"_"+y]) {
+					let eff = ASCENSIONS.rewardEff[x][keys[y]]
+					tmp.el["as_eff_"+x+"_"+y].setTxt(eff[1](tmp.ascensions.eff[x][keys[y]]))
+				}
+			}
+		}
+	}
 }
 
 function updateMainUpgradesHTML() {
@@ -520,6 +561,7 @@ function updateHTML() {
 			if (tmp.stab[1] == 0) updateRanksRewardHTML()
 			if (tmp.stab[1] == 1) updateScalingHTML()
 			if (tmp.stab[1] == 2) updatePrestigesRewardHTML()
+			if (tmp.stab[1] == 3) updatePrestigesRewardHTML()
 		}
 		if (tmp.tab == 2) {
 			updateMainUpgradesHTML()

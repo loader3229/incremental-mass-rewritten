@@ -260,6 +260,8 @@
                         <button onclick="tmp.rank_tab = 0" class="btn_tab">Ranks</button>
                     </div><div style="width: 145px">
                         <button onclick="tmp.rank_tab = 1" class="btn_tab">Prestiges</button>
+                    </div><div style="width: 145px" id="rank_tab2_btn">
+                        <button onclick="tmp.rank_tab = 2" class="btn_tab">Ascensions</button>
                     </div>
                 </div>
                 <div id="rank_tab0">
@@ -269,7 +271,10 @@
                     <div id="pres_table" class="table_center" style="min-height: 180px;"></div><br>
 					<div id="pres_mass">您拥有<span id="pres_mass2">X</span>转生质量(获取速度基于转生基础值、转生等级、荣耀<span id="pres_mass4">和辉煌</span>)<br>转生质量使三重阶层元折算之前的所有折算弱化<span id="pres_mass3"></span></div>
 					<div id="pres_rp">您拥有<span id="pres_rp2">X</span>转生狂怒能量 (获取速度基于转生质量)<br>Which are adding Overpower Power by <span id="pres_rp3"></span></div>
-                </div>
+                </div><div id="rank_tab2">
+                    Your Ascension base is <span id="as_base"></span> (based on products of Prestige tiers)<br><br>
+                    <div id="as_table" class="table_center" style="min-height: 180px;"></div><br>
+               </div>
                 <br><br>
                 <div id="mass_upgs_table"></div><br><br>
                 <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="tickspeed_div">
@@ -424,6 +429,9 @@
             </div><div id="stab_frame1_2">
                 <button onclick="player.pres_reward = Math.max(player.pres_reward-1,0)" class="btn"><--</button><span id="pres_reward_name" style="margin: 0px 10px">aaa</span><button onclick="player.pres_reward = Math.min(player.pres_reward+1,Math.max(...PRESTIGES.fullNames.map((v, i) => i==0 ? i : (PRESTIGES.unl[i]() && i))))" class="btn">--></button><br><br>
                 <div id="pres_rewards_table"></div>
+            </div><div id="stab_frame1_3">
+                <button onclick="player.as_reward = Math.max(player.as_reward-1,0)" class="btn"><--</button><span id="as_reward_name" style="margin: 0px 10px">aaa</span><button onclick="player.as_reward = Math.min(player.as_reward+1,Math.max(...ASCENSIONS.fullNames.map((v, i) => i==0 ? i : (ASCENSIONS.unl[i]() && i))))" class="btn">--></button><br><br>
+                <div id="as_rewards_table"></div>
             </div>
         </div><div id="tab_frame2">
             <div id="main_upg_msg" style="min-height: 100px;"></div>
@@ -656,7 +664,29 @@
                         Atom Boost Effect: Atom Gain Exponent ^<span id="exb2_eff">X</span>
                     </div>
                 </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="exb3_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/star_5.png">
+                            <span style="margin-left: 5px; text-align: left;">Star Boost [<span id="exb3_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="exb3_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(3)">Cost: 1 Boost Point</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Star Boost Effect: Collapsed Star Gain Exponent ^<span id="exb3_eff">X</span>
+                    </div>
+                </div>
             </div>
+                <div id="stab_frame7_3">
+                    <div class="table_center">
+                        <div style="width: 33.3%; min-width: 300px;">
+                            You have <b id="darkRay"></b> Dark Ray.
+                            <div id="drEff" class="sky"></div>
+                        </div><div style="width: 33.3%; min-width: 300px;">
+                            You have <b id="darkShadow"></b> Dark Shadow.
+                            <div id="dsEff" class="sky"></div>
+                        </div>
+                    </div>
+                </div>
         </div><div id="tab_frame8">
             <button class="btn" onclick="save()">Save</button>
             <button class="btn" onclick="if (confirm('您想要彻底重置当前的进度，从头开始玩吗？')) {wipe(true)}">Hard Reset</button>
@@ -676,8 +706,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.9.0c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的NG+, 汉化版) v0.9.0c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.9.1c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的NG+, 汉化版) v0.9.1c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

@@ -282,6 +282,7 @@ const RANKS = {
 			'29': "Accelerator effect softcap^2 starts 2x later, and is weaker.",
 			'33': "Accelerator effect softcap^2 is weaker.",
 			'34': "Oct Boost Exotic Matter gain.",
+			'35': "Square Oct 34 Effect.",
 		},
     },
     effect: {
@@ -481,6 +482,7 @@ const RANKS = {
             },
             '34'() {
                 let ret = player.ranks.oct.add(1).log10().pow(2);
+				if(player.ranks.oct.gte(35))ret = ret.pow(2);
                 return ret
             },
 		},
@@ -799,6 +801,8 @@ const PRESTIGES = {
             "162": `Super Overpower starts (10/9)x later.`,
             "163": `Meta-Pent starts 1e10x later.`,
             "165": `Unlock Prestige Rage Power.`,
+            "173": `Add +5% to Glory 59's effectiveness`,
+            "175": `Meta-Pent starts 1e20x later.`,
 		},
 		{
             "1": `Remove Hyper Prestige Level scaling.`,
@@ -820,6 +824,7 @@ const PRESTIGES = {
             "20": `Remove Super Hept scaling.`,
             "21": `Supernova Galaxies boost Exotic Matter gain.`,
             "22": `Renown boost Exotic Matter gain.`,
+            "23": `Unlock Ascension.`,
 		},
     ],
     rewardEff: [
@@ -991,6 +996,7 @@ const PRESTIGES = {
                 let x = 5;
 				if (hasPrestige(3,18))x += 5;
 				if (hasPrestige(2,140))x += 5;
+				if (hasPrestige(2,173))x += 5;
                 return x
             },x=>x+"% effectiveness"],
             "141": [_=>{
@@ -1060,6 +1066,106 @@ const PRES_LEN = PRESTIGES.fullNames.length
 function hasPrestige(x,y) { return player.prestiges[x].gte(y) }
 
 function prestigeEff(x,y,def=E(1)) { return tmp.prestiges.eff[x][y] || def }
+
+
+const ASCENSIONS = {
+    fullNames: ["Ascension Level"],
+    baseExponent() {
+        let x = E(0)
+        return x.add(1)
+    },
+    base() {
+        let x = E(1)
+
+        for (let i = 0; i < PRESTIGES.fullNames.length; i++) {
+            let r = player.prestiges[i]
+            x = x.mul(r.add(1))
+        }
+
+        return x.sub(1)
+    },
+    req(i) {
+        let x = EINF, y = player.ascensions[i]
+        switch (i) {
+            case 0:
+                x = Decimal.pow(1.1,y.scaleEvery('ascension0').pow(1.1)).mul(1.5e12)
+                break;
+            default:
+                x = EINF
+                break;
+        }
+        return x.ceil()
+    },
+    bulk(i) {
+        let x = E(0), y = i==0?tmp.ascensions.base:player.ascensions[i-1]
+        switch (i) {
+            case 0:
+                if (y.gte(1.4e12)) x = y.div(1.4e12).max(1).log(1.1).max(0).root(1.1).scaleEvery('ascension0',true).add(1)
+                break;
+            default:
+                x = E(0)
+                break;
+        }
+        return x.floor()
+    },
+    unl: [
+        _=>true,
+    ],
+    noReset: [
+        _=>false,
+    ],
+    rewards: [
+        {
+			"1": `Meta-Prestige Level starts 1.2x later.`,
+			"2": `Ascension Level boost Exotic Matter gain.`,
+        },
+    ],
+    rewardEff: [
+        {
+            "2": [_=>{
+                let x = player.ascensions[0].add(1);
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            /*
+            "1": [_=>{
+                let x = E(1)
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            */
+        },
+    ],
+    reset(i) {
+        if (i==0?tmp.ascensions.base.gte(tmp.ascensions.req[i]):player.ascensions[i-1].gte(tmp.ascensions.req[i])) {
+            player.ascensions[i] = player.ascensions[i].add(1)
+
+            if (!this.noReset[i]()) {
+                for (let j = i-1; j >= 0; j--) {
+                    player.ascensions[j] = E(0)
+                }
+                for (let j = PRES_LEN - 1; j >= 0; j--) {
+                    player.prestiges[j] = E(0)
+                }
+                EXOTIC.doReset(true);
+            }
+            
+            updateRanksTemp()
+        }
+    },
+}
+
+const AS_LEN = ASCENSIONS.fullNames.length
+
+function hasPrestige(x,y) { return player.prestiges[x].gte(y) }
+
+function prestigeEff(x,y,def=E(1)) { return tmp.prestiges.eff[x][y] || def }
+
+function hasAscension(x,y) { return player.ascensions[x].gte(y) }
+
+function ascensionEff(x,y,def=E(1)) { return tmp.ascensions.eff[x][y] || def }
 
 function updateRanksTemp() {
     if (!tmp.ranks) tmp.ranks = {}
@@ -1147,11 +1253,31 @@ function updateRanksTemp() {
 	if(player.exotic.times.gte(2)){
 		player.prestiges[3] = player.prestiges[3].max(PRESTIGES.bulk(3));
 	}
+	
+	
+    // Ascension
+
+    tmp.ascensions.baseMul = ASCENSIONS.base()
+    tmp.ascensions.baseExp = ASCENSIONS.baseExponent()
+    tmp.ascensions.base = tmp.ascensions.baseMul.pow(tmp.ascensions.baseExp)
+    for (let x = 0; x < AS_LEN; x++) {
+        tmp.ascensions.req[x] = ASCENSIONS.req(x)
+        for (let y in ASCENSIONS.rewardEff[x]) {
+            if (ASCENSIONS.rewardEff[x][y]) tmp.ascensions.eff[x][y] = ASCENSIONS.rewardEff[x][y][0]()
+        }
+    }
+	
+	tmp.prestigeMassGain = prestigeMassGain()
+	tmp.prestigeMassEffect = prestigeMassEffect()
+	tmp.prestigeRPGain = prestigeRPGain()
+	tmp.prestigeRPEffect = prestigeRPEffect()
+	
 }
 
 function updateRanksHTML() {
     tmp.el.rank_tabs.setDisplay(hasUpgrade('br',9))
-    for (let x = 0; x < 2; x++) {
+    tmp.el.rank_tab2_btn.setDisplay(hasPrestige(3,23) || hasAscension(0,1))
+    for (let x = 0; x < 3; x++) {
         tmp.el["rank_tab"+x].setDisplay(tmp.rank_tab == x)
     }
 
@@ -1225,6 +1351,36 @@ function updateRanksHTML() {
 		}else{
 			tmp.el["pres_rp"].setDisplay(false);
 		}
+    }
+    if (tmp.rank_tab == 2) {
+        tmp.el.as_base.setHTML(`${tmp.ascensions.baseMul.format(0)}<sup>${format(tmp.ascensions.baseExp)}</sup> = ${tmp.ascensions.base.format(0)}`)
+
+        for (let x = 0; x < AS_LEN; x++) {
+            let unl = ASCENSIONS.unl[x]?ASCENSIONS.unl[x]():true
+
+            tmp.el["as_div_"+x].setDisplay(unl)
+
+            if (unl) {
+                let p = player.ascensions[x] || E(0)
+                let keys = Object.keys(ASCENSIONS.rewards[x])
+                let desc = ""
+                for (let i = 0; i < keys.length; i++) {
+                    if (p.lt(keys[i])) {
+                        desc = ` At ${ASCENSIONS.fullNames[x]} ${format(keys[i],0)}, ${ASCENSIONS.rewards[x][keys[i]]}`
+                        break
+                    }
+                }
+
+                tmp.el["as_scale_"+x].setTxt(getScalingName("ascension"+x))
+                tmp.el["as_amt_"+x].setTxt(format(p,0))
+                tmp.el["as_"+x].setClasses({btn: true, reset: true, locked: x==0?tmp.ascensions.base.lt(tmp.ascensions.req[x]):player.ascensions[x-1].lt(tmp.ascensions.req[x])})
+                tmp.el["as_desc_"+x].setTxt(desc)
+                tmp.el["as_req_"+x].setTxt(x==0?format(tmp.ascensions.req[x],0)+" of Ascension Base":ASCENSIONS.fullNames[x-1]+" "+format(tmp.ascensions.req[x],0))
+                tmp.el["as_auto_"+x].setDisplay(false)
+                tmp.el["as_auto_"+x].setTxt(false?"ON":"OFF")
+            }
+        }
+		
     }
 }
 

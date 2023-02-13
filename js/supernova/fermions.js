@@ -712,7 +712,7 @@ const FERMIONS = {
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
-                    let x = overflow(t,10,3).add(1).pow(2)
+                    let x = overflow(t,11,2).add(1).pow(2)
                     return x
                 },
                 desc(x) {

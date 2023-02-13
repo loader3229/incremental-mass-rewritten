@@ -141,6 +141,7 @@ function calc(dt, dt_offline) {
 		calcPrestigeMass(dt, dt_offline)
         calcInfinity(dt, dt_offline)
         calcSupernovaGalaxy(dt, dt_offline)
+        calcExotic(dt, dt_offline)
     }
 
     tmp.pass = true
@@ -175,6 +176,7 @@ function getPlayerData() {
             tier: false,
         },
         prestiges: [],
+        ascensions: [],
         prestigeMass: E(0),
         prestigeMassUpg: [E(0), E(0), E(0), E(0), E(0)],
 		prestigeRP: E(0),
@@ -192,6 +194,7 @@ function getPlayerData() {
         },
         ranks_reward: 0,
         pres_reward: 0,
+        as_reward: 0,
         scaling_ch: 0,
         rp: {
             points: E(0),
@@ -319,9 +322,13 @@ function getPlayerData() {
 			rcb: [E(0), E(0), E(0), E(0)],
 			bp: E(0),
 			boosts: [E(0), E(0), E(0), E(0)],
+			
+			dr: E(0),
+			ds: E(0),
 		},
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
+    for (let x = 0; x < AS_LEN; x++) s.ascensions.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {
         s.auto_mainUpg[UPGS.main.ids[x]] = false
         s.mainUpg[UPGS.main.ids[x]] = []

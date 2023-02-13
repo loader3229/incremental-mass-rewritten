@@ -9,6 +9,8 @@ const STARS = {
 		x = x.pow(tmp.fermions.effs[3][0]||E(1))
         x = x.softcap(tmp.stars.softGain,tmp.stars.softPower,0)
 	
+			if(hasUpgrade('exotic',18) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[3])
+				
 			if (FERMIONS.onActive("33"))x = x.add(1).log10()
 	
 		if (player.gc.active) x = GCeffect(x)
@@ -95,6 +97,8 @@ const STARS = {
             x = x.mul(tmp.stars.generator_boost_eff)
             if (hasPrestige(1,1)) x = x.pow(2)
 
+				
+				if(hasUpgrade('atom',22)) x = expMult(x,1.005)
             if (QCs.active()) x = expMult(x,tmp.qu.qc_eff[0][0])
             return x
         },
