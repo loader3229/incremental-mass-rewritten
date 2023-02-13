@@ -575,9 +575,9 @@ const CHALS = {
         title: "现实 II",
         desc: "挑战1-挑战12同时触发，并强制进行大撕裂。",
         reward() {
-			if(hasUpgrade('br',22))return `Death Shards gain is raised by completions.`;
+			if(hasUpgrade('br',22))return `使死寂碎片获取随着完成次数变为原来的一个指数。`;
 			return `死寂碎片获取的软上限被削弱。`
-		}
+		},
         max: E(100),
         inc: E('e2.5e11'),
         pow: E(2),
