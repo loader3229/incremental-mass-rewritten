@@ -414,6 +414,7 @@ function getScalingStart(type, name) {
 			
 		if (name=="fTier") {
 			if (hasPrestige(2,14)) start = start.mul(100)
+			if (hasPrestige(3,26)) start = start.mul(10)
 		}
 		if (name=="prestige0") {
 			if (hasElement(285)) start = start.mul(3.5)
@@ -422,6 +423,7 @@ function getScalingStart(type, name) {
 			if (hasElement(338)) start = start.mul(2)
 			if (hasPrestige(2,156)) start = start.mul(1.2)
 			if (hasAscension(0,1)) start = start.mul(1.2)
+			if (hasElement(371)) start = start.mul(1.25)
 		}
 	}
 	if (name=='supernova') {

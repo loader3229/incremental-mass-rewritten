@@ -18,6 +18,12 @@ const EXOTIC = {
 		if(hasUpgrade('br', 23)){
 			x = x.mul(upgEffect(4,23));
 		}
+		if(hasUpgrade('inf', 24)){
+			x = x.mul(upgEffect(5,24));
+		}
+		if(hasUpgrade('bh', 25)){
+			x = x.mul(upgEffect(2,25));
+		}
         if (hasAscension(0,2)) x = x.mul(ascensionEff(0,2,E(1)));
         if (hasAscension(1,1)) x = x.mul(ascensionEff(1,1,E(1)));
         return x.floor()
@@ -96,6 +102,7 @@ const EXOTIC = {
 		if(hasUpgrade('exotic', 15)){
 			x = x.mul(tmp.ex.drEff.ds);
 		}
+		if(hasElement(370))x = x.mul(tmp.elements.effect[370]);
 		return x;
     },
     drEff(){

@@ -314,6 +314,7 @@ function updateInfinityHTML() {
 
 function calcShardsEffect() {
 	let eff = player.et.shards.add(1).log10().add(1).log10().add(1).pow(0.1);
+	if(hasElement(365))eff = player.et.shards.add(1).log10().add(1).pow(0.02);
 	if(hasUpgrade('br',16))eff = eff.pow(1.1);
 	if(hasUpgrade('br',17))eff = eff.pow(1.2);
 	if(hasUpgrade('br',18))eff = eff.pow(1.1);

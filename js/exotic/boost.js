@@ -13,7 +13,9 @@ const EXOTIC_BOOST = {
         return x
     },
 	effect(i) {
-		return E(1).add(player.exotic.boosts[i].sqrt().mul(0.01));
+		let ret = player.exotic.boosts[i].sqrt().mul(0.01);
+		if(hasElement(366))ret = ret.mul(1.2);
+		return E(1).add(ret);
 	},
 	buy(i) {
 		tmp.ex.exb_can = player.exotic.bp.gt(EXOTIC_BOOST.used_bp());

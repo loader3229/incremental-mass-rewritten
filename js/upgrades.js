@@ -353,7 +353,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return player.mainUpg.bh.includes(5) },
-            lens: 24,
+            lens: 25,
             1: {
                 desc: "Boosters adds Musclers.",
                 cost: E(1),
@@ -510,6 +510,7 @@ const UPGS = {
                 cost: E('ee151'),
                 effect() {
                     let ret = player.rp.points.add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.1);
+					if(hasUpgrade('rp',25))ret = ret.pow(20);
                     return ret
                 },
                 effDesc(x=this.effect()) {
@@ -543,6 +544,11 @@ const UPGS = {
                 desc: "Rage Upgrade 18 boost Galactic Quarks.",
                 cost: E('ee2.22222222e14'),
             },
+            25: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Rage Power Upgrade 20 is better.",
+                cost: E('ee4.5e14'),
+            },
         },
         2: {
             title: "Black Hole Upgrades",
@@ -557,7 +563,7 @@ const UPGS = {
                     player.mainUpg.bh.push(x)
                 }
             },
-            lens: 24,
+            lens: 25,
             1: {
                 desc: "Mass Upgardes no longer spends mass.",
                 cost: E(1),
@@ -749,6 +755,18 @@ const UPGS = {
                 desc: "Change the effect of [Neut-Tau], and the Meta scaling of BH Condensers and Cosmic Rays are affected by [Neut-Tau]. Improve the effect of Entropic Multiplier.",
                 cost: E('ee3.6e14'),
             },
+            25: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Mass of Black Hole boost Exotic Matter gain.",
+                cost: E('ee4.7e14'),
+                effect() {
+                    let ret = player.bh.mass.add(1e10).slog();
+                    return ret
+                },
+                effDesc(x=this.effect()) {
+                    return format(x)+"x"
+                },
+            },
         },
         3: {
             title: "Atom Upgrades",
@@ -772,7 +790,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return hasTree("qol1") },
-            lens: 24,
+            lens: 25,
             1: {
                 desc: "Start with Mass upgrades unlocked.",
                 cost: E(1),
@@ -939,6 +957,11 @@ const UPGS = {
                 desc: "Remove Atomic Overflow.",
                 cost: E('ee4.2e11'),
             },
+            25: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Unlock Element Tier 4.",
+                cost: E('ee1e12'),
+            },
         },
         4: {
             title: "Big Rip Upgrades",
@@ -953,7 +976,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 24,
+            lens: 25,
             1: {
                 desc: `Start with Hydrogen-1 unlocked in Big Rip.`,
                 cost: E(5),
@@ -1095,6 +1118,11 @@ const UPGS = {
                 desc: "The Impossible scaling of All Challenges is 20% weaker.",
                 cost: E('e6e14'),
             },
+            25: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Base Quantum Foam gain ^(16/9)",
+                cost: E('e2.4e15'),
+            },
         },
         5: {
             title: "无限升级",
@@ -1109,7 +1137,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 22,
+            lens: 24,
             1: {
                 desc: `使量子次数乘以(200+无限次数)。无限质量加成量子泡沫获取速度。该升级只花费1毫克无限质量。`,
                 cost: E(1e-3),
@@ -1146,6 +1174,7 @@ const UPGS = {
                 cost: E(2),
                 effect() {
                     let x = player.inf.times.add(1);
+					if(hasUpgrade('inf',23))x = expMult(x.add(100),1.5);
                     return x
                 },
                 effDesc(x=this.effect()) { return "x"+format(x) },
@@ -1249,6 +1278,21 @@ const UPGS = {
                 desc: "Infinity Upgrade 5's softcap is weaker.",
                 cost: E('e120000'),
             },
+            23: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Infinity Upgrade 4 is better.",
+                cost: E('e123000'),
+            },
+            24: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Infinity Mass boost Exotic Matter.",
+                cost: E('e126000'),
+                effect() {
+                    let x = player.inf.points.add(1).log10().add(1).log10();
+                    return x
+                },
+                effDesc(x=this.effect()) { return "x"+format(x) },
+            },
         },
         6: {
             title: "Exotic Upgrades",
@@ -1263,7 +1307,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 22,
+            lens: 23,
             1: {
                 desc: `Multiply your Eternity times gain by (200+Exotic reset times). Remove Mass and Star Overflow.`,
                 cost: E(1),
@@ -1294,6 +1338,7 @@ const UPGS = {
 					if(hasUpgrade('exotic',9))ret = ret.mul(2.5);
 					if(hasUpgrade('exotic',14))ret = ret.mul(2);
 					if(hasUpgrade('exotic',16))ret = ret.mul(2);
+					if(hasUpgrade('exotic',23))ret = ret.mul(2);
                     return ret.floor()
                 },
                 effDesc(x=this.effect()) {
@@ -1342,7 +1387,7 @@ const UPGS = {
             },
             15: {
                 unl() { return hasUpgrade('exotic',10) },
-                desc: "Unlock Darkness?",
+                desc: "Unlock Darkness.",
                 cost: E(1e8)
             },
             16: {
@@ -1383,6 +1428,11 @@ const UPGS = {
                 unl() { return hasUpgrade('exotic',19) },
                 desc: "Exotic Matter gain formula is better.",
                 cost: E(2e16),
+            },
+            23: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Double the effect of Exotic Upgrade 6.",
+                cost: E(2e20),
             },
         },
     },

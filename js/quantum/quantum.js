@@ -5,6 +5,7 @@ const QUANTUM = {
         if (x.lt(1)) return E(0)
         x = x.max(0).pow(hasTree("qu11")?3:1.5);
 		if (player.exotic.times.gte(1) && player.qu.times.gte(1e295)) x = x.pow(1.5);
+		if (hasUpgrade('br',25)) x = x.pow(16/9);
 		
         x = x.mul(tmp.qu.qc_s_eff)
         if (tmp.qu.mil_reached[4]) x = x.mul(2)

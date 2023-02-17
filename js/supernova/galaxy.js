@@ -236,11 +236,15 @@ const SUPERNOVA_GALAXY = {
 			ret = ret.pow(player.superGal.div(3));
 		}
 		if(hasPrestige(1,242)){
-			ret = ret.mul(prestigeEff(1,242));
+			ret = ret.mul(prestigeEff(1,242,E(1)));
 		}
 		if(hasPrestige(3,12)){
-			ret = ret.mul(prestigeEff(3,12));
+			ret = ret.mul(prestigeEff(3,12,E(1)));
 		}
+		if(hasAscension(0,6)){
+			ret = ret.mul(ascensionEff(0,6,E(1)));
+		}
+        if (hasAscension(1,2)) ret = ret.mul(ascensionEff(1,2,E(1)));
 		if(hasElement(294))ret = ret.mul(overflow(player.supernova.fermions.tiers[3][5],11,2).add(1).pow(2));
 		if(hasElement(339))ret = ret.mul(tmp.elements.effect[339]);
 		

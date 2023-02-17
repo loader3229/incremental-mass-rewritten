@@ -47,6 +47,8 @@ const ATOM = {
         if (hasElement(231)) x = x.pow(tmp.elements.effect[231])
 			
 		
+			if(hasElement(363) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[2])
+
 		if (FERMIONS.onActive("30")) x = x.add(1).log10()
 		
 		
@@ -202,6 +204,7 @@ const ATOM = {
 					b = a;
 					if(player.ranks.hex.gte(29))b = b.pow(2);
 					if(hasElement(354))a = a.pow(2);
+					if(hasElement(368))b = b.pow(2);
 				}
 				
 				a = a.pow(galParticleEffect(0));
@@ -368,7 +371,7 @@ function galParticleEffect(x){
 	let ret=player.galParticles[x].add(1).log10().add(1).pow(3);
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
-	ret=overflow(ret,1e7,0.2);
+	ret=overflow(ret,1e7,hasElement(369)?0.21:0.2);
 	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

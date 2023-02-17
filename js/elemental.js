@@ -33,6 +33,9 @@ const ELEMENTS = {
         'Roeritgenium','Copernicium','Nihonium','Flerovium','Moscovium','Livermorium','Tennessine','Oganesson'
     ],
     canBuy(x) { 
+		if(this.upgs[x].qk)return player.atom.quarks.gte(this.upgs[x].cost) && !hasElement(x)
+		if(this.upgs[x].exotic)return player.exotic.points.gte(this.upgs[x].cost) && !hasElement(x)
+		if(this.upgs[x].ds)return player.exotic.ds.gte(this.upgs[x].cost) && !hasElement(x)
 		if(this.upgs[x].galQk)return player.galQk.gte(this.upgs[x].cost) && !hasElement(x)
 		if(this.upgs[x].et)return player.et.points.gte(this.upgs[x].cost) && !hasElement(x)
 		if(x>118) return player.inf.points.gte(this.upgs[x].cost) && !hasElement(x)
@@ -41,7 +44,10 @@ const ELEMENTS = {
     buyUpg(x) {
         if (this.canBuy(x)) {
 			if(x>118){
-				if(this.upgs[x].galQk)player.galQk = player.galQk.sub(this.upgs[x].cost)
+				if(this.upgs[x].qk)player.atom.quarks = player.atom.quarks.sub(this.upgs[x].cost)
+				else if(this.upgs[x].exotic)player.exotic.points = player.exotic.points.sub(this.upgs[x].cost)
+				else if(this.upgs[x].ds)player.exotic.ds = player.exotic.ds.sub(this.upgs[x].cost)
+				else if(this.upgs[x].galQk)player.galQk = player.galQk.sub(this.upgs[x].cost)
 				else if(this.upgs[x].et)player.et.points = player.et.points.sub(this.upgs[x].cost)
 				else player.inf.points = player.inf.points.sub(this.upgs[x].cost)
 			}else{
@@ -1078,6 +1084,7 @@ const ELEMENTS = {
 				if(hasElement(283))x = overflow(expMult((player.massUpg[2]||E(1)),0.875),"e3500000",0.5);
 				if(hasElement(328))x = expMult((player.massUpg[2]||E(1)),0.875);
 				if(hasElement(360))x = expMult((player.massUpg[2]||E(1)),0.886);
+				if(hasElement(367))x = expMult((player.massUpg[1]||E(1)),0.9);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1091,6 +1098,7 @@ const ELEMENTS = {
 				if(hasElement(283))x = overflow(expMult((player.massUpg[1]||E(1)),0.875),"e3500000",0.5);
 				if(hasElement(328))x = expMult((player.massUpg[1]||E(1)),0.875);
 				if(hasElement(360))x = expMult((player.massUpg[1]||E(1)),0.886);
+				if(hasElement(367))x = expMult((player.massUpg[1]||E(1)),0.9);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
@@ -1376,6 +1384,7 @@ const ELEMENTS = {
 				let x = player.galQk.add(1);
 				if(hasElement(264))x = expMult(x,2);
 				if(hasElement(278))x = expMult(x,1.3);
+				if(hasElement(364))x = expMult(x,2.5/1.3);
 				return x
 			},
 			effDesc(x) { return "^"+format(x); },
@@ -2042,6 +2051,55 @@ const ELEMENTS = {
 			cost: E("1e100"),
 			galQk: true,
 		},
+		{
+			desc: `Quarks gain exponent ^1.01.`,
+			cost: E("eee12"),
+			qk: true,
+		},
+		{
+			desc: `Element 231 is better.`,
+			cost: E("2e127"),
+			galQk: true,
+		},
+		{
+			desc: `Timeshards effect is better.`,
+			cost: E("1.5e3556"),
+			et: true,
+		},
+		{
+			desc: `Exotic Boosts are 20% stronger.`,
+			cost: E("2e21"),
+			exotic: true,
+		},
+		{
+			desc: `Effects of elements 173 and 174 are better.`,
+			cost: E("1.5e134056"),
+		},
+		{
+			desc: `Proton Power's second effect ^2.`,
+			cost: E("ee1.5e12"),
+			qk: true,
+		},
+		{
+			desc: `Effects of Galactic Particles are better.`,
+			cost: E("5e128"),
+			galQk: true,
+		},
+		{
+			desc: `Pre-Quantum Global Speed boost Dark Shadow gain.`,
+			cost: E("1e10"),
+			ds: true,
+			effect() {
+				let x = tmp.preQUGlobalSpeed.add(1).log10().sqrt();
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Meta-Prestige Level starts 1.25x later.`,
+			cost: E("1.5e3756"),
+			et: true,
+		},
 	],
     /*
     {
@@ -2055,6 +2113,7 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
+		if(hasUpgrade("atom",25))return 371;
 		
 		if(player.exotic.times.gte(1))return 362;
 		if(hasElement(291))return 359;
@@ -2090,7 +2149,7 @@ const ELEMENTS = {
     },
 }
 
-const MAX_ELEM_TIERS = 3
+const MAX_ELEM_TIERS = 4
 
 function getElementId(x) {
     let log = Math.floor(Math.log10(x))
@@ -2185,6 +2244,7 @@ function updateElementsHTML() {
 
 	if (tElem.unl_length<=118)player.atom.elemTier=Math.min(player.atom.elemTier,1)
 	if (tElem.unl_length<=218)player.atom.elemTier=Math.min(player.atom.elemTier,2)
+	if (tElem.unl_length<=362)player.atom.elemTier=Math.min(player.atom.elemTier,3)
     tmp.el.elemTierDiv.setDisplay(hasUpgrade("atom",16) || player.superGal.gte(1))
     tmp.el.elemTier.setHTML("Element Tier "+player.atom.elemTier)
 
@@ -2192,9 +2252,9 @@ function updateElementsHTML() {
     tmp.el.elem_ch_div.setVisible(ch>0)
     if (ch) {
         tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b>"+ELEMENTS.upgs[ch].desc)
-		if(ELEMENTS.upgs[ch].desc instanceof Function)tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc())
+		if(ELEMENTS.upgs[ch].desc instanceof Function)tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc())\
         tmp.el.elem_cost.setTxt(format(ELEMENTS.upgs[ch].cost,0)+"夸克"+(ch>86?"(需进入大撕裂)":"")+(player.qu.rip.active&&tmp.elements.cannot.includes(ch)?"[大撕裂中无法购买]":""))
-        if(ch > 118)tmp.el.elem_cost.setTxt((ELEMENTS.upgs[ch].galQk?format:formatMass)(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].galQk?"星系夸克":ELEMENTS.upgs[ch].et?"永恒质量":"无限质量"))
+        if(ch > 118)tmp.el.elem_cost.setTxt((ELEMENTS.upgs[ch].galQk||ELEMENTS.upgs[ch].exotic||ELEMENTS.upgs[ch].qk||ELEMENTS.upgs[ch].ds?format:formatMass)(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].qk?"夸克":ELEMENTS.upgs[ch].ds?" Dark Shadow":ELEMENTS.upgs[ch].exotic?"奇异物质":ELEMENTS.upgs[ch].galQk?"星系夸克":ELEMENTS.upgs[ch].et?"永恒质量":"无限质量"))
 		tmp.el.elem_eff.setHTML(ELEMENTS.upgs[ch].effDesc?"Currently: "+ELEMENTS.upgs[ch].effDesc(tElem.effect[ch]):"")
     }
 
@@ -2215,7 +2275,7 @@ function updateElementsHTML() {
                     let unl2 = x <= tElem.unl_length
                     upg.setVisible(unl2)
                     if (unl2) {
-                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: (x > 86 && x <= 118), ext: (x > 118), et: ELEMENTS.upgs[x].et, gqk: ELEMENTS.upgs[x].galQk})
+                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: (x > 86 && x <= 118), ext: (x > 118), et: ELEMENTS.upgs[x].et, gqk: ELEMENTS.upgs[x].galQk, ds: ELEMENTS.upgs[x].ds, ex: ELEMENTS.upgs[x].exotic, qk: ELEMENTS.upgs[x].qk})
                     }
                 }
             }

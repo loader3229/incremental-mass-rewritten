@@ -828,6 +828,7 @@ const PRESTIGES = {
             "23": `Unlock Ascension.`,
             "24": `Prestige Muscler boost its effect.`,
             "25": `Remove Ultra Hex scaling.`,
+            "26": `Meta Fermion Tier scaling starts 10x later.`,
 		},
     ],
     rewardEff: [
@@ -1048,6 +1049,7 @@ const PRESTIGES = {
             },x=>"x"+x.format()],
             "24": [_=>{
                 let x = player.prestigeMassUpg[1].add(10).log10().add(10).log10().add(10).log10();
+				if(hasAscension(0,7))x = player.prestigeMassUpg[1].add(10).log10().add(10).log10().pow(0.5);
                 return x
             },x=>"^"+x.format()],
 		},
@@ -1135,14 +1137,25 @@ const ASCENSIONS = {
 			"2": `Ascension Level boost Exotic Matter gain.`,
 			"3": `The effect of Galactic Particles is better.`,
 			"4": `Unlock Transcension.`,
+			"5": `Ascension Level 2's effect ^1.5`,
+			"6": `Ascension Level boost Galactic Quarks gain.`,
+			"7": `Renown 24's effect is better.`,
         },
         {
 			"1": `Transcension Level boost Exotic Matter gain.`,
+			"2": `Transcension Level boost Galactic Quarks gain.`,
         },
     ],
     rewardEff: [
         {
             "2": [_=>{
+                let x = player.ascensions[0].add(1);
+				if(hasAscension(0,5))x = x.pow(1.5);
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            "6": [_=>{
                 let x = player.ascensions[0].add(1);
                 return x
             },x=>{
@@ -1159,6 +1172,12 @@ const ASCENSIONS = {
         },
         {
             "1": [_=>{
+                let x = player.ascensions[1].add(1).pow(1.25);
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            "2": [_=>{
                 let x = player.ascensions[1].add(1).pow(1.25);
                 return x
             },x=>{
