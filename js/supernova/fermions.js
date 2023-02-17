@@ -816,6 +816,7 @@ function updateFermionsHTML() {
                 tmp.el[id+"_tier_scale"].setTxt(getScalingName('fTier', i, x))
                 tmp.el[id+"_tier"].setTxt(format(player.supernova.fermions.tiers[i][x],0)+(tmp.fermions.maxTier[i][x] < Infinity?"，上限为"+format(tmp.fermions.maxTier[i][x],0):"") + (tmp.fermions.bonuses[i][x].gt(0)?"，额外阶层为"+tmp.fermions.bonuses[i][x].format():""))
                 tmp.el[id+"_desc"].setHTML(f.desc(tmp.fermions.effs[i][x]))
+				if(hasUpgrade('bh',24)&&i==1&&x==5)tmp.el[id+"_desc"].setHTML(f.desc(tmp.fermions.effs[i][x].add(10).log10()))
 
                 tmp.el[id+"_cur"].setDisplay(active2)
                 if (active2) {

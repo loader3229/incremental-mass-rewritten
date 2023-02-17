@@ -247,6 +247,8 @@ const SUPERNOVA_GALAXY = {
 		if (player.exotic.times.gte(3))ret = ret.mul(player.exotic.times);
 		
 		if(hasUpgrade('bh',22))ret = ret.mul(upgEffect(2,18));
+		if(hasUpgrade('atom',23))ret = ret.mul(upgEffect(3,18));
+		if(hasUpgrade('rp',24))ret = ret.mul(upgEffect(1,18));
 		return ret;
 	},
 }

@@ -283,6 +283,7 @@ const RANKS = {
 			'33': "Accelerator effect softcap^2 is weaker.",
 			'34': "Oct Boost Exotic Matter gain.",
 			'35': "Square Oct 34 Effect.",
+			'46': "Super Overpower is 4% weaker.",
 		},
     },
     effect: {
@@ -825,6 +826,8 @@ const PRESTIGES = {
             "21": `Supernova Galaxies boost Exotic Matter gain.`,
             "22": `Renown boost Exotic Matter gain.`,
             "23": `Unlock Ascension.`,
+            "24": `Prestige Muscler boost its effect.`,
+            "25": `Remove Ultra Hex scaling.`,
 		},
     ],
     rewardEff: [
@@ -1043,6 +1046,10 @@ const PRESTIGES = {
                 let x = player.prestiges[3].div(10).add(1);
                 return x
             },x=>"x"+x.format()],
+            "24": [_=>{
+                let x = player.prestigeMassUpg[1].add(10).log10().add(10).log10().add(10).log10();
+                return x
+            },x=>"^"+x.format()],
 		},
     ],
     reset(i) {
@@ -1069,7 +1076,7 @@ function prestigeEff(x,y,def=E(1)) { return tmp.prestiges.eff[x][y] || def }
 
 
 const ASCENSIONS = {
-    fullNames: ["Ascension Level"],
+    fullNames: ["Ascension Level","Transcension Level"],
     baseExponent() {
         let x = E(0)
         return x.add(1)
@@ -1090,6 +1097,9 @@ const ASCENSIONS = {
             case 0:
                 x = Decimal.pow(1.1,y.scaleEvery('ascension0').pow(1.1)).mul(1.5e12)
                 break;
+            case 1:
+                x = y.scaleEvery('ascension1').pow(1.25).mul(3).add(4)
+                break;
             default:
                 x = EINF
                 break;
@@ -1100,8 +1110,11 @@ const ASCENSIONS = {
         let x = E(0), y = i==0?tmp.ascensions.base:player.ascensions[i-1]
         switch (i) {
             case 0:
-                if (y.gte(1.4e12)) x = y.div(1.4e12).max(1).log(1.1).max(0).root(1.1).scaleEvery('ascension0',true).add(1)
+                if (y.gte(1.5e12)) x = y.div(1.5e12).max(1).log(1.1).max(0).root(1.1).scaleEvery('ascension0',true).add(1)
                 break;
+			case 1:
+                if (y.gte(4)) x = y.sub(4).div(3).max(0).root(1.25).scaleEvery('ascension1',true).add(1)
+                break
             default:
                 x = E(0)
                 break;
@@ -1110,20 +1123,43 @@ const ASCENSIONS = {
     },
     unl: [
         _=>true,
+        _=>hasAscension(0,4)||hasAscension(1,1),
     ],
     noReset: [
+        _=>false,
         _=>false,
     ],
     rewards: [
         {
 			"1": `Meta-Prestige Level starts 1.2x later.`,
 			"2": `Ascension Level boost Exotic Matter gain.`,
+			"3": `The effect of Galactic Particles is better.`,
+			"4": `Unlock Transcension.`,
+        },
+        {
+			"1": `Transcension Level boost Exotic Matter gain.`,
         },
     ],
     rewardEff: [
         {
             "2": [_=>{
                 let x = player.ascensions[0].add(1);
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            /*
+            "1": [_=>{
+                let x = E(1)
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            */
+        },
+        {
+            "1": [_=>{
+                let x = player.ascensions[1].add(1).pow(1.25);
                 return x
             },x=>{
                 return x.format()+"x"

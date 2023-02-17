@@ -321,7 +321,7 @@ function getPlayerData() {
 			times: E(0),
 			rcb: [E(0), E(0), E(0), E(0)],
 			bp: E(0),
-			boosts: [E(0), E(0), E(0), E(0)],
+			boosts: [E(0), E(0), E(0), E(0), E(0)],
 			
 			dr: E(0),
 			ds: E(0),

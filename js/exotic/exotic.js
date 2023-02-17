@@ -2,7 +2,7 @@ const EXOTIC = {
     gain() {
 		let x = player.mass.max(1).log10().max(1).log10().div(1e12)
         if (x.lt(1)) return E(0)
-        x = x.max(0).pow(2)
+        x = x.max(0).pow(hasUpgrade('exotic',22)?3:2)
 		if (player.qu.times.gte(1e255) && player.exotic.times.gte(1))x = x.mul(3)
 		if (player.qu.times.gte(1e295) && player.exotic.times.gte(1))x = x.mul(5)
         if (hasPrestige(2,141)) x = x.mul(prestigeEff(2,141,E(1)));
@@ -15,7 +15,11 @@ const EXOTIC = {
 		if(hasUpgrade('exotic', 17)){
 			x = x.mul(player.exotic.times.add(1));
 		}
+		if(hasUpgrade('br', 23)){
+			x = x.mul(upgEffect(4,23));
+		}
         if (hasAscension(0,2)) x = x.mul(ascensionEff(0,2,E(1)));
+        if (hasAscension(1,1)) x = x.mul(ascensionEff(1,1,E(1)));
         return x.floor()
     },
     gainTimes() {
@@ -123,7 +127,7 @@ function updateExoticTemp() {
 	player.exotic.bp = player.exotic.bp.max(EXOTIC_BOOST.gain());
 	tmp.ex.exb_can = player.exotic.bp.gt(EXOTIC_BOOST.used_bp());
 	
-	for(let i=0;i<=3;i++){
+	for(let i=0;i<EXOTIC_BOOST_LENGTH;i++){
 		tmp.ex.exb_eff[i] = EXOTIC_BOOST.effect(i)
 	}
 	
@@ -159,12 +163,13 @@ function updateExoticHTML(){
         if (tmp.stab[7] == 2) {
             tmp.el.ex_bp.setTxt(EXOTIC_BOOST.used_bp().format(0)+" / "+player.exotic.bp.format(0));
             tmp.el.ex_bp2.setTxt(Decimal.pow(1e3,player.exotic.bp.add(1)).format(0));
-			for(let i=0;i<=3;i++){
+			for(let i=0;i<EXOTIC_BOOST_LENGTH;i++){
 				tmp.el["exb"+i+"_lvl"].setTxt(format(player.exotic.boosts[i],0))
 				tmp.el["exb"+i+"_btn"].setClasses({btn: true, locked: !tmp.ex.exb_can})
 				tmp.el["exb"+i+"_eff"].setTxt(format(tmp.ex.exb_eff[i]))
 				if(i==2)tmp.el["exb"+i+"_div"].changeStyle('display',hasUpgrade('exotic',11)?'':'none');
 				if(i==3)tmp.el["exb"+i+"_div"].changeStyle('display',hasUpgrade('exotic',18)?'':'none');
+				if(i==4)tmp.el["exb"+i+"_div"].changeStyle('display',hasUpgrade('exotic',20)?'':'none');
 			}
         }
         if (tmp.stab[7] == 3) {

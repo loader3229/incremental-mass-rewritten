@@ -91,6 +91,7 @@ const ATOM = {
 			
 			if (player.gc.active) x = GCeffect(x)
 				
+			if (hasUpgrade('atom',24)) return x;
 			tmp.atomicOverflowPower = E(0.8)
 			tmp.atomicOverflow = overflow(x,"e1e3000",tmp.atomicOverflowPower).log(x);
 			return overflow(x,"e1e3000",tmp.atomicOverflowPower);
@@ -282,6 +283,7 @@ function updateAtomTemp() {
     tmp.atom.atomicEff = ATOM.atomic.effect()
 
     let fp = tmp.fermions.effs[1][5]
+	if(hasUpgrade('bh',24))fp = fp.add(10).log10();
 
     tmp.atom.gamma_ray_cost = E(2).pow(player.atom.gamma_ray.scaleEvery("gamma_ray",false,[1,1,1,fp])).floor()
     tmp.atom.gamma_ray_bulk = E(0)
@@ -343,7 +345,7 @@ function updateAtomicHTML() {
 	tmp.el.gamma_ray_auto.setTxt(player.atom.auto_gr?"ON":"OFF")
 	
 	
-    tmp.el.atomicOverflow.setDisplay(tmp.atom.atomicGain.gte("ee3000"))
+    tmp.el.atomicOverflow.setDisplay(tmp.atom.atomicGain.gte("ee3000") && !hasUpgrade('atom',24))
 	tmp.el.atomicOverflow2.setTxt(format(tmp.atomicOverflow))
 }
 
@@ -367,6 +369,6 @@ function galParticleEffect(x){
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
 	ret=overflow(ret,1e7,0.2);
-	ret=overflow(ret,5.1e9,0.4);
+	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

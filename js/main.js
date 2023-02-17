@@ -521,7 +521,7 @@ const FORMS = {
 			if(!hasElement(327))x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
-				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(0.8).mul(bhOverflowStart2.log10().log10());
+				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(hasUpgrade('bh',23)?0.81:0.8).mul(bhOverflowStart2.log10().log10());
 				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
 			}
 			if(x.gte("eee10")){

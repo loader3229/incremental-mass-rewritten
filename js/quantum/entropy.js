@@ -65,6 +65,7 @@ const ENTROPY = {
             inc: E(10),
 
             eff(i) {
+				if(hasUpgrade('bh',24))return E(10).pow(i);
                 let x = player.ranks.hex.gte(114) ? i.add(1) : hasElement(114) ? i.add(1).root(1.5) : i.div(2).add(1).root(3)
                 return x
             },

@@ -260,6 +260,7 @@ const UPGS = {
                 if (hasPrestige(2,51)) step = step.mul(prestigeEff(2,51))
                 step = step.mul(tmp.upgs.prestigeMass[2]?tmp.upgs.prestigeMass[2].eff.eff:1)
                 let ret = step.mul(x).add(1)
+				if(hasPrestige(3,24))ret = ret.pow(prestigeEff(3,24));
                 return {step: step, eff: ret}
             },
             effDesc(eff) {
@@ -352,7 +353,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return player.mainUpg.bh.includes(5) },
-            lens: 23,
+            lens: 24,
             1: {
                 desc: "Boosters adds Musclers.",
                 cost: E(1),
@@ -537,6 +538,11 @@ const UPGS = {
                 desc: "The softcap of Rage Upgrade 12 is weaker.",
                 cost: E('ee1.5e14'),
             },
+            24: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Rage Upgrade 18 boost Galactic Quarks.",
+                cost: E('ee2.22222222e14'),
+            },
         },
         2: {
             title: "Black Hole Upgrades",
@@ -551,7 +557,7 @@ const UPGS = {
                     player.mainUpg.bh.push(x)
                 }
             },
-            lens: 22,
+            lens: 24,
             1: {
                 desc: "Mass Upgardes no longer spends mass.",
                 cost: E(1),
@@ -733,6 +739,16 @@ const UPGS = {
                 desc: "Dark Matter Upgrade 18 boost Galactic Quarks.",
                 cost: E('ee1.5e14'),
             },
+            23: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Black Hole Overflow is weaker.",
+                cost: E('ee2.33333333e14'),
+            },
+            24: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Change the effect of [Neut-Tau], and the Meta scaling of BH Condensers and Cosmic Rays are affected by [Neut-Tau]. Improve the effect of Entropic Multiplier.",
+                cost: E('ee3.6e14'),
+            },
         },
         3: {
             title: "Atom Upgrades",
@@ -756,7 +772,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return hasTree("qol1") },
-            lens: 22,
+            lens: 24,
             1: {
                 desc: "Start with Mass upgrades unlocked.",
                 cost: E(1),
@@ -913,6 +929,16 @@ const UPGS = {
                 desc: "Boost Star Generators gain.",
                 cost: E('ee2.1e11'),
             },
+            23: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Atom Upgrade 13 Boost Galactic Quarks.",
+                cost: E('ee3e11'),
+            },
+            24: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Remove Atomic Overflow.",
+                cost: E('ee4.2e11'),
+            },
         },
         4: {
             title: "Big Rip Upgrades",
@@ -927,7 +953,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 22,
+            lens: 24,
             1: {
                 desc: `Start with Hydrogen-1 unlocked in Big Rip.`,
                 cost: E(5),
@@ -1055,6 +1081,20 @@ const UPGS = {
                 desc: "Change the effect of C14.",
                 cost: E('e1.5e14'),
             },
+            23: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Death Shards boost Exotic Matter gain.",
+                cost: E('e4e14'),
+				effect(){
+					return player.qu.rip.amt.add(1e10).slog().pow(2.5);
+				},
+                effDesc(x=this.effect()) { return "x"+format(x) },
+            },
+            24: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "The Impossible scaling of All Challenges is 20% weaker.",
+                cost: E('e6e14'),
+            },
         },
         5: {
             title: "无限升级",
@@ -1069,7 +1109,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 21,
+            lens: 22,
             1: {
                 desc: `使量子次数乘以(200+无限次数)。无限质量加成量子泡沫获取速度。该升级只花费1毫克无限质量。`,
                 cost: E(1e-3),
@@ -1114,7 +1154,7 @@ const UPGS = {
                 desc: `无限时保留元素。无限质量加成转生质量获取速度。`,
                 cost: E(5),
                 effect() {
-                    let x = overflow(player.inf.points.add(1).pow(0.5),"1e2500",0.5);
+                    let x = overflow(player.inf.points.add(1).pow(0.5),"1e2500",hasUpgrade("inf",22)?0.7:0.5);
                     return x
                 },
                 effDesc(x=this.effect()) { return "x"+format(x)+(x.gte("1e2500")?" <span class='soft'>(softcapped)</span>":"") },
@@ -1204,6 +1244,11 @@ const UPGS = {
                 desc: "Reduce Supernova Galaxies Requirements.",
                 cost: E('e110000'),
             },
+            22: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Infinity Upgrade 5's softcap is weaker.",
+                cost: E('e120000'),
+            },
         },
         6: {
             title: "Exotic Upgrades",
@@ -1218,7 +1263,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 19,
+            lens: 22,
             1: {
                 desc: `Multiply your Eternity times gain by (200+Exotic reset times). Remove Mass and Star Overflow.`,
                 cost: E(1),
@@ -1322,8 +1367,22 @@ const UPGS = {
             },
             20: {
                 unl() { return hasUpgrade('exotic',19) },
-                desc: "Reach the current endgame.",
+                desc: "Unlock a new Exotic Boost type.",
                 cost: E(1e14)
+            },
+            21: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Meta-Pent starts later based on Exotic Matter.",
+                cost: E(2e15),
+				effect(){
+					return overflow(player.exotic.points.add(1),1e10,2);
+				},
+                effDesc(x=this.effect()) { return "x"+format(x)+" later"; },
+            },
+            22: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Exotic Matter gain formula is better.",
+                cost: E(2e16),
             },
         },
     },

@@ -222,6 +222,7 @@ function updateBlackHoleTemp() {
     t.effect = FORMS.bh.effect()
 
     let fp = tmp.fermions.effs[1][5]
+	if(hasUpgrade('bh',24))fp = fp.add(10).log10();
 
     t.condenser_bonus = FORMS.bh.condenser.bonus()
     t.condenser_cost = E(1.75).pow(player.bh.condenser.scaleEvery('bh_condenser',false,[1,1,1,fp])).floor()

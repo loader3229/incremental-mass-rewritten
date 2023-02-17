@@ -28,7 +28,8 @@ const SUPERNOVA = {
         let keep = []
         for (let x = 0; x < player.mainUpg.atom.length; x++) if (list_keep.includes(player.mainUpg.atom[x])) keep.push(player.mainUpg.atom[x])
 		if (player.mainUpg.exotic.includes(19))keep = player.mainUpg.atom
-
+		player.mainUpg.atom = keep
+		
         list_keep = [21,36]
         if (player.mainUpg.br.includes(1)) list_keep.push(1)
         if (hasTree("qol1")) list_keep.push(14,18)
@@ -71,6 +72,9 @@ const SUPERNOVA = {
 		x = x.mul(SUPERNOVA_GALAXY.effects.nsMult())
         if (hasTree("sn6")) x = x.pow(tmp.supernova.tree_eff.sn6)
 		x = x.pow(SUPERNOVA_GALAXY.effects.ns())
+	
+		
+			if(hasUpgrade('exotic',20) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[4])
 	
 	if(player.gc.active)x = GCeffect(x)
         return x

@@ -258,6 +258,7 @@ const CHALS = {
     getPower3(i) {
         let x = E(1)
 		if (i>12)x = E(50)
+		if(hasUpgrade('br',24))x = x.mul(0.8)
         return x
     },
     getChalData(x, r=E(-1)) {

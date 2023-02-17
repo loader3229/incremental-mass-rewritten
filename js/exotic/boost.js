@@ -1,3 +1,5 @@
+const EXOTIC_BOOST_LENGTH = 5;
+
 const EXOTIC_BOOST = {
     gain() {
 		let x = player.exotic.points.add(1).log10().div(3);
@@ -5,7 +7,7 @@ const EXOTIC_BOOST = {
     },
     used_bp() {
 		let x = E(0);
-		for(let i=0;i<=3;i++){
+		for(let i=0;i<EXOTIC_BOOST_LENGTH;i++){
 			x = x.add(player.exotic.boosts[i]);
 		}
         return x
@@ -19,7 +21,7 @@ const EXOTIC_BOOST = {
 	},
 	respec() {
 		if (!confirm("Are you sure you want to respec all Exotic Boosts?"))return;
-		for(let i=0;i<=3;i++){
+		for(let i=0;i<EXOTIC_BOOST_LENGTH;i++){
 			player.exotic.boosts[i]=E(0);
 		}
 		EXOTIC.doReset(true);

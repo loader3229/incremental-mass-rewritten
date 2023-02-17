@@ -384,6 +384,9 @@ function getScalingStart(type, name) {
 				
             if (player.qu.times.gte(1e275) && player.exotic.times.gte(1))start = start.mul(100)
             if (player.qu.times.gte(1e303) && player.exotic.times.gte(1))start = start.mul(1e25)
+				
+			
+			if (player.mainUpg.exotic.includes(21)) start = start.mul(upgEffect(6,21))
 		}
 		if (name=="hex") {
             if (hasElement(325))start = start.mul(1.5)
@@ -405,6 +408,7 @@ function getScalingStart(type, name) {
 		if (name=="bh_condenser" || name=="gamma_ray") {
 			start = start.mul(getEnRewardEff(0))
 			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
+			if (hasElement(284))start = start.mul(tmp.fermions.effs[1][5].add(10).log10())
 		}
 		if (name == "supernova") if (hasPrestige(1,2)) start = start.add(100)
 			
@@ -464,6 +468,7 @@ function getScalingStart(type, name) {
 	if (name=="massUpg") if (hasPrestige(2,37))return EINF;
 	if (name=="hex" && type=="hyper") if (hasPrestige(2,145))return EINF;
 	if (name=="hept" && type=="super") if (hasPrestige(3,20))return EINF;
+	if (name=="hex" && type=="ultra") if (hasPrestige(3,25))return EINF;
 	return start.floor()
 }
 
@@ -543,6 +548,9 @@ function getScalingPower(type, name) {
 		}
 		if (name=="oct") {
 			if (hasPrestige(3,6)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="massUpg4") {
+			if (player.ranks.oct.gte(46)) power = power.mul(0.96)
 		}
 	}
 	if (type=="hyper") {
