@@ -437,12 +437,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(1.5)).mul(30).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:1.5)).mul(30).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[0][0]
                     if (res.lt(30)) return E(0)
-                    let x = res.div(30).max(1).log(1.03).max(0).root(1.5)
+                    let x = res.div(30).max(1).log(1.03).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -461,12 +461,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(2)).mul(55).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:2)).mul(55).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[0][1]
                     if (res.lt(55)) return E(0)
-                    let x = res.div(55).max(1).log(1.03).max(0).root(2)
+                    let x = res.div(55).max(1).log(1.03).max(0).root(hasElement(375)?1.2:2)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -485,12 +485,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(1.5)).mul(55).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:1.5)).mul(55).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[0][2]
                     if (res.lt(55)) return E(0)
-                    let x = res.div(55).max(1).log(1.03).max(0).root(1.5)
+                    let x = res.div(55).max(1).log(1.03).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -509,12 +509,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(1.5)).mul(75).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:1.5)).mul(75).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[0][3]
                     if (res.lt(75)) return E(0)
-                    let x = res.div(75).max(1).log(1.03).max(0).root(1.5)
+                    let x = res.div(75).max(1).log(1.03).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -533,12 +533,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(2)).mul(15).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:2)).mul(15).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[0][4]
                     if (res.lt(15)) return E(0)
-                    let x = res.div(15).max(1).log(1.03).max(0).root(2)
+                    let x = res.div(15).max(1).log(1.03).max(0).root(hasElement(375)?1.2:2)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -557,12 +557,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.1).pow(t.pow(2)).mul(100).ceil()
+                    return E(1.1).pow(t.pow(hasElement(375)?1.2:2)).mul(100).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[0][5]
                     if (res.lt(100)) return E(0)
-                    let x = res.div(100).max(1).log(1.1).max(0).root(2)
+                    let x = res.div(100).max(1).log(1.1).max(0).root(hasElement(375)?1.2:2)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -582,12 +582,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(1.5)).mul(50).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:1.5)).mul(50).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[1][0]
                     if (res.lt(50)) return E(0)
-                    let x = res.div(50).max(1).log(1.03).max(0).root(1.5)
+                    let x = res.div(50).max(1).log(1.03).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -606,12 +606,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(1.5)).mul(30).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:1.5)).mul(30).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[1][1]
                     if (res.lt(30)) return E(0)
-                    let x = res.div(30).max(1).log(1.03).max(0).root(1.5)
+                    let x = res.div(30).max(1).log(1.03).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -630,12 +630,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(1.5)).mul(30).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:1.5)).mul(30).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[1][2]
                     if (res.lt(30)) return E(0)
-                    let x = res.div(30).max(1).log(1.03).max(0).root(1.5)
+                    let x = res.div(30).max(1).log(1.03).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -655,12 +655,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.03).pow(t.pow(1.5)).mul(45).ceil()
+                    return E(1.03).pow(t.pow(hasElement(375)?1.2:1.5)).mul(45).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[1][3]
                     if (res.lt(45)) return E(0)
-                    let x = res.div(45).max(1).log(1.03).max(0).root(1.5)
+                    let x = res.div(45).max(1).log(1.03).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -679,12 +679,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.1).pow(t.pow(2)).mul(5).ceil()
+                    return E(1.1).pow(t.pow(hasElement(375)?1.2:2)).mul(5).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[1][4]
                     if (res.lt(5)) return E(0)
-                    let x = res.div(5).max(1).log(1.1).max(0).root(2)
+                    let x = res.div(5).max(1).log(1.1).max(0).root(hasElement(375)?1.2:2)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {
@@ -703,12 +703,12 @@ const FERMIONS = {
                 },
                 nextTierAt(x) {
                     let t = FERMIONS.getGTierScaling(x)
-                    return E(1.1).pow(t.pow(1.5)).mul(100).ceil()
+                    return E(1.1).pow(t.pow(hasElement(375)?1.2:1.5)).mul(100).ceil()
                 },
                 calcTier() {
                     let res = player.supernova.fermions.tiers[1][5]
                     if (res.lt(100)) return E(0)
-                    let x = res.div(100).max(1).log(1.1).max(0).root(1.5)
+                    let x = res.div(100).max(1).log(1.1).max(0).root(hasElement(375)?1.2:1.5)
                     return FERMIONS.getGTierScaling(x, true)
                 },
                 eff(i, t) {

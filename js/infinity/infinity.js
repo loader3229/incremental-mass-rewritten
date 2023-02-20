@@ -12,6 +12,7 @@ const INFINITY_LAYER = {
 		if (hasUpgrade('inf',18))power = power.add(1)
 		if (hasUpgrade('inf',19))power = power.add(1)
 		if (hasElement(205))power = power.add(tmp.chal?tmp.chal.eff[18]:0);
+		if (hasAscension(0,9))power = power.add(ascensionEff(0,9));
 		if (hasElement(146)){
 			let z = player.qu.en.amt.add(1).log(Number.MAX_VALUE);
 			if (z.lt(1)) z=E(1)
@@ -314,7 +315,7 @@ function updateInfinityHTML() {
 
 function calcShardsEffect() {
 	let eff = player.et.shards.add(1).log10().add(1).log10().add(1).pow(0.1);
-	if(hasElement(365))eff = player.et.shards.add(1).log10().add(1).pow(0.02);
+	if(hasElement(365))eff = player.et.shards.add(1).log10().add(1).pow(hasElement(377)?0.025:0.02);
 	if(hasUpgrade('br',16))eff = eff.pow(1.1);
 	if(hasUpgrade('br',17))eff = eff.pow(1.2);
 	if(hasUpgrade('br',18))eff = eff.pow(1.1);

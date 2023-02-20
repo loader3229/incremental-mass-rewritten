@@ -48,6 +48,7 @@ const ATOM = {
 			
 		
 			if(hasElement(363) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[2])
+			if(hasChargedElement(1))x = expMult(x,1.01)
 
 		if (FERMIONS.onActive("30")) x = x.add(1).log10()
 		

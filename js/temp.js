@@ -47,6 +47,7 @@ function resetTemp() {
         elements: {
             choosed: 0,
             effect: [null],
+            ceffect: [null],
             cannot: [],
         },
     

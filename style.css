@@ -516,6 +516,18 @@ button {
 	cursor: default;
 }
 
+.elements.bought.cancharge
+ {
+	background-color: #669900;
+	cursor: pointer;
+}
+
+.elements.bought.ch
+ {
+	background-color: #cccc00;
+	color: black;
+}
+
 .chal_comp {
 	background-color: #00520b;
 }

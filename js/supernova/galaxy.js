@@ -176,6 +176,7 @@ const SUPERNOVA_GALAXY = {
 	galPow1_eff(){
 		let ret=Decimal.pow(1.1,player.galPow[1].add(1).log10())
 		if(hasElement(234))ret = ret.pow(1.8);
+		if(hasElement(373))return overflow(ret,2,3.6);
 		return overflow(overflow(ret,2,3),"1e30000",0.1);
 	},
 	galPow2_gain(){
@@ -214,6 +215,7 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow4_eff(){
 		let ret=Decimal.pow(1.3,player.galPow[4].add(1).log10());
+		if(hasElement(375))return overflow(ret,2,3);
 		return overflow(overflow(ret,2,3),"1e1500",0.5);
 	},
 	galPow5_gain(){
@@ -230,10 +232,11 @@ const SUPERNOVA_GALAXY = {
 	galQkGain(){
 		if(player.superGal.lt(10))return E(0);
 		let ret=player.supernova.fermions.points[0].add(1).log10().add(1).log10().add(1).log10().mul(player.atom.quarks.add(1).log10().add(1).log10().add(1).log10());
+		if(hasElement(374))ret=player.supernova.fermions.points[0].add(1).log10().add(1).log10().add(1).log10().mul(player.atom.quarks.add(1).log10().add(1).log10().pow(0.1));
 		if(hasElement(260)){
-			ret = ret.pow(player.superGal.div(2));
+			ret = ret.pow(player.superGal.softcap(100,0.5,0).div(2));
 		}else{
-			ret = ret.pow(player.superGal.div(3));
+			ret = ret.pow(player.superGal.softcap(100,0.5,0).div(3));
 		}
 		if(hasPrestige(1,242)){
 			ret = ret.mul(prestigeEff(1,242,E(1)));
@@ -253,6 +256,7 @@ const SUPERNOVA_GALAXY = {
 		if(hasUpgrade('bh',22))ret = ret.mul(upgEffect(2,18));
 		if(hasUpgrade('atom',23))ret = ret.mul(upgEffect(3,18));
 		if(hasUpgrade('rp',24))ret = ret.mul(upgEffect(1,18));
+		if(hasUpgrade('inf',25))ret = ret.mul(upgEffect(5,24));
 		return ret;
 	},
 }

@@ -1,4 +1,4 @@
-const EXOTIC_BOOST_LENGTH = 5;
+const EXOTIC_BOOST_LENGTH = 6;
 
 const EXOTIC_BOOST = {
     gain() {

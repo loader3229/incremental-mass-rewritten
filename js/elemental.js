@@ -41,7 +41,11 @@ const ELEMENTS = {
 		if(x>118) return player.inf.points.gte(this.upgs[x].cost) && !hasElement(x)
 		return player.atom.quarks.gte(this.upgs[x].cost) && !hasElement(x) && (player.qu.rip.active ? true : x <= 86) && !tmp.elements.cannot.includes(x)
 	},
-    buyUpg(x) {
+    canCharge(x) {
+		if(!this.upgs[x].ccost)return false;
+		return player.atom.quarks.gte(this.upgs[x].ccost) && !hasChargedElement(x) && hasElement(380)
+	},
+    buyUpg(x,y) {
         if (this.canBuy(x)) {
 			if(x>118){
 				if(this.upgs[x].qk)player.atom.quarks = player.atom.quarks.sub(this.upgs[x].cost)
@@ -55,16 +59,23 @@ const ELEMENTS = {
 			}
             player.atom.elements.push(x)
         }
+        if (this.canCharge(x) && !y) {
+            player.atom.chargedElements.push(x)
+        }
     },
     upgs: [
         null,
         {
             desc: `Improves quark gain formula is better.`,
             cost: E(5e8),
+            cdesc: `Quark gain exponent ^1.01`,
+            ccost: E("ee2.7777e12"),
         },
         {
             desc: `Hardened Challenge scale 25% weaker.`,
             cost: E(2.5e12),
+            cdesc: `Impossible Challenge scale 5% weaker`,
+            ccost: E("ee2.8e12"),
         },
         {
             desc: `Electron Power boost Atomic Powers gain.`,
@@ -72,13 +83,16 @@ const ELEMENTS = {
             effect() {
                 let x = player.atom?player.atom.powers[2].add(1).root(2):E(1)
 				if(player.ranks.hex.gte(3))x=x.pow(1.5);
+				if(hasChargedElement(3))return x;
                 if (x.gte('e1e4')) x = expMult(x.div('e1e4'),0.9).mul('e1e4')
 				if (x.gte('ee4000')) x = overflow(x,'ee4000',0.5);
 				if (x.gte('ee2250000')) x = overflow(x,'ee2250000',0.5);
 				if (x.gte('ee7500000')) x = overflow(x,'ee7500000',0.5);
                 return x
             },
-            effDesc(x) { return format(x)+"x"+(x.gte('e1e4')?"<span class='soft'>(softcapped)</span>":"") },
+            effDesc(x) { return format(x)+"x"+(x.gte('e1e4')&&!hasChargedElement(3)?" <span class='soft'>(softcapped)</span>":"") },
+            cdesc: `Remove All Softcaps from its effect`,
+            ccost: E("ee2.9e12"),
         },
         {
             desc: `Stronger's power is stronger based on Proton Powers.`,
@@ -86,13 +100,18 @@ const ELEMENTS = {
             effect() {
                 let x = player.atom?player.atom.powers[0].max(1).log10().pow(0.8).div(50).add(1):E(1)
 				if(player.ranks.hex.gte(4))x=x.pow(1.05);
+				if(hasChargedElement(4))x=x.pow(1.05);
 				return x
             },
             effDesc(x) { return format(x)+"x stronger" },
+            cdesc: `Effect of this element ^1.05`,
+            ccost: E("ee2.9e12"),
         },
         {
             desc: `The 7th challenge's effect is twice as effective.`,
             cost: E(1e18),
+            cdesc: `The 7th challenge's effect is better`,
+            ccost: E("ee3e12"),
         },
         {
             desc: `Gain 1% more quarks for each challenge completion.`,
@@ -106,6 +125,15 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { return format(x)+"x" },
+            cdesc: `This element's effect boost Exotic Matter at a reduced rate.`,
+            ccost: E("ee3.1e12"),
+            ceffect() {
+                let x = E(0)
+                for (let i = 1; i <= CHALS.cols; i++) x = x.add(player.chal.comps[i].mul(i>4?2:1))
+                if (hasElement(7)) x = x.mul(tmp.elements.effect[7])
+                return x.add(10).log10();
+            },
+            ceffDesc(x) { return format(x)+"x" },
         },
         {
             desc: `Carbon's effect is now multiplied by the number of elements bought.`,
@@ -2052,7 +2080,7 @@ const ELEMENTS = {
 			galQk: true,
 		},
 		{
-			desc: `Quarks gain exponent ^1.01.`,
+			desc: `Exotic Boost 'Atom Boost' boost Quarks.`,
 			cost: E("eee12"),
 			qk: true,
 		},
@@ -2100,6 +2128,54 @@ const ELEMENTS = {
 			cost: E("1.5e3756"),
 			et: true,
 		},
+		{
+			desc: `Exotic Matter boost Dark Ray gain.`,
+			cost: E("2e23"),
+			exotic: true,
+			effect() {
+				let x = player.exotic.points.add(10).log10().pow(2);
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Effect of Galactic Atoms are better.`,
+			cost: E("1.5e142056"),
+		},
+		{
+			desc: `Galactic Quark gain from Quarks is better.`,
+			cost: E("ee2e12"),
+			qk: true,
+		},
+		{
+			desc: `Effects of Galactic U-Fermions are better. G-Fermion Tiers are cheaper.`,
+			cost: E("5e141"),
+			galQk: true,
+		},
+		{
+			desc: `Unlock a new effect of Dark Shadow.`,
+			cost: E("1e20"),
+			ds: true,
+		},
+		{
+			desc: `Timeshards effect is better.`,
+			cost: E("1.5e3856"),
+			et: true,
+		},
+		{
+			desc: `Double Prestige Overpower Power.`,
+			cost: E("2e24"),
+			exotic: true,
+		},
+		{
+			desc: `Remove Hardened and Insane scalings of C1-C19.`,
+			cost: E("1.5e150056"),
+		},
+		{
+			desc: `Unlock Element Charging.`,
+			cost: E("ee2.7777e12"),
+			qk: true,
+		},
 	],
     /*
     {
@@ -2113,7 +2189,7 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
-		if(hasUpgrade("atom",25))return 371;
+		if(hasUpgrade("atom",25))return 380;
 		
 		if(player.exotic.times.gte(1))return 362;
 		if(hasElement(291))return 359;
@@ -2194,6 +2270,8 @@ for (let x = 2; x <= MAX_ELEM_TIERS; x++) {
 }
 
 function hasElement(x) { return player.atom.elements.includes(x) }
+function hasChargedElement(x) { return player.atom.chargedElements.includes(x) }
+
 
 function setupElementsHTML() {
     let elements_table = new Element("elements_table")
@@ -2251,11 +2329,11 @@ function updateElementsHTML() {
     let ch = tElem.choosed
     tmp.el.elem_ch_div.setVisible(ch>0)
     if (ch) {
-        tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b>"+ELEMENTS.upgs[ch].desc)
-		if(ELEMENTS.upgs[ch].desc instanceof Function)tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc())\
-        tmp.el.elem_cost.setTxt(format(ELEMENTS.upgs[ch].cost,0)+"夸克"+(ch>86?"(需进入大撕裂)":"")+(player.qu.rip.active&&tmp.elements.cannot.includes(ch)?"[大撕裂中无法购买]":""))
+        tmp.el.elem_desc.setHTML(("<b>["+ELEMENTS.fullNames[ch]+"]</b>"+ELEMENTS.upgs[ch].desc+(hasChargedElement(ch)?"<b> [已充能]</b>":""))+((hasElement(380) && ELEMENTS.upgs[ch].ccost) ? "<span class=yellow><br>充能效果："+ELEMENTS.upgs[ch].cdesc+"</span>" : ""))
+		if(ELEMENTS.upgs[ch].desc instanceof Function)tmp.el.elem_desc.setHTML("<b>["+ELEMENTS.fullNames[ch]+"]</b> "+ELEMENTS.upgs[ch].desc())
+        tmp.el.elem_cost.setTxt(format(ELEMENTS.upgs[ch].cost,0)+"夸克"+(ch>86?"(需进入大撕裂)":"")+(player.qu.rip.active&&tmp.elements.cannot.includes(ch)?"[大撕裂中无法购买]":"") + ((hasElement(380) && ELEMENTS.upgs[ch].ccost) ? "，充能需要"+format(ELEMENTS.upgs[ch].ccost,0)+"夸克" : ""))
         if(ch > 118)tmp.el.elem_cost.setTxt((ELEMENTS.upgs[ch].galQk||ELEMENTS.upgs[ch].exotic||ELEMENTS.upgs[ch].qk||ELEMENTS.upgs[ch].ds?format:formatMass)(ELEMENTS.upgs[ch].cost,0)+(ELEMENTS.upgs[ch].qk?"夸克":ELEMENTS.upgs[ch].ds?" Dark Shadow":ELEMENTS.upgs[ch].exotic?"奇异物质":ELEMENTS.upgs[ch].galQk?"星系夸克":ELEMENTS.upgs[ch].et?"永恒质量":"无限质量"))
-		tmp.el.elem_eff.setHTML(ELEMENTS.upgs[ch].effDesc?"Currently: "+ELEMENTS.upgs[ch].effDesc(tElem.effect[ch]):"")
+		tmp.el.elem_eff.setHTML((ELEMENTS.upgs[ch].effDesc?"Currently: "+ELEMENTS.upgs[ch].effDesc(tElem.effect[ch]):"")+(hasElement(380) && ELEMENTS.upgs[ch].ceffDesc?"<span class=yellow><br>Current Charged Effect: "+ELEMENTS.upgs[ch].ceffDesc(tElem.ceffect[ch])+"</span>":""))
     }
 
     for (let x = 1; x <= MAX_ELEM_TIERS; x++) {
@@ -2275,7 +2353,7 @@ function updateElementsHTML() {
                     let unl2 = x <= tElem.unl_length
                     upg.setVisible(unl2)
                     if (unl2) {
-                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: (x > 86 && x <= 118), ext: (x > 118), et: ELEMENTS.upgs[x].et, gqk: ELEMENTS.upgs[x].galQk, ds: ELEMENTS.upgs[x].ds, ex: ELEMENTS.upgs[x].exotic, qk: ELEMENTS.upgs[x].qk})
+                        upg.setClasses({elements: true, locked: !ELEMENTS.canBuy(x), bought: hasElement(x), br: (x > 86 && x <= 118), ext: (x > 118), et: ELEMENTS.upgs[x].et, gqk: ELEMENTS.upgs[x].galQk, ds: ELEMENTS.upgs[x].ds, ex: ELEMENTS.upgs[x].exotic, qk: ELEMENTS.upgs[x].qk, ch: hasChargedElement(x), cancharge: ELEMENTS.canCharge(x)})
                     }
                 }
             }
@@ -2292,6 +2370,9 @@ function updateElementsTemp() {
     if (!tmp.elements.upg_length) tmp.elements.upg_length = ELEMENTS.upgs.length-1
     for (let x = tmp.elements.upg_length; x >= 1; x--) if (ELEMENTS.upgs[x].effect) {
         tmp.elements.effect[x] = ELEMENTS.upgs[x].effect()
+    }
+    for (let x = tmp.elements.upg_length; x >= 1; x--) if (ELEMENTS.upgs[x].ceffect) {
+        tmp.elements.ceffect[x] = ELEMENTS.upgs[x].ceffect()
     }
     tmp.elements.unl_length = ELEMENTS.getUnlLength()
 }

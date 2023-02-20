@@ -280,6 +280,7 @@ const UPGS = {
                 if (hasPrestige(2,52)) step = step.mul(prestigeEff(2,52))
                 step = step.pow(tmp.upgs.prestigeMass[3]?tmp.upgs.prestigeMass[3].eff.eff:1)
                 let ret = step.mul(x).add(1)
+				if(hasPrestige(3,28))ret = ret.pow(prestigeEff(3,28));
                 return {step: step, eff: ret}
             },
             effDesc(eff) {
@@ -316,6 +317,7 @@ const UPGS = {
             inc: E(1.0005),
             effect(x) {
                 let step = E(0.001)
+				if(hasElement(378))step = step.mul(2)
 				let ret = step.mul(x).add(1);
                 return {step: step, eff: ret}
             },
@@ -1137,7 +1139,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 24,
+            lens: 25,
             1: {
                 desc: `使量子次数乘以(200+无限次数)。无限质量加成量子泡沫获取速度。该升级只花费1毫克无限质量。`,
                 cost: E(1e-3),
@@ -1293,6 +1295,11 @@ const UPGS = {
                 },
                 effDesc(x=this.effect()) { return "x"+format(x) },
             },
+            25: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Infinity Upgrade 24 boost Galactic Quarks.",
+                cost: E('e141000'),
+            },
         },
         6: {
             title: "Exotic Upgrades",
@@ -1307,7 +1314,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 23,
+            lens: 24,
             1: {
                 desc: `Multiply your Eternity times gain by (200+Exotic reset times). Remove Mass and Star Overflow.`,
                 cost: E(1),
@@ -1433,6 +1440,11 @@ const UPGS = {
                 unl() { return hasUpgrade('exotic',19) },
                 desc: "Double the effect of Exotic Upgrade 6.",
                 cost: E(2e20),
+            },
+            24: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Unlock a new Exotic Boost type.",
+                cost: E(1e25),
             },
         },
     },

@@ -16,6 +16,10 @@ const QUANTUM = {
         if (hasPrestige(0,55)) x = x.mul(player.prestiges[0].max(1))
         if (hasPrestige(0,89)) x = x.mul(prestigeEff(0,89,[E(1),E(1)])[0]);
         if (hasUpgrade('inf',1)) x = x.mul(upgEffect(5,1))
+			
+		
+			if(hasUpgrade('exotic',24) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[5])
+				
         return x.floor()
     },
     gainTimes() {

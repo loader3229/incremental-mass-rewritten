@@ -505,7 +505,7 @@
                     <div id="elemTierDiv">
                         <button onclick="player.atom.elemTier = Math.max(1,player.atom.elemTier-1)" class="btn"><--</button><span id="elemTier" style="margin: 0px 10px">Element Tier 1</span><button onclick="player.atom.elemTier = Math.min(MAX_ELEM_TIERS,player.atom.elemTier+1)" class="btn">--></button><br><br>
                     </div>
-                    <div id="elem_ch_div" style="min-height: 70px;">
+                    <div id="elem_ch_div" style="min-height: 130px;">
                         <span id="elem_desc" class='sky'>X</span><br>
                         Cost: <span id="elem_cost">X</span><br>
                         <span id="elem_eff" class='green'>X</span>
@@ -686,6 +686,18 @@
                         Supernova Boost Effect: Neutron Star Gain Exponent ^<span id="exb4_eff">X</span>
                     </div>
                 </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="exb5_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/qu.png">
+                            <span style="margin-left: 5px; text-align: left;">Quantum Boost [<span id="exb5_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="exb5_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(5)">Cost: 1 Boost Point</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Quantum Boost Effect: Quantum Foam Gain Exponent ^<span id="exb5_eff">X</span>
+                    </div>
+                </div>
+				<!--button class="btn" onclick="EXOTIC_BOOSTS.import();">Import</button> <button class="btn" onclick="EXOTIC_BOOSTS.importrespec();">Respec And Import</button> <button class="btn" onclick="EXOTIC_BOOSTS.export();">Export</button><br-->
             </div>
                 <div id="stab_frame7_3">
                     <div class="table_center">
@@ -717,8 +729,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.9.1c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的NG+, 汉化版) v0.9.1c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's NG+, Chinese Version) v0.9.2c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的NG+, 汉化版) v0.9.2c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

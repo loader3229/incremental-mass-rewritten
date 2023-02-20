@@ -26,6 +26,7 @@ const EXOTIC = {
 		}
         if (hasAscension(0,2)) x = x.mul(ascensionEff(0,2,E(1)));
         if (hasAscension(1,1)) x = x.mul(ascensionEff(1,1,E(1)));
+        if (hasChargedElement(6)) x = x.mul(tmp.elements.ceffect[6]);
         return x.floor()
     },
     gainTimes() {
@@ -95,6 +96,7 @@ const EXOTIC = {
 		if(hasUpgrade('exotic', 15)){
 			x = x.mul(tmp.ex.dsEff.ex);
 		}
+		if(hasElement(372))x = x.mul(tmp.elements.effect[372]);
 		return x;
     },
     dsGain(){
@@ -111,6 +113,7 @@ const EXOTIC = {
     },
     dsEff(){
 		let x = {ex:player.exotic.ds.add(1).log10().add(1)};
+		if(hasElement(376))x.sn = player.exotic.ds.div(1e20).add(1).log10().div(10).add(1).pow(-1);
 		return x;
     },
 }
@@ -174,10 +177,11 @@ function updateExoticHTML(){
 				tmp.el["exb"+i+"_lvl"].setTxt(format(player.exotic.boosts[i],0))
 				tmp.el["exb"+i+"_btn"].setClasses({btn: true, locked: !tmp.ex.exb_can})
 				tmp.el["exb"+i+"_eff"].setTxt(format(tmp.ex.exb_eff[i]))
-				if(i==2)tmp.el["exb"+i+"_div"].changeStyle('display',hasUpgrade('exotic',11)?'':'none');
-				if(i==3)tmp.el["exb"+i+"_div"].changeStyle('display',hasUpgrade('exotic',18)?'':'none');
-				if(i==4)tmp.el["exb"+i+"_div"].changeStyle('display',hasUpgrade('exotic',20)?'':'none');
 			}
+			tmp.el["exb2_div"].changeStyle('display',hasUpgrade('exotic',11)?'':'none');
+			tmp.el["exb3_div"].changeStyle('display',hasUpgrade('exotic',18)?'':'none');
+			tmp.el["exb4_div"].changeStyle('display',hasUpgrade('exotic',20)?'':'none');
+			tmp.el["exb5_div"].changeStyle('display',hasUpgrade('exotic',24)?'':'none');
         }
         if (tmp.stab[7] == 3) {
             tmp.el.darkRay.setTxt(player.exotic.dr.format(0));
@@ -187,8 +191,9 @@ function updateExoticHTML(){
 				`);
 			tmp.el.dsEff.setHTML(`
 					Boosts exotic matter gain by <b>x${tmp.ex.dsEff.ex.format(3)}</b><br>
-					Boosts dark ray gain by <b>x${tmp.ex.dsEff.ex.format(3)}</b>
-				`);
+					Boosts dark ray gain by <b>x${tmp.ex.dsEff.ex.format(3)}</b><br>`+
+					(hasElement(376)?`Meta-Supernova is <b>${E(100).sub(tmp.ex.dsEff.sn.mul(100)).format(3)}% weaker</b><br>`:"")
+				);
         }
 }
 

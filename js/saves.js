@@ -107,7 +107,7 @@ function calc(dt, dt_offline) {
             player.atom.atomic = player.atom.atomic.add(tmp.atom.atomicGain.mul(du_gs))
             for (let x = 0; x < 3; x++) player.atom.powers[x] = player.atom.powers[x].add(tmp.atom.particles[x].powerGain.mul(du_gs))
         }
-        if (hasTree("qol1")) for (let x = 1; x <= tmp.elements.unl_length && x <= 118; x++) if (x<=tmp.elements.upg_length) ELEMENTS.buyUpg(x)
+        if (hasTree("qol1")) for (let x = 1; x <= tmp.elements.unl_length && x <= 118; x++) if (x<=tmp.elements.upg_length) ELEMENTS.buyUpg(x,1)
         player.md.mass = player.md.mass.add(tmp.md.mass_gain.mul(du_gs))
         if (hasTree("qol3")) player.md.particles = player.md.particles.add(player.md.active ? tmp.md.rp_gain.mul(du_gs) : tmp.md.passive_rp_gain.mul(du_gs))
         if (hasTree("qol4")) STARS.generators.unl(true)
@@ -225,6 +225,7 @@ function getPlayerData() {
             ratio: 0,
             dRatio: [1,1,1],
             elements: [],
+            chargedElements: [],
         },
         md: {
             active: false,
@@ -321,12 +322,13 @@ function getPlayerData() {
 			times: E(0),
 			rcb: [E(0), E(0), E(0), E(0)],
 			bp: E(0),
-			boosts: [E(0), E(0), E(0), E(0), E(0)],
+			boosts: [],
 			
 			dr: E(0),
 			ds: E(0),
 		},
     }
+    for (let x = 0; x < EXOTIC_BOOST_LENGTH; x++) s.exotic.boosts.push(E(0))
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 0; x < AS_LEN; x++) s.ascensions.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {

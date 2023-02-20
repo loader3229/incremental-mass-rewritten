@@ -829,6 +829,8 @@ const PRESTIGES = {
             "24": `Prestige Muscler boost its effect.`,
             "25": `Remove Ultra Hex scaling.`,
             "26": `Meta Fermion Tier scaling starts 10x later.`,
+            "27": `Renown boost Ascension Base Exponent.`,
+            "28": `Prestige Booster boost its effect.`,
 		},
     ],
     rewardEff: [
@@ -1052,6 +1054,14 @@ const PRESTIGES = {
 				if(hasAscension(0,7))x = player.prestigeMassUpg[1].add(10).log10().add(10).log10().pow(0.5);
                 return x
             },x=>"^"+x.format()],
+            "27": [_=>{
+                let x = player.prestiges[3].div(10000);
+                return x
+            },x=>"+"+x.format()],
+            "28": [_=>{
+                let x = player.prestigeMassUpg[2].add(10).log10().add(10).log10().add(10).log10();
+                return x
+            },x=>"^"+x.format()],
 		},
     ],
     reset(i) {
@@ -1081,6 +1091,7 @@ const ASCENSIONS = {
     fullNames: ["Ascension Level","Transcension Level"],
     baseExponent() {
         let x = E(0)
+		if(hasPrestige(3,27))x = x.add(prestigeEff(3,27,E(0)));
         return x.add(1)
     },
     base() {
@@ -1140,6 +1151,8 @@ const ASCENSIONS = {
 			"5": `Ascension Level 2's effect ^1.5`,
 			"6": `Ascension Level boost Galactic Quarks gain.`,
 			"7": `Renown 24's effect is better.`,
+            "8": `Super Supernova Galaxies starts 5 later.`,
+            "9": `Ascension Level boost Infinity Mass Base Formula.`,
         },
         {
 			"1": `Transcension Level boost Exotic Matter gain.`,
@@ -1160,6 +1173,12 @@ const ASCENSIONS = {
                 return x
             },x=>{
                 return x.format()+"x"
+            }],
+            "9": [_=>{
+                let x = player.ascensions[0].div(60);
+                return x
+            },x=>{
+                return "+"+x.format()
             }],
             /*
             "1": [_=>{

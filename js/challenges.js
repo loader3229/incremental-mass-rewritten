@@ -239,6 +239,7 @@ const CHALS = {
         return ""
     },
     getPower(i) {
+		if(hasElement(379) && i <= 19)return E(0)
         let x = E(1)
         if (hasElement(2)) x = x.mul(0.75)
         if (hasElement(26)) x = x.mul(tmp.elements.effect[26])
@@ -249,6 +250,7 @@ const CHALS = {
         return x
     },
     getPower2(i) {
+		if(hasElement(379) && i <= 19)return E(0)
         let x = E(1)
         if (hasElement(92)) x = x.mul(0.75)
         if (player.ranks.hex.gte(92) && (i<=8 || i>=10) && i<=12) x = x.mul(0.75)
@@ -259,6 +261,7 @@ const CHALS = {
         let x = E(1)
 		if (i>12)x = E(50)
 		if(hasUpgrade('br',24))x = x.mul(0.8)
+        if (hasChargedElement(2)) x = x.mul(0.95)
         return x
     },
     getChalData(x, r=E(-1)) {
@@ -473,6 +476,7 @@ const CHALS = {
         effect(x) {
             let ret = x.mul(2)
             if (hasElement(5)) ret = ret.mul(2)
+            if (hasChargedElement(5)) ret = ret.pow(20)
             return ret.floor()
         },
         effDesc(x) { if(hasElement(348))return "^"+format(E(2).pow(player.chal.comps[7].mul(x.add(1).log10()).pow(0.625).add(1)));return "+"+format(x,0) },

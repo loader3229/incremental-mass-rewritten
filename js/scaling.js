@@ -315,6 +315,7 @@ function getScalingStart(type, name) {
 			if (hasUpgrade('exotic',2)) start = start.add(5)
 			if (hasPrestige(3,19)) start = start.add(5)
 			if (player.qu.times.gte(Number.MAX_VALUE) && player.exotic.times.gte(1)) start = start.add(5)
+			if (hasAscension(0,8)) start = start.add(5)
 		}
 		if (name=="massUpg4") {
 			if (hasPrestige(2,162)) start = start.mul(10/9)
@@ -700,6 +701,7 @@ function getScalingPower(type, name) {
 			if (player.ranks.hex.gte(78)) power = power.mul(0.95)
 			if (hasPrestige(0,93)) power = power.mul(tmp.prestigeMassEffect)
 			if (hasElement(284))power = power.mul(tmp.fermions.effs[3][4])
+			if (hasElement(376))power = power.mul(tmp.ex.dsEff.sn||E(1))
 		}
 		if (name=="rank") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
