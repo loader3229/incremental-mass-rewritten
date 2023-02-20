@@ -68,13 +68,13 @@ const ELEMENTS = {
         {
             desc: `Improves quark gain formula is better.`,
             cost: E(5e8),
-            cdesc: `Quark gain exponent ^1.01`,
+            cdesc: `夸克获取指数变为原来的1.01次方。`,
             ccost: E("ee2.7777e12"),
         },
         {
             desc: `Hardened Challenge scale 25% weaker.`,
             cost: E(2.5e12),
-            cdesc: `Impossible Challenge scale 5% weaker`,
+            cdesc: `使无望挑战的折算效果弱化5%。`,
             ccost: E("ee2.8e12"),
         },
         {
@@ -91,7 +91,7 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { return format(x)+"x"+(x.gte('e1e4')&&!hasChargedElement(3)?" <span class='soft'>(softcapped)</span>":"") },
-            cdesc: `Remove All Softcaps from its effect`,
+            cdesc: `去除该元素效果的所有软上限。`,
             ccost: E("ee2.9e12"),
         },
         {
@@ -104,13 +104,13 @@ const ELEMENTS = {
 				return x
             },
             effDesc(x) { return format(x)+"x stronger" },
-            cdesc: `Effect of this element ^1.05`,
+            cdesc: `该元素效果变为原来的1.05次方。`,
             ccost: E("ee2.9e12"),
         },
         {
             desc: `The 7th challenge's effect is twice as effective.`,
             cost: E(1e18),
-            cdesc: `The 7th challenge's effect is better`,
+            cdesc: `挑战7的效果更好。`,
             ccost: E("ee3e12"),
         },
         {
@@ -125,7 +125,7 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { return format(x)+"x" },
-            cdesc: `This element's effect boost Exotic Matter at a reduced rate.`,
+            cdesc: `该元素效果以降低的效果增加奇异物质获取。`,
             ccost: E("ee3.1e12"),
             ceffect() {
                 let x = E(0)

@@ -32,15 +32,18 @@ var cnItems = {
     'Glory': '辉煌',
     'Options': '选项',
     'Mass': '质量',
+    'Prestige Mass': '转生质量',
     'Black Hole': '黑洞',
     'Atomic Generator': '原子发生器',
     'Stars': '星辰',
     'Indescribable Matter': '无法形容之物',
     'Ranks': '级别',
     'Prestiges': '转生',
+    'Ascensions': '飞升',
     'Ranks Rewards': '级别奖励',
     'Scaling': '折算',
     'Prestige Rewards': '转生奖励',
+    'Ascension Rewards': '飞升奖励',
     'Particles': '粒子',
     'Elements': '元素',
     'Mass Dilation': '质量膨胀',
@@ -87,6 +90,11 @@ var cnItems = {
     ' Rage Points': '狂怒能量',
     'Tickspeed Power': '时间速度倍率',
     'Tickspeed Effect': '时间速度效果',
+    'Prestige Tickspeed': '转生时间速度',
+    'Prestige Tickspeeds [': '转生时间速度[',
+    'Prestige Tickspeed Power': '转生时间速度倍率',
+    'Prestige Tickspeed Effect': '转生时间速度效果',
+    ' Prestige Rage Power': '转生狂怒能量',
     'After ': '当到达',
     ' of mass gain will softcap mass gain!': '的质量获取速度以后，质量获取速度将受到软上限限制！',
     ' of mass gain will softcap^2 mass gain!': '的质量获取速度以后，质量获取速度将受到二重软上限限制！',
@@ -100,6 +108,8 @@ var cnItems = {
     ' of mass gain will softcap^10 mass gain!': '的质量获取速度以后，质量获取速度将受到十重软上限限制！',
     ' Your Prestige base is ': '您的转生基础值为',
     ' (based on products of Rank tiers': '(基于级别、阶层、三重阶层和五重阶层的数值而定',
+    ' Your Ascension base is ': '您的飞升基础值为',
+    ' (based on products of Prestige tiers': '(基于所有类型的转生等级的数值而定',
     'You have ': '您拥有',
     ' of Black Hole': '黑洞',
     'Which multiplies mass gain by ': '它将质量获取速度乘以',
@@ -136,6 +146,7 @@ var cnItems = {
     'Pent': '五重阶层',
     'Hex': '六重阶层',
     'Hept': '七重阶层',
+    'Oct': '八重阶层',
     'Mass Upgrades': '质量升级',
     'Tickspeed': '时间速度',
     'Black Hole Condenser': '黑洞压缩器',
@@ -764,7 +775,10 @@ var cnItems = {
     ' Green Chroma, which': '绿色色度，因此',
     ' Blue Chroma, which': '蓝色色度，因此',
     'You Quantized ': '您已前往量子',
+    'You Infinitied ': '您已前往无限',
+    'You Eternitied ': '您已前往永恒',
     ' times': '次',
+    ' times.': '次。',
     'Quantized ': '前往量子',
     'You start with QoL (qol1-6), Bosons & Fermions unlocked.': '初始状态下就解锁qol1-qol6中子树升级、玻色子和费米子。',
     'Pre-Quantum Supernova tree will be without the requirement. Pre-Quantum global speed is increased by 10x.': '使量子之前所有中子树升级不再需要满足前提条件。使量子之前所有资源获取速度变为原来的10倍。',
@@ -972,9 +986,15 @@ var cnRegReplace = new Map([
     [/^\s*Muscler Effect$/, '锻体器效果'], //主界面等
     [/^\s*Booster Power$/, '助推器倍率'], //主界面等
     [/^\s*Booster Effect$/, '助推器效果'], //主界面等
+    [/^\s*Prestige Muscler Power$/, '转生锻体器倍率'], //主界面等
+    [/^\s*Prestige Muscler Effect$/, '转生锻体器效果'], //主界面等
+    [/^\s*Prestige Booster Power$/, '转生助推器倍率'], //主界面等
+    [/^\s*Prestige Booster Effect$/, '转生助推器效果'], //主界面等
     [/^x(.+) to Muscler Power$/, 'x$1倍锻体器倍率'], //主界面等
     [/^\s*Stronger Power$/, '强化器倍率'], //主界面等
     [/^\s*Stronger Effect$/, '强化器效果'], //主界面等
+    [/^\s*Prestige Stronger Power$/, '转生强化器倍率'], //主界面等
+    [/^\s*Prestige Stronger Effect$/, '转生强化器效果'], //主界面等
     [/^\^(.+) to Booster Power\s*$/, '^$1助推器倍率'], //主界面等
     [/^Unlock new type of Stars, require (.+) Quark$/, '解锁新的星辰，需$1夸克'], //主界面等
     [/^Boost all-Star resources gain, require (.+) Quark$/, '加成所有星辰相关资源的获取速度，需$1夸克'], //主界面等
