@@ -15,6 +15,7 @@ const ATOM = {
 
 			
 			if(hasUpgrade('exotic',11) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[2])
+			if(hasChargedElement(17))x = expMult(x,1.01)
 				
 			
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
@@ -100,10 +101,10 @@ const ATOM = {
 			return overflow(x,"e1e3000",tmp.atomicOverflowPower);
         },
         effect() {
-            let x = player.atom.atomic.max(1).log(player.ranks.hex.gte(23)?1.2:hasElement(23)?1.5:1.75).pow(getEnRewardEff(1))
+            let x = player.atom.atomic.max(1).log(hasChargedElement(23)?1.1:player.ranks.hex.gte(23)?1.2:hasElement(23)?1.5:1.75).pow(getEnRewardEff(1))
             if (!hasElement(75)) x = x.softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?6e5:5e4,hasUpgrade("atom",19)?0.9:0.75,0).softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?4.8e7:4e6,hasUpgrade("atom",19)?0.5:0.25,0)
             if (!hasElement(337)) x = x.softcap(hasUpgrade("atom",13)?(player.prestiges[0].gte(50)?1.2e11:1e11):1e10,hasUpgrade("atom",19)?0.105:0.1,0)
-			x = overflow(x,"ee9",hasElement(358)?0.5:hasElement(337)?0.3:0.25);
+			x = overflow(x,"ee9",hasChargedElement(23)?0.6:hasElement(358)?0.5:hasElement(337)?0.3:0.25);
             return x.floor()
         },
     },
@@ -182,6 +183,7 @@ const ATOM = {
             let x = p.pow(2)
             if (hasElement(12)) x = p.pow(p.add(1).log10().add(1).root(4).pow(tmp.chal.eff[9]).softcap(40000,0.1,0))
             if (player.ranks.hex.gte(12)) x = p.pow(p.add(1).log10().add(1).root(4).pow(tmp.chal.eff[9]).softcap(40000,0.99,0))
+            if (hasChargedElement(12)) x = p.pow(p.add(1).log10().add(1).root(3).pow(tmp.chal.eff[9]))
             x = x.softcap('e3.8e4',0.9,2).softcap('e1.6e5',0.9,2)
             if (hasElement(61)) x = x.mul(p.add(1).root(2))
             if (player.ranks.hex.gte(61)) x = x.mul(p.add(1).root(2))
@@ -206,10 +208,13 @@ const ATOM = {
 					if(player.ranks.hex.gte(29))b = b.pow(2);
 					if(hasElement(354))a = a.pow(2);
 					if(hasElement(368))b = b.pow(2);
+					if(hasElement(385))a = a.pow(2);
 				}
 				
 				a = a.pow(galParticleEffect(0));
 				b = b.pow(galParticleEffect(0));
+				if(hasChargedElement(29))a = a.pow(2);
+				if(hasChargedElement(29))b = b.pow(2);
                 return {eff1: a, eff2: b}
             },
             x=>{
@@ -229,6 +234,9 @@ const ATOM = {
 				
 				if(hasUpgrade('exotic',13))a = a.pow(5);
 				if(hasUpgrade('exotic',13))b = b.pow(5);
+					
+				if(hasChargedElement(19))b = b.pow(2);
+					if(hasElement(385))a = a.pow(2);
 				
                 return {eff1: a, eff2: b}
             },
@@ -247,6 +255,9 @@ const ATOM = {
 				if(hasUpgrade('exotic',13))b = b.pow(5);
 				
 				if(hasUpgrade('atom',21))b = b.pow(4);
+					if(hasElement(385))a = a.pow(2);
+				if(hasChargedElement(30))a = a.pow(2);
+				if(hasChargedElement(30))b = b.pow(2);
 				
                 return {eff1: a, eff2: b}
             },
@@ -372,7 +383,7 @@ function galParticleEffect(x){
 	let ret=player.galParticles[x].add(1).log10().add(1).pow(3);
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
-	ret=overflow(ret,1e7,hasElement(369)?0.21:0.2);
+	ret=overflow(ret,1e7,hasElement(392)?0.22:hasElement(369)?0.21:0.2);
 	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

@@ -13,6 +13,7 @@ const INFINITY_LAYER = {
 		if (hasUpgrade('inf',19))power = power.add(1)
 		if (hasElement(205))power = power.add(tmp.chal?tmp.chal.eff[18]:0);
 		if (hasAscension(0,9))power = power.add(ascensionEff(0,9));
+		power = power.add(SUPERNOVA_CLUSTER.effects.eff4())
 		if (hasElement(146)){
 			let z = player.qu.en.amt.add(1).log(Number.MAX_VALUE);
 			if (z.lt(1)) z=E(1)

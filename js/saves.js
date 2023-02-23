@@ -138,6 +138,7 @@ function calc(dt, dt_offline) {
 		if (hasElement(318)) player.chal.comps[17] = player.chal.comps[17].max(tmp.chal.bulk[17].min(tmp.chal.max[17]))
 		if (hasElement(318)) player.chal.comps[18] = player.chal.comps[18].max(tmp.chal.bulk[18].min(tmp.chal.max[18]))
 		if (hasElement(322)) player.chal.comps[19] = player.chal.comps[19].max(tmp.chal.bulk[19].min(tmp.chal.max[19]))
+		if (hasElement(393)) player.chal.comps[20] = player.chal.comps[20].max(CHALS.getChalData(20,E(-1),1).bulk.min(tmp.chal.max[20]))
 		calcPrestigeMass(dt, dt_offline)
         calcInfinity(dt, dt_offline)
         calcSupernovaGalaxy(dt, dt_offline)
@@ -178,6 +179,7 @@ function getPlayerData() {
         prestiges: [],
         ascensions: [],
         prestigeMass: E(0),
+        ascensionMass: E(0),
         prestigeMassUpg: [E(0), E(0), E(0), E(0), E(0)],
 		prestigeRP: E(0),
 		prestigeTickspeed: E(0),
@@ -327,6 +329,7 @@ function getPlayerData() {
 			dr: E(0),
 			ds: E(0),
 		},
+		superCluster: E(0),
     }
     for (let x = 0; x < EXOTIC_BOOST_LENGTH; x++) s.exotic.boosts.push(E(0))
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))

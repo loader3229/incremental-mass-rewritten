@@ -201,5 +201,6 @@ function updateSupernovaEndingHTML() {
         if (tmp.stab[5] == 3) updateRadiationHTML()
         if (tmp.stab[5] == 4) updateSupernovaGalaxyHTML()
         if (tmp.stab[5] == 5) updateFermionsHTML()
+        if (tmp.stab[5] == 6) updateSupernovaGalaxyHTML()
     }
 }

@@ -173,6 +173,7 @@ const QUANTUM = {
         [E(1e295), `Base Quantum Foam gain ^1.5, 5x Exotic Matter gain.`],
         [E(1e303), `Meta-Pent starts 1e25x later.`],
         [E(Number.MAX_VALUE), `Quantum times add to Infinity Mass gain formula. Super Supernova Galaxies starts 5 later.`],
+        [E('6.9e420'), `Entropic Evaporation^2 is 50% weaker.`],
     ],
     auto: {
         mode: ["Amount","Time"],

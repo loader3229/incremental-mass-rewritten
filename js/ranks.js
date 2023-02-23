@@ -571,6 +571,8 @@ const PRESTIGES = {
         if (hasPrestige(0,32)) x = x.add(prestigeEff(0,32,0))
         if (player.ranks.hex.gte(5)) x = x.add(RANKS.effect.hex[5]())
         if (hasTree('qc8')) x = x.add(treeEff('qc8',0))
+		if(hasAscension(0,12))x = x.add(ascensionEff(0,12,E(0)));
+		x = x.add(tmp.ascensionMassEffect);
         return x.add(1)
     },
     base() {
@@ -831,6 +833,10 @@ const PRESTIGES = {
             "26": `Meta Fermion Tier scaling starts 10x later.`,
             "27": `Renown boost Ascension Base Exponent.`,
             "28": `Prestige Booster boost its effect.`,
+            "29": `Multiply Honor 9 reward by Prestige Level.`,
+            "30": `Renown is added to Prestige Mass formula.`,
+            "31": `Add +5% to Glory 59's effectiveness`,
+            "32": `Square Renown 21 Effect.`,
 		},
     ],
     rewardEff: [
@@ -914,6 +920,7 @@ const PRESTIGES = {
 				if(hasElement(212))x = x.mul(2);
 				if(hasElement(215))x = x.mul(2);
 				if(hasPrestige(3,3))x = x.mul(prestigeEff(3,3));
+				if(hasPrestige(3,29))x = x.mul(prestigeEff(3,29));
                 return x
             },x=>"+"+x.format()],
             "11": [_=>{
@@ -1043,6 +1050,7 @@ const PRESTIGES = {
             },x=>"x"+x.format()],
             "21": [_=>{
                 let x = player.superGal.add(10).log10().pow(2);
+				if(hasPrestige(3,32))x = x.pow(2);
                 return x
             },x=>"x"+x.format()],
             "22": [_=>{
@@ -1062,6 +1070,10 @@ const PRESTIGES = {
                 let x = player.prestigeMassUpg[2].add(10).log10().add(10).log10().add(10).log10();
                 return x
             },x=>"^"+x.format()],
+            "29": [_=>{
+                let x = player.prestiges[0];
+                return x
+            },x=>"x"+x.format()],
 		},
     ],
     reset(i) {
@@ -1092,6 +1104,7 @@ const ASCENSIONS = {
     baseExponent() {
         let x = E(0)
 		if(hasPrestige(3,27))x = x.add(prestigeEff(3,27,E(0)));
+		if(hasAscension(0,10))x = x.add(ascensionEff(0,10,E(0)));
         return x.add(1)
     },
     base() {
@@ -1153,10 +1166,17 @@ const ASCENSIONS = {
 			"7": `Renown 24's effect is better.`,
             "8": `Super Supernova Galaxies starts 5 later.`,
             "9": `Ascension Level boost Infinity Mass Base Formula.`,
+            "10": `Ascension Level boost Ascension Base Exponent.`,
+            "11": `Ascension Level boost Dark Ray gain.`,
+            "12": `Ascension Level boost Prestige Base Exponent.`,
+            "13": `Double Ascension Mass effect.`,
+            "14": `[G-Neutrino] is better.`,
+            "15": `Double Ascension Mass effect.`,
         },
         {
 			"1": `Transcension Level boost Exotic Matter gain.`,
 			"2": `Transcension Level boost Galactic Quarks gain.`,
+			"3": `Unlock Ascension Mass.`,
         },
     ],
     rewardEff: [
@@ -1180,6 +1200,20 @@ const ASCENSIONS = {
             },x=>{
                 return "+"+x.format()
             }],
+            "10": [_=>{
+                let x = player.ascensions[0].div(10000);
+                return x
+            },x=>"+"+x.format()],
+            "11": [_=>{
+                let x = player.ascensions[0].add(1);
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            "12": [_=>{
+                let x = player.ascensions[0];
+                return x
+            },x=>"+"+x.format()],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -1252,8 +1286,8 @@ function updateRanksTemp() {
     tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(5) && !CHALS.inChal(10) && !CHALS.inChal(14) && !CHALS.inChal(19) && !FERMIONS.onActive("03")
 
     fp = RANKS.fp.tier()
-    tmp.ranks.tier.req = player.ranks.tier.div(fp2).scaleEvery('tier').div(fp).add(2).pow(hasPrestige(3,10)?1.8:2).floor()
-    tmp.ranks.tier.bulk = player.ranks.rank.max(0).root(hasPrestige(3,10)?1.8:2).sub(2).mul(fp).scaleEvery('tier',true).mul(fp2).add(1).floor();
+    tmp.ranks.tier.req = player.ranks.tier.div(fp2).scaleEvery('tier').div(fp).add(2).pow(hasChargedElement(9)?1.78:hasPrestige(3,10)?1.8:2).floor()
+    tmp.ranks.tier.bulk = player.ranks.rank.max(0).root(hasChargedElement(9)?1.78:hasPrestige(3,10)?1.8:2).sub(2).mul(fp).scaleEvery('tier',true).mul(fp2).add(1).floor();
 
     fp = E(1)
     let pow = 2
@@ -1346,6 +1380,8 @@ function updateRanksTemp() {
 	tmp.prestigeRPGain = prestigeRPGain()
 	tmp.prestigeRPEffect = prestigeRPEffect()
 	
+	tmp.ascensionMassGain = ascensionMassGain()
+	tmp.ascensionMassEffect = ascensionMassEffect()
 }
 
 function updateRanksHTML() {
@@ -1455,6 +1491,15 @@ function updateRanksHTML() {
             }
         }
 		
+		if (player.ascensions[1].gte(3)){
+			tmp.el["as_mass"].setDisplay(true);
+			tmp.el["as_mass2"].setTxt(formatMass(player.ascensionMass,0)+" "+formatGain(player.ascensionMass, tmp.ascensionMassGain, true))
+			tmp.el["as_mass3"].setTxt(format(ascensionMassEffect()));
+			tmp.el["as_mass4"].setDisplay(false);
+		}else{
+			tmp.el["as_mass"].setDisplay(false);
+		}
+		
     }
 }
 
@@ -1462,18 +1507,26 @@ function prestigeMassGain(){
 	if(player.prestiges[1].lt(10) || CHALS.inChal(16) || CHALS.inChal(19)){
 		return E(0);
 	}
-	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0]).mul(player.prestiges[1].pow(2)).mul(player.prestiges[2].add(1)).pow(player.prestiges[1].div(10))
+	let p0pow = 1;
+	if (hasPrestige(0,64)) p0pow += 0.5;
+	if (hasPrestige(0,103)) p0pow += 0.25;
+	if (hasPrestige(0,106)) p0pow += 0.1;
+	if (hasPrestige(1,31)) p0pow += 0.15;
+	let p1pow = 2;
+	if (hasPrestige(0,74)) p1pow += 1;
+	let p2pow = 1;
+	let p3pow = 0;
+	if (hasPrestige(3,30)) p3pow += 1;
+	
+	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0].pow(p0pow)).mul(player.prestiges[1].pow(p1pow)).mul(player.prestiges[2].add(1).pow(p2pow)).mul(player.prestiges[3].add(1).pow(p3pow)).pow(player.prestiges[1].div(10))
 	if (hasPrestige(2,1)) x = x.pow(player.prestiges[2].div(10).add(1));
+	if (hasPrestige(3,30)) x = x.pow(player.prestiges[3].div(29));
 	x = x.div(400000);
 	if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[1]);
-	if (hasPrestige(0,64)) x = x.mul(player.prestiges[0].sqrt().pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
-	if (hasPrestige(0,103)) x = x.mul(player.prestiges[0].pow(0.25).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
 	if (hasPrestige(1,11)) x = x.mul(prestigeEff(1,11,[E(1),E(1)])[1]);
-	if (hasPrestige(0,74)) x = x.mul(player.prestiges[1].pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
     if (hasPrestige(0,88)) x = x.mul(prestigeEff(0,88,[E(1),E(1)])[1]);
     if (hasPrestige(0,89)) x = x.mul(prestigeEff(0,89,[E(1),E(1)])[1]);
     if (hasPrestige(0,98)) x = x.mul(prestigeEff(0,98,[E(1),E(1)])[1]);
-	if (hasPrestige(0,106)) x = x.mul(player.prestiges[0].pow(0.1).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
     if (player.md.break.upgs[11].gte(1)) x = x.mul(tmp.bd.upgs[11].eff||1)
     if (hasTree("pm1")) x = x.mul(tmp.supernova.tree_eff.pm1)
     if (hasTree("pm2")) x = x.mul(tmp.supernova.tree_eff.pm2)
@@ -1481,7 +1534,6 @@ function prestigeMassGain(){
     if (hasPrestige(0,110)) x = x.mul(prestigeEff(0,110));
     if (hasPrestige(0,111)) x = x.mul(prestigeEff(0,111));
     if (hasUpgrade('inf',5)) x = x.mul(upgEffect(5,5))
-	if (hasPrestige(1,31)) x = x.mul(player.prestiges[0].pow(0.15).pow(player.prestiges[1].div(10)).pow(player.prestiges[2].div(10).add(1)));
 	if (hasElement(145)) x = x.mul(10);
 	if (hasElement(255)) x = x.mul(tmp.elements.effect[255]);
 	if (hasElement(306)) x = x.mul(tmp.elements.effect[306]);
@@ -1509,11 +1561,30 @@ function prestigeMassEffect(){
 }
 
 function prestigeRPEffect(){
-	let p = player.prestigeRP.add(1).log10();
-	return p.div(1e5);
+	let p = player.prestigeRP.add(1).log10().div(1e5);
+	return p;
 }
 
 function calcPrestigeMass(dt){
 	player.prestigeMass = player.prestigeMass.add(tmp.prestigeMassGain.mul(dt))
 	player.prestigeRP = player.prestigeRP.add(tmp.prestigeRPGain.mul(dt))
+	player.ascensionMass = player.ascensionMass.add(tmp.ascensionMassGain.mul(dt))
+}
+
+function ascensionMassGain(){
+	if(player.ascensions[1].lt(3)){
+		return E(0);
+	}
+	let a0pow = 1;
+	let a1pow = 2;
+	
+	let x= Decimal.log10(tmp.ascensions.base.add(10)).mul(player.ascensions[0].pow(a0pow)).mul(player.ascensions[1].pow(a1pow)).pow(player.ascensions[1].div(10));
+	return x;
+}
+
+function ascensionMassEffect(){
+	let p = player.ascensionMass.add(1).log10();
+	if(hasAscension(0,13))p = p.mul(2);
+	if(hasAscension(0,15))p = p.mul(2);
+	return p;
 }

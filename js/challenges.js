@@ -146,7 +146,8 @@ const CHALS = {
             this.reset(player.chal.choosed, false)
         }
     },
-    getResource(x) {
+    getResource(x, y) {
+		if (x == 20 && y == 1) return player.mass.add(1).log10()
         if (x < 5 || x > 8) return player.mass
         return player.bh.mass
     },
@@ -262,10 +263,11 @@ const CHALS = {
 		if (i>12)x = E(50)
 		if(hasUpgrade('br',24))x = x.mul(0.8)
         if (hasChargedElement(2)) x = x.mul(0.95)
+        if (hasChargedElement(26)) x = x.mul(tmp.elements.ceffect[26])
         return x
     },
-    getChalData(x, r=E(-1)) {
-        let res = this.getResource(x)
+    getChalData(x, r=E(-1), y) {
+        let res = this.getResource(x,y)
         let lvl = r.lt(0)?player.chal.comps[x]:r
         let chal = this[x]
 		if(hasElement(170)&&x==15)chal.inc = E(2);
@@ -280,6 +282,7 @@ const CHALS = {
         let pow = chal.pow
         if (hasElement(10) && (x==3||x==4)) pow = pow.mul(0.95)
         if (player.ranks.hex.gte(10) && (x==3||x==4)) pow = pow.mul(0.95)
+        if (hasChargedElement(10) && x==20) pow = pow.mul(0.95)
         chal.pow = chal.pow.max(1)
         let goal = chal.inc.pow(lvl.div(fp).pow(pow)).mul(chal.start)
         let bulk = res.div(chal.start).max(1).log(chal.inc).root(pow).mul(fp).add(1).floor()
@@ -477,6 +480,8 @@ const CHALS = {
             let ret = x.mul(2)
             if (hasElement(5)) ret = ret.mul(2)
             if (hasChargedElement(5)) ret = ret.pow(20)
+            if (hasChargedElement(13)) ret = ret.pow(1.7)
+            if (hasChargedElement(20)) ret = ret.pow(1.1)
             return ret.floor()
         },
         effDesc(x) { if(hasElement(348))return "^"+format(E(2).pow(player.chal.comps[7].mul(x.add(1).log10()).pow(0.625).add(1)));return "+"+format(x,0) },
@@ -492,6 +497,7 @@ const CHALS = {
         start: E(1.989e38),
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
+			if(hasChargedElement(33))return expMult(x,2.62);
             let ret = x.root(1.75).mul(0.02).add(1)
 			if(hasElement(310))return ret;
             return ret.softcap(2.3,0.25,0)
@@ -569,7 +575,8 @@ const CHALS = {
         start: E('ee40'),
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
-			if(x.gte(10))x=x.log10().mul(10);
+			if(hasChargedElement(8))if(x.gte(100))x=x.log10().mul(50);
+			else if(x.gte(10))x=x.log10().mul(10);
             let ret = x.div(100).add(1)
             return ret
         },
@@ -687,6 +694,7 @@ const CHALS = {
         effect(x) {
 			if(hasPrestige(2,17))x = x.pow(2);
 			if(hasElement(277))x = x.pow(1.25);
+			x = x.softcap(1e6,0.01,0);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
 			if(hasElement(334))ret = Decimal.pow(10,Decimal.pow(2.6,x.root(4)));

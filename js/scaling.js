@@ -18,6 +18,7 @@ const SCALE_START = {
 		prestige0: E(15),
 		prestige1: E(7),
 		prestige2: E(10),
+		prestige3: E(30),
 		superGal: E(50),
 		massUpg4: E(1000),
     },
@@ -93,6 +94,7 @@ const SCALE_POWER= {
 		prestige0: 1.5,
 		prestige1: 1.5,
 		prestige2: 1.3,
+		prestige3: 1.5,
 		superGal: 1.5,
 		massUpg4: 3,
     },
@@ -316,6 +318,7 @@ function getScalingStart(type, name) {
 			if (hasPrestige(3,19)) start = start.add(5)
 			if (player.qu.times.gte(Number.MAX_VALUE) && player.exotic.times.gte(1)) start = start.add(5)
 			if (hasAscension(0,8)) start = start.add(5)
+			start = start.add(SUPERNOVA_CLUSTER.effects.eff2())
 		}
 		if (name=="massUpg4") {
 			if (hasPrestige(2,162)) start = start.mul(10/9)
@@ -472,6 +475,7 @@ function getScalingStart(type, name) {
 	if (name=="hex" && type=="hyper") if (hasPrestige(2,145))return EINF;
 	if (name=="hept" && type=="super") if (hasPrestige(3,20))return EINF;
 	if (name=="hex" && type=="ultra") if (hasPrestige(3,25))return EINF;
+	if (name=="gamma_ray" && type=="meta") if (hasChargedElement(15))return EINF;
 	return start.floor()
 }
 
@@ -690,6 +694,7 @@ function getScalingPower(type, name) {
 			if (hasPrestige(3,18)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(2,140)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(2,173)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+			if (hasPrestige(3,31)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 		}
 		if (name=="prestige2") {
 			if (hasPrestige(3,4)) power = power.mul(tmp.prestigeMassEffect)
@@ -722,6 +727,10 @@ function getScalingPower(type, name) {
 			if (player.ranks.oct.gte(17)) power = power.mul(0.004)
 			if (hasPrestige(2,57)) power = power.mul(tmp.prestigeMassEffect)
 			if (player.ranks.oct.gte(20)) power = power.mul(RANKS.effect.oct[1]())
+			if (hasChargedElement(37)) power = power.mul(tmp.elements.ceffect[37]||1)
+		}
+		if (name=="tickspeed") {
+			if (hasChargedElement(27)) power = power.mul(0.01)
 		}
 	}
 	if (name=="rank" && hasPrestige(0,58)) power = power.mul(0.5)

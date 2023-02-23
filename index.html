@@ -187,6 +187,13 @@
                     <div id="fermions_glepton_table" class="table_center"></div>
                 </div>
             </div>
+        </div><div id="stab_frame5_6">
+			You have <span id="superCluster">0</span> <span id="superClusterScale"></span>Supernova Clusters<br>
+			Next at <span id="superClusterReq">0</span> Supernova Galaxies<br>
+            <button class="btn" onclick="SUPERNOVA_CLUSTER.reset()">Reset for a Supernova Cluster</button><br>
+			<hr>
+			<div id="superClusterEff">
+			</div>
         </div>
     </div>
     <div id='app' style='display: none'>
@@ -274,6 +281,7 @@
                 </div><div id="rank_tab2">
                     Your Ascension base is <span id="as_base"></span> (based on products of Prestige tiers)<br><br>
                     <div id="as_table" class="table_center" style="min-height: 180px;"></div><br>
+					<div id="as_mass">You have  <span id="as_mass2">X</span> Ascension mass (Gain is based on Ascension Base, Ascension Level, Transcension Level<span id="as_mass4"> and Glory</span>)<br>Which are adding Prestige Base Exponent by <span id="as_mass3"></span></div>
                </div>
                 <br><br>
                 <div id="mass_upgs_table"></div><br><br>
@@ -697,7 +705,19 @@
                         Quantum Boost Effect: Quantum Foam Gain Exponent ^<span id="exb5_eff">X</span>
                     </div>
                 </div>
-				<!--button class="btn" onclick="EXOTIC_BOOSTS.import();">Import</button> <button class="btn" onclick="EXOTIC_BOOSTS.importrespec();">Respec And Import</button> <button class="btn" onclick="EXOTIC_BOOSTS.export();">Export</button><br-->
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="exb6_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/exotic.png">
+                            <span style="margin-left: 5px; text-align: left;">Exotic Meta-Boost [<span id="exb6_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="exb6_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(6)">Cost: 1 Boost Point</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Exotic Meta-Boost Effect: Add <span id="exb6_eff">X</span> levels to All Previous Boosts
+                    </div>
+                </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="exb6_div2">
+				<button class="btn" onclick="EXOTIC_BOOST.import();">Import</button> <button class="btn" onclick="EXOTIC_BOOST.importrespec();">Respec And Import</button> <button class="btn" onclick="EXOTIC_BOOST.export();">Export</button><br></div>
             </div>
                 <div id="stab_frame7_3">
                     <div class="table_center">

@@ -10,7 +10,7 @@ const STARS = {
         x = x.softcap(tmp.stars.softGain,tmp.stars.softPower,0)
 	
 			if(hasUpgrade('exotic',18) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[3])
-				
+				if(hasChargedElement(36) && x.gte(10))x = expMult(x,1.1)
 			if (FERMIONS.onActive("33"))x = x.add(1).log10()
 	
 		if (player.gc.active) x = GCeffect(x)

@@ -27,6 +27,7 @@ const EXOTIC = {
         if (hasAscension(0,2)) x = x.mul(ascensionEff(0,2,E(1)));
         if (hasAscension(1,1)) x = x.mul(ascensionEff(1,1,E(1)));
         if (hasChargedElement(6)) x = x.mul(tmp.elements.ceffect[6]);
+		x = x.mul(SUPERNOVA_CLUSTER.effects.eff1())
         return x.floor()
     },
     gainTimes() {
@@ -97,6 +98,8 @@ const EXOTIC = {
 			x = x.mul(tmp.ex.dsEff.ex);
 		}
 		if(hasElement(372))x = x.mul(tmp.elements.effect[372]);
+        if (hasAscension(0,11)) x = x.mul(ascensionEff(0,11,E(1)));
+		if(hasElement(389))x = x.mul(tmp.elements.effect[389]);
 		return x;
     },
     dsGain(){
@@ -105,6 +108,7 @@ const EXOTIC = {
 			x = x.mul(tmp.ex.drEff.ds);
 		}
 		if(hasElement(370))x = x.mul(tmp.elements.effect[370]);
+		if(hasElement(388))x = x.mul(tmp.elements.effect[388]);
 		return x;
     },
     drEff(){
@@ -148,6 +152,15 @@ function calcExotic(dt) {
 		player.exotic.dr = player.exotic.dr.max(1);
 		player.exotic.ds = player.exotic.ds.add(EXOTIC.dsGain().mul(dt));
 	}
+	if(hasChargedElement(14)){
+		player.exotic.dr = player.exotic.dr.add(EXOTIC.drGain().mul(dt));
+	}
+	if(hasChargedElement(16)){
+		player.exotic.dr = player.exotic.dr.add(EXOTIC.drGain().mul(dt).mul(tmp.elements.effect[16]||1));
+	}
+	if(hasChargedElement(24)){
+		player.exotic.points = player.exotic.points.add(EXOTIC.gain().mul(dt));
+	}
 }
 
 function updateExoticHTML(){
@@ -172,7 +185,7 @@ function updateExoticHTML(){
         }
         if (tmp.stab[7] == 2) {
             tmp.el.ex_bp.setTxt(EXOTIC_BOOST.used_bp().format(0)+" / "+player.exotic.bp.format(0));
-            tmp.el.ex_bp2.setTxt(Decimal.pow(1e3,player.exotic.bp.add(1)).format(0));
+            tmp.el.ex_bp2.setTxt(Decimal.pow(1e3,player.exotic.bp.add(1).sub(EXOTIC_BOOST.fgain())).format(0));
 			for(let i=0;i<EXOTIC_BOOST_LENGTH;i++){
 				tmp.el["exb"+i+"_lvl"].setTxt(format(player.exotic.boosts[i],0))
 				tmp.el["exb"+i+"_btn"].setClasses({btn: true, locked: !tmp.ex.exb_can})
@@ -182,6 +195,8 @@ function updateExoticHTML(){
 			tmp.el["exb3_div"].changeStyle('display',hasUpgrade('exotic',18)?'':'none');
 			tmp.el["exb4_div"].changeStyle('display',hasUpgrade('exotic',20)?'':'none');
 			tmp.el["exb5_div"].changeStyle('display',hasUpgrade('exotic',24)?'':'none');
+			tmp.el["exb6_div"].changeStyle('display',hasUpgrade('exotic',25)?'':'none');
+			tmp.el["exb6_div2"].changeStyle('display',hasUpgrade('exotic',25)?'':'none');
         }
         if (tmp.stab[7] == 3) {
             tmp.el.darkRay.setTxt(player.exotic.dr.format(0));
@@ -192,7 +207,8 @@ function updateExoticHTML(){
 			tmp.el.dsEff.setHTML(`
 					Boosts exotic matter gain by <b>x${tmp.ex.dsEff.ex.format(3)}</b><br>
 					Boosts dark ray gain by <b>x${tmp.ex.dsEff.ex.format(3)}</b><br>`+
-					(hasElement(376)?`Meta-Supernova is <b>${E(100).sub(tmp.ex.dsEff.sn.mul(100)).format(3)}% weaker</b><br>`:"")
+					(hasElement(376)?`Meta-Supernova is <b>${E(100).sub(tmp.ex.dsEff.sn.mul(100)).format(3)}% weaker</b><br>`:"")+
+					(hasElement(382)?`Boosts Galactic Quarks gain by <b>x${tmp.ex.dsEff.ex.format(3)}</b><br>`:"")
 				);
         }
 }

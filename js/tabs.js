@@ -56,6 +56,7 @@ const TABS = {
             { id: "Radiation", unl() { return tmp.radiation.unl } },
             { id: "星系", unl() { return hasElement(218) || player.superGal.gte(1)} },
             { id: "星系费米子", unl() { return hasElement(237)} },
+            { id: "Cluster", unl() { return hasElement(387) || player.superCluster.gte(1)} },
         ],
         6: [
             { id: "Chroma" },

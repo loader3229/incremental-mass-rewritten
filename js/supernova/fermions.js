@@ -665,6 +665,7 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = t.add(1)
+					if(hasAscension(0,14))x = Decimal.pow(10, t)
                     return x
                 },
                 desc(x) {

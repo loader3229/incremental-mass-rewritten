@@ -287,6 +287,7 @@ function updateUpperHTML() {
 	unl = (hasElement(359))
 	tmp.el.exotic_div.setDisplay(unl)
 	if (unl) tmp.el.exoticAmt.setHTML(format(player.exotic.points,0)+"<br>(+"+format(EXOTIC.gain(),0)+")")
+	if (hasChargedElement(24)) tmp.el.exoticAmt.setHTML(format(player.exotic.points,0)+"<br>"+player.exotic.points.formatGain(EXOTIC.gain()),0)
 }
 
 function updateMassUpgradesHTML() {

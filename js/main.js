@@ -74,6 +74,8 @@ const FORMS = {
 		if (hasUpgrade('bh',19)) x = x.pow(tmp.upgs.main?tmp.upgs.main[2][19].effect:E(1))
         if (hasUpgrade('br',20)) x = x.pow(tmp.upgs.main?tmp.upgs.main[4][20].effect:E(1))
 		if (hasElement(213)) x = x.pow(tmp.chal.eff[20])
+		if (hasChargedElement(18)) x = x.pow(tmp.elements.effect[18])
+		if (hasChargedElement(28)) x = x.pow(tmp.elements.ceffect[28])
 		
 		x = x.pow(tmp.fermions.effs[2][2]||E(1))	
 		
@@ -365,6 +367,7 @@ const FORMS = {
 			if(player.ranks.oct.gte(29))ss2 = ss2.mul(2)
 			if(player.ranks.oct.gte(29))p2 = p2 ** 0.98
 			if(player.ranks.oct.gte(33))p2 = p2 ** 0.969
+			if(hasElement(391))p2 = p2 ** 0.95
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}

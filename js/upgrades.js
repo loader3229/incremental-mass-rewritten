@@ -1314,7 +1314,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 24,
+            lens: 25,
             1: {
                 desc: `Multiply your Eternity times gain by (200+Exotic reset times). Remove Mass and Star Overflow.`,
                 cost: E(1),
@@ -1445,6 +1445,11 @@ const UPGS = {
                 unl() { return hasUpgrade('exotic',19) },
                 desc: "Unlock a new Exotic Boost type.",
                 cost: E(1e25),
+            },
+            25: {
+                unl() { return hasUpgrade('exotic',19) },
+                desc: "Unlock the final Exotic Boost type, Exotic Boost Importing and Exotic Boost Exporting.",
+                cost: E(1e30),
             },
         },
     },

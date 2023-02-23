@@ -50,6 +50,7 @@ const MASS_DILATION = {
         if (hasElement(40)) x = x.mul(tmp.elements.effect[40])
         if (hasElement(32)) x = x.pow(1.05)
         if (player.ranks.hex.gte(32)) x = x.pow(1.05)
+        if (hasChargedElement(32)) x = x.pow(10)
         if (player.ranks.hex.gte(35)) x = x.pow(tmp.elements.effect[35])
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
 			
@@ -57,8 +58,8 @@ const MASS_DILATION = {
 		if (!hasElement(158))x = x.softcap(mlt(1e12),0.5,0);
 		if (FERMIONS.onActive("24")) x = x.add(1).log10().pow(10);
 		if (player.gc.active) x = GCeffect(x)
-		tmp.dmOverflow = overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8).log(x);
-        return overflow(x,"e5e28",hasElement(196)?0.92:hasElement(158)?0.9:0.8);
+		tmp.dmOverflow = overflow(x,"e5e28",hasChargedElement(21)?0.925:hasElement(196)?0.92:hasElement(158)?0.9:0.8).log(x);
+        return overflow(x,"e5e28",hasChargedElement(21)?0.925:hasElement(196)?0.92:hasElement(158)?0.9:0.8);
     },
     mass_req() {
         let x = E(10).pow(player.md.particles.add(1).div(tmp.md.rp_mult_gain).root(tmp.md.rp_exp_gain).add(14).mul(40)).mul(1.50005e56)
@@ -104,7 +105,7 @@ const MASS_DILATION = {
                 desc: `Double relativistic particles gain.`,
                 cost(x) { return E(10).pow(x.pow(E(1.25).pow(tmp.md.upgs[4].eff||1))).mul(1000) },
                 bulk() { return player.md.mass.gte(1000)?player.md.mass.div(1000).max(1).log10().root(E(1.25).pow(tmp.md.upgs[4].eff||1)).add(1).floor():E(0) },
-                effect(x) { return E(2).pow(x.mul(tmp.md.upgs[11].eff||1)).softcap(1e25,0.75,0) },
+                effect(x) { return E(hasChargedElement(25)?3:2).pow(x.mul(tmp.md.upgs[11].eff||1)).softcap(1e25,0.75,0) },
                 effDesc(x) { return format(x,0)+"倍"+(x.gte(1e25)?"<span class='soft'>(softcapped)</span>":"") },
             },{
                 desc: `Dilated mass also boost Stronger's power.`,
@@ -217,6 +218,9 @@ const MASS_DILATION = {
             if (player.md.break.upgs[7].gte(1)) x = x.mul(tmp.bd.upgs[7].eff||1)
             if (player.md.break.upgs[8].gte(1)) x = x.mul(tmp.bd.upgs[8].eff||1)
 
+			if (hasChargedElement(31)) x = x.pow(tmp.elements.ceffect[31]||1)
+			if (hasChargedElement(34)) x = x.pow(tmp.elements.ceffect[34]||1)
+			if (hasChargedElement(35)) x = x.pow(tmp.elements.ceffect[35]||1)
             return x
         },
 
