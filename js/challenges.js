@@ -575,8 +575,11 @@ const CHALS = {
         start: E('ee40'),
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
-			if(hasChargedElement(8))if(x.gte(100))x=x.log10().mul(50);
-			else if(x.gte(10))x=x.log10().mul(10);
+			if(hasChargedElement(8)){
+				if(x.gte(100))x=x.log10().mul(50);
+			}else{
+				if(x.gte(10))x=x.log10().mul(10);
+			}
             let ret = x.div(100).add(1)
             return ret
         },
