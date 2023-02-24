@@ -29,6 +29,7 @@ const ENTROPY = {
         if (hasElement(139)) x = x.mul(tmp.elements.effect[139]||1)
 		if (player.ranks.hept.gte(52)) x = x.mul(E(10).pow(player.ranks.hept));
 		x = x.mul(SUPERNOVA_GALAXY.effects.entropyg())
+		if(hasElement(394)) x = x.mul(EXOTIC.dsEff().en)
 	
         return x
     },

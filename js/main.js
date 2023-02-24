@@ -626,6 +626,7 @@ const FORMS = {
             bonus() {
                 let x = E(0)
                 if (player.mainUpg.bh.includes(15)) x = x.add(tmp.upgs.main?tmp.upgs.main[2][15].effect:E(0))
+				if (hasChargedElement(38)) x = x.add(tmp.atom.atomicEff);
                 x = x.mul(getEnRewardEff(4))
                 return x
             },

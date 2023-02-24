@@ -110,6 +110,27 @@ function setupHTML() {
 	}
 	prestige_mass_upgs_table.setHTML(table)
 
+	let ascension_mass_upgs_table = new Element("ascension_mass_upgs_table")
+	table = ""
+	for (let x = 1; x <= UPGS.ascensionMass.cols; x++) {
+		let upg = UPGS.ascensionMass[x]
+		table += `<div style="width: 100%; margin-bottom: 5px;" class="table_center" id="ascensionMassUpg_div_${x}">
+			<div style="width: 400px">
+				<div class="resources">
+					<img src="images/mass_upg${x}.png">
+					<span style="margin-left: 5px; text-align: left;"><span id="ascensionMassUpg_scale_${x}"></span>${upg.title} [<span id="ascensionMassUpg_lvl_${x}">X</span>]</span>
+				</div>
+			</div><button id="ascensionMassUpg_btn_${x}" class="btn" style="width: 200px;" onclick="UPGS.ascensionMass.buy(${x}, true)">Cost: <span id="ascensionMassUpg_cost_${x}">X</span></button>
+			<button class="btn" style="width: 120px;" onclick="UPGS.ascensionMass.buyMax(${x})">Buy Max</button>
+			<button id="ascensionMassUpg_auto_${x}" class="btn" style="width: 80px;" onclick="UPGS.ascensionMass.autoSwitch(${x})">OFF</button>
+			<div style="margin-left: 5px; text-align: left; width: 400px">
+				${upg.title} Power: <span id="ascensionMassUpg_step_${x}">X</span><br>
+				${upg.title} Effect: <span id="ascensionMassUpg_eff_${x}">X</span>
+			</div>
+		</div>`
+	}
+	ascension_mass_upgs_table.setHTML(table)
+
 	let ranks_rewards_table = new Element("ranks_rewards_table")
 	table = ""
 	for (let x = 0; x < RANKS.names.length; x++) {
@@ -318,6 +339,20 @@ function updateMassUpgradesHTML() {
 			tmp.el["prestigeMassUpg_eff_"+x].setHTML(tmp.upgs.prestigeMass[x].effDesc.eff)
 			tmp.el["prestigeMassUpg_auto_"+x].setDisplay(true)
 			tmp.el["prestigeMassUpg_auto_"+x].setTxt(player.autoprestigeMassUpg[x]?"ON":"OFF")
+		}
+	}
+	for (let x = 1; x <= UPGS.ascensionMass.cols; x++) {
+		let upg = UPGS.ascensionMass[x]
+		tmp.el["ascensionMassUpg_div_"+x].setDisplay(upg.unl() && tmp.rank_tab == 2)
+		if (upg.unl()) {
+			tmp.el["ascensionMassUpg_scale_"+x].setTxt("")
+			tmp.el["ascensionMassUpg_lvl_"+x].setTxt(format(player.ascensionMassUpg[x]||0,0))
+			tmp.el["ascensionMassUpg_btn_"+x].setClasses({btn: true, locked: player.ascensionMass.lt(tmp.upgs.ascensionMass[x].cost)})
+			tmp.el["ascensionMassUpg_cost_"+x].setTxt(formatMass(tmp.upgs.ascensionMass[x].cost)+" Prestige Mass")
+			tmp.el["ascensionMassUpg_step_"+x].setTxt(tmp.upgs.ascensionMass[x].effDesc.step)
+			tmp.el["ascensionMassUpg_eff_"+x].setHTML(tmp.upgs.ascensionMass[x].effDesc.eff)
+			tmp.el["ascensionMassUpg_auto_"+x].setDisplay(true)
+			tmp.el["ascensionMassUpg_auto_"+x].setTxt(player.autoascensionMassUpg[x]?"ON":"OFF")
 		}
 	}
 }

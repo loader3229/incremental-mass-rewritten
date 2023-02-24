@@ -435,10 +435,14 @@ const ELEMENTS = {
                 return x.div(6).floor()
             },
             effDesc(x) { return "+"+format(x,0)+" to Rage Power Upgrade 7" },
+            cdesc: `Cosmic Ray's free tickspeeds now adds to BH Condensers.`,
+            ccost: E("ee2.7e13"),
         },
         {
             desc: `Remove softcap from C2 & C6 effects.`,
             cost: E(1e285),
+            cdesc: `C13 effect softcap starts later.`,
+            ccost: E("ee2.7e13"),
         },
         {
             desc: `Collapsed star boost dilated mass gain.`,
@@ -446,31 +450,50 @@ const ELEMENTS = {
             effect() {
                 let x = player.stars.points.add(1).pow(0.5)
                 if (player.ranks.hex.gte(40)) x = x.pow(2)
+                return x.min('ee3e13')
+            },
+            effDesc(x) { return format(x)+"x"+(x.gte('ee3e13')?" <span class='soft'>(hardcapped)</span>":"") },
+            cdesc: `Collapsed star boost Relativistic mass gain.`,
+            ccost: E("ee3e13"),
+            ceffect() {
+                let x = player.stars.points.add(1).log10().add(1).log10().add(1).log10().add(1);
                 return x
             },
-            effDesc(x) { return format(x)+"x" },
+            ceffDesc(x) { return "^"+format(x) },
         },
         {
             desc: `Add 50 more C7 maximum completions.`,
             cost: E('e315'),
+            cdesc: `The 7th challenge's effect is better`,
+            ccost: E("ee3.1e13"),
         },
         {
             desc: `Collapsed star boost quark gain.`,
             cost: E('e325'),
             effect() {
+				if(hasChargedElement(42))return Decimal.pow(10,expMult(player.stars.points.add(1).log10().add(1).log10().add(2),0.96));
                 let x = player.stars.points.add(1).pow(1/3)
                 if (player.ranks.hex.gte(42)) x = x.pow(3)
-                return x
+                return x.min('eee10')
             },
-            effDesc(x) { return format(x)+"x" },
+            effDesc(x) { 
+				if(hasChargedElement(42))return "^"+format(x);
+				return format(x)+"x"+(x.gte('eee10')?" <span class='soft'>(hardcapped)</span>":"") 
+			},
+            cdesc: `This element is better`,
+            ccost: E("ee3.2e13"),
         },
         {
             desc: `You can now automatically buy mass dilation upgrades if you purchased any first. They no longer spent dilated mass.`,
             cost: E('e360'),
+            cdesc: `You can now automatically buy Reset Count Boosters. They no longer spent Exotic Matter.`,
+            ccost: E("ee3.3e13"),
         },
         {
             desc: `The Tetr requirement is broken.`,
             cost: E('e380'),
+            cdesc: `The Tier requirement is broken.`,
+            ccost: E('ee3.4e13'),
         },
         {
             desc: `Collapsed star boost relativistic particles gain.`,
@@ -481,6 +504,13 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { if(player.ranks.hex.gte(45))return "^"+format(x);return format(x)+"x" },
+            cdesc: `This element's effect boost Relativistic Energy gain.`,
+            ccost: E('ee3.5e13'),
+            ceffect() {
+                let x = player.stars.points.add(1).log10().add(1).log10().add(1).log10().add(1).sqrt();
+                return x
+            },
+            ceffDesc(x) { return "^"+format(x) },
         },
         {
             desc: `Collapsed star's effect boost mass gain from the black hole at a reduced rate.`,
@@ -491,14 +521,20 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { if(player.ranks.hex.gte(46))return "^"+format(x);return format(x)+"x" },
+            cdesc: `Collapsed star's effect is better.`,
+            ccost: E('ee3.6e13'),
         },
         {
             desc: `Quarks gain is raised to the 1.1th power.`,
             cost: E('e610'),
+            cdesc: `Quarks gain exponent ^1.02`,
+            ccost: E('ee3.6e13'),
         },
         {
             desc: `Collapsed stars effect is 10% stronger.`,
             cost: E('e800'),
+            cdesc: `Collapsed star's effect is better.`,
+            ccost: E('ee3.8e13'),
         },
         {
             desc: `Collapsed star boost last type of stars.`,
@@ -510,6 +546,8 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { return format(x)+"x"+(x.gte('eee10')?" <span class='soft'>(hardcapped)</span>":x.gte('ee40000')?" <span class='soft'>(softcapped)</span>":"") },
+            cdesc: `Star generator gain exponent ^1.02`,
+            ccost: E("ee4.7e13"),
         },
         {
             desc: `Star generator is now ^1.05 stronger.`,
@@ -2354,6 +2392,40 @@ const ELEMENTS = {
 			cost: E("3e173"),
 			galQk: true,
 		},
+		{
+			desc: `Unlock a new effect of Dark Shadow.`,
+			cost: E("1e45"),
+			ds: true,
+		},
+		{
+			desc: `Eternal Mass boost Exotic Matter gain.`,
+			cost: E("1.5e4906"),
+			et: true,
+			effect() {
+				let x = player.et.points.add(10).log10();
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Reduce Supernova Galaxy Requirements.`,
+			cost: E("3e39"),
+			exotic: true,
+		},
+		{
+			desc: `C20 effect is better.`,
+			cost: E("1.5e270056"),
+		},
+		{
+			desc: ``,
+			cost: E("ee5e13"),
+			qk: true,
+		},
+		{
+			desc: ``,
+			cost: E("1e184"),
+			galQk: true,
+		},
 	],
     /*
     {
@@ -2367,7 +2439,7 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
-		if(hasElement(380))return 393;
+		if(hasElement(380))return 397;
 		if(hasUpgrade("atom",25))return 380;
 		
 		if(player.exotic.times.gte(1))return 362;

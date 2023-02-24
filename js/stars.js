@@ -62,8 +62,9 @@ const STARS = {
 		let l2=Decimal.pow(10,Decimal.pow(10,l));
 		tmp.stars.effectPowerRaw = x.add(1).mul(l2).log10().log10().div(l).sqrt()
 		if(player.ranks.hex.gte(69))tmp.stars.effectPowerRaw = tmp.stars.effectPowerRaw.pow(player.ranks.hex.sub(68).mul(0.01).add(1))
-		tmp.stars.effectPower = overflow(tmp.stars.effectPowerRaw,"ee3",0.5);
-		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee8",0.5);
+		tmp.stars.effectPower = overflow(tmp.stars.effectPowerRaw,"ee3",hasChargedElement(48)?0.55:0.5);
+		if(!hasChargedElement(46))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee8",0.5);
+		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee15",0.5);
 		tmp.stars.effectRaw = x
 		if(hasPrestige(1,24))return x.min("e1e85");
         return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");
@@ -99,6 +100,7 @@ const STARS = {
 
 				
 				if(hasUpgrade('atom',22)) x = expMult(x,1.005)
+				if(hasChargedElement(49)) x = expMult(x,1.02)
             if (QCs.active()) x = expMult(x,tmp.qu.qc_eff[0][0])
             return x
         },

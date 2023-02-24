@@ -329,6 +329,131 @@ const UPGS = {
             }
         },
     },
+    ascensionMass: {
+        cols: 4,
+        temp() {
+            for (let x = this.cols; x >= 1; x--) {
+                let d = tmp.upgs.ascensionMass
+                let data = this.getData(x)
+                d[x].cost = data.cost
+                d[x].bulk = data.bulk
+                
+                d[x].bonus = this[x].bonus?this[x].bonus():E(0)
+                d[x].eff = this[x].effect(player.ascensionMassUpg[x]||E(0))
+                d[x].effDesc = this[x].effDesc(d[x].eff)
+            }
+        },
+        autoSwitch(x) {
+            player.autoascensionMassUpg[x] = !player.autoascensionMassUpg[x]
+        },
+        buy(x, manual=false) {
+            let cost = manual ? this.getData(x).cost : tmp.upgs.ascensionMass[x].cost
+            if (player.ascensionMass.gte(cost)) {
+                if (!player.ascensionMassUpg[x]) player.ascensionMassUpg[x] = E(0)
+                player.ascensionMassUpg[x] = player.ascensionMassUpg[x].add(1)
+            }
+        },
+        buyMax(x) {
+            let d = tmp.upgs.ascensionMass[x]
+            let bulk = d.bulk
+            let cost = d.cost
+            if (player.ascensionMass.gte(cost)) {
+                let m = player.ascensionMassUpg[x]
+                if (!m) m = E(0)
+                m = m.max(bulk.floor().max(m.plus(1)))
+                player.ascensionMassUpg[x] = m
+            }
+        },
+        getData(i) {
+            let upg = this[i]
+            let inc = upg.inc
+            let start = upg.start
+            let lvl = player.ascensionMassUpg[i]||E(0)
+            let cost, bulk
+
+            if (i==4) {
+                cost = mlt(inc.pow(lvl).mul(start))
+                bulk = player.ascensionMass.div(1.5e56).max(1).log10().div(start.mul(1e9)).max(1).log(inc).add(1).floor()
+                if (player.ascensionMass.lt(mlt(start))) bulk = E(0)
+			} else {
+				cost = inc.pow(lvl).mul(start)
+				bulk = E(0)
+				if (player.ascensionMass.gte(start)) bulk = player.ascensionMass.div(start).max(1).log(inc).add(1).floor()
+			}
+            return {cost: cost, bulk: bulk}
+        },
+        1: {
+            unl() { return hasAscension(1,4) },
+            title: "Ascension Muscler",
+            start: E(10),
+            inc: E(1.5),
+            effect(x) {
+                let step = player.ascensions[0]
+                step = step.mul(tmp.upgs.ascensionMass[2]?tmp.upgs.ascensionMass[2].eff.eff:1)
+                let ret = step.mul(x).add(1)
+                return {step: step, eff: ret}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+"+format(eff.step),
+                    eff: "x"+format(eff.eff)+" to Ascension Mass gain"
+                }
+            },
+        },
+        2: {
+            unl() { return false },
+            title: "Ascension Booster",
+            start: E(100),
+            inc: E(4),
+            effect(x) {
+                let step = player.ascensions[1]
+                step = step.pow(tmp.upgs.ascensionMass[3]?tmp.upgs.ascensionMass[3].eff.eff:1)
+                let ret = step.mul(x).add(1)
+                return {step: step, eff: ret}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+"+format(eff.step)+"x",
+                    eff: "x"+format(eff.eff)+" to Ascension Muscler Power"
+                }
+            },
+        },
+        3: {
+            unl() { return false },
+            title: "Ascension Stronger",
+            start: E(1000),
+            inc: E(9),
+            effect(x) {
+                let step = E(0.001)
+                step = step.mul(tmp.upgs.ascensionMass[4]?tmp.upgs.ascensionMass[4].eff.eff:1)
+				let ret = step.mul(x).add(1).softcap(2000,0.5,0);
+                return {step: step, eff: ret, ss: 2000}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+^"+format(eff.step),
+                    eff: "^"+format(eff.eff)+" to Ascension Booster Power"+(eff.eff.gte(eff.ss)?` <span class='soft'>(softcapped)</span>`:"")
+                }
+            },
+        },
+        4: {
+            unl() { return false },
+            title: "Ascension Overpower",
+            start: E(1e-4),
+            inc: E(1.0005),
+            effect(x) {
+                let step = E(0.001)
+				let ret = step.mul(x).add(1);
+                return {step: step, eff: ret}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+"+format(eff.step)+"x",
+                    eff: "x"+format(eff.eff)+" to Ascension Stronger Power"
+                }
+            }
+        },
+    },
     main: {
         temp() {
             for (let x = 1; x <= this.cols; x++) {

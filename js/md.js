@@ -210,6 +210,7 @@ const MASS_DILATION = {
             x = x.mul(tmp.bd.upgs[5].eff||1)
             if (hasElement(116)) x = x.mul(tmp.elements.effect[116]||1)
 
+			if (hasChargedElement(45)) x = x.pow(tmp.elements.ceffect[45]||1)
             return x
         },
         massGain() {
@@ -221,6 +222,7 @@ const MASS_DILATION = {
 			if (hasChargedElement(31)) x = x.pow(tmp.elements.ceffect[31]||1)
 			if (hasChargedElement(34)) x = x.pow(tmp.elements.ceffect[34]||1)
 			if (hasChargedElement(35)) x = x.pow(tmp.elements.ceffect[35]||1)
+			if (hasChargedElement(40)) x = x.pow(tmp.elements.ceffect[40]||1)
             return x
         },
 

@@ -78,6 +78,7 @@ function calc(dt, dt_offline) {
         player.mass = player.mass.add(tmp.massGain.mul(du_gs))
         if (player.mainUpg.rp.includes(3)) for (let x = 1; x <= UPGS.mass.cols; x++) if (player.autoMassUpg[x] && (player.ranks.rank.gte(x) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(x)
         for (let x = 1; x <= UPGS.prestigeMass.cols; x++) if (player.autoprestigeMassUpg[x] &&  UPGS.prestigeMass[x].unl()) UPGS.prestigeMass.buyMax(x)
+        for (let x = 1; x <= UPGS.ascensionMass.cols; x++) if (player.autoascensionMassUpg[x] &&  UPGS.ascensionMass[x].unl()) UPGS.ascensionMass.buyMax(x)
 		if (FORMS.tickspeed.autoUnl() && player.autoTickspeed) FORMS.tickspeed.buyMax()
         if (FORMS.accel.autoUnl() && player.autoAccel) FORMS.accel.buyMax()
 		if (FORMS.prestige_tickspeed.autoUnl() && player.autoPrestigeTickspeed) FORMS.prestige_tickspeed.buyMax()
@@ -181,14 +182,17 @@ function getPlayerData() {
         prestigeMass: E(0),
         ascensionMass: E(0),
         prestigeMassUpg: [E(0), E(0), E(0), E(0), E(0)],
+        ascensionMassUpg: [E(0), E(0), E(0), E(0), E(0)],
 		prestigeRP: E(0),
 		prestigeTickspeed: E(0),
+		prestigeBH: E(0),
         auto_mainUpg: {
             
         },
         massUpg: {},
         autoMassUpg: [null,false,false,false],
         autoprestigeMassUpg: [null,false,false,false],
+        autoascensionMassUpg: [null,false,false,false],
         autoTickspeed: false,
 		autoPrestigeTickspeed: false,
         mainUpg: {

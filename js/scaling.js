@@ -29,6 +29,7 @@ const SCALE_START = {
 		pent: E(100),
 		hex: E(500),
 		hept: E(40),
+		oct: E(100),
 		massUpg: E(500),
 		tickspeed: E(250),
 		bh_condenser: E(300),
@@ -105,6 +106,7 @@ const SCALE_POWER= {
 		pent: 3,
 		hex: 5,
 		hept: 5,
+		oct: 5,
 		massUpg: 5,
 		tickspeed: 4,
 		bh_condenser: 2,
@@ -413,6 +415,7 @@ function getScalingStart(type, name) {
 			start = start.mul(getEnRewardEff(0))
 			start = start.mul(SUPERNOVA_GALAXY.effects.meta())
 			if (hasElement(284))start = start.mul(tmp.fermions.effs[1][5].add(10).log10())
+			if (hasPrestige(3,35))start = start.mul(prestigeEff(3,35,E(1)))
 		}
 		if (name == "supernova") if (hasPrestige(1,2)) start = start.add(100)
 			
@@ -544,6 +547,10 @@ function getScalingPower(type, name) {
 		}
 		if (name=="prestige2") {
 			if (hasPrestige(2,12)) power = power.mul(tmp.prestigeMassEffect)
+		}
+		if (name=="prestige3") {
+			if (hasAscension(1,4)) power = power.mul(0.8)
+			if (hasPrestige(3,33)) power = power.mul(tmp.prestigeMassEffect)
 		}
 		if (name=="hex") {
 			if (hasPrestige(1,34)) power = power.mul(tmp.prestigeMassEffect)

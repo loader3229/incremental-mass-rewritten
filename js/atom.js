@@ -16,6 +16,7 @@ const ATOM = {
 			
 			if(hasUpgrade('exotic',11) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[2])
 			if(hasChargedElement(17))x = expMult(x,1.01)
+			if(hasChargedElement(47))x = expMult(x,1.02)
 				
 			
         if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
@@ -46,7 +47,7 @@ const ATOM = {
         if (hasElement(67) && player.ranks.hex.gte(67)) x = x.pow(tmp.elements.effect[67])
 		x = x.pow(SUPERNOVA_GALAXY.galPow1_eff())
         if (hasElement(231)) x = x.pow(tmp.elements.effect[231])
-			
+        if (hasChargedElement(42)) x = x.pow(tmp.elements.effect[42])
 		
 			if(hasElement(363) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[2])
 			if(hasChargedElement(1))x = expMult(x,1.01)

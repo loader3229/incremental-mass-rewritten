@@ -42,6 +42,7 @@ function resetTemp() {
             main: {},
             mass: {},
             prestigeMass: {},
+            ascensionMass: {},
         },
 
         elements: {
@@ -126,6 +127,7 @@ function resetTemp() {
     for (let x = 0; x < PRES_LEN; x++) tmp.prestiges.eff[x] = {}
     for (let x = 0; x < AS_LEN; x++) tmp.ascensions.eff[x] = {}
     for (let x = UPGS.prestigeMass.cols; x >= 1; x--) tmp.upgs.prestigeMass[x] = {}
+    for (let x = UPGS.ascensionMass.cols; x >= 1; x--) tmp.upgs.ascensionMass[x] = {}
     for (let x = UPGS.mass.cols; x >= 1; x--) tmp.upgs.mass[x] = {}
     for (let x = 1; x <= UPGS.main.cols; x++) tmp.upgs.main[x] = {}
     for (let j = 0; j < TREE_TAB.length; j++) {
@@ -200,6 +202,7 @@ function updateUpgradesTemp() {
     UPGS.main.temp()
     UPGS.mass.temp()
     UPGS.prestigeMass.temp()
+    UPGS.ascensionMass.temp()
 }
 
 function updateRagePowerTemp() {

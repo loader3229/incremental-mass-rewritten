@@ -4,6 +4,7 @@ const SUPERNOVA_GALAXY = {
 		if(hasElement(291))ret -= 0.006;
 		if(hasElement(323))ret -= 0.01;
 		if(hasUpgrade('inf',21))ret -= 0.01;
+		if(hasElement(396))ret -= 0.01;
 		return ret;
 	},
 	req(){
@@ -360,6 +361,7 @@ function updateSupernovaGalaxyHTML() {
 		html += "<br>Super Supernova Galaxies starts "+format(SUPERNOVA_CLUSTER.effects.eff2())+" later";
 		html += "<br>Add "+format(SUPERNOVA_CLUSTER.effects.eff3())+" Exotic Boosts";
 		html += "<br>Add "+format(SUPERNOVA_CLUSTER.effects.eff4())+" to base Infinity Mass gain exponent";
+		if(player.superCluster.gte(2))html += "<br>Ascension Level resets nothing";
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}
@@ -380,6 +382,7 @@ const SUPERNOVA_CLUSTER = {
 		if(!force)if(player.superGal.lt(SUPERNOVA_CLUSTER.req()))return;
 		if(!force) if((confirm("Are you sure to reset for a Supernova Cluster? It will force an Exotic Reset!")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
 		if(!force)player.superCluster = player.superCluster.add(1);
+		player.ascensions=[E(0), E(0), E(0), E(0)];
 		EXOTIC.doReset();
 	},
 	effects:{
