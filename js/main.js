@@ -95,6 +95,8 @@ const FORMS = {
 
         if (hasElement(117)) x = x.pow(10)
 		
+        if (hasChargedElement(51) && x.gte(10)) x = expMult(x,1.005)
+		
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
@@ -368,6 +370,7 @@ const FORMS = {
 			if(player.ranks.oct.gte(29))p2 = p2 ** 0.98
 			if(player.ranks.oct.gte(33))p2 = p2 ** 0.969
 			if(hasElement(391))p2 = p2 ** 0.95
+			if(hasChargedElement(63))p2 = p2 ** 0.99
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -401,6 +404,33 @@ const FORMS = {
         },
         autoUnl() { return true },
         autoSwitch() { player.autoPrestigeTickspeed = !player.autoPrestigeTickspeed },
+    },
+    prestigeBHC: {
+        cost(x) { return E(2).pow(x).floor() },
+        can() { return player.prestigeDM.gte(tmp.prestigeBHCCost) },
+        buy() {
+            if (this.can()) {
+                player.prestigeBHC = player.prestigeBHC.add(1)
+            }
+        },
+        buyMax() { 
+            if (this.can()) {
+                player.prestigeBHC = tmp.prestigeBHCBulk
+            }
+        },
+        effect() {
+            let t = player.prestigeBHC
+			let step = (player.ascensions[0] || E(1)).add(1);
+			let ss = E(1e100)
+            let p = 0.1
+			step = step.softcap(ss,p,0)
+			let bonus = E(0)
+            let eff = step.pow(t.add(bonus))
+			
+			return {step: step, eff: eff, bonus: bonus, ss: ss}
+        },
+        autoUnl() { return true },
+        autoSwitch() { player.autoPrestigeBHC = !player.autoPrestigeBHC },
     },
     rp: {
         gain() {
@@ -457,7 +487,7 @@ const FORMS = {
             gain = gain.root(4)
 
             if (hasTree("bh1")) gain = gain.mul(tmp.supernova.tree_eff.bh1)
-            gain = gain.mul(tmp.bosons.upgs.photon[0].effect)
+            if (hasElement(404)) gain = gain.pow(tmp.bosons.upgs.photon[0].effect); else gain = gain.mul(tmp.bosons.upgs.photon[0].effect)
 
             if (CHALS.inChal(7) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19)) gain = gain.root(6)
             if (!hasElement(105)) gain = gain.mul(tmp.atom.particles[2].powerEffect.eff1)
@@ -488,6 +518,7 @@ const FORMS = {
             if (FERMIONS.onActive("11")) return E(-1)
             if (hasElement(59)) x = E(0.45)
             if (player.ranks.hex.gte(59)) x = E(0.5)
+            if (hasChargedElement(59)) x = E(1)
             x = x.add(tmp.radiation.bs.eff[4])
             return x
         },
@@ -497,7 +528,7 @@ const FORMS = {
             if (player.mainUpg.rp.includes(11)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][11].effect:E(1))
             if (player.mainUpg.bh.includes(14)) x = x.mul(tmp.upgs.main?tmp.upgs.main[2][14].effect:E(1))
             if (hasElement(46) && !player.ranks.hex.gte(46)) x = x.mul(tmp.elements.effect[46])
-            x = x.mul(tmp.bosons.upgs.photon[0].effect)
+            if (hasElement(404)) x = x.pow(tmp.bosons.upgs.photon[0].effect); else x = x.mul(tmp.bosons.upgs.photon[0].effect)
             if (CHALS.inChal(8) || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("12")) x = x.root(8)
             x = x.pow(tmp.chal.eff[8])
 
@@ -524,7 +555,7 @@ const FORMS = {
 			if(!hasElement(327))x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
-				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(hasUpgrade('bh',23)?0.81:0.8).mul(bhOverflowStart2.log10().log10());
+				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(E(hasUpgrade('bh',23)?0.81:0.8).pow(prestigeDMEffect())).mul(bhOverflowStart2.log10().log10());
 				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
 			}
 			if(x.gte("eee10")){
@@ -610,13 +641,14 @@ const FORMS = {
                     if (player.mainUpg.bh.includes(2)) pow = pow.mul(tmp.upgs.main?tmp.upgs.main[2][2].effect:E(1))
                     pow = pow.add(tmp.atom.particles[2].powerEffect.eff2)
                     if (player.mainUpg.atom.includes(11)) pow = pow.mul(tmp.upgs.main?tmp.upgs.main[3][11].effect:E(1))
-                    pow = pow.mul(tmp.bosons.upgs.photon[1].effect)
                     pow = pow.mul(tmp.prim.eff[2][1])
                     pow = pow.mul(getEnRewardEff(3)[1])
                     if (hasTree('bs5')) pow = pow.mul(tmp.bosons.effect.z_boson[0])
 						
 					if (hasUpgrade('bh',21)) pow = pow.mul(tmp.upgs.main?tmp.upgs.main[2][21].effect:E(1))
 					
+					
+					if (hasElement(404)) pow = pow.pow(tmp.bosons.upgs.photon[1].effect); else pow = pow.mul(tmp.bosons.upgs.photon[1].effect)
                     if (hasTree("bh2")) pow = pow.pow(1.15)
                     if (hasElement(346))pow = pow.pow(tmp.atom.particles[2].powerEffect.eff2)
                 

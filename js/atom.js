@@ -5,7 +5,7 @@ const ATOM = {
         if (x.lt(1)) return E(0)
         x = x.root(5)
         if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][15].effect:E(1))
-        x = x.mul(tmp.bosons.upgs.gluon[0].effect)
+        if (hasElement(404)) x = x.pow(tmp.bosons.upgs.gluon[0].effect); else x = x.mul(tmp.bosons.upgs.gluon[0].effect)
 	
 	
         if (hasElement(17)) x = x.pow(1.1)
@@ -44,7 +44,7 @@ const ATOM = {
         if (hasElement(47)) x = x.pow(1.1)
         if (player.ranks.hex.gte(47)) x = x.pow(1.1)
         if (hasPrestige(1,7)) x = x.pow(prestigeEff(1,7))
-        if (hasElement(67) && player.ranks.hex.gte(67)) x = x.pow(tmp.elements.effect[67])
+        if (hasElement(67) && (player.ranks.hex.gte(67) || hasChargedElement(67))) x = x.pow(tmp.elements.effect[67])
 		x = x.pow(SUPERNOVA_GALAXY.galPow1_eff())
         if (hasElement(231)) x = x.pow(tmp.elements.effect[231])
         if (hasChargedElement(42)) x = x.pow(tmp.elements.effect[42])
@@ -85,8 +85,10 @@ const ATOM = {
             let x = tmp.atom.gamma_ray_eff?tmp.atom.gamma_ray_eff.eff:E(0)
             if (hasElement(3)) x = x.mul(tmp.elements.effect[3])
             if (hasElement(52)) x = x.mul(tmp.elements.effect[52])
-            x = x.mul(tmp.bosons.upgs.gluon[0].effect)
+            if (hasElement(404)) x = x.pow(tmp.bosons.upgs.gluon[0].effect); else x = x.mul(tmp.bosons.upgs.gluon[0].effect)
 			x = x.pow(tmp.fermions.effs[2][0]||E(1))
+			
+			if(hasChargedElement(52)) x = x.pow(tmp.elements.effect[52])
 			
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             if (FERMIONS.onActive("00")) x = expMult(x,0.6)
@@ -129,7 +131,7 @@ const ATOM = {
             if (player.mainUpg.atom.includes(4)) pow = pow.add(tmp.upgs.main?tmp.upgs.main[3][4].effect:E(0))
             if (player.mainUpg.atom.includes(11)) pow = pow.mul(tmp.upgs.main?tmp.upgs.main[3][11].effect:E(1))
             if (hasTree("gr1")) pow = pow.mul(tmp.supernova.tree_eff.gr1)
-            pow = pow.mul(tmp.bosons.upgs.gluon[1].effect)
+            if (hasElement(404))pow = pow.pow(tmp.bosons.upgs.gluon[1].effect); else pow = pow.mul(tmp.bosons.upgs.gluon[1].effect)
             pow = pow.mul(tmp.prim.eff[3][1])
             pow = pow.mul(getEnRewardEff(3)[1])
             if (hasTree('bs5')) pow = pow.mul(tmp.bosons.effect.z_boson[0])
@@ -185,9 +187,10 @@ const ATOM = {
             if (hasElement(12)) x = p.pow(p.add(1).log10().add(1).root(4).pow(tmp.chal.eff[9]).softcap(40000,0.1,0))
             if (player.ranks.hex.gte(12)) x = p.pow(p.add(1).log10().add(1).root(4).pow(tmp.chal.eff[9]).softcap(40000,0.99,0))
             if (hasChargedElement(12)) x = p.pow(p.add(1).log10().add(1).root(3).pow(tmp.chal.eff[9]))
-            x = x.softcap('e3.8e4',0.9,2).softcap('e1.6e5',0.9,2)
+            if (!hasChargedElement(61))x = x.softcap('e3.8e4',0.9,2).softcap('e1.6e5',0.9,2)
             if (hasElement(61)) x = x.mul(p.add(1).root(2))
             if (player.ranks.hex.gte(61)) x = x.mul(p.add(1).root(2))
+			if (hasChargedElement(61)) return x;
             return x.softcap('ee11',0.9,2).softcap('ee13',0.9,2)
         },
         gain(i) {
@@ -384,7 +387,7 @@ function galParticleEffect(x){
 	let ret=player.galParticles[x].add(1).log10().add(1).pow(3);
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
-	ret=overflow(ret,1e7,hasElement(392)?0.22:hasElement(369)?0.21:0.2);
+	ret=overflow(ret,1e7,hasElement(411)?0.24:hasElement(399)?0.23:hasElement(392)?0.22:hasElement(369)?0.21:0.2);
 	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

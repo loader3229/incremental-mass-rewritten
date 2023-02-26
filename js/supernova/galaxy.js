@@ -109,6 +109,7 @@ const SUPERNOVA_GALAXY = {
 		},
 		entropyg(){
 			if(player.superGal.lt(1))return new Decimal(1);
+			if(hasPrestige(3,40))return Decimal.pow(1e5, player.superGal.pow(3));
 			if(hasElement(254))return Decimal.pow(1e100, player.superGal.pow(1.5));
 			return Decimal.pow(100, player.superGal);
 		},
@@ -362,6 +363,7 @@ function updateSupernovaGalaxyHTML() {
 		html += "<br>Add "+format(SUPERNOVA_CLUSTER.effects.eff3())+" Exotic Boosts";
 		html += "<br>Add "+format(SUPERNOVA_CLUSTER.effects.eff4())+" to base Infinity Mass gain exponent";
 		if(player.superCluster.gte(2))html += "<br>Ascension Level resets nothing";
+		if(player.superCluster.gte(3))html += "<br>Multiply Dark Shadow gain by "+format(SUPERNOVA_CLUSTER.effects.eff1());
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}

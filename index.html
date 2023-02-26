@@ -279,6 +279,7 @@
 					<div id="pres_mass">您拥有<span id="pres_mass2">X</span>转生质量(获取速度基于转生基础值、转生等级、荣耀<span id="pres_mass4">和辉煌</span>)<br>转生质量使三重阶层元折算之前的所有折算弱化<span id="pres_mass3"></span></div>
 					<div id="pres_rp">您拥有<span id="pres_rp2">X</span>转生狂怒能量 (获取速度基于转生质量)<br>Which are adding Overpower Power by <span id="pres_rp3"></span></div>
 					<div id="pres_bh">You have <span id="pres_bh2">X</span> Prestige Black Hole (Gain is based on Prestige Mass and Prestige Black Hole)<br>Which are multiplying Prestige Mass by <span id="pres_bh3"></span></div>
+					<div id="pres_dm">You have <span id="pres_dm2">X</span> Prestige Dark Matter (Gain is based on Prestige Rage Power)<br>Which are weakening 2nd Black Hole Overflow effect by <span id="pres_dm3"></span></div>
                 </div><div id="rank_tab2">
                     Your Ascension base is <span id="as_base"></span> (based on products of Prestige tiers)<br><br>
                     <div id="as_table" class="table_center" style="min-height: 180px;"></div><br>
@@ -325,6 +326,19 @@
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Prestige Tickspeed Power: <span id="prestige_tickspeed_step">X</span><br>
                         Prestige Tickspeed Effect: <span id="prestige_tickspeed_eff">X</span> to Prestige Mass gain
+                    </div>
+                </div><div style="width: 100%; margin-bottom: 5px;" class="table_center" id="prestigeBHC_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/bhCondenser.png">
+                            <span style="margin-left: 5px; text-align: left;">Prestige Black Hole Condensers [<span id="prestigeBHC_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="prestigeBHC_btn" class="btn" style="width: 200px;" onclick="FORMS.prestigeBHC.buy()">Cost: <span id="prestigeBHC_cost">X</span> Prestige Dark Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="FORMS.prestigeBHC.buyMax()">Buy Max</button>
+                    <button id="prestigeBHC_auto" class="btn" style="width: 80px;" onclick="FORMS.prestigeBHC.autoSwitch()">OFF</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Prestige BH Condenser Power: <span id="prestigeBHC_step">X</span><br>
+                        Prestige BH Condenser Effect: <span id="prestigeBHC_eff">X</span> to Mass of Prestige Black Hole gain
                     </div>
                 </div><div id="ascension_mass_upgs_table"></div><br><br><div id="mass_softcaps">
                     <span id="massSoft1" class="red">After <b id="massSoftStart1">X</b> of mass gain will softcap mass gain!<br></span>
@@ -637,9 +651,22 @@
                         Eternity Count Boosters Effect: <span id="rcb2_eff">X</span>x
                     </div>
                 </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="rcb3_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/exotic.png">
+                            <span style="margin-left: 5px; text-align: left;"><span id="rcb3_scale"></span>Exotic Count Boosters [<span id="rcb3_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="rcb3_btn" class="btn" style="width: 200px;" onclick="EXOTIC.rcb.buy(3)">Cost: <span id="rcb3_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.rcb.buyMax(3)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Exotic Count Boosters Power: +<span id="rcb3_pow">X</span><br>
+                        Exotic Count Boosters Effect: <span id="rcb3_eff">X</span>x
+                    </div>
+                </div>
             </div>
             <div id="stab_frame7_2">
-                You have <span id="ex_bp"></span> Exotic Boost Points (based on best Exotic Matter, next at <span id="ex_bp2"></span>).<br><br><button class="btn" onclick="EXOTIC_BOOST.respec()">Respec</button>
+                You have <span id="ex_bp"></span> Exotic Boost Points (based on best Exotic Matter, next at <span id="ex_bp2"></span>).<br>Refund or Respec Exotic Boosts will force an Exotic reset!<br><br><button class="btn" onclick="EXOTIC_BOOST.respec()">Respec</button>
                 <div style="width: 100%; margin-bottom: 5px;" class="table_center">
                     <div style="width: 400px">
                         <div class="resources">
@@ -647,6 +674,9 @@
                             <span style="margin-left: 5px; text-align: left;">Rage Boost [<span id="exb0_lvl">X</span>]</span>
                         </div>
                     </div><button id="exb0_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(0)">Cost: 1 Boost Point</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.buyMax(0)">Buy Max</button>
+                    <button id="exb0_refund" class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refund(0)">Refund 1</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refundMax(0)">Refund Max</button>
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Rage Boost Effect: Rage Power Gain Exponent ^<span id="exb0_eff">X</span>
                     </div>
@@ -658,6 +688,9 @@
                             <span style="margin-left: 5px; text-align: left;">Dark Matter Boost [<span id="exb1_lvl">X</span>]</span>
                         </div>
                     </div><button id="exb1_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(1)">Cost: 1 Boost Point</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.buyMax(1)">Buy Max</button>
+                    <button id="exb1_refund" class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refund(1)">Refund 1</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refundMax(1)">Refund Max</button>
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Dark Matter Boost Effect: Dark Matter Gain Exponent ^<span id="exb1_eff">X</span>
                     </div>
@@ -669,6 +702,9 @@
                             <span style="margin-left: 5px; text-align: left;">Atom Boost [<span id="exb2_lvl">X</span>]</span>
                         </div>
                     </div><button id="exb2_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(2)">Cost: 1 Boost Point</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.buyMax(2)">Buy Max</button>
+                    <button id="exb2_refund" class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refund(2)">Refund 1</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refundMax(2)">Refund Max</button>
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Atom Boost Effect: Atom Gain Exponent ^<span id="exb2_eff">X</span>
                     </div>
@@ -680,6 +716,9 @@
                             <span style="margin-left: 5px; text-align: left;">Star Boost [<span id="exb3_lvl">X</span>]</span>
                         </div>
                     </div><button id="exb3_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(3)">Cost: 1 Boost Point</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.buyMax(3)">Buy Max</button>
+                    <button id="exb3_refund" class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refund(3)">Refund 1</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refundMax(3)">Refund Max</button>
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Star Boost Effect: Collapsed Star Gain Exponent ^<span id="exb3_eff">X</span>
                     </div>
@@ -691,6 +730,9 @@
                             <span style="margin-left: 5px; text-align: left;">Supernova Boost [<span id="exb4_lvl">X</span>]</span>
                         </div>
                     </div><button id="exb4_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(4)">Cost: 1 Boost Point</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.buyMax(4)">Buy Max</button>
+                    <button id="exb4_refund" class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refund(4)">Refund 1</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refundMax(4)">Refund Max</button>
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Supernova Boost Effect: Neutron Star Gain Exponent ^<span id="exb4_eff">X</span>
                     </div>
@@ -702,6 +744,9 @@
                             <span style="margin-left: 5px; text-align: left;">Quantum Boost [<span id="exb5_lvl">X</span>]</span>
                         </div>
                     </div><button id="exb5_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(5)">Cost: 1 Boost Point</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.buyMax(5)">Buy Max</button>
+                    <button id="exb5_refund" class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refund(5)">Refund 1</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refundMax(5)">Refund Max</button>
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Quantum Boost Effect: Quantum Foam Gain Exponent ^<span id="exb5_eff">X</span>
                     </div>
@@ -713,6 +758,9 @@
                             <span style="margin-left: 5px; text-align: left;">Exotic Meta-Boost [<span id="exb6_lvl">X</span>]</span>
                         </div>
                     </div><button id="exb6_btn" class="btn" style="width: 200px;" onclick="EXOTIC_BOOST.buy(6)">Cost: 1 Boost Point</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.buyMax(6)">Buy Max</button>
+                    <button id="exb6_refund" class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refund(6)">Refund 1</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC_BOOST.refundMax(6)">Refund Max</button>
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         Exotic Meta-Boost Effect: Add <span id="exb6_eff">X</span> levels to All Previous Boosts
                     </div>

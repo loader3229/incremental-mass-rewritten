@@ -1,6 +1,6 @@
 const RANKS = {
-    names: ['rank', 'tier', 'tetr', 'pent', 'hex', 'hept', 'oct'],
-    fullNames: ['级别', '阶层', '三重阶层', '五重阶层', '六重阶层', '七重阶层', '八重阶层'],
+    names: ['rank', 'tier', 'tetr', 'pent', 'hex', 'hept', 'oct', 'enne'],
+    fullNames: ['级别', '阶层', '三重阶层', '五重阶层', '六重阶层', '七重阶层', '八重阶层', '九重阶层'],
     reset(type) {
         if (tmp.ranks[type].can) {
             player.ranks[type] = player.ranks[type].add(1)
@@ -12,6 +12,7 @@ const RANKS = {
             if (type == "hex" && hasPrestige(1,27)) reset = false
             if (type == "hept" && hasPrestige(2,18)) reset = false
             if (type == "oct" && hasPrestige(3,9)) reset = false
+            if (hasPrestige(3,38)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -27,6 +28,7 @@ const RANKS = {
             if (type == "hex" && hasPrestige(1,27)) reset = false
             if (type == "hept" && hasPrestige(2,18)) reset = false
             if (type == "oct" && hasPrestige(3,9)) reset = false
+            if (hasPrestige(3,38)) reset = false
             if (reset) this.doReset[type]()
             updateRanksTemp()
         }
@@ -38,6 +40,7 @@ const RANKS = {
         hex() { return player.prestiges[0].gte(42) },
         hept() { return player.prestiges[2].gte(6) },
         oct() { return player.prestiges[2].gte(30) },
+        enne() { return player.prestiges[3].gte(38) },
     },
     doReset: {
         rank() {
@@ -68,6 +71,10 @@ const RANKS = {
             player.ranks.hept = E(0)
             this.hept()
         },
+        enne() {
+            player.ranks.oct = E(0)
+            this.oct()
+        },
     },
     autoSwitch(rn) { player.auto_ranks[rn] = !player.auto_ranks[rn] },
     autoUnl: {
@@ -78,6 +85,7 @@ const RANKS = {
         hex() { return true; },
         hept() { return true; },
         oct() { return true; },
+        enne() { return true; },
     },
     desc: {
         rank: {
@@ -285,6 +293,10 @@ const RANKS = {
 			'35': "Square Oct 34 Effect.",
 			'46': "Super Overpower is 4% weaker.",
 		},
+		enne: {
+            '1': "Gain 10x more Prestige Dark Matter.",
+            '2': "Meta-Pent starts later based on Enne.",
+		},
     },
     effect: {
         rank: {
@@ -487,6 +499,12 @@ const RANKS = {
                 return ret
             },
 		},
+		enne: {
+            '2'() {
+                let ret = E(10).pow(player.ranks.enne.pow(2));
+                return ret
+            },
+		},
     },
     effDesc: {
         rank: {
@@ -544,6 +562,9 @@ const RANKS = {
             10(x) { return format(x)+"x" },
             12(x) { return "^"+format(x) },
             34(x) { return format(x)+"x" },
+		},
+		enne: {
+            2(x) { return format(x)+"x later" },
 		},
     },
     fp: {
@@ -840,6 +861,11 @@ const PRESTIGES = {
 			"33": `Prestige Mass Effect is applied to Super Renown scaling.`,
 			"34": `Unlock Prestige Black Hole.`,
 			"35": `Meta BH Condensers starts later based on Dark Matter.`,
+			"36": `Renown 3 reward ^1.5.`,
+			"37": `Unlock Prestige Dark Matter.`,
+			"38": `Unlock Enne. All ranks resets nothing, and collapse Rank, Tier and Tetr.`,
+			"39": `Prestige Dark Matter effect is better.`,
+			"40": `The Entropy Gain effect from Supernova Galaxies is better.`,
 		},
     ],
     rewardEff: [
@@ -1036,6 +1062,7 @@ const PRESTIGES = {
 		{
             "3": [_=>{
                 let x = player.prestiges[3];
+				if(x.gte(36))x = x.pow(1.5);
 				if(x.gte(7))x = x.pow(2);
                 return x
             },x=>"x"+x.format()],
@@ -1181,18 +1208,26 @@ const ASCENSIONS = {
             "15": `Double Ascension Mass effect.`,
             "16": `Double Ascension Mass effect.`,
             "18": `Triple Ascension Level 9's effect.`,
+			"19": `Ascension Level 2's effect ^(4/3)`,
+            "20": `Ascension Level boost Dark Shadow gain.`,
+            "21": `Prestige Mass Effect is applied to Hyper Oct scaling.`,
+            "22": `Remove Entropic Condenser^2 scaling.`,
+            "23": `C5 Effect is better.`,
+            "25": `Square Ascension Level 20 Effect.`,
         },
         {
 			"1": `Transcension Level boost Exotic Matter gain.`,
 			"2": `Transcension Level boost Galactic Quarks gain.`,
 			"3": `Unlock Ascension Mass.`,
 			"4": `Unlock Ascension Mass Upgrade 1, Super Renown is 20% weaker.`,
+			"5": `Unlock Ascension Mass Upgrade 2.`,
         },
     ],
     rewardEff: [
         {
             "2": [_=>{
                 let x = player.ascensions[0].add(1);
+				if(hasAscension(0,19))x = x.pow(4/3);
 				if(hasAscension(0,5))x = x.pow(1.5);
                 return x
             },x=>{
@@ -1225,6 +1260,13 @@ const ASCENSIONS = {
                 let x = player.ascensions[0];
                 return x
             },x=>"+"+x.format()],
+            "20": [_=>{
+                let x = player.ascensions[0].add(1);
+				if(hasAscension(0,25))x = x.pow(2);
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -1340,6 +1382,11 @@ function updateRanksTemp() {
     tmp.ranks.oct.req = player.ranks.oct.scaleEvery('oct').div(fp).pow(pow).add(200).floor()
     tmp.ranks.oct.bulk = player.ranks.hept.sub(200).gte(0)?player.ranks.hept.sub(200).max(0).root(pow).mul(fp).scaleEvery('oct',true).add(1).floor():E(0);
 
+    fp = E(0.1)
+    pow = 1.5
+    tmp.ranks.enne.req = player.ranks.enne.scaleEvery('enne').div(fp).pow(pow).add(100).floor()
+    tmp.ranks.enne.bulk = player.ranks.oct.sub(100).gte(0)?player.ranks.oct.sub(100).max(0).root(pow).mul(fp).scaleEvery('enne',true).add(1).floor():E(0);
+
     for (let x = 0; x < RANKS.names.length; x++) {
         let rn = RANKS.names[x]
         if (x > 0) {
@@ -1396,6 +1443,8 @@ function updateRanksTemp() {
 	tmp.prestigeRPEffect = prestigeRPEffect()
 	tmp.prestigeBHGain = prestigeBHGain()
 	tmp.prestigeBHEffect = prestigeBHEffect()
+	tmp.prestigeDMGain = prestigeDMGain()
+	tmp.prestigeDMEffect = prestigeDMEffect()
 	
 	tmp.ascensionMassGain = ascensionMassGain()
 	tmp.ascensionMassEffect = ascensionMassEffect()
@@ -1409,7 +1458,10 @@ function updateRanksHTML() {
     }
 
     if (tmp.rank_tab == 0) {
-        for (let x = 0; x < RANKS.names.length; x++) {
+		if(hasPrestige(3,38))tmp.el["ranks_div_0"].setDisplay(false),player.auto_ranks.rank=player.auto_ranks.tetr;
+		if(hasPrestige(3,38))tmp.el["ranks_div_1"].setDisplay(false),player.auto_ranks.tier=player.auto_ranks.tetr;
+		tmp.el["ranks_name_2"].setDisplay(!hasPrestige(3,38));
+        for (let x = hasPrestige(3,38)?2:0; x < RANKS.names.length; x++) {
             let rn = RANKS.names[x]
             let unl = RANKS.unl[rn]?RANKS.unl[rn]():true
             tmp.el["ranks_div_"+x].setDisplay(unl)
@@ -1427,11 +1479,13 @@ function updateRanksHTML() {
                 tmp.el["ranks_amt_"+x].setTxt(format(player.ranks[rn],0))
                 tmp.el["ranks_"+x].setClasses({btn: true, reset: true, locked: !tmp.ranks[rn].can})
                 tmp.el["ranks_desc_"+x].setTxt(desc)
+                tmp.el["ranks_desc1_"+x].setDisplay(!hasPrestige(3,38))
                 tmp.el["ranks_req_"+x].setTxt(x==0?formatMass(tmp.ranks[rn].req):RANKS.fullNames[x-1]+" "+format(tmp.ranks[rn].req,0))
                 tmp.el["ranks_auto_"+x].setDisplay(RANKS.autoUnl[rn]())
                 tmp.el["ranks_auto_"+x].setTxt(player.auto_ranks[rn]?"ON":"OFF")
             }
         }
+		if(hasPrestige(3,38))tmp.el.ranks_amt_2.setHTML("级别"+format(player.ranks.rank,0)+"<br>阶层"+format(player.ranks.tier,0)+"<br>三重阶层"+format(player.ranks.tetr,0));
     }
     if (tmp.rank_tab == 1) {
         tmp.el.pres_base.setHTML(`${tmp.prestiges.baseMul.format(0)}<sup>${format(tmp.prestiges.baseExp)}</sup> = ${tmp.prestiges.base.format(0)}`)
@@ -1485,6 +1539,14 @@ function updateRanksHTML() {
 			tmp.el["pres_bh3"].setTxt(format(prestigeBHEffect()));
 		}else{
 			tmp.el["pres_bh"].setDisplay(false);
+		}
+		
+		if (player.prestiges[3].gte(37)){
+			tmp.el["pres_dm"].setDisplay(true);
+			tmp.el["pres_dm2"].setTxt(format(player.prestigeDM,0)+" "+formatGain(player.prestigeDM, tmp.prestigeDMGain))
+			tmp.el["pres_dm3"].setTxt(format(E(1).sub(prestigeDMEffect()).mul(100))+"%");
+		}else{
+			tmp.el["pres_dm"].setDisplay(false);
 		}
     }
     if (tmp.rank_tab == 2) {
@@ -1582,6 +1644,7 @@ function prestigeBHGain(){
 		return E(0);
 	}
 	let x = player.prestigeMass.add(1).log10().add(1).pow(2).mul(player.prestigeBH.add(1).pow(0.33));
+	if (player.prestiges[3].gte(37)) x = x.mul(tmp.prestigeBHCEffect.eff);
 	return x;
 }
 
@@ -1604,12 +1667,30 @@ function prestigeBHEffect(){
 	return p;
 }
 
+function prestigeDMGain(){
+	if(player.prestiges[3].lt(37)){
+		return E(0);
+	}
+	let p = player.prestigeRP.add(1).log10().div(20).pow(0.5).sub(3);
+	let x = Decimal.pow(10,p);
+	if (player.ranks.enne.gte(1)) x = x.mul(10);
+	return x;
+}
+
+function prestigeDMEffect(){
+	let p = player.prestigeDM.add(1).log10();
+	
+	
+	if(hasPrestige(3,39))p = p.mul(2);
+	return E(0.995).pow(p.sqrt());
+}
 
 function calcPrestigeMass(dt){
 	player.prestigeMass = player.prestigeMass.add(tmp.prestigeMassGain.mul(dt))
 	player.prestigeRP = player.prestigeRP.add(tmp.prestigeRPGain.mul(dt))
 	player.prestigeBH = player.prestigeBH.add(tmp.prestigeBHGain.mul(dt))
 	player.ascensionMass = player.ascensionMass.add(tmp.ascensionMassGain.mul(dt))
+	player.prestigeDM = player.prestigeDM.add(tmp.prestigeDMGain.mul(dt))
 }
 
 function ascensionMassGain(){

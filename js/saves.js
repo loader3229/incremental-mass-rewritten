@@ -83,6 +83,7 @@ function calc(dt, dt_offline) {
         if (FORMS.accel.autoUnl() && player.autoAccel) FORMS.accel.buyMax()
 		if (FORMS.prestige_tickspeed.autoUnl() && player.autoPrestigeTickspeed) FORMS.prestige_tickspeed.buyMax()
         if (FORMS.bh.condenser.autoUnl() && player.bh.autoCondenser) FORMS.bh.condenser.buyMax()
+		if (FORMS.prestigeBHC.autoUnl() && player.autoPrestigeBHC) FORMS.prestigeBHC.buyMax()
         if (hasElement(18) && player.atom.auto_gr) ATOM.gamma_ray.buyMax()
         if (hasElement(131) && player.qu.auto_cs) QUANTUM.cosmic_str.buyMax()
         if (player.mass.gte(1.5e136)) player.chal.unl = true
@@ -172,6 +173,7 @@ function getPlayerData() {
             hex: E(0),
             hept: E(0),
             oct: E(0),
+            enne: E(0),
         },
         auto_ranks: {
             rank: false,
@@ -186,6 +188,8 @@ function getPlayerData() {
 		prestigeRP: E(0),
 		prestigeTickspeed: E(0),
 		prestigeBH: E(0),
+		prestigeDM: E(0),
+		prestigeBHC: E(0),
         auto_mainUpg: {
             
         },

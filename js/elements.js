@@ -31,9 +31,9 @@ function setupHTML() {
 		let rn = RANKS.names[x]
 		table += `<div style="width: 300px" id="ranks_div_${x}">
 			<button id="ranks_auto_${x}" class="btn" style="width: 80px;" onclick="RANKS.autoSwitch('${rn}')">OFF</button>
-			<span id="ranks_scale_${x}""></span>${RANKS.fullNames[x]}<span id="ranks_amt_${x}">X</span><br><br>
+			<span id="ranks_scale_${x}""></span><span id="ranks_name_${x}"">${RANKS.fullNames[x]}</span><span id="ranks_amt_${x}">X</span><br><br>
 			<button onclick="RANKS.reset('${rn}')" class="btn reset" id="ranks_${x}">
-				重置${x>0?RANKS.fullNames[x-1]+"":'质量和质量升级'}，但提升${RANKS.fullNames[x]}。<span id="ranks_desc_${x}"></span><br>
+				<span id="ranks_desc1_${x}">重置${x>0?RANKS.fullNames[x-1]+"":'质量和质量升级'}，但</span>提升${RANKS.fullNames[x]}。<span id="ranks_desc_${x}"></span><br>
 				Req: <span id="ranks_req_${x}">X</span>
 			</button>
 		</div>`
@@ -348,7 +348,7 @@ function updateMassUpgradesHTML() {
 			tmp.el["ascensionMassUpg_scale_"+x].setTxt("")
 			tmp.el["ascensionMassUpg_lvl_"+x].setTxt(format(player.ascensionMassUpg[x]||0,0))
 			tmp.el["ascensionMassUpg_btn_"+x].setClasses({btn: true, locked: player.ascensionMass.lt(tmp.upgs.ascensionMass[x].cost)})
-			tmp.el["ascensionMassUpg_cost_"+x].setTxt(formatMass(tmp.upgs.ascensionMass[x].cost)+" Prestige Mass")
+			tmp.el["ascensionMassUpg_cost_"+x].setTxt(formatMass(tmp.upgs.ascensionMass[x].cost)+" Ascension Mass")
 			tmp.el["ascensionMassUpg_step_"+x].setTxt(tmp.upgs.ascensionMass[x].effDesc.step)
 			tmp.el["ascensionMassUpg_eff_"+x].setHTML(tmp.upgs.ascensionMass[x].effDesc.eff)
 			tmp.el["ascensionMassUpg_auto_"+x].setDisplay(true)
@@ -400,6 +400,20 @@ function updateTickspeedHTML() {
 		tmp.el.prestige_tickspeed_eff.setTxt(format(teff.eff)+"x")
 		tmp.el.prestige_tickspeed_auto.setDisplay(FORMS.prestige_tickspeed.autoUnl())
 		tmp.el.prestige_tickspeed_auto.setTxt(player.autoPrestigeTickspeed?"ON":"OFF")
+	}
+	tmp.el.prestigeBHC_div.setDisplay(hasPrestige(3,37) && tmp.rank_tab == 1)
+	
+	if(hasPrestige(3,37)){
+		
+		let teff = tmp.prestigeBHCEffect
+		tmp.el.prestigeBHC_lvl.setTxt(format(player.prestigeBHC,0)+(teff.bonus.gte(1)?" + "+format(teff.bonus,0):""))
+		tmp.el.prestigeBHC_btn.setClasses({btn: true, locked: !FORMS.prestigeBHC.can()})
+		tmp.el.prestigeBHC_cost.setTxt(format(tmp.prestigeBHCCost,0))
+		tmp.el.prestigeBHC_step.setHTML(format(teff.step)+"x"
+		+(teff.step.gte(teff.ss)?" <span class='soft'>(softcapped)</span>":""))
+		tmp.el.prestigeBHC_eff.setTxt(format(teff.eff)+"x")
+		tmp.el.prestigeBHC_auto.setDisplay(FORMS.prestigeBHC.autoUnl())
+		tmp.el.prestigeBHC_auto.setTxt(player.autoPrestigeBHC?"ON":"OFF")
 	}
 }
 
@@ -456,7 +470,7 @@ function updateMainUpgradesHTML() {
 	if (player.main_upg_msg[0] != 0) {
 		let upg1 = UPGS.main[player.main_upg_msg[0]]
 		let upg2 = UPGS.main[player.main_upg_msg[0]][player.main_upg_msg[1]]
-		let msg = "<span class='sky'>"+(typeof upg2.desc == "function" ? upg2.desc() : upg2.desc)+"</span><br><span>Cost: "+format(upg2.cost.pow(player.main_upg_msg[1] >= 13 && player.main_upg_msg[1] <= 15 && player.prestiges[0].gte(50) && upg1.res == "Atom"?1/20000:1),0)+" "+upg1.res+"</span>"
+		let msg = "<span class='sky'>"+(typeof upg2.desc == "function" ? upg2.desc() : upg2.desc)+"</span><br><span>Cost: "+(upg1.res == "Infinity Mass"?formatMass:format)(upg2.cost.pow(player.main_upg_msg[1] >= 13 && player.main_upg_msg[1] <= 15 && player.prestiges[0].gte(50) && upg1.res == "Atom"?1/20000:1),0)+" "+upg1.res+"</span>"
 		if (upg2.effDesc !== undefined) msg += "<br><span class='green'>Currently: "+tmp.upgs.main[player.main_upg_msg[0]][player.main_upg_msg[1]].effDesc+"</span>"
 		tmp.el.main_upg_msg.setHTML(msg)
 	} else tmp.el.main_upg_msg.setTxt("")
@@ -465,7 +479,7 @@ function updateMainUpgradesHTML() {
 		let upg = UPGS.main[x]
 		let unl = upg.unl()
 		tmp.el["main_upg_"+x+"_div"].changeStyle("visibility", unl?"visible":"hidden")
-		tmp.el["main_upg_"+x+"_res"].setTxt(`You have ${upg.getRes().format(0)} ${upg.res}`)
+		tmp.el["main_upg_"+x+"_res"].setTxt(`You have ${x==5?formatMass(upg.getRes()):upg.getRes().format(0)} ${upg.res}`)
 		if (unl) {
 			for (let y = 1; y <= upg.lens; y++) {
 				let unl2 = upg[y].unl ? upg[y].unl() : true
@@ -501,6 +515,7 @@ function updateBlackHoleHTML() {
 	tmp.el.bhCondenserEffect.setHTML(format(tmp.bh.condenser_eff.eff))
 	tmp.el.bhCondenser_auto.setDisplay(FORMS.bh.condenser.autoUnl())
 	tmp.el.bhCondenser_auto.setTxt(player.bh.autoCondenser?"ON":"OFF")
+	
 }
 
 function updateOptionsHTML() {

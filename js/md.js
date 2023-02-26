@@ -248,10 +248,10 @@ const MASS_DILATION = {
                     bulk() { return player.md.break.mass.gte(1e5)?player.md.break.mass.div(1e5).max(1).log10().root(1.1).add(1).floor():E(0) },
                     effect(y) {
                         let x = Decimal.pow(2,y)
-
+                if(hasElement(403))return x;
                         return x.softcap(1e15,0.5,0)
                     },
-                    effDesc(x) { return format(x,0)+"倍"+x.softcapHTML(1e15) },
+                    effDesc(x) { if(hasElement(403))return format(x,0)+"倍";return format(x,0)+"倍"+x.softcapHTML(1e15) },
                 },{
                     desc: `Increase the exponent of the Dilated Mass formula.`,
                     cost(x) { return E(10).pow(x.pow(1.25)).mul(1e7) },
@@ -278,7 +278,7 @@ const MASS_DILATION = {
                     bulk() { return player.md.break.mass.gte(1.989e36)?player.md.break.mass.div(1.989e36).max(1).log10().root(2).add(1).floor():E(0) },
                     effect(y) {
                         let x = y.div(10).add(1)
-                
+						
                         return x
                     },
                     effDesc(x) { return "延迟"+format(x)+"倍出现" },

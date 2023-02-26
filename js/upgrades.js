@@ -401,7 +401,7 @@ const UPGS = {
             },
         },
         2: {
-            unl() { return false },
+            unl() { return hasAscension(1,5) },
             title: "Ascension Booster",
             start: E(100),
             inc: E(4),

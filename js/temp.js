@@ -233,6 +233,12 @@ function updateBlackHoleTemp() {
     t.condenser_bulk = E(0)
     if (player.bh.dm.gte(1)) t.condenser_bulk = player.bh.dm.max(1).log(1.75).scaleEvery('bh_condenser',true,[1,1,1,fp]).add(1).floor()
     t.condenser_eff = FORMS.bh.condenser.effect()
+	
+	
+    tmp.prestigeBHCCost = E(2).pow(player.prestigeBHC).floor()
+    tmp.prestigeBHCBulk = E(0)
+    if (player.prestigeDM.gte(1)) tmp.prestigeBHCBulk = player.prestigeDM.max(1).log(2).add(1).floor()
+    tmp.prestigeBHCEffect = FORMS.prestigeBHC.effect()
 }
 
 function updateTemp() {

@@ -78,6 +78,7 @@ const ENTROPY = {
             inc: E(20),
 
             eff(i) {
+				if(hasElement(398))return i.pow(0.5).add(1);
 				if(hasElement(352))return i.pow(0.5).div(5).add(1)
                 let x = i.pow(0.5).div(5).add(1).softcap(11,hasElement(269)?0.95:0.1,0).softcap(52,0.1,0)
                 return x
@@ -118,6 +119,7 @@ const ENTROPY = {
             inc: E(2),
 
             eff(i) {
+				if(hasElement(398))return E(2).pow(i);
                 let x = i.pow(2).div(20).add(1)
                 return x
             },
@@ -129,6 +131,7 @@ const ENTROPY = {
             inc: E(10),
 
             eff(i) {
+				if(hasElement(398))return E(0)
                 let x = i.root(2).div(10).add(1).pow(-1)
 				if(x.lt(0.07)&&!hasElement(352))x = x.mul(0.0049).cbrt()
 				if(x.lt(0.05)&&!hasElement(352))x = x.mul(0.0025).cbrt()
@@ -204,6 +207,8 @@ const ENTROPY = {
 				if (i == 7 && hasElement(266)) p = p ** 0.1
 				if (i == 2 && hasElement(352)) p = p ** 0.25
 				if (i == 2 && player.qu.times.gte("6.9e420") && player.exotic.times.gte(1)) p = p ** 0.5
+				if (i == 7 && hasElement(398)) p = 1
+				if (i == 6 && hasAscension(0, 22)) p = 1
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -238,6 +243,8 @@ const ENTROPY = {
 				if (i == 7 && hasElement(266)) p = p ** 0.1
 				if (i == 2 && hasElement(352)) p = p ** 0.25
 				if (i == 2 && player.qu.times.gte("6.9e420") && player.exotic.times.gte(1)) p = p ** 0.5
+				if (i == 7 && hasElement(398)) p = 1
+				if (i == 6 && hasAscension(0, 22)) p = 1
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()
@@ -346,7 +353,7 @@ function updateEntropyHTML() {
         let rs = player.qu.en.rewards[x]
         let rc = ENTROPY.rewards[x]
         tmp.el["en_reward"+x].setTxt(rs.format(0))
-        tmp.el["en_scale"+x].setTxt(rc.scale?rs.gte(rc.scale.s)?"2":"":"")
+        tmp.el["en_scale"+x].setTxt((x == 6 && hasAscension(0, 22))?"":(x == 7 && hasElement(398))?"":(rc.scale?rs.gte(rc.scale.s)?"2":"":""))
         tmp.el["en_reward_next"+x].setTxt(ENTROPY.nextReward(x).format())
         tmp.el["en_reward_eff"+x].setHTML(rc.desc(getEnRewardEff(x)))
     }

@@ -169,6 +169,7 @@ const SCALING_RES = {
 	hex(x=0) { return player.ranks.hex },
 	hept(x=0) { return player.ranks.hept },
 	oct(x=0) { return player.ranks.oct },
+	enne(x=0) { return player.ranks.enne },
 	tickspeed(x=0) { return player.tickspeed },
     massUpg(x=1) { return E(player.massUpg[x]||0) },
     massUpg4(x=4) { return E(player.massUpg[x]||0) },
@@ -193,6 +194,7 @@ const NAME_FROM_RES = {
 	hex: "Hex",
 	hept: "Hept",
 	oct: "Oct",
+	enne: "Enne",
 	massUpg: "Mass Upgrades",
 	massUpg4: "Overpower",
 	tickspeed: "Tickspeed",
@@ -335,6 +337,9 @@ function getScalingStart(type, name) {
 		if (name=="rank") {
 			if (player.mainUpg.atom.includes(10)) start = start.add(tmp.upgs?tmp.upgs.main?tmp.upgs.main[3][10].effect:0:0)
 		}
+		if (name=="gfTier") {
+			if (hasElement(407)) start = start.mul(1.5)
+		}
 	}
 	if (type=="ultra") {
 		if (name=="rank") {
@@ -391,7 +396,9 @@ function getScalingStart(type, name) {
             if (player.qu.times.gte(1e275) && player.exotic.times.gte(1))start = start.mul(100)
             if (player.qu.times.gte(1e303) && player.exotic.times.gte(1))start = start.mul(1e25)
 				
-			
+			if (hasChargedElement(62)) start = start.mul(tmp.elements.ceffect[62]||1)
+				
+            if (player.ranks.enne.gte(2))start = start.mul(RANKS.effect.enne[2]())
 			if (player.mainUpg.exotic.includes(21)) start = start.mul(upgEffect(6,21))
 		}
 		if (name=="hex") {
@@ -431,6 +438,7 @@ function getScalingStart(type, name) {
 			if (hasPrestige(2,156)) start = start.mul(1.2)
 			if (hasAscension(0,1)) start = start.mul(1.2)
 			if (hasElement(371)) start = start.mul(1.25)
+			if (hasElement(403)) start = start.mul(1.05)
 		}
 	}
 	if (name=='supernova') {
@@ -479,6 +487,7 @@ function getScalingStart(type, name) {
 	if (name=="hept" && type=="super") if (hasPrestige(3,20))return EINF;
 	if (name=="hex" && type=="ultra") if (hasPrestige(3,25))return EINF;
 	if (name=="gamma_ray" && type=="meta") if (hasChargedElement(15))return EINF;
+	if (name=="bh_condenser" && type=="meta") if (hasChargedElement(55))return EINF;
 	return start.floor()
 }
 
@@ -565,6 +574,7 @@ function getScalingPower(type, name) {
 		}
 		if (name=="massUpg4") {
 			if (player.ranks.oct.gte(46)) power = power.mul(0.96)
+			if (hasElement(410)) power = power.mul(0.96)
 		}
 	}
 	if (type=="hyper") {
@@ -634,6 +644,9 @@ function getScalingPower(type, name) {
 			if (hasPrestige(2,21)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.1))
 			if (hasPrestige(2,22)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.3))
 			if (hasPrestige(2,23)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.5))
+		}
+		if (name=="oct") {
+			if (hasAscension(0,21)) power = power.mul(tmp.prestigeMassEffect)
 		}
 	}
 	if (type=="ultra") {
@@ -735,6 +748,7 @@ function getScalingPower(type, name) {
 			if (hasPrestige(2,57)) power = power.mul(tmp.prestigeMassEffect)
 			if (player.ranks.oct.gte(20)) power = power.mul(RANKS.effect.oct[1]())
 			if (hasChargedElement(37)) power = power.mul(tmp.elements.ceffect[37]||1)
+			if (hasChargedElement(58)) power = power.mul(tmp.elements.ceffect[58]||1)
 		}
 		if (name=="tickspeed") {
 			if (hasChargedElement(27)) power = power.mul(0.01)

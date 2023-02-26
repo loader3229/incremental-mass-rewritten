@@ -13,6 +13,7 @@ const EXOTIC_BOOST = {
     used_bp() {
 		let x = E(0);
 		for(let i=0;i<EXOTIC_BOOST_LENGTH;i++){
+			player.exotic.boosts[i] = player.exotic.boosts[i].floor().max(0);
 			x = x.add(player.exotic.boosts[i]);
 		}
         return x
@@ -21,6 +22,7 @@ const EXOTIC_BOOST = {
 		let ret = (i == 6 && hasElement(390))?player.exotic.boosts[i].pow(0.6).div(3):(i == 6)?player.exotic.boosts[i].add(1).log10():player.exotic.boosts[i].add(EXOTIC_BOOST.effect(6)).sqrt().mul(0.01);
 		if(hasElement(366))ret = ret.mul(1.2);
 		if(hasElement(384))ret = ret.mul(1.1);
+		if(hasElement(408))ret = ret.mul(1.1);
 		if(i == 6)return ret;
 		return E(1).add(ret);
 	},
@@ -28,11 +30,25 @@ const EXOTIC_BOOST = {
 		tmp.ex.exb_can = player.exotic.bp.gt(EXOTIC_BOOST.used_bp());
 		if(tmp.ex.exb_can)player.exotic.boosts[i]=player.exotic.boosts[i].add(1);
 	},
+	buyMax(i) {
+		tmp.ex.exb_can = player.exotic.bp.gt(EXOTIC_BOOST.used_bp());
+		if(tmp.ex.exb_can)player.exotic.boosts[i]=player.exotic.boosts[i].add(player.exotic.bp.sub(EXOTIC_BOOST.used_bp()));
+	},
 	respec() {
 		if (!confirm("Are you sure you want to respec all Exotic Boosts?"))return;
 		for(let i=0;i<EXOTIC_BOOST_LENGTH;i++){
 			player.exotic.boosts[i]=E(0);
 		}
+		EXOTIC.doReset(true);
+	},
+	refund(i) {
+		if(player.exotic.boosts[i].lte(0))return;
+		player.exotic.boosts[i]=player.exotic.boosts[i].sub(1);
+		EXOTIC.doReset(true);
+	},
+	refundMax(i) {
+		if(player.exotic.boosts[i].lte(0))return;
+		player.exotic.boosts[i]=E(0);
 		EXOTIC.doReset(true);
 	},
 	export(){

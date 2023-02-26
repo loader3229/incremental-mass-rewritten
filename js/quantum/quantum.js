@@ -133,6 +133,8 @@ const QUANTUM = {
         if (hasTree('qu5')) x = x.mul(tmp.supernova.tree_eff.qu5)
         x = x.mul(tmp.qu.cosmic_str_eff.eff)
         if (hasPrestige(0,88)) x = x.mul(prestigeEff(0,88,[E(1),E(1)])[0]);
+		if(hasElement(400))x = x.pow(EXOTIC.dsEff().bp);	
+		
         return x
     },
     bpEff() {
