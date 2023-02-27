@@ -453,7 +453,7 @@ const RANKS = {
                 return ret
             },
             '4'() {
-                let ret = E(1.01).pow(player.ranks.hept);
+                let ret = E(1.01).pow(player.ranks.hept.softcap(30000,0.1,0));
                 return ret
             },
             '6'() {
@@ -1664,6 +1664,7 @@ function prestigeRPEffect(){
 
 function prestigeBHEffect(){
 	let p = overflow(player.prestigeBH.add(1),10,2.7);
+	p = overflow(p,E("e100000"),0.33);
 	return p;
 }
 
