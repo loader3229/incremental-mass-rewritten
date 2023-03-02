@@ -23,6 +23,8 @@ const EXOTIC_BOOST = {
 		if(hasElement(366))ret = ret.mul(1.2);
 		if(hasElement(384))ret = ret.mul(1.1);
 		if(hasElement(408))ret = ret.mul(1.1);
+		if(hasElement(416) && i == 6)ret = ret.mul(1.5);
+		ret = ret.mul(EXOTIC.abEff().exb);
 		if(i == 6)return ret;
 		return E(1).add(ret);
 	},

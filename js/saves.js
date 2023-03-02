@@ -336,6 +336,7 @@ function getPlayerData() {
 			
 			dr: E(0),
 			ds: E(0),
+			ab: E(0),
 		},
 		superCluster: E(0),
     }

@@ -209,6 +209,7 @@ const ENTROPY = {
 				if (i == 2 && player.qu.times.gte("6.9e420") && player.exotic.times.gte(1)) p = p ** 0.5
 				if (i == 7 && hasElement(398)) p = 1
 				if (i == 6 && hasAscension(0, 22)) p = 1
+				if (i == 2 && hasAscension(0, 42)) p = p ** 0.8
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -245,6 +246,7 @@ const ENTROPY = {
 				if (i == 2 && player.qu.times.gte("6.9e420") && player.exotic.times.gte(1)) p = p ** 0.5
 				if (i == 7 && hasElement(398)) p = 1
 				if (i == 6 && hasAscension(0, 22)) p = 1
+				if (i == 2 && hasAscension(0, 42)) p = p ** 0.8
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()

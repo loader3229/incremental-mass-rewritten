@@ -394,8 +394,11 @@ const FORMS = {
         effect() {
             let t = player.prestigeTickspeed
 			let step = tmp.ascensions.base || E(1);
-			let ss = E(1e100)
+			let ss = E("1e1000")
             let p = 0.1
+			
+			if(hasAscension(1,7))step = step.pow(5)
+			
 			step = step.softcap(ss,p,0)
 			let bonus = E(0)
             let eff = step.pow(t.add(bonus))
@@ -653,6 +656,7 @@ const FORMS = {
                     if (hasElement(346))pow = pow.pow(tmp.atom.particles[2].powerEffect.eff2)
                 
                 let eff = pow.pow(t.add(tmp.bh.condenser_bonus))
+					if(hasAscension(0,26))eff = pow.pow(t.add(1).mul((tmp.bh.condenser_bonus||E(0)).add(1)))
                 return {pow: pow, eff: eff}
             },
             bonus() {

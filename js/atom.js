@@ -107,7 +107,7 @@ const ATOM = {
             let x = player.atom.atomic.max(1).log(hasChargedElement(23)?1.1:player.ranks.hex.gte(23)?1.2:hasElement(23)?1.5:1.75).pow(getEnRewardEff(1))
             if (!hasElement(75)) x = x.softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?6e5:5e4,hasUpgrade("atom",19)?0.9:0.75,0).softcap((player.prestiges[0].gte(50) && hasUpgrade("atom",13))?4.8e7:4e6,hasUpgrade("atom",19)?0.5:0.25,0)
             if (!hasElement(337)) x = x.softcap(hasUpgrade("atom",13)?(player.prestiges[0].gte(50)?1.2e11:1e11):1e10,hasUpgrade("atom",19)?0.105:0.1,0)
-			x = overflow(x,"ee9",hasChargedElement(23)?0.6:hasElement(358)?0.5:hasElement(337)?0.3:0.25);
+			x = overflow(x,"ee9",hasChargedElement(75)?0.65:hasChargedElement(23)?0.6:hasElement(358)?0.5:hasElement(337)?0.3:0.25);
             return x.floor()
         },
     },
@@ -137,6 +137,7 @@ const ATOM = {
             if (hasTree('bs5')) pow = pow.mul(tmp.bosons.effect.z_boson[0])
             if (hasTree("gr2")) pow = pow.pow(1.25)
             let eff = pow.pow(t.add(tmp.atom.gamma_ray_bonus)).sub(1)
+					if(hasAscension(0,26))eff = pow.pow(t.add(1).mul((tmp.atom.gamma_ray_bonus||E(0)).add(1))).sub(1)
             return {pow: pow, eff: eff}
         },
         bonus() {
@@ -241,7 +242,7 @@ const ATOM = {
 					
 				if(hasChargedElement(19))b = b.pow(2);
 					if(hasElement(385))a = a.pow(2);
-				
+				if(hasElement(413))a = a.pow(2);
                 return {eff1: a, eff2: b}
             },
             x=>{
@@ -354,7 +355,7 @@ function updateAtomicHTML() {
     tmp.el.atomicAmt.setHTML(format(player.atom.atomic)+formatGain(player.atom.atomic, tmp.atom.atomicGain.mul(tmp.preQUGlobalSpeed)))
 	tmp.el.atomicEff.setHTML(format(tmp.atom.atomicEff,0)+(tmp.atom.atomicEff.gte(5e4)?"<span class='soft'>(softcapped)</span>":""))
 
-	tmp.el.gamma_ray_lvl.setTxt(format(player.atom.gamma_ray,0)+(tmp.atom.gamma_ray_bonus.gte(1)?" + "+format(tmp.atom.gamma_ray_bonus,0):""))
+	tmp.el.gamma_ray_lvl.setTxt(format(player.atom.gamma_ray,0)+(hasAscension(0,26)?" x "+format((tmp.atom.gamma_ray_bonus||E(0)).add(1),0):(tmp.atom.gamma_ray_bonus.gte(1)?" + "+format(tmp.atom.gamma_ray_bonus,0):"")))
 	tmp.el.gamma_ray_btn.setClasses({btn: true, locked: !tmp.atom.gamma_ray_can})
 	tmp.el.gamma_ray_scale.setTxt(getScalingName('gamma_ray'))
 	tmp.el.gamma_ray_cost.setTxt(format(tmp.atom.gamma_ray_cost,0))
@@ -387,7 +388,7 @@ function galParticleEffect(x){
 	let ret=player.galParticles[x].add(1).log10().add(1).pow(3);
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
-	ret=overflow(ret,1e7,hasElement(411)?0.24:hasElement(399)?0.23:hasElement(392)?0.22:hasElement(369)?0.21:0.2);
+	ret=overflow(ret,1e7,hasElement(419)?0.26:hasElement(413)?0.25:hasElement(411)?0.24:hasElement(399)?0.23:hasElement(392)?0.22:hasElement(369)?0.21:0.2);
 	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

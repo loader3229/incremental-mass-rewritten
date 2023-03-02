@@ -714,14 +714,20 @@ const ELEMENTS = {
         {
             desc: `Meta-Tickspeed start 2x later.`,
             cost: E('e4.8e6'),
+            cdesc: `Meta-Tickspeed start ^2 later.`,
+            ccost: E('ee5e14'),
         },
         {
             desc: `Pent is now added in mass gain formula from collapsed stars.`,
             cost: E('e3.6e7'),
+            cdesc: `Hept is now added in mass gain formula from collapsed stars.`,
+            ccost: E('ee5.4e14'),
         },
         {
             desc: `Add 200 more C7 & c8 maximum completions.`,
             cost: E('e6.9e7'),
+            cdesc: `C7-8 Rewards are better`,
+            ccost: E('ee6.1e14'),
         },
         {
             desc: `From BH the formulas softcap starts later based on Supernovas.`,
@@ -731,10 +737,14 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { return "^"+format(x)+" later" },
+            cdesc: `Black Hole Upgrade 19 is better.`,
+            ccost: E('ee6.2e14'),
         },
         {
             desc: `Tetrs are 15% cheaper.`,
             cost: E('e5.75e8'),
+            cdesc: `The Tetr requirement is broken.`,
+            ccost: E('ee9e14'),
         },
         {
             desc: `Add more C5-6 & C8 maximum completions based on Supernovas.`,
@@ -745,30 +755,44 @@ const ELEMENTS = {
                 return x
             },
             effDesc(x) { return "+"+format(x,0) },
+            cdesc: `Effects of C5,C8 are better.`,
+            ccost: E('ee9.5e14'),
         },
         {
             desc: `Super Tetr scales 25% weaker.`,
             cost: E('e2.6e9'),
+            cdesc: `The Tetr requirement is broken.`,
+            ccost: E('ee1.2e15'),
         },
         {
             desc: `Remove 2 softcaps from Atomic Power's effect.`,
             cost: E('e3.9e9'),
+            cdesc: `Atomic Power's effect is better.`,
+            ccost: E('ee1.3e15'),
         },
         {
             desc: `Collapsed Star's effect is 25% stronger.`,
             cost: E('e3.75e10'),
+            cdesc: `Collapsed Star's effect is better.`,
+            ccost: E('ee1.4e15'),
         },
         {
             desc: `Softcap^3 from mass gain is 17.5% weaker.`,
             cost: E('e4e11'),
+            cdesc: `Stronger Overflow is weaker.`,
+            ccost: E('ee1.9e15'),
         },
         {
             desc: `Meta-Supernova scales 20% weaker.`,
             cost: E('e3.4e12'),
+            cdesc: `Meta-Supernova scales 50% weaker.`,
+            ccost: E('ee3e15'),
         },
         {
             desc: `Neutronium-0 affects Aluminium-13 & Tantalum-73.`,
             cost: E('e4.8e12'),
+            cdesc: `Neutronium-0 is better.`,
+            ccost: E('ee6e15'),
         },
         {
             desc: `Stronger & Tickspeed are 25x stronger.`,
@@ -2555,8 +2579,47 @@ const ELEMENTS = {
 			galQk: true,
 		},
 		{
-			desc: `Reach the current endgame.`,
+			desc: `Some effects of Dark Shadow are better.`,
 			cost: E("1e58"),
+			ds: true,
+		},
+		{
+			desc: `Galactic Particles Effect is better. Neutron Power's first effect is squared.`,
+			cost: E("1e213"),
+			galQk: true,
+		},
+		{
+			desc: `Unlock Abyssal Blots.`,
+			cost: E("1e60"),
+			ds: true,
+		},
+		{
+			desc: `Meta Fermion Tier scaling is 99% weaker.`,
+			cost: E("1.5e6106"),
+			et: true,
+		},
+		{
+			desc: `Exotic Meta-Boost is 1.5x stronger.`,
+			cost: E("1e53"),
+			exotic: true,
+		},
+		{
+			desc: `C20 effect is better.`,
+			cost: E("1.5e457056"),
+		},
+		{
+			desc: `Meta-Tickspeeds starts ^10 later.`,
+			cost: E("ee1.6e15"),
+			qk: true,
+		},
+		{
+			desc: `Galactic Particles Effect is better.`,
+			cost: E("1e235"),
+			galQk: true,
+		},
+		{
+			desc: `Reach the current endgame.`,
+			cost: E("2e70"),
 			ds: true,
 		},
 	],
@@ -2572,7 +2635,7 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
-		if(hasElement(380))return 412;
+		if(hasElement(380))return 420;
 		if(hasUpgrade("atom",25))return 380;
 		
 		if(player.exotic.times.gte(1))return 362;

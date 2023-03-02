@@ -152,6 +152,8 @@ const UPGS = {
 				if (hasElement(305))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.9;
 				if (hasElement(315))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.8;
 				if (hasPrestige(2,81))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.5;
+				if (player.ranks.enne.gte(3))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.99;
+				if (hasChargedElement(77))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.99;
 				tmp.strongerOverflow = overflow(ret, "e4e6", tmp.strongerOverflowPower).log(ret);
 				ret = overflow(ret, "e4e6", tmp.strongerOverflowPower);
                 return {step: step, eff: ret, ss: ss}
@@ -419,12 +421,12 @@ const UPGS = {
             },
         },
         3: {
-            unl() { return false },
+            unl() { return hasAscension(1,6) },
             title: "Ascension Stronger",
             start: E(1000),
             inc: E(9),
             effect(x) {
-                let step = E(0.001)
+                let step = E(0.1)
                 step = step.mul(tmp.upgs.ascensionMass[4]?tmp.upgs.ascensionMass[4].eff.eff:1)
 				let ret = step.mul(x).add(1).softcap(2000,0.5,0);
                 return {step: step, eff: ret, ss: 2000}
@@ -843,6 +845,7 @@ const UPGS = {
                 desc: "使暗物质可以加成质量获取速度。",
                 cost: E('e2e130'),
                 effect() {
+					if(hasChargedElement(71))return (tmp.bh?(tmp.bh.effect||E(1)):E(1)).add(1).log10();
 					if(hasElement(279))return expMult((tmp.bh?(tmp.bh.effect||E(1)):E(1)).add(1).log10(),0.8);
                     return (tmp.bh?(tmp.bh.effect||E(1)):E(1)).add(1).log10().add(1).log10().pow(0.1);
                 },
@@ -1552,7 +1555,7 @@ const UPGS = {
                 desc: "Meta-Pent starts later based on Exotic Matter.",
                 cost: E(2e15),
 				effect(){
-					return overflow(player.exotic.points.add(1),1e10,2);
+					return overflow(player.exotic.points.add(1),1e10,hasAscension(1,8)?2.5:2);
 				},
                 effDesc(x=this.effect()) { return "x"+format(x)+" later"; },
             },

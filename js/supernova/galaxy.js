@@ -364,6 +364,7 @@ function updateSupernovaGalaxyHTML() {
 		html += "<br>Add "+format(SUPERNOVA_CLUSTER.effects.eff4())+" to base Infinity Mass gain exponent";
 		if(player.superCluster.gte(2))html += "<br>Ascension Level resets nothing";
 		if(player.superCluster.gte(3))html += "<br>Multiply Dark Shadow gain by "+format(SUPERNOVA_CLUSTER.effects.eff1());
+		if(player.superCluster.gte(4))html += "<br>Multiply Dark Ray gain by "+format(SUPERNOVA_CLUSTER.effects.eff1());
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}

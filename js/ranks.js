@@ -296,6 +296,8 @@ const RANKS = {
 		enne: {
             '1': "Gain 10x more Prestige Dark Matter.",
             '2': "Meta-Pent starts later based on Enne.",
+            '3': "Stronger Overflow is weaker.",
+            '4': "Super Overpower is 1% weaker.",
 		},
     },
     effect: {
@@ -585,7 +587,7 @@ const RANKS = {
 }
 
 const PRESTIGES = {
-    fullNames: ["转生等级", "荣耀", "辉煌", "名誉"],
+    fullNames: ["转生等级", "荣耀", "辉煌", "名誉", "Valor"],
     baseExponent() {
         let x = E(0)
         if (hasElement(100)) x = x.add(tmp.elements.effect[100])
@@ -622,6 +624,9 @@ const PRESTIGES = {
             case 3:
                 x = y.scaleEvery('prestige3').pow(1.25).mul(3).add(33)
                 break;
+            case 4:
+                x = y.scaleEvery('prestige4').pow(1.25).mul(3).add(50)
+                break;
             default:
                 x = EINF
                 break;
@@ -643,6 +648,9 @@ const PRESTIGES = {
             case 3:
                 if (y.gte(33)) x = y.sub(33).div(3).max(0).root(1.25).scaleEvery('prestige3',true).add(1)
                 break
+            case 4:
+                if (y.gte(50)) x = y.sub(50).div(3).max(0).root(1.25).scaleEvery('prestige4',true).add(1)
+                break
             default:
                 x = E(0)
                 break;
@@ -654,10 +662,12 @@ const PRESTIGES = {
         _=>true,
         _=>hasPrestige(1,12) || hasPrestige(2,1),
         _=>hasPrestige(2,33) || hasPrestige(3,1),
+        _=>hasAscension(0,30) || hasPrestige(4,1),
     ],
     noReset: [
         _=>hasUpgrade('br',11) || player.superGal.gte(9),
         _=>hasPrestige(2,2) || player.superGal.gte(9),
+        _=>player.superGal.gte(9),
         _=>player.superGal.gte(9),
         _=>player.superGal.gte(9),
     ],
@@ -866,6 +876,15 @@ const PRESTIGES = {
 			"38": `Unlock Enne. All ranks resets nothing, and collapse Rank, Tier and Tetr.`,
 			"39": `Prestige Dark Matter effect is better.`,
 			"40": `The Entropy Gain effect from Supernova Galaxies is better.`,
+			"46": `Remove Super Oct scaling.`,
+            "48": `Remove Hyper Cosmic Strings scaling.`,
+            "49": `Add +5% to Glory 59's effectiveness`,
+		},
+		{
+			"1": `Meta-Hex starts 1000x later.`,
+			"2": `Meta-Hex starts 10x later.`,
+            "3": `Add +20% to Glory 59's effectiveness`,
+            "4": `Valor boost Prestige Rage Power and Prestige Dark Matter gain.`,
 		},
     ],
     rewardEff: [
@@ -1039,6 +1058,9 @@ const PRESTIGES = {
 				if (hasPrestige(3,18))x += 5;
 				if (hasPrestige(2,140))x += 5;
 				if (hasPrestige(2,173))x += 5;
+				if (hasPrestige(3,31))x += 5;
+				if (hasPrestige(3,49))x += 5;
+				if (hasPrestige(4,3))x += 20;
                 return x
             },x=>x+"% effectiveness"],
             "141": [_=>{
@@ -1108,6 +1130,12 @@ const PRESTIGES = {
                 let x = player.bh.dm.add(1e10).log10().pow(0.5);
                 return x
             },x=>x.format()+"x later"],
+		},
+		{
+            "4": [_=>{
+                let x = player.prestiges[4].add(1).pow(2);
+                return x
+            },x=>"x"+x.format()],
 		},
     ],
     reset(i) {
@@ -1214,6 +1242,10 @@ const ASCENSIONS = {
             "22": `Remove Entropic Condenser^2 scaling.`,
             "23": `C5 Effect is better.`,
             "25": `Square Ascension Level 20 Effect.`,
+            "26": `Bonus BH Condensers and Cosmic Rays amount using multiplying adding to amount instead of adding to amount.`,
+            "28": `Ascension Mass Formula from Ascension Level is better.`,
+            "30": `Unlock Valor (a new Prestige Tier)`,
+            "42": `Entropic Evaporation^2 is 20% weaker.`,
         },
         {
 			"1": `Transcension Level boost Exotic Matter gain.`,
@@ -1221,6 +1253,10 @@ const ASCENSIONS = {
 			"3": `Unlock Ascension Mass.`,
 			"4": `Unlock Ascension Mass Upgrade 1, Super Renown is 20% weaker.`,
 			"5": `Unlock Ascension Mass Upgrade 2.`,
+			"6": `Unlock Ascension Mass Upgrade 3.`,
+			"7": `Raise Prestige Tickspeeds Power by 5.`,
+			"8": `Exotic Upgrade 21 is better.`,
+            "9": `Ascension Mass Formula from Ascension Level is better.`,
         },
     ],
     rewardEff: [
@@ -1350,6 +1386,8 @@ function updateRanksTemp() {
     pow = 2
     if (hasElement(44)) pow = 1.75
     if (player.ranks.hex.gte(44)) pow = 1.74
+    if (hasChargedElement(72)) pow = 1.7
+    if (hasChargedElement(74)) pow = 1.5
     if (hasElement(9)) fp = fp.mul(1/0.85)
     if (player.ranks.pent.gte(1)) fp = fp.mul(1/0.85)
     if (hasElement(72)) fp = fp.mul(1/0.85)
@@ -1636,6 +1674,7 @@ function prestigeRPGain(){
 	}
 	let p = player.prestigeMass.add(1).log10().div(20).pow(0.5);
 	let x = Decimal.pow(10,p);
+	if(hasPrestige(4,4))x = x.mul(prestigeEff(4,4,E(1)));
 	return x;
 }
 
@@ -1653,6 +1692,7 @@ function prestigeMassEffect(){
 	if(p.gte(104))p = p.softcap(104,(hasElement(135)?0.55:0.5)**(hasElement(168)?tmp.chal.eff[16]:1),0);
 	if(p.gte(145))p = p.softcap(145,0.3,0);
 	if(p.gte(680))p = p.softcap(680,0.4,0);
+	if(p.gte(6800000))p = p.softcap(6800000,0.1,2);
 	if(hasTree("qu12"))return E(0.98).pow(p.pow(0.725));
 	return E(0.965).pow(p.sqrt());
 }
@@ -1675,6 +1715,7 @@ function prestigeDMGain(){
 	let p = player.prestigeRP.add(1).log10().div(20).pow(0.5).sub(3);
 	let x = Decimal.pow(10,p);
 	if (player.ranks.enne.gte(1)) x = x.mul(10);
+	if(hasPrestige(4,4))x = x.mul(prestigeEff(4,4,E(1)));
 	return x;
 }
 
@@ -1699,7 +1740,9 @@ function ascensionMassGain(){
 		return E(0);
 	}
 	let a0pow = 1;
+	if (hasAscension(0,28)) a0pow += 1;
 	let a1pow = 2;
+	if (hasAscension(1,9)) a1pow += 2;
 	
 	let x= Decimal.log10(tmp.ascensions.base.add(10)).mul(player.ascensions[0].pow(a0pow)).mul(player.ascensions[1].pow(a1pow)).pow(player.ascensions[1].div(10));
 	x = x.mul(tmp.upgs.ascensionMass[1].eff.eff);

@@ -487,6 +487,7 @@ const CHALS = {
             if (hasChargedElement(41)) ret = ret.pow(1.3)
             if (hasChargedElement(60)) ret = ret.pow(1.7)
             if (hasChargedElement(65)) ret = ret.pow(1.3)
+            if (hasChargedElement(70)) ret = ret.pow(1.3)
             return ret.floor()
         },
         effDesc(x) { if(hasElement(348))return "^"+format(E(2).pow(player.chal.comps[7].mul(x.add(1).log10()).pow(0.625).add(1)));return "+"+format(x,0) },
@@ -502,6 +503,7 @@ const CHALS = {
         start: E(1.989e38),
         effect(x) {
             if (hasElement(64)) x = x.mul(1.5)
+			if(hasChargedElement(70))return expMult(x.add(1),2.65);
 			if(hasChargedElement(65))return expMult(x.add(1),2.64);
 			if(hasChargedElement(56))return expMult(x.add(1),2.63);
 			if(hasChargedElement(33))return expMult(x.add(1),2.62);
@@ -706,7 +708,7 @@ const CHALS = {
         effect(x) {
 			if(hasPrestige(2,17))x = x.pow(2);
 			if(hasElement(277))x = x.pow(1.25);
-			x = x.softcap(1e6,hasElement(409)?0.1:hasElement(397)?0.03:0.01,0);
+			x = x.softcap(1e6,hasElement(417)?0.3:hasElement(409)?0.1:hasElement(397)?0.03:0.01,0);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
 			if(hasElement(334))ret = Decimal.pow(10,Decimal.pow(2.6,x.root(4)));
