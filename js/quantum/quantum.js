@@ -158,6 +158,7 @@ const QUANTUM = {
         eff() {
             let pow = E(2)
             if (hasTree('qu6')) pow = pow.mul(treeEff('qu6'))
+            if (hasElement(420)) pow = pow.mul(EXOTIC.abEff().csp)
             let x = pow.pow(player.qu.cosmic_str)
             return {pow: pow, eff: x}
         },
@@ -176,6 +177,7 @@ const QUANTUM = {
         [E(1e303), `Meta-Pent starts 1e25x later.`],
         [E(Number.MAX_VALUE), `Quantum times add to Infinity Mass gain formula. Super Supernova Galaxies starts 5 later.`],
         [E('6.9e420'), `Entropic Evaporation^2 is 50% weaker.`],
+        [E('1e600'), `Multiply the starting point of Meta-Pent scaling by (quantizes+1).`],
     ],
     auto: {
         mode: ["Amount","Time"],

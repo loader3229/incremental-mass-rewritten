@@ -62,6 +62,7 @@ const PRIM = {
 						y = y.add(100000);
 					}
 				}
+				if(hasElement(427)) x = x.mul(10)
                 return x
             },
         ],

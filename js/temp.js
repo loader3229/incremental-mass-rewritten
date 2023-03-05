@@ -123,6 +123,7 @@ function resetTemp() {
 			rcb_cost:{},rcb_can:{},rcb_eff:{},rcb_bulk:{},exb_eff:{},
         },
         prevSave: "",
+		rankCollapse: E(1),
     }
     for (let x = 0; x < PRES_LEN; x++) tmp.prestiges.eff[x] = {}
     for (let x = 0; x < AS_LEN; x++) tmp.ascensions.eff[x] = {}

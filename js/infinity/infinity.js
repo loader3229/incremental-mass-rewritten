@@ -261,7 +261,6 @@ const ETERNITY_LAYER = {
 function calcInfinity(dt, dt_offline) {
     if (player.qu.points.gte(Number.MAX_VALUE) && !player.inf.reached) {
         player.inf.reached = true
-        addPopup(POPUP_GROUPS.inf)
     }
 	if (player.inf.times.gt(0)){
 		if (hasUpgrade('inf',11)){
@@ -325,5 +324,6 @@ function calcShardsEffect() {
 	if(hasElement(223))eff = eff.pow(1.4);
 	if(hasElement(226))eff = eff.pow(1.3);
 	if(hasElement(238))eff = eff.pow(1.2);
+	if(hasElement(431))eff = eff.pow(1.2);
 	return eff;
 }

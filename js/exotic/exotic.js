@@ -9,6 +9,7 @@ const EXOTIC = {
         if (hasPrestige(3,21)) x = x.mul(prestigeEff(3,21,E(1)));
         if (hasPrestige(3,22)) x = x.mul(prestigeEff(3,22,E(1)));
 		if (player.ranks.oct.gte(34)) x = x.mul(RANKS.effect.oct[34]())
+		if (player.ranks.enne.gte(5)) x = x.mul(RANKS.effect.enne[5]())
 		if(hasUpgrade('exotic', 15)){
 			x = x.mul(tmp.ex.dsEff.ex);
 		}
@@ -107,6 +108,9 @@ const EXOTIC = {
         if (hasAscension(0,11)) x = x.mul(ascensionEff(0,11,E(1)));
 		if(hasElement(389))x = x.mul(tmp.elements.effect[389]);
 		if(player.superCluster.gte(4))x = x.mul(SUPERNOVA_CLUSTER.effects.eff1());
+		if(hasElement(426)){
+			x = x.mul(tmp.ex.abEff.ds);
+		}
 		return x;
     },
     dsGain(){
@@ -134,6 +138,7 @@ const EXOTIC = {
     drEff(){
 		let x = {ds:player.exotic.dr.pow(2)};
 		if(hasElement(406))x.ex = player.exotic.dr.pow(0.1);
+		if(hasElement(428))x.ex = player.exotic.dr.pow(0.25);
 		return x;
     },
     dsEff(){
@@ -150,6 +155,7 @@ const EXOTIC = {
     },
     abEff(){
 		let x = {ds:player.exotic.ab.add(1).log10().add(1).pow(2),exb:player.exotic.ab.add(1).log10().div(100).add(1).sqrt()};
+		if(hasElement(420))x.csp = player.exotic.ab.add(10).log10().pow(2);
 		return x;
     },
 }
@@ -258,7 +264,9 @@ function updateExoticHTML(){
 				);
 			tmp.el.abEff.setHTML(`
 					Boosts dark shadow gain by <b>x${tmp.ex.abEff.ds.format(3)}</b><br>
-					Exotic boosts are <b>x${tmp.ex.abEff.exb.format(3)}</b> stronger<br>`
+					Exotic boosts are <b>x${tmp.ex.abEff.exb.format(3)}</b> stronger<br>`+
+					(hasElement(420)?`Boosts Cosmic String power by <b>x${tmp.ex.abEff.csp.format(3)}</b><br>`:"")+
+					(hasElement(426)?`Boosts dark ray gain by <b>x${tmp.ex.abEff.ds.format(3)}</b><br>`:"")
 				);
         }
 }

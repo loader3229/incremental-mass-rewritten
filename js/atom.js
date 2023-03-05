@@ -385,10 +385,11 @@ function updateAtomHTML() {
 }
 
 function galParticleEffect(x){
+		if(player.gc.active && player.gc.nogp)return E(1);
 	let ret=player.galParticles[x].add(1).log10().add(1).pow(3);
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
-	ret=overflow(ret,1e7,hasElement(419)?0.26:hasElement(413)?0.25:hasElement(411)?0.24:hasElement(399)?0.23:hasElement(392)?0.22:hasElement(369)?0.21:0.2);
+	ret=overflow(ret,1e7,hasElement(425)?0.27:hasElement(419)?0.26:hasElement(413)?0.25:hasElement(411)?0.24:hasElement(399)?0.23:hasElement(392)?0.22:hasElement(369)?0.21:0.2);
 	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

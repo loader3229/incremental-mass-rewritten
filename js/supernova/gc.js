@@ -33,6 +33,7 @@ function GCeffect(x){
 
 function GSeffect(){
 	let x = player.gc.shard.add(1).log10().add(1);
+	if(hasElement(435))x = x.pow(2);
 	return x;
 }
 
@@ -61,7 +62,7 @@ function decGCtrap(){
 }
 
 function updateGCTemp() {
-	tmp.gc.maxdiff=10
+	tmp.gc.maxdiff=hasElement(435)?15:10
 	player.gc.depth=Math.floor(player.gc.depth);
 	if(player.gc.depth>tmp.gc.maxdiff)player.gc.depth=tmp.gc.maxdiff;
 	if(player.gc.depth<1)player.gc.depth=1;
@@ -78,6 +79,8 @@ function updateGCTemp() {
 		if(tmp.gc.shards.gte(100))tmp.gc.shards = tmp.gc.shards.log10().mul(50);
 		tmp.gc.shards = tmp.gc.shards.mul(1+player.gc.trap/20);
 		tmp.gc.shards = tmp.gc.shards.mul(player.gc.rip?2:1);
+		tmp.gc.shards = tmp.gc.shards.mul(player.gc.noeb?1.1:1);
+		tmp.gc.shards = tmp.gc.shards.mul(player.gc.nogp?1.1:1);
 		if(hasElement(362)){
 			tmp.gc.shards = tmp.gc.shards.mul(2);
 		}
@@ -100,6 +103,10 @@ function updateGCHTML() {
     tmp.el.gc_trapu.setTxt(player.gc.trapu?"ON":"OFF");
 	tmp.el.gc_rip2.setDisplay(hasElement(332));
     tmp.el.gc_rip.setTxt(player.gc.rip?"ON":"OFF");
+	tmp.el.gc_noeb2.setDisplay(hasElement(423));
+    tmp.el.gc_noeb.setTxt(player.gc.noeb?"ON":"OFF");
+	tmp.el.gc_nogp2.setDisplay(hasElement(435));
+    tmp.el.gc_nogp.setTxt(player.gc.nogp?"ON":"OFF");
     tmp.el.gc_trapeff.setTxt(player.gc.trap==0?"":player.gc.trap==1?"您将强制进行挑战1":"您将强制进行挑战1-挑战"+player.gc.trap);
     tmp.el.gc_btn.setTxt(player.gc.active?"退出星系挑战":"进入星系挑战");
 	if(player.supernova.times.gte(GC.goal()) && player.gc.active){

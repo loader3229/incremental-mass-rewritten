@@ -298,6 +298,8 @@ const RANKS = {
             '2': "Meta-Pent starts later based on Enne.",
             '3': "Stronger Overflow is weaker.",
             '4': "Super Overpower is 1% weaker.",
+			'5': "Enne Boost Exotic Matter gain.",
+			'6': "Enne Boost Galactic Quarks gain.",
 		},
     },
     effect: {
@@ -506,6 +508,14 @@ const RANKS = {
                 let ret = E(10).pow(player.ranks.enne.pow(2));
                 return ret
             },
+            '5'() {
+                let ret = player.ranks.enne.add(1).pow(2);
+                return ret
+            },
+            '6'() {
+                let ret = player.ranks.enne.add(1).pow(2);
+                return ret
+            },
 		},
     },
     effDesc: {
@@ -567,6 +577,7 @@ const RANKS = {
 		},
 		enne: {
             2(x) { return format(x)+"x later" },
+            5(x) { return format(x)+"x" },
 		},
     },
     fp: {
@@ -885,6 +896,8 @@ const PRESTIGES = {
 			"2": `Meta-Hex starts 10x later.`,
             "3": `Add +20% to Glory 59's effectiveness`,
             "4": `Valor boost Prestige Rage Power and Prestige Dark Matter gain.`,
+            "5": `Meta-Prestige Level starts 2x later.`,
+            "6": `Remove Meta-Prestige Level scaling, Prestige Mass Effect is applied to Exotic Prestige Level scaling.`,
 		},
     ],
     rewardEff: [
@@ -1246,6 +1259,7 @@ const ASCENSIONS = {
             "28": `Ascension Mass Formula from Ascension Level is better.`,
             "30": `Unlock Valor (a new Prestige Tier)`,
             "42": `Entropic Evaporation^2 is 20% weaker.`,
+            "49": `C17 affects Prestige Mass Effect's 2nd softcap.`,
         },
         {
 			"1": `Transcension Level boost Exotic Matter gain.`,
@@ -1257,6 +1271,8 @@ const ASCENSIONS = {
 			"7": `Raise Prestige Tickspeeds Power by 5.`,
 			"8": `Exotic Upgrade 21 is better.`,
             "9": `Ascension Mass Formula from Ascension Level is better.`,
+			"10": `Transcension Level 1's effect ^1.6`,
+            "11": `Remove Ultra Prestige Level scaling.`,
         },
     ],
     rewardEff: [
@@ -1303,6 +1319,10 @@ const ASCENSIONS = {
             },x=>{
                 return x.format()+"x"
             }],
+            "49": [_=>{
+                let x = Decimal.pow(0.99,player.chal.comps[17].pow(2).div(1e43).add(1).log10());
+                return x
+            },x=>format(E(1).sub(x).mul(100))+"% weaker"],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -1315,6 +1335,7 @@ const ASCENSIONS = {
         {
             "1": [_=>{
                 let x = player.ascensions[1].add(1).pow(1.25);
+				if(hasAscension(1,10))x = x.pow(1.6);
                 return x
             },x=>{
                 return x.format()+"x"
@@ -1474,6 +1495,10 @@ function updateRanksTemp() {
             if (ASCENSIONS.rewardEff[x][y]) tmp.ascensions.eff[x][y] = ASCENSIONS.rewardEff[x][y][0]()
         }
     }
+	
+	if(player.superCluster.gte(5)){
+		player.ascensions[0] = player.ascensions[0].max(ASCENSIONS.bulk(0));
+	}
 	
 	tmp.prestigeMassGain = prestigeMassGain()
 	tmp.prestigeMassEffect = prestigeMassEffect()
@@ -1689,10 +1714,10 @@ function prestigeBHGain(){
 
 function prestigeMassEffect(){
 	let p = player.prestigeMass.add(1).log10();
-	if(p.gte(104))p = p.softcap(104,(hasElement(135)?0.55:0.5)**(hasElement(168)?tmp.chal.eff[16]:1),0);
-	if(p.gte(145))p = p.softcap(145,0.3,0);
+	if(p.gte(104))p = p.softcap(104,E(hasElement(135)?0.55:0.5).pow(hasElement(168)?tmp.chal.eff[16]:1),0);
+	if(p.gte(145))p = p.softcap(145,E(0.3).pow(hasAscension(0,49)?ascensionEff(0,49,E(1)):1),0);
 	if(p.gte(680))p = p.softcap(680,0.4,0);
-	if(p.gte(6800000))p = p.softcap(6800000,0.1,2);
+	if(p.gte(1400))p = p.softcap(1400,0.1,0);
 	if(hasTree("qu12"))return E(0.98).pow(p.pow(0.725));
 	return E(0.965).pow(p.sqrt());
 }

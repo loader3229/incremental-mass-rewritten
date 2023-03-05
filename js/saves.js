@@ -54,12 +54,14 @@ Decimal.prototype.scaleName = function (type, id, rev=false) {
 
 Decimal.prototype.scaleEvery = function (id, rev=false, fp=SCALE_FP[id]?SCALE_FP[id]():[1,1,1,1]) {
     var x = this.clone()
+	if(!rev)x = x.scaleName("exotic",id,rev)
     for (let i = 0; i < 4; i++) {
         let s = rev?i:3-i
         let sc = SCALE_TYPE[s]
 
         x = rev?x.mul(fp[s]).scaleName(sc,id,rev):x.scaleName(sc,id,rev).div(fp[s])
     }
+	if(rev)x = x.scaleName("exotic",id,rev)
     return x
 }
 

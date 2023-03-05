@@ -5,6 +5,7 @@ const SUPERNOVA_GALAXY = {
 		if(hasElement(323))ret -= 0.01;
 		if(hasUpgrade('inf',21))ret -= 0.01;
 		if(hasElement(396))ret -= 0.01;
+		if(hasElement(422))ret -= 0.01;
 		return ret;
 	},
 	req(){
@@ -19,7 +20,9 @@ const SUPERNOVA_GALAXY = {
 		if(!force)if (player.confirms.sg) if((confirm("Are you sure to reset for a Supernova Galaxy? It will reset all previous, including Prestiges.")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
 		if(!force && hasElement(291))player.superGal = player.superGal.max(SUPERNOVA_GALAXY.bulk());
 		else if(!force)player.superGal = player.superGal.add(1);
-		if(player.superGal.lt(11))player.prestiges=[E(0),E(0),E(0),E(0)];
+		if(player.superGal.lt(11)){
+			player.prestiges=getPlayerData().prestiges;
+		}
 		if(player.superGal.lt(6))player.supernova.tree=[];
 		player.chal.comps[9] = E(0)
 		player.chal.comps[10] = E(0)
@@ -266,6 +269,7 @@ const SUPERNOVA_GALAXY = {
 		if(hasUpgrade('rp',24))ret = ret.mul(upgEffect(1,18));
 		if(hasUpgrade('inf',25))ret = ret.mul(upgEffect(5,24));
 		ret = ret.mul(SUPERNOVA_CLUSTER.effects.eff1())
+		if (player.ranks.enne.gte(6)) ret = ret.mul(RANKS.effect.enne[6]())
 		return ret;
 	},
 }
@@ -365,6 +369,7 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superCluster.gte(2))html += "<br>Ascension Level resets nothing";
 		if(player.superCluster.gte(3))html += "<br>Multiply Dark Shadow gain by "+format(SUPERNOVA_CLUSTER.effects.eff1());
 		if(player.superCluster.gte(4))html += "<br>Multiply Dark Ray gain by "+format(SUPERNOVA_CLUSTER.effects.eff1());
+		if(player.superCluster.gte(5))html += "<br>Automatically gain Ascension Level";
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}

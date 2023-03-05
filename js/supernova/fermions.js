@@ -318,11 +318,11 @@ const FERMIONS = {
                     return FERMIONS.getTierScaling(x, true)
                 },
                 eff(i, t) {
-                    let x = t.pow(0.8).mul(0.025).add(1).pow(i.add(1).log10())
+                    let x = t.pow(0.8).mul(0.025).add(1).pow(i.add(1).log10()).min("ee10")
                     return x
                 },
                 desc(x) {
-                    return `Tickspeed is ${format(x)}x cheaper (before Meta scaling)`
+                    return `Tickspeed is ${format(x)}x cheaper (before Meta scaling)`+(x.gte("ee10")?" <span class='soft'>(hardcapped)</span>":"")
                 },
                 inc: "Dark Matter",
                 cons: "You are trapped in Challenges 8-9",

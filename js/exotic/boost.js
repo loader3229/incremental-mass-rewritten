@@ -24,7 +24,9 @@ const EXOTIC_BOOST = {
 		if(hasElement(384))ret = ret.mul(1.1);
 		if(hasElement(408))ret = ret.mul(1.1);
 		if(hasElement(416) && i == 6)ret = ret.mul(1.5);
+		if(hasElement(432))ret = ret.mul(1.1);
 		ret = ret.mul(EXOTIC.abEff().exb);
+		if(player.gc.active && player.gc.noeb)ret = new Decimal(0);
 		if(i == 6)return ret;
 		return E(1).add(ret);
 	},
@@ -105,5 +107,6 @@ const EXOTIC_BOOST = {
 			if(player.exotic.boosts[x].gte(copied_mods[x]))continue;
 			player.exotic.boosts[x]=player.exotic.boosts[x].sub(EXOTIC_BOOST.used_bp()).add(EXOTIC_BOOST.gain()).min(copied_mods[x]);
 		}
+		setTimeout(function(){console.log(player.mass.format());},5000);
 	}
 }

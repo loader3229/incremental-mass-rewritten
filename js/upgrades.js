@@ -121,6 +121,7 @@ const UPGS = {
             effect(x) {
                 let xx = x.add(tmp.upgs.mass[3].bonus)
                 if (hasElement(81)) xx = xx.pow(1.1)
+                if (hasChargedElement(81)) xx = xx.pow(2)
                 let ss = E(10)
                 if (player.ranks.rank.gte(34)) ss = ss.add(2)
                 if (player.mainUpg.bh.includes(9)) ss = ss.add(tmp.upgs.main?tmp.upgs.main[2][9].effect:E(0))
@@ -154,6 +155,8 @@ const UPGS = {
 				if (hasPrestige(2,81))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.5;
 				if (player.ranks.enne.gte(3))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.99;
 				if (hasChargedElement(77))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.99;
+				if (hasChargedElement(80))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.997;
+				if (hasChargedElement(85))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.997;
 				tmp.strongerOverflow = overflow(ret, "e4e6", tmp.strongerOverflowPower).log(ret);
 				ret = overflow(ret, "e4e6", tmp.strongerOverflowPower);
                 return {step: step, eff: ret, ss: ss}
@@ -1313,10 +1316,11 @@ const UPGS = {
                 desc: `无限时保留元素。无限质量加成转生质量获取速度。`,
                 cost: E(5),
                 effect() {
+					if(hasElement(430))return player.inf.points.add(1).pow(0.5);
                     let x = overflow(player.inf.points.add(1).pow(0.5),"1e2500",hasUpgrade("inf",22)?0.7:0.5);
                     return x
                 },
-                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte("1e2500")?" <span class='soft'>(softcapped)</span>":"") },
+                effDesc(x=this.effect()) { return "x"+format(x)+((x.gte("1e2500") && !hasElement(430))?" <span class='soft'>(softcapped)</span>":"") },
             },
             6: {
                 desc: `Mass gain softcap^6-7 are 50% weaker.`,

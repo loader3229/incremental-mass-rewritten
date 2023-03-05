@@ -35,6 +35,7 @@ const FORMS = {
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
 		if (player.gc.active) x = GCeffect(x)
 			
+		if(player.gc.active && hasElement(423))x = x.add(1)
 		return x
     },
     massGain() {
@@ -116,6 +117,8 @@ const FORMS = {
 			
 		tmp.massOverflow = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower).log(x);
 		if (!hasUpgrade('exotic',1))x = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower);
+			
+		if(player.gc.active && hasElement(423))x = x.add(1)
         return x
     },
     massSoftGain() {
@@ -371,6 +374,8 @@ const FORMS = {
 			if(player.ranks.oct.gte(33))p2 = p2 ** 0.969
 			if(hasElement(391))p2 = p2 ** 0.95
 			if(hasChargedElement(63))p2 = p2 ** 0.99
+			if(hasChargedElement(86))ss2 = ss2.mul(2)
+			if(hasElement(434))p2 = p2 ** 0.928
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -558,7 +563,7 @@ const FORMS = {
 			if(!hasElement(327))x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
-				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(E(hasUpgrade('bh',23)?0.81:0.8).pow(prestigeDMEffect())).mul(bhOverflowStart2.log10().log10());
+				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(E(hasChargedElement(89)?0.82:hasUpgrade('bh',23)?0.81:0.8).pow(prestigeDMEffect())).mul(bhOverflowStart2.log10().log10());
 				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
 			}
 			if(x.gte("eee10")){

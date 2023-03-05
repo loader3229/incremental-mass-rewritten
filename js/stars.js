@@ -66,6 +66,7 @@ const STARS = {
 		tmp.stars.effectPower = overflow(tmp.stars.effectPowerRaw,"ee3",hasChargedElement(76)?0.56:hasChargedElement(48)?0.55:0.5);
 		if(!hasChargedElement(46))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee8",0.5);
 		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee15",0.5);
+		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"e5e19",0.5);
 		tmp.stars.effectRaw = x
 		if(hasPrestige(1,24))return x.min("e1e85");
         return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");
