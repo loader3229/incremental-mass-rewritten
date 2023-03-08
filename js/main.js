@@ -33,7 +33,7 @@ const FORMS = {
 		x = x.pow(calcShardsEffect())
 	
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
-		if (player.gc.active) x = GCeffect(x)
+		if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
 			
 		if(player.gc.active && hasElement(423))x = x.add(1)
 		return x
@@ -101,7 +101,7 @@ const FORMS = {
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
-		if (player.gc.active) x = GCeffect(x)
+		if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
 	
 		tmp.massOverflowStart = E("ee84")
 		if (player.ranks.hex.gte(120))tmp.massOverflowStart = tmp.massOverflowStart.pow(10)
@@ -376,6 +376,7 @@ const FORMS = {
 			if(hasChargedElement(63))p2 = p2 ** 0.99
 			if(hasChargedElement(86))ss2 = ss2.mul(2)
 			if(hasElement(434))p2 = p2 ** 0.928
+			if(hasElement(443))p2 = p2 ** 0.968
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -471,7 +472,7 @@ const FORMS = {
 		
 			if (FERMIONS.onActive("23"))gain = gain.add(1).log10()
 				
-			if (player.gc.active) gain = GCeffect(gain)
+			if (player.gc.active || player.chal.active >= 21) gain = GCeffect(gain)
 			return gain.floor()
         },
         reset() {
@@ -517,7 +518,7 @@ const FORMS = {
 			if (FERMIONS.onActive("32"))gain = gain.add(1).log10().pow(5)
 				
 			
-			if (player.gc.active) gain = GCeffect(gain)
+			if (player.gc.active || player.chal.active >= 21) gain = GCeffect(gain)
 				
             return gain.floor()
         },
@@ -553,7 +554,7 @@ const FORMS = {
 			if (FERMIONS.onActive("31")) x = x.add(1).log10().pow(100)
 			
 		
-			if (player.gc.active) x = GCeffect(x)
+			if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
 				
 			tmp.bhOverflowStart = E("e1e34")
 			if (hasUpgrade('bh',16))tmp.bhOverflowStart = tmp.bhOverflowStart.pow(10)

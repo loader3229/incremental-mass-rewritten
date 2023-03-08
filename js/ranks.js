@@ -300,6 +300,7 @@ const RANKS = {
             '4': "Super Overpower is 1% weaker.",
 			'5': "Enne Boost Exotic Matter gain.",
 			'6': "Enne Boost Galactic Quarks gain.",
+            '7': "Hyper/Ultra Hept scalings are weaker based on Enne.",
 		},
     },
     effect: {
@@ -516,6 +517,10 @@ const RANKS = {
                 let ret = player.ranks.enne.add(1).pow(2);
                 return ret
             },
+            '7'() {
+                let ret = E(0.99).pow(player.ranks.enne);
+                return ret
+            },
 		},
     },
     effDesc: {
@@ -578,6 +583,8 @@ const RANKS = {
 		enne: {
             2(x) { return format(x)+"x later" },
             5(x) { return format(x)+"x" },
+            6(x) { return format(x)+"x" },
+            7(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
 		},
     },
     fp: {
@@ -898,6 +905,8 @@ const PRESTIGES = {
             "4": `Valor boost Prestige Rage Power and Prestige Dark Matter gain.`,
             "5": `Meta-Prestige Level starts 2x later.`,
             "6": `Remove Meta-Prestige Level scaling, Prestige Mass Effect is applied to Exotic Prestige Level scaling.`,
+            "7": `Meta-Hex starts 1e10x later.`,
+            "8": `Valor boost Dark Ray gain.`,
 		},
     ],
     rewardEff: [
@@ -1149,6 +1158,10 @@ const PRESTIGES = {
                 let x = player.prestiges[4].add(1).pow(2);
                 return x
             },x=>"x"+x.format()],
+            "8": [_=>{
+                let x = player.prestiges[4].add(1).pow(2);
+                return x
+            },x=>"x"+x.format()],
 		},
     ],
     reset(i) {
@@ -1259,7 +1272,8 @@ const ASCENSIONS = {
             "28": `Ascension Mass Formula from Ascension Level is better.`,
             "30": `Unlock Valor (a new Prestige Tier)`,
             "42": `Entropic Evaporation^2 is 20% weaker.`,
-            "49": `C17 affects Prestige Mass Effect's 2nd softcap.`,
+            "49": `C17 affects Prestige Mass Effect's 2nd softcap at reduced rate.`,
+            "60": `Ascension Level 6's effect is squared.`,
         },
         {
 			"1": `Transcension Level boost Exotic Matter gain.`,
@@ -1287,6 +1301,7 @@ const ASCENSIONS = {
             }],
             "6": [_=>{
                 let x = player.ascensions[0].add(1);
+				if(hasAscension(0,60))x = x.pow(2);
                 return x
             },x=>{
                 return x.format()+"x"
@@ -1481,6 +1496,9 @@ function updateRanksTemp() {
 	}
 	if(player.exotic.times.gte(2)){
 		player.prestiges[3] = player.prestiges[3].max(PRESTIGES.bulk(3));
+	}
+	if(player.superCluster.gte(6)){
+		player.prestiges[4] = player.prestiges[4].max(PRESTIGES.bulk(4));
 	}
 	
 	

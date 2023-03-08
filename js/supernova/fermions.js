@@ -138,6 +138,8 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = E(1e5).pow(i.add(1).log10().mul(t)).softcap("ee3",0.9,2)
+					if(x.gte("ee1.2e16"))x = Decimal.pow(10,x.log10().pow(1/1.2).log10().pow(1/1.6).pow(1.2e15));
+					if(x.gte("ee2e16"))x = Decimal.pow(10,x.log10().pow(1/2).log10().pow(1/1.6).pow(2e15));
                     return x
                 },
                 desc(x) {
@@ -399,7 +401,8 @@ const FERMIONS = {
                     return FERMIONS.getTierScaling(x, true)
                 },
                 eff(i, t) {
-                    let x = i.add(1).log10().pow(0.75).div(100).add(1).pow(t.pow(0.75))
+                    let x = i.add(1).log10().pow(0.75).div(100).add(1).pow(t.pow(0.75));
+					if(!hasUpgrade('bh',24))x = x.min("ee10")
                     return x
                 },
                 desc(x) {

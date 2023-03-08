@@ -111,6 +111,7 @@ const EXOTIC = {
 		if(hasElement(426)){
 			x = x.mul(tmp.ex.abEff.ds);
 		}
+        if (hasPrestige(4,8)) x = x.mul(prestigeEff(4,8,E(1)));
 		return x;
     },
     dsGain(){
@@ -133,6 +134,8 @@ const EXOTIC = {
 		if(!hasElement(414))return E(0);
         let x = E(1);
 		x = x.mul(EXOTIC.dsEff().ab);
+		if(hasElement(442))x = x.mul(tmp.elements.effect[442]);
+		if(hasElement(445))x = x.mul(tmp.elements.effect[445]);
 		return x;
     },
     drEff(){
@@ -156,6 +159,7 @@ const EXOTIC = {
     abEff(){
 		let x = {ds:player.exotic.ab.add(1).log10().add(1).pow(2),exb:player.exotic.ab.add(1).log10().div(100).add(1).sqrt()};
 		if(hasElement(420))x.csp = player.exotic.ab.add(10).log10().pow(2);
+		if(hasElement(436))x.em = player.exotic.ab.add(1);
 		return x;
     },
 }
@@ -266,7 +270,8 @@ function updateExoticHTML(){
 					Boosts dark shadow gain by <b>x${tmp.ex.abEff.ds.format(3)}</b><br>
 					Exotic boosts are <b>x${tmp.ex.abEff.exb.format(3)}</b> stronger<br>`+
 					(hasElement(420)?`Boosts Cosmic String power by <b>x${tmp.ex.abEff.csp.format(3)}</b><br>`:"")+
-					(hasElement(426)?`Boosts dark ray gain by <b>x${tmp.ex.abEff.ds.format(3)}</b><br>`:"")
+					(hasElement(426)?`Boosts dark ray gain by <b>x${tmp.ex.abEff.ds.format(3)}</b><br>`:"")+
+					(hasElement(436)?`Boosts eternal mass gain by <b>x${tmp.ex.abEff.em.format(3)}</b><br>`:"")
 				);
         }
 }

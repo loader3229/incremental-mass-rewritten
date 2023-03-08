@@ -323,7 +323,7 @@ const ELEMENTS = {
             cdesc: `Dilated Mass boost Mass gain.`,
             ccost: E("ee8.9e12"),
             ceffect() {
-                let x = player.md.mass.add(1).log10();
+                let x = player.md.mass.add(10).log10();
                 return x
             },
             ceffDesc(x) { return "^"+format(x) },
@@ -891,41 +891,55 @@ const ELEMENTS = {
         {
             desc: `Entropic Accelerator & Booster nerfing is 10% weaker.`,
             cost: E('e2700'),
+            cdesc: `Boost Entropic Condenser.`,
+            ccost: E('ee1.6e17'),
         },
         {
             desc: `Insane Challenges scale 25% weaker.`,
             cost: E('e4800'),
+            cdesc: `Impossible Challenges scale 5% weaker`,
+            ccost: E('ee1.6e17'),
         },
         {
             desc: `Entropy gain is increased by 66.7% for every OoM^2 of normal mass.`,
             cost: E('e29500'),
             effect() {
                 let x = E(player.ranks.hex.gte(93)?2:(5/3)).pow(player.mass.add(1).log10().add(1).log10())
-				x = overflow(x,"e1e4",hasElement(296)?0.2:0.1);
+				x = overflow(x,"e1e4",hasChargedElement(93)?0.3:hasElement(296)?0.2:0.1);
                 return x
             },
             effDesc(x) { return "x"+x.format()+(x.gte('e1e4')?" <span class='soft'>(softcapped)</span>":"")  },
+            cdesc: `Softcap of this element is weaker.`,
+            ccost: E('ee1.8e17'),
         },
         {
             desc: `Death Shard is increased by 10% for every supernova.`,
             cost: E("e32000"),
             effect() {
-                let x = E(1.1).pow(player.supernova.times)
+                let x = E(hasChargedElement(94)?1.2:1.1).pow(player.supernova.times)
                 return x
             },
             effDesc(x) { return "x"+x.format() },
+            cdesc: `The base of this element is 1.2, instead of 1.1.`,
+            ccost: E('ee1.9e17'),
         },
         {
             desc: `Epsilon Particles are worked in Big Rip, but 90% weaker.`,
             cost: E("e34500"),
+            cdesc: `Multiply Epsilon Particles effects by 10. Epsilon Particle's effect is better if you're not in QC.`,
+            ccost: E('ee2e17'),
         },
         {
             desc: `Entropic Converter nerfing is 10% weaker.`,
             cost: E('e202000'),
+            cdesc: `Entropic Evaporation^2 is 10% weaker.`,
+            ccost: E('ee3e17'),
         },
         {
             desc: `Increase Entropic Evaporation’s base by 1.`,
             cost: E('e8.5e6'),
+            cdesc: `Increase Entropic Evaporation’s base by 1.`,
+            ccost: E('ee4.2e17'),
         },
         {
             desc: `8th QC modifier in Big Rip is 20% weaker.`,
@@ -2681,6 +2695,7 @@ const ELEMENTS = {
 			qk: true,
 			effect() {
 				let x = overflow(expMult(player.ranks.tier.pow(1e-19).add(100),3),"1e100000",10/3);
+				if(hasElement(439))x = x.mul(E("e3e8").pow(player.ranks.tier.add(10).log10().add(10).log10()));
 				return x
 			},
 			effDesc(x) { return format(x)+"x later"; },
@@ -2739,8 +2754,90 @@ const ELEMENTS = {
 			galQk: true,
 		},
 		{
-			desc: `Reach the current endgame.`,
+			desc: `Unlock a new effect of Abyssal Blot.`,
 			cost: E("1e82"),
+			ds: true,
+		},
+		{
+			desc: `Timeshards effect is better.`,
+			cost: E("1.5e9056"),
+			et: true,
+		},
+		{
+			desc: `Unlock the 21th Challenge.`,
+			cost: E("3e75"),
+			exotic: true,
+		},
+		{
+			desc: `Element 424 is better.`,
+			cost: E("1.5e1000056"),
+		},
+		{
+			desc: `Exotic Prestige Level is 5% weaker.`,
+			cost: E("ee2.1e17"),
+			qk: true,
+		},
+		{
+			desc: `Galactic Particles Effect is better.`,
+			cost: E("2e286"),
+			galQk: true,
+		},
+		{
+			desc: `Each bought element multiply Abyssal Blot gain by 1.1.`,
+			cost: E("6e83"),
+			ds: true,
+			effect() {
+				return E(1.1).pow(player.atom.elements.length);
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `Accelerator effect softcap^2 is weaker.`,
+			cost: E("1.5e10081"),
+			et: true,
+		},
+		{
+			desc: `Exotic Boost 'Star Boost' affects Star Generators.`,
+			cost: E("1e78"),
+			exotic: true,
+		},
+		{
+			desc: `Eternal Mass boost Abyssal Blot gain.`,
+			cost: E("1.5e10181"),
+			et: true,
+			effect() {
+				let x = player.et.points.add(10).log10();
+				return x
+			},
+			effDesc(x) { return format(x)+"x" },
+		},
+		{
+			desc: `Exotic Meta-Boost is 1.2x stronger.`,
+			cost: E("1e78"),
+			exotic: true,
+		},
+		{
+			desc: `Infinity Upgrade 24 is better.`,
+			cost: E("1.5e1130056"),
+		},
+		{
+			desc: `Exotic Prestige Level is weaker based on Exotic Matter (Increased Effect above 1e80 EM).`,
+			cost: E("ee5e17"),
+			qk: true,
+			effect() {
+				if(player.exotic.points.gte(1e80))return E(0.97).pow(player.exotic.points.add(10).log10().div(24.185));
+				return E(0.97).pow(player.exotic.points.add(10).log10().pow(0.273));
+			},
+            effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+		},
+		{
+			desc: `Galactic Particles Effect is better.`,
+			cost: E("5e294"),
+			galQk: true,
+		},
+		{
+			desc: `Reach the current endgame.`,
+			cost: E("1e87"),
 			ds: true,
 		},
 	],
@@ -2756,7 +2853,8 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
-		if(hasElement(380))return 436;
+		if(hasElement(438))return 450;
+		if(hasElement(380))return 438;
 		if(hasUpgrade("atom",25))return 380;
 		
 		if(player.exotic.times.gte(1))return 362;

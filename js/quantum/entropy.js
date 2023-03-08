@@ -96,6 +96,7 @@ const ENTROPY = {
                 let b = 3
                 if (hasElement(97)) b++
                 if (player.ranks.hex.gte(97)) b+=0.1
+                if (hasChargedElement(97)) b+=0.1
                 let x = Decimal.pow(b,i)
                 return x
             },
@@ -147,7 +148,7 @@ const ENTROPY = {
             scale: {s: 5, p: 2.5},
 
             eff(i) {
-                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(0.8))
+                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(hasChargedElement(91)?0.835:0.8))
                 return x
             },
             desc(x) { return `Entropy boosts itself by <b>${x.format(2)}倍</b>.` },
@@ -210,6 +211,7 @@ const ENTROPY = {
 				if (i == 7 && hasElement(398)) p = 1
 				if (i == 6 && hasAscension(0, 22)) p = 1
 				if (i == 2 && hasAscension(0, 42)) p = p ** 0.8
+				if (i == 2 && hasChargedElement(96)) p = p ** 0.9
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -247,6 +249,7 @@ const ENTROPY = {
 				if (i == 7 && hasElement(398)) p = 1
 				if (i == 6 && hasAscension(0, 22)) p = 1
 				if (i == 2 && hasAscension(0, 42)) p = p ** 0.8
+				if (i == 2 && hasChargedElement(96)) p = p ** 0.9
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()
@@ -268,7 +271,7 @@ function getEnRewardEff(x,def=1) { return tmp.en.rewards_eff[x] ?? E(def) }
 function calcEntropy(dt, dt_offline) {
 	if(hasTree('qu_qol10')){
 		let s1 = Decimal.pow(4,player.supernova.radiation.hz.add(1).log10().add(1).log10().add(1).log10().add(1)).mul(2.25);
-		if(hasElement(268))s1 = Decimal.pow(10,player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(0.75).mul(2));
+		if(hasElement(268))s1 = Decimal.pow(10,overflow(player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(0.75).mul(2),1e10,0.5));
 		else if (hasTree("en1")) s1 = s1.add(s1.pow(2)).add(s1.pow(3).div(3)); else s1 = s1.add(s1.pow(2).div(2));
 		s1 = s1.mul(getEnRewardEff(2));
 		if(player.qu.en.eth[2].lt(s1))player.qu.en.eth[2] = s1;
@@ -280,7 +283,7 @@ function calcEntropy(dt, dt_offline) {
 	}
     if (player.qu.en.eth[0]) {
 		if(hasElement(268)){
-			player.qu.en.eth[1] = Decimal.pow(10,player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(0.75).mul(2)).mul(getEnRewardEff(2));
+			player.qu.en.eth[1] = Decimal.pow(10,overflow(player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(0.75).mul(2),1e10,0.5)).mul(getEnRewardEff(2));
 			ENTROPY.switch(0)
 		}else{
 			player.qu.en.eth[3] += dt

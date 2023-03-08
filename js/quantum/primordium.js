@@ -44,7 +44,7 @@ const PRIM = {
                 return x
             },
             p=>{
-                let x = [p.root(3).div(10), p.root(3).pow((QCs.active()||hasTree('prim3a'))?2:1).pow((!QCs.active() && hasElement(200))?1.75:1)]
+                let x = [p.root(3).div(10).mul(hasChargedElement(95)?10:1), p.root(3).pow((QCs.active()||hasTree('prim3a'))?2:1).pow((!QCs.active() && hasElement(200))?1.75:1).pow((!QCs.active() && hasChargedElement(95))?1.2:1).mul(hasChargedElement(95)?10:1)]
                 return x
             },
             p=>{

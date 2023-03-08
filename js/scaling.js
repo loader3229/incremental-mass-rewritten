@@ -335,6 +335,7 @@ function getScalingStart(type, name) {
 			if (player.qu.times.gte(Number.MAX_VALUE) && player.exotic.times.gte(1)) start = start.add(5)
 			if (hasAscension(0,8)) start = start.add(5)
 			start = start.add(SUPERNOVA_CLUSTER.effects.eff2())
+			start = start.add(tmp.chal?tmp.chal.eff[21]:0)
 		}
 		if (name=="massUpg4") {
 			if (hasPrestige(2,162)) start = start.mul(10/9)
@@ -424,6 +425,7 @@ function getScalingStart(type, name) {
             if (hasPrestige(4,1))start = start.mul(1000)
             if (hasPrestige(4,2))start = start.mul(10)
             if (hasElement(421))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
+            if (hasPrestige(4,7))start = start.mul(1e10)
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -669,6 +671,7 @@ function getScalingPower(type, name) {
 			if (hasPrestige(2,21)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.1))
 			if (hasPrestige(2,22)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.3))
 			if (hasPrestige(2,23)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.5))
+			if (player.ranks.enne.gte(7)) power = power.mul(RANKS.effect.enne[7]())
 		}
 		if (name=="oct") {
 			if (hasAscension(0,21)) power = power.mul(tmp.prestigeMassEffect)
@@ -742,6 +745,7 @@ function getScalingPower(type, name) {
 			if (hasPrestige(3,31)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(3,49)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(4,3)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.2))
+			if (player.ranks.enne.gte(7)) power = power.mul(RANKS.effect.enne[7]())
 		}
 		if (name=="prestige2") {
 			if (hasPrestige(3,4)) power = power.mul(tmp.prestigeMassEffect)
@@ -783,7 +787,13 @@ function getScalingPower(type, name) {
 			if (hasChargedElement(27)) power = power.mul(0.01)
 		}
 	}
-	if(type=="exotic" && name=="prestige0") if (hasPrestige(4,6)) power = power.mul(tmp.prestigeMassEffect)
+	if (type=="exotic") {
+		if (name=="prestige0") {
+			if (hasPrestige(4,6)) power = power.mul(tmp.prestigeMassEffect)
+			if (hasElement(440)) power = power.mul(0.95)
+			if (hasElement(448)) power = power.mul(tmp.elements.effect[448]||1)
+		}
+	}
 	if (name=="rank" && hasPrestige(0,58)) power = power.mul(0.5)
 	if (name=="rank" && hasPrestige(1,15)) power = power.mul(0.1)
 	if (hasUpgrade("atom",15) && name == "gamma_ray") power = power.mul(0.8)

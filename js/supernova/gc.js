@@ -26,6 +26,7 @@ const GC = {
 }
 
 function GCeffect(x){
+	if(player.chal.active == 21)tmp.gc.nerf = 1.25;
 	x = E(x).slog().sub(tmp.gc.nerf).max(-1);
 	x = Decimal.tetrate(10, x);
 	return x;
@@ -74,7 +75,7 @@ function updateGCTemp() {
 	
 	tmp.gc.nerf = player.gc.depth/8;
 	tmp.gc.shards = E(0);
-	if(player.supernova.times.gte(GC.goal())){
+	if(player.supernova.times.gte(GC.goal()) && !(player.chal.active == 21)){
 		tmp.gc.shards = player.supernova.times.log10().sub(E(GC.goal()).log10()).mul(10**(player.gc.depth*0.9+1.1)).add(1).pow(player.gc.depth);
 		if(tmp.gc.shards.gte(100))tmp.gc.shards = tmp.gc.shards.log10().mul(50);
 		tmp.gc.shards = tmp.gc.shards.mul(1+player.gc.trap/20);

@@ -13,7 +13,7 @@ const STARS = {
 				if(hasChargedElement(36) && x.gte(10))x = expMult(x,1.1)
 			if (FERMIONS.onActive("33"))x = x.add(1).log10()
 	
-		if (player.gc.active) x = GCeffect(x)
+		if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
 	
 		tmp.starOverflowPower = E(0.8)
 		if (player.ranks.hept.gte(2))tmp.starOverflowPower = tmp.starOverflowPower.pow(RANKS.effect.hept[2]())
@@ -67,6 +67,7 @@ const STARS = {
 		if(!hasChargedElement(46))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee8",0.5);
 		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee15",0.5);
 		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"e5e19",0.5);
+		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee21",0.5);
 		tmp.stars.effectRaw = x
 		if(hasPrestige(1,24))return x.min("e1e85");
         return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");
@@ -105,6 +106,7 @@ const STARS = {
 				if(hasUpgrade('atom',22)) x = expMult(x,1.005)
 				if(hasChargedElement(49)) x = expMult(x,1.02)
 				if(hasChargedElement(50)) x = expMult(x,1.02)
+			if(hasElement(444) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[3])
             if (QCs.active()) x = expMult(x,tmp.qu.qc_eff[0][0])
             return x
         },

@@ -24,7 +24,7 @@ const ATOM = {
 			
 		if (FERMIONS.onActive("34")) x = x.add(1).log10().pow(3000)
 		
-		if (player.gc.active) x = GCeffect(x)
+		if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
 			
         return x.floor()
     },
@@ -55,7 +55,7 @@ const ATOM = {
 		if (FERMIONS.onActive("30")) x = x.add(1).log10()
 		
 		
-		if (player.gc.active) x = GCeffect(x)
+		if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
 			
         return x.floor();
     },
@@ -96,7 +96,7 @@ const ATOM = {
             
 			if (FERMIONS.onActive("20")) x = x.add(1).log10()
 			
-			if (player.gc.active) x = GCeffect(x)
+			if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
 				
 			if (hasUpgrade('atom',24)) return x;
 			tmp.atomicOverflowPower = E(0.8)
@@ -199,7 +199,7 @@ const ATOM = {
             if (player.mainUpg.atom.includes(7)) x = x.mul(tmp.upgs.main?tmp.upgs.main[3][7].effect:E(1))
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
 			x = x.pow(player.galParticles[i].add(1).log10().add(1).pow(3));
-		if (player.gc.active) x = GCeffect(x)
+		if (player.gc.active || player.chal.active >= 21) x = GCeffect(x)
             return x
         },
         powerEffect: [
@@ -385,11 +385,22 @@ function updateAtomHTML() {
 }
 
 function galParticleEffect(x){
+		if(player.chal.active == 21)return E(1);
 		if(player.gc.active && player.gc.nogp)return E(1);
 	let ret=player.galParticles[x].add(1).log10().add(1).pow(3);
 	ret=overflow(ret,1.2e5,5);
 	ret=overflow(ret,5e5,3);
-	ret=overflow(ret,1e7,hasElement(425)?0.27:hasElement(419)?0.26:hasElement(413)?0.25:hasElement(411)?0.24:hasElement(399)?0.23:hasElement(392)?0.22:hasElement(369)?0.21:0.2);
+	let sc_rate = 0.2;
+	if(hasElement(369))sc_rate+=0.01;
+	if(hasElement(392))sc_rate+=0.01;
+	if(hasElement(399))sc_rate+=0.01;
+	if(hasElement(411))sc_rate+=0.01;
+	if(hasElement(413))sc_rate+=0.01;//0.25
+	if(hasElement(419))sc_rate+=0.01;
+	if(hasElement(425))sc_rate+=0.01;
+	if(hasElement(441))sc_rate+=0.02;
+	if(hasElement(449))sc_rate+=0.01;//0.3
+	ret=overflow(ret,1e7,sc_rate);
 	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

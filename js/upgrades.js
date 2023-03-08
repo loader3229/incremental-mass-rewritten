@@ -1423,6 +1423,7 @@ const UPGS = {
                 cost: E('e126000'),
                 effect() {
                     let x = player.inf.points.add(1).log10().add(1).log10();
+					if(hasElement(447))x = x.pow(2);
                     return x
                 },
                 effDesc(x=this.effect()) { return "x"+format(x) },

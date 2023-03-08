@@ -156,6 +156,7 @@ const ETERNITY_LAYER = {
 		if (hasElement(127)) x = x.mul(tmp.elements.effect[127]);
         if (player.ranks.oct.gte(10)) x = x.mul(RANKS.effect.oct[10]())
 		x = x.mul(SUPERNOVA_GALAXY.effects.inf())
+		if (hasElement(436)) x = x.mul(EXOTIC.abEff().em);
         return x
     },
     gainTimes() {
@@ -325,5 +326,6 @@ function calcShardsEffect() {
 	if(hasElement(226))eff = eff.pow(1.3);
 	if(hasElement(238))eff = eff.pow(1.2);
 	if(hasElement(431))eff = eff.pow(1.2);
+	if(hasElement(437))eff = eff.pow(1.2741059573015495880509654614338);
 	return eff;
 }

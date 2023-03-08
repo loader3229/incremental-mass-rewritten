@@ -25,6 +25,7 @@ const EXOTIC_BOOST = {
 		if(hasElement(408))ret = ret.mul(1.1);
 		if(hasElement(416) && i == 6)ret = ret.mul(1.5);
 		if(hasElement(432))ret = ret.mul(1.1);
+		if(hasElement(446) && i == 6)ret = ret.mul(1.2);
 		ret = ret.mul(EXOTIC.abEff().exb);
 		if(player.gc.active && player.gc.noeb)ret = new Decimal(0);
 		if(i == 6)return ret;
