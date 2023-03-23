@@ -293,6 +293,7 @@ const CHALS = {
         if (player.ranks.hex.gte(10) && (x==3||x==4)) pow = pow.mul(0.95)
         if (hasChargedElement(10) && x==20) pow = pow.mul(0.95)
 		if (hasElement(453) && x==21) pow = pow.mul(0.8)
+		if (hasElement(477) && x==21) pow = pow.mul(0.79)
 		let start = chal.start
         chal.pow = chal.pow.max(1)
         let goal = chal.inc.pow(lvl.div(fp).pow(pow)).mul(chal.start)
@@ -583,6 +584,7 @@ const CHALS = {
         pow: E(2),
         start: uni('e8.4e8'),
         effect(x) {
+			if(hasChargedElement(133))return Decimal.pow(10,expMult(x.add(10),0.5)).sub(1e10)
 			if(hasChargedElement(104))return x
             let ret = x.root(hasTree("chal7a")?1.5:2)
             return ret
@@ -722,13 +724,16 @@ const CHALS = {
 		pow: E(1.25),
         start: E("1e3149"),
         effect(x) {
+			if(player.chal.active == 22)return E(1);
 			if(hasPrestige(2,17))x = x.pow(2);
 			if(hasElement(277))x = x.pow(1.25);
-			x = x.softcap(1e6,hasElement(465)?0.84:hasElement(433)?0.7:hasElement(429)?0.5:hasElement(417)?0.3:hasElement(409)?0.1:hasElement(397)?0.03:0.01,0);
+			if(!hasTree('qp19'))x = x.softcap(1e6,hasElement(489)?0.86:hasElement(465)?0.84:hasElement(433)?0.7:hasElement(429)?0.5:hasElement(417)?0.3:hasElement(409)?0.1:hasElement(397)?0.03:0.01,0);
+			x = x.softcap(1e7,0.1,0);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
 			if(hasElement(334))ret = Decimal.pow(10,Decimal.pow(2.6,x.root(4)));
 			if(hasElement(343))ret = Decimal.pow(10,Decimal.pow(1.44,x.root(3)));
+			if(player.chal.active == 21)return ret.min('e2e25');
             return ret
         },
         effDesc(x) { return "^"+format(x) },
@@ -736,7 +741,7 @@ const CHALS = {
     21: {
         unl() { return hasElement(438) },
         title: "No Supernova Galaxies",
-        desc: "Supernova Galaxies, Galactic Resources and Galactic Particles have no effect except QoL effects. Also You're trapped in Galactic Challenge Difficulty 10.",
+        desc: "Supernova Galaxies, Galactic Resources and Galactic Particles have no effect except QoL effects. Also You're trapped in Galactic Challenge Difficulty 10, and C20's effect is capped at ^e2e25.",
         reward: `Super Supernova Galaxies starts later.`,
 		max: E(100),
 		inc: E(1e10),
@@ -748,7 +753,22 @@ const CHALS = {
         },
         effDesc(x) { return "+"+format(x)+" later" },
     },
-    cols: 21,
+    22: {
+        unl() { return hasElement(476) },
+        title: "No Black Hole",
+        desc: "You can't gain Mass of Black Hole. Also You're trapped in Galactic Challenge Difficulty 12, and C20 has no effect.",
+        reward: `2nd Black Hole Overflow effect is weaker.`,
+		max: E(100),
+		inc: E(1e100),
+		pow: E(2),
+        start: E("1e30000"),
+        effect(x) {
+            let ret = E(0.99).pow(x.root(2))
+            return ret
+        },
+        effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
+    },
+    cols: 22,
 }
 
 /*

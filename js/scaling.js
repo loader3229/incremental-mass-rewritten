@@ -19,7 +19,7 @@ const SCALE_START = {
 		prestige1: E(7),
 		prestige2: E(10),
 		prestige3: E(30),
-		prestige4: E(45),
+		prestige4: E(30),
 		superGal: E(50),
 		massUpg4: E(1000),
     },
@@ -42,6 +42,7 @@ const SCALE_START = {
 		prestige0: E(160),
 		prestige1: E(30),
 		prestige2: E(30),
+		prestige3: E(250),
 		massUpg4: E(1000000),
 	},
 	ultra: {
@@ -74,6 +75,7 @@ const SCALE_START = {
 		supernova: E(100),
 		fTier: E(25000),
 		prestige0: E(1000),
+		prestige1: E(100000),
 	},
 	exotic: {
 		prestige0: E(558000),
@@ -101,7 +103,7 @@ const SCALE_POWER= {
 		prestige1: 1.5,
 		prestige2: 1.3,
 		prestige3: 1.5,
-		prestige4: 2,
+		prestige4: 1.5,
 		superGal: 1.5,
 		massUpg4: 3,
     },
@@ -124,6 +126,7 @@ const SCALE_POWER= {
 		prestige0: 2,
 		prestige1: 2,
 		prestige2: 3,
+		prestige3: 3,
 		massUpg4: 5,
 	},
 	ultra: {
@@ -156,6 +159,7 @@ const SCALE_POWER= {
 		supernova: 1.025,
 		fTier: 1.0001,
 		prestige0: 1.004,
+		prestige1: 1.00002,
 	},
 	exotic: {
 		prestige0: 1e125,
@@ -333,6 +337,7 @@ function getScalingStart(type, name) {
 			if (hasElement(303)) start = start.mul(1.5)
 			if (hasElement(309)) start = start.mul(1.5)
 			if (hasElement(342)) start = start.mul(1.5)
+			if (hasElement(505)) start = start.mul(1.2)
 		}
 		if (name=="superGal") {
 			if (hasUpgrade('exotic',2)) start = start.add(5)
@@ -341,6 +346,7 @@ function getScalingStart(type, name) {
 			if (hasAscension(0,8)) start = start.add(5)
 			start = start.add(SUPERNOVA_CLUSTER.effects.eff2())
 			start = start.add(tmp.chal?tmp.chal.eff[21]:0)
+			if (hasTree('qp18')) start = start.add(15)
 		}
 		if (name=="massUpg4") {
 			if (hasPrestige(2,162)) start = start.mul(10/9)
@@ -357,6 +363,7 @@ function getScalingStart(type, name) {
 		}
 		if (name=="gfTier") {
 			if (hasElement(407)) start = start.mul(1.5)
+			if (hasTree('qp9')) start = start.mul(1.2)
 		}
 	}
 	if (type=="ultra") {
@@ -437,6 +444,8 @@ function getScalingStart(type, name) {
 		}
 		if (name=="hept") {
             if (player.ranks.enne.gte(15))start = start.mul(7.5)
+				
+					if(hasElement(503))start = start.mul(tmp.fermions.effs2[3][3]||E(1))
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -464,6 +473,9 @@ function getScalingStart(type, name) {
 		if (name=="fTier") {
 			if (hasPrestige(2,14)) start = start.mul(100)
 			if (hasPrestige(3,26)) start = start.mul(10)
+			if (hasTree('qp7')) start = start.mul(10)
+			if (hasChargedElement(126)) start = start.mul(10)
+			if (hasTree('qp16')) start = start.mul(10)
 		}
 		if (name=="prestige0") {
 			if (hasElement(285)) start = start.mul(3.5)
@@ -531,6 +543,11 @@ function getScalingStart(type, name) {
 	if (name=="prestige0" && type=="ultra") if (hasAscension(1,11))return EINF;
 	if (name=="hept" && type=="hyper") if (hasPrestige(4,9))return EINF;
 	if (name=="prestige1" && type=="hyper") if (hasAscension(1,13))return EINF;
+	if (name=="prestige2" && type=="super") if (hasPrestige(4,18))return EINF;
+	if (name=="oct" && type=="hyper") if (hasPrestige(4,23))return EINF;
+	if (name=="hept" && type=="ultra") if (hasPrestige(4,26))return EINF;
+	if (name=="prestige1" && type=="ultra") if (hasAscension(2,2))return EINF;
+	if (name=="prestige2" && type=="hyper") if (hasAscension(2,3))return EINF;
 	return start.floor()
 }
 
@@ -620,6 +637,9 @@ function getScalingPower(type, name) {
 			if (hasElement(410)) power = power.mul(0.96)
 			if (player.ranks.enne.gte(4)) power = power.mul(0.99)
 			if (hasChargedElement(84)) power = power.mul(tmp.elements.ceffect[84]||1);
+		}
+		if (name=="superGal") {
+			if(hasElement(503))power = power.mul(tmp.fermions.effs2[3][4]||E(1))
 		}
 	}
 	if (type=="hyper") {
@@ -778,6 +798,11 @@ function getScalingPower(type, name) {
 			if (hasElement(284))power = power.mul(tmp.fermions.effs[3][4])
 			if (hasElement(376))power = power.mul(tmp.ex.dsEff.sn||E(1))
 			if (hasChargedElement(78)) power = power.mul(0.5)
+			if (hasTree('qp8')) power = power.mul(0.5)
+			if (hasTree('qp12')) power = power.mul(0.5)
+			if (player.superCluster.gte(10)) power = power.mul(SUPERNOVA_CLUSTER.effects.eff5())
+			if(hasElement(486))power = power.mul(MATTERS.eff(1));
+			if (hasTree('qp11')) power = power.mul(treeEff('qp11'))
 		}
 		if (name=="rank") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
@@ -794,6 +819,9 @@ function getScalingPower(type, name) {
 		if (name=="fTier") {
 			if (hasElement(259)) power = power.mul(tmp.prestigeMassEffect)
 			if (hasElement(415)) power = power.mul(0.01)
+			if (hasTree('qp9')) power = power.mul(0.1)
+			if (hasTree('qp12')) power = power.mul(0.5)
+			if (hasTree('qp16')) power = power.mul(0.1)
 		}
 		if (name=="hex") {
 			if (player.ranks.oct.gte(17)) power = power.mul(0.004)

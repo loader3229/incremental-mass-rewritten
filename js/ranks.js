@@ -360,6 +360,7 @@ const RANKS = {
             },
             '8'() {
                 let ret = player.bh.dm.max(1).log10().add(1).root(2)
+				ret = overflow(ret,"ee36",0.9);
                 return ret
             },
             '55'() {
@@ -937,6 +938,14 @@ const PRESTIGES = {
 			"14": `Renown 24 & 28 effects are better.`,
             "15": `Valor boost Exotic Matter gain.`,
             "16": `Add +5% to Valor 13's effectiveness`,
+            "17": `Square Valor 12's effect.`,
+            "18": `Remove Super Glory scaling.`,
+            "20": `Accelerator Effect Softcap^2 is weaker.`,
+            "23": `Remove Hyper Oct scaling.`,
+            "26": `Remove Ultra Hept scaling.`,
+            "30": `Valor is added to Prestige Mass formula.`,
+            "34": `Square Valor 15's effect.`,
+            "35": `Reduce Hex-Oct Requirements.`,
 		},
     ],
     rewardEff: [
@@ -950,7 +959,8 @@ const PRESTIGES = {
                 return x
             },x=>x.format()+"倍"],
             "32": [_=>{
-                let x = player.prestiges[0].div(1e4).toNumber()
+                let x = player.prestiges[0].div(1e4)
+				if(x.gte(30000))x = x.div(3).log10().mul(7500);
                 return x
             },x=>"+"+format(x)+"次方"],
             "55": [_=>{
@@ -1202,6 +1212,7 @@ const PRESTIGES = {
             },x=>formatReduction(x)+" weaker"],
             "12": [_=>{
                 let x = player.prestiges[4].add(1);
+				if(hasPrestige(4,17))x = x.pow(2);
                 return x
             },x=>"x"+x.format()],
             "13": [_=>{
@@ -1211,6 +1222,7 @@ const PRESTIGES = {
             },x=>x+"% effectiveness"],
             "15": [_=>{
                 let x = player.prestiges[4].add(1);
+				if(hasPrestige(4,34))x = x.pow(2);
                 return x
             },x=>"x"+x.format()],
 		},
@@ -1239,7 +1251,7 @@ function prestigeEff(x,y,def=E(1)) { return tmp.prestiges.eff[x][y] || def }
 
 
 const ASCENSIONS = {
-    fullNames: ["Ascension Level","Transcension Level"],
+    fullNames: ["Ascension Level","Transcension Level","Recursion"],
     baseExponent() {
         let x = E(0)
 		if(hasPrestige(3,27))x = x.add(prestigeEff(3,27,E(0)));
@@ -1265,6 +1277,9 @@ const ASCENSIONS = {
             case 1:
                 x = y.scaleEvery('ascension1').pow(1.25).mul(3).add(4)
                 break;
+            case 2:
+                x = y.scaleEvery('ascension2').pow(1.25).mul(3).add(20)
+                break;
             default:
                 x = EINF
                 break;
@@ -1280,6 +1295,9 @@ const ASCENSIONS = {
 			case 1:
                 if (y.gte(4)) x = y.sub(4).div(3).max(0).root(1.25).scaleEvery('ascension1',true).add(1)
                 break
+			case 2:
+                if (y.gte(20)) x = y.sub(20).div(3).max(0).root(1.25).scaleEvery('ascension2',true).add(1)
+                break
             default:
                 x = E(0)
                 break;
@@ -1289,9 +1307,11 @@ const ASCENSIONS = {
     unl: [
         _=>true,
         _=>hasAscension(0,4)||hasAscension(1,1),
+        _=>hasAscension(1,20)||hasAscension(2,1),
     ],
     noReset: [
         _=>player.superCluster.gte(2),
+        _=>player.superCluster.gte(11),
         _=>false,
     ],
     rewards: [
@@ -1345,7 +1365,20 @@ const ASCENSIONS = {
             "13": `Remove Hyper Honor scaling.`,
 			"14": `Transcension Level boost Glyphic Mass gain.`,
 			"15": `Glyphic Mass gain formula is better.`,
+			"16": `Ascension Mass Upgrade 1 boost itself.`,
+			"17": `Transcension Level 14's effect is squared.`,
+			"18": `Ascension Mass Upgrade 2 boost itself.`,
+			"19": `Divide Supernova Galaxy Requirement by 2.`,
+			"20": `Unlock Recursion.`,
+            "21": `Entropic Evaporation^2 is 20% weaker.`,
+            "25": `Collapsed Stars Effect is better.`,
+            "31": `Reduce Enne Requirements.`,
         },
+		{
+			"1": `Free Mass Upgrades and Tickspeeds uses multiplication instead of add to amount.`,
+            "2": `Remove Ultra Honor scaling.`,
+            "3": `Remove Hyper Glory scaling.`,
+		},
     ],
     rewardEff: [
         {
@@ -1427,10 +1460,19 @@ const ASCENSIONS = {
             }],
             "14": [_=>{
                 let x = player.ascensions[1].add(1);
+				if(hasAscension(1,17))x = x.pow(2);
                 return x
             },x=>{
                 return x.format()+"x"
             }],
+            "16": [_=>{
+                let x = player.ascensionMassUpg[1].add(10).log10().add(10).log10();
+                return x
+            },x=>"^"+x.format()],
+            "18": [_=>{
+                let x = player.ascensionMassUpg[2].add(10).log10().add(10).log10();
+                return x
+            },x=>"^"+x.format()],
             /*
             "1": [_=>{
                 let x = E(1)
@@ -1440,6 +1482,8 @@ const ASCENSIONS = {
             }],
             */
         },
+		{
+		},
     ],
     reset(i) {
         if (i==0?tmp.ascensions.base.gte(tmp.ascensions.req[i]):player.ascensions[i-1].gte(tmp.ascensions.req[i])) {
@@ -1517,17 +1561,20 @@ function updateRanksTemp() {
 
     fp = E(0.1)
 	if (hasElement(150)) fp = fp.mul(1.6)
+	if(hasPrestige(4,35)) fp = fp.mul(1.25)
     pow = 1.5
-    tmp.ranks.hept.req = player.ranks.hept.scaleEvery('hept').div(fp).pow(pow).add(200).floor()
-    tmp.ranks.hept.bulk = player.ranks.hex.sub(200).gte(0)?player.ranks.hex.sub(200).max(0).root(pow).mul(fp).scaleEvery('hept',true).add(1).floor():E(0);
+    tmp.ranks.hept.req = player.ranks.hept.scaleEvery('hept').div(fp).pow(pow).add(hasPrestige(4,35)?100:200).floor()
+    tmp.ranks.hept.bulk = player.ranks.hex.sub(hasPrestige(4,35)?100:200).gte(0)?player.ranks.hex.sub(hasPrestige(4,35)?100:200).max(0).root(pow).mul(fp).scaleEvery('hept',true).add(1).floor():E(0);
 
     fp = E(0.1)
 	if (hasElement(150)) fp = fp.mul(1.6)
+	if(hasPrestige(4,35)) fp = fp.mul(1.25)
     pow = 1.5
-    tmp.ranks.oct.req = player.ranks.oct.scaleEvery('oct').div(fp).pow(pow).add(200).floor()
-    tmp.ranks.oct.bulk = player.ranks.hept.sub(200).gte(0)?player.ranks.hept.sub(200).max(0).root(pow).mul(fp).scaleEvery('oct',true).add(1).floor():E(0);
+    tmp.ranks.oct.req = player.ranks.oct.scaleEvery('oct').div(fp).pow(pow).add(hasPrestige(4,35)?100:200).floor()
+    tmp.ranks.oct.bulk = player.ranks.hept.sub(hasPrestige(4,35)?100:200).gte(0)?player.ranks.hept.sub(hasPrestige(4,35)?100:200).max(0).root(pow).mul(fp).scaleEvery('oct',true).add(1).floor():E(0);
 
     fp = E(0.1)
+	if(hasAscension(1,31)) fp = fp.mul(2)
     pow = 1.5
     tmp.ranks.enne.req = player.ranks.enne.scaleEvery('enne').div(fp).pow(pow).add(100).floor()
     tmp.ranks.enne.bulk = player.ranks.oct.sub(100).gte(0)?player.ranks.oct.sub(100).max(0).root(pow).mul(fp).scaleEvery('enne',true).add(1).floor():E(0);
@@ -1587,6 +1634,9 @@ function updateRanksTemp() {
 	
 	if(player.superCluster.gte(5)){
 		player.ascensions[0] = player.ascensions[0].max(ASCENSIONS.bulk(0));
+	}
+	if(player.superCluster.gte(12)){
+		player.ascensions[1] = player.ascensions[1].max(ASCENSIONS.bulk(1));
 	}
 	
 	tmp.prestigeMassGain = prestigeMassGain()
@@ -1756,10 +1806,13 @@ function prestigeMassGain(){
 	let p2pow = 1;
 	let p3pow = 0;
 	if (hasPrestige(3,30)) p3pow += 1;
+	let p4pow = 0;
+	if (hasPrestige(4,30)) p4pow += 1;
 	
-	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0].pow(p0pow)).mul(player.prestiges[1].pow(p1pow)).mul(player.prestiges[2].add(1).pow(p2pow)).mul(player.prestiges[3].add(1).pow(p3pow)).pow(player.prestiges[1].div(10))
+	let x= Decimal.log10(tmp.prestiges.base.add(10)).mul(player.prestiges[0].pow(p0pow)).mul(player.prestiges[1].pow(p1pow)).mul(player.prestiges[2].add(1).pow(p2pow)).mul(player.prestiges[3].add(1).pow(p3pow)).mul(player.prestiges[4].add(1).pow(p4pow)).pow(player.prestiges[1].div(10))
 	if (hasPrestige(2,1)) x = x.pow(player.prestiges[2].div(10).add(1));
 	if (hasPrestige(3,30)) x = x.pow(player.prestiges[3].div(29));
+	if (hasPrestige(4,30)) x = x.pow(player.prestiges[4].div(29));
 	x = x.div(400000);
 	if (hasPrestige(0,60)) x = x.mul(prestigeEff(0,60,[E(1),E(1)])[1]);
 	if (hasPrestige(1,11)) x = x.mul(prestigeEff(1,11,[E(1),E(1)])[1]);
@@ -1818,7 +1871,7 @@ function prestigeRPEffect(){
 
 function prestigeBHEffect(){
 	let p = overflow(player.prestigeBH.add(1),10,2.7);
-	p = overflow(p,Decimal.pow(10,hasAscension(0,65)?1e7:1e5),0.33);
+	if(!hasAscension(0,65))p = overflow(p,Decimal.pow(10,1e5),0.33);
 	return p;
 }
 

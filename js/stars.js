@@ -11,6 +11,10 @@ const STARS = {
 	
 			if(hasUpgrade('exotic',18) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[3])
 				if(hasChargedElement(36) && x.gte(10))x = expMult(x,1.1)
+				
+		if(hasElement(503) && x.gte(10))x = expMult(x,tmp.fermions.effs2[3][0]||E(1))	
+				
+				
 			if (FERMIONS.onActive("33"))x = x.add(1).log10()
 	
 		if (player.gc.active || player.chal.active >= 21 || player.exotic.dark_run.active) x = GCeffect(x)
@@ -63,11 +67,13 @@ const STARS = {
 		tmp.stars.effectPowerRaw = x.add(1).mul(l2).log10().log10().div(l).sqrt()
 		if(player.ranks.hex.gte(69))tmp.stars.effectPowerRaw = tmp.stars.effectPowerRaw.pow(player.ranks.hex.sub(68).mul(0.01).add(1))
 		if(hasChargedElement(69))tmp.stars.effectPowerRaw = tmp.stars.effectPowerRaw.pow(player.ranks.hept.mul(0.01).add(1))
-		tmp.stars.effectPower = overflow(tmp.stars.effectPowerRaw,"ee3",hasChargedElement(76)?0.56:hasChargedElement(48)?0.55:0.5);
+		if(!hasTree('qp20'))tmp.stars.effectPower = overflow(tmp.stars.effectPowerRaw,"ee3",hasElement(502)?0.75:hasElement(497)?0.65:hasElement(491)?0.6:hasChargedElement(76)?0.56:hasChargedElement(48)?0.55:0.5);
+		else tmp.stars.effectPower = tmp.stars.effectPowerRaw;
 		if(!hasChargedElement(46))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee8",0.5);
 		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee15",player.ranks.enne.gte(12)?0.7:0.5);
 		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"e5e19",0.5);
 		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee21",0.5);
+		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee33",hasAscension(1,25)?0.2:0.1);
 		tmp.stars.effectRaw = x
 		if(hasPrestige(1,24))return x.min("e1e85");
         return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");

@@ -22,6 +22,7 @@ const CHROMA = {
     eff: [
         i => {
             let x = i.add(1).log10().add(1).root(3)
+			if (player.qu.times.gte('1e900'))x = overflow(i,10,0.82)
             if (hasUpgrade('br',10)) x = x.mul(1.1)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)
 			if (player.ranks.hept.gte(40)) x = x.pow(3)

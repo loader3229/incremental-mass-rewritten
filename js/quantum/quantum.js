@@ -3,7 +3,7 @@ const QUANTUM = {
 		if (CHALS.inChal(13) || CHALS.inChal(19)) return E(0)
         let x = player.mass.max(1).log10().div(1e13)
         if (x.lt(1)) return E(0)
-        x = x.max(0).pow(hasTree("qu11")?3:1.5);
+        x = x.max(0).pow(hasTree("qp1")?5:hasTree("qu11")?3:1.5);
 		if (player.exotic.times.gte(1) && player.qu.times.gte(1e295)) x = x.pow(1.5);
 		if (hasUpgrade('br',25)) x = x.pow(16/9);
 		
@@ -18,6 +18,7 @@ const QUANTUM = {
         if (hasUpgrade('inf',1)) x = x.mul(upgEffect(5,1))
 			
 		
+		if (hasElement(474)) x = x.pow(EXOTIC.dsEff().qf);
 			if(hasUpgrade('exotic',24) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[5])
 				
         return x.floor()
@@ -181,6 +182,7 @@ const QUANTUM = {
         [E('6.9e420'), `Entropic Evaporation^2 is 50% weaker.`],
         [E('1e600'), `Multiply the starting point of Meta-Pent scaling by (quantizes+1).`],
         [E('4.2e690'), `Green Chroma is applied to Pent.`],
+        [E('1e900'), `Red Chroma is better.`],
     ],
     auto: {
         mode: ["Amount","Time"],

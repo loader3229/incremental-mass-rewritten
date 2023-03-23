@@ -2,8 +2,9 @@ const ATOM = {
     gain() {
         if (CHALS.inChal(12) || CHALS.inChal(14) || CHALS.inChal(19)) return E(0)
         let x = player.bh.mass.div(player.mainUpg.br.includes(1)?1.5e156**0.5:1.5e156)
+		if (CHALS.inChal(22) && hasElement(482))x = player.mass.add(10).log10();
         if (x.lt(1)) return E(0)
-        x = x.root(5)
+        if (!CHALS.inChal(22))x = x.root(5)
         if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][15].effect:E(1))
         if (hasElement(404)) x = x.pow(tmp.bosons.upgs.gluon[0].effect); else x = x.mul(tmp.bosons.upgs.gluon[0].effect)
 	
@@ -23,7 +24,6 @@ const ATOM = {
         if (FERMIONS.onActive("10")) x = expMult(x,0.625)
 			
 		if (FERMIONS.onActive("34")) x = x.add(1).log10().pow(3000)
-		
 		if (player.gc.active || player.chal.active >= 21 || player.exotic.dark_run.active) x = GCeffect(x)
 			
         return x.floor()
@@ -91,6 +91,9 @@ const ATOM = {
 			if(hasChargedElement(52)) x = x.pow(tmp.elements.effect[52])
 			
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
+			
+		if(hasElement(503) && x.gte(10))x = expMult(x,tmp.fermions.effs2[2][0]||E(1))
+			
             if (FERMIONS.onActive("00")) x = expMult(x,0.6)
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             
@@ -402,6 +405,10 @@ function galParticleEffect(x){
 	if(hasElement(449))sc_rate+=0.01;//0.3
 	if(hasElement(462))sc_rate+=0.02;
 	if(hasElement(473))sc_rate+=0.02;
+	if(hasElement(485))sc_rate+=0.01;//0.35
+	if(hasElement(501))sc_rate+=0.02;
+	if(hasElement(507))sc_rate+=0.01;
+	if(hasElement(509))sc_rate+=0.01;
 	ret=overflow(ret,1e7,sc_rate);
 	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
 	return ret;

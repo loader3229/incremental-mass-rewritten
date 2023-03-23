@@ -36,7 +36,7 @@ const FORMS = {
         if (QCs.active()) x = x.div(tmp.qu.qc_eff[1])
 		if (player.gc.active || player.chal.active >= 21 || player.exotic.dark_run.active) x = GCeffect(x)
 			
-		if(player.gc.active && hasElement(423))x = x.add(1)
+		if((player.gc.active || player.chal.active >= 21) && hasElement(423))x = x.add(1)
 		return x
     },
     massGain() {
@@ -100,6 +100,7 @@ const FORMS = {
         if (hasChargedElement(51) && x.gte(10)) x = expMult(x,1.005)
         if (hasChargedElement(117) && x.gte(10)) x = expMult(x,1.01)
 		
+		if(hasElement(503) && x.gte(10))x = expMult(x,tmp.fermions.effs2[2][2]||E(1))
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
@@ -120,7 +121,7 @@ const FORMS = {
 		tmp.massOverflow = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower).log(x);
 		if (!hasUpgrade('exotic',1))x = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower);
 			
-		if(player.gc.active && hasElement(423))x = x.add(1)
+		if((player.gc.active || player.chal.active >= 21) && hasElement(423))x = x.add(1)
         return x
     },
     massSoftGain() {
@@ -130,7 +131,7 @@ const FORMS = {
         if (player.mainUpg.bh.includes(7)) s = s.mul(tmp.upgs.main?tmp.upgs.main[2][7].effect:E(1))
         if (player.mainUpg.rp.includes(13)) s = s.mul(tmp.upgs.main?tmp.upgs.main[1][13].effect:E(1))
         if (hasPrestige(0,1)) s = s.pow(10)
-        return s.min(tmp.massSoftGain2||1/0)
+        return s.min(tmp.massSoftGain2||EINF)
     },
     massSoftPower() {
         if (player.ranks.hex.gte(1)) return E(1)
@@ -150,7 +151,7 @@ const FORMS = {
         s = s.pow(tmp.bosons.effect.neg_w[0])
         if (hasPrestige(0,1)) s = s.pow(10)
 
-        return s.min(tmp.massSoftGain3||1/0)
+        return s.min(tmp.massSoftGain3||EINF)
     },
     massSoftPower2() {
         if (player.ranks.hex.gte(4)) return E(1)
@@ -306,6 +307,7 @@ const FORMS = {
 			if(FERMIONS.onActive("25")||FERMIONS.onActive("35"))step = step.log10().add(1)
 			
             let eff = step.pow(t.add(bonus).mul(hasElement(80)?25:1))
+			if(hasAscension(2,1))eff = step.pow(t.mul(bonus).mul(hasElement(80)?25:1))
             if (hasElement(18) && !hasElement(134)) eff = eff.pow(tmp.elements.effect[18])
             if (player.ranks.tetr.gte(3) && !hasElement(134)) eff = eff.pow(1.05)
 		
@@ -380,6 +382,10 @@ const FORMS = {
 			if(hasElement(434))p2 = p2 ** 0.928
 			if(hasElement(443))p2 = p2 ** 0.968
 			if(hasElement(461))p2 = p2 ** 0.9
+			if(hasElement(475))p2 = p2 ** 0.95
+			if(hasPrestige(4,20))p2 = p2 ** 0.95
+			if(hasElement(499))p2 = p2 ** 0.9
+			if(hasChargedElement(134))p2 = p2 ** 0.95
 			if(hasChargedElement(102))ss = ss.mul(100)
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
@@ -467,9 +473,12 @@ const FORMS = {
             if (QCs.active()) gain = gain.pow(tmp.qu.qc_eff[4])
 		 gain = gain.pow(tmp.fermions.effs[2][3]||E(1))	
 	 
+		if(hasElement(479))gain = gain.pow(SUPERNOVA_GALAXY.galPow0_eff())
 			if(hasElement(348))gain = gain.pow(E(2).pow(player.chal.comps[7].mul((tmp.chal?tmp.chal.eff[7]:E(1)).add(1).log10()).pow(0.625).add(1)));
 			
 			if(hasUpgrade('exotic',10) && gain.gte(10))gain = expMult(gain,tmp.ex.exb_eff[0])
+			
+		if(hasElement(503) && gain.gte(10))gain = expMult(gain,tmp.fermions.effs2[2][3]||E(1))
 			
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14)  || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) gain = expMult(gain,tmp.md.pen)
             
@@ -536,6 +545,7 @@ const FORMS = {
             return x
         },
         massGain() {
+			if(player.chal.active == 22)return E(0)
             let x = tmp.bh.f
             .mul(this.condenser.effect().eff)
             if (player.mainUpg.rp.includes(11)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][11].effect:E(1))
@@ -568,7 +578,7 @@ const FORMS = {
 			if(!hasElement(327))x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
-				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(E(hasChargedElement(89)?0.82:hasUpgrade('bh',23)?0.81:0.8).pow(prestigeDMEffect())).mul(bhOverflowStart2.log10().log10());
+				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(E(hasChargedElement(89)?0.82:hasUpgrade('bh',23)?0.81:0.8).pow(prestigeDMEffect()).pow(hasElement(476)?tmp.chal.eff[22]:1)).mul(bhOverflowStart2.log10().log10());
 				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
 			}
 			if(x.gte("eee10")){

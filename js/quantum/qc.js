@@ -42,7 +42,7 @@ const QCs = {
             effDesc(x) { return `/${format(x,0)} to pre-Quantum global speed.` },
         },{
             eff(i) {
-                if (hasElement(129) && player.qu.rip.active) i *= 0.5
+                if (hasElement(129) && (player.qu.rip.active || hasChargedElement(129))) i *= 0.5
                 if (player.ranks.hex.gte(129) && player.qu.rip.active) i *= 0.5
 				//if(i>=30)return 10**i
 				if(i>=11)return i**3.5*0.0015+1

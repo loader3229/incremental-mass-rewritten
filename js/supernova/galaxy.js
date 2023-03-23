@@ -8,12 +8,18 @@ const SUPERNOVA_GALAXY = {
 		if(hasElement(422))ret -= 0.01;
 		return ret;
 	},
+	req_start(){
+		let ret=1e6;
+		if(hasElement(467))ret /= 40;
+		if(hasAscension(1,19))ret /= 2;
+		return ret;
+	},
 	req(){
-		return E(SUPERNOVA_GALAXY.req_base()).pow(player.superGal.scaleEvery('superGal')).mul(hasElement(467)?25000:1e6).floor();
+		return E(SUPERNOVA_GALAXY.req_base()).pow(player.superGal.scaleEvery('superGal')).mul(SUPERNOVA_GALAXY.req_start()).floor();
 	},
 	bulk(){
-		if(player.supernova.times.lt(hasElement(467)?25000:1e6))return new Decimal(0);
-		return player.supernova.times.div(hasElement(467)?25000:1e6).log(SUPERNOVA_GALAXY.req_base()).scaleEvery('superGal',true).add(1).floor();
+		if(player.supernova.times.lt(SUPERNOVA_GALAXY.req_start()))return new Decimal(0);
+		return player.supernova.times.div(SUPERNOVA_GALAXY.req_start()).log(SUPERNOVA_GALAXY.req_base()).scaleEvery('superGal',true).add(1).floor();
 	},
 	reset(force=false){
 		if(!force)if(player.supernova.times.lt(SUPERNOVA_GALAXY.req()))return;
@@ -209,7 +215,8 @@ const SUPERNOVA_GALAXY = {
 		if(player.superGal.lt(7))return E(0);
 		let ret=player.supernova.bosons.photon.add(1).log10().add(1).log10().mul(player.supernova.bosons.gluon.add(1).log10().add(1).log10()).pow(player.superGal.sub(5))
 		ret = ret.pow(hasElement(317)?tmp.gc.GSeffect:1)
-			ret = ret.mul(tmp.fermions.effs[3][1]||E(1));
+		ret = ret.mul(tmp.fermions.effs[3][1]||E(1));
+		if(hasElement(503))ret = ret.pow(tmp.fermions.effs2[3][1]||E(1))
 		return ret.mul(SUPERNOVA_GALAXY.galPow6_eff());
 	},
 	galPow3_eff(){
@@ -242,11 +249,12 @@ const SUPERNOVA_GALAXY = {
 		let ret=player.supernova.radiation.hz.add(1).log10().add(1).log10().pow(player.superGal.sub(6));
 		ret = ret.pow(hasElement(345)?tmp.gc.GSeffect:1)
 		ret = ret.mul(tmp.fermions.effs[2][4]||E(1));
+		if(hasElement(503))ret=ret.pow(tmp.fermions.effs2[2][4]||E(1))
 		return ret.mul(SUPERNOVA_GALAXY.galPow6_eff());
 	},
 	galPow5_eff(){
 		if(player.chal.active == 21)return E(1);
-		let ret=Decimal.pow(1.1,player.galPow[5].add(1).log10().pow(2.5));
+		let ret=Decimal.pow(1.1,player.galPow[5].add(1).log10().pow(hasTree('qp14')?3:2.5));
 		return ret;
 	},
 	galPow6_gain(){
@@ -286,6 +294,7 @@ const SUPERNOVA_GALAXY = {
 		if(hasElement(382)){
 			ret = ret.mul(tmp.ex.dsEff.ex);
 		}
+		if(hasElement(503))ret = ret.mul(overflow(player.supernova.fermions.tiers[3][5].max(100).sub(100),10,2).add(1).pow(2));
 		
 		if (player.exotic.times.gte(3))ret = ret.mul(player.exotic.times);
 		
@@ -296,6 +305,7 @@ const SUPERNOVA_GALAXY = {
 		ret = ret.mul(SUPERNOVA_CLUSTER.effects.eff1())
 		if (player.ranks.enne.gte(6)) ret = ret.mul(RANKS.effect.enne[6]())
 		ret = ret.mul(SUPERNOVA_GALAXY.galPow6_eff())
+		if(hasChargedElement(120))x = x.mul(tmp.elements.ceffect[120]);
 		return ret;
 	},
 }
@@ -407,6 +417,10 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superCluster.gte(9))html += "<br>Unlock Galactic Mass";
 		if(player.superCluster.gte(9))tmp.el.galPow6.setTxt(formatMass(player.galPow[6])+player.galPow[6].formatGain(SUPERNOVA_GALAXY.galPow6_gain(),1))
 		if(player.superCluster.gte(9))tmp.el.galPow6_eff.setTxt(format(SUPERNOVA_GALAXY.galPow6_eff()))
+		if(player.superCluster.gte(10))html += "<br>Meta-Supernova is "+formatReduction(SUPERNOVA_CLUSTER.effects.eff5())+" weaker";
+		if(player.superCluster.gte(11))html += "<br>Transcension Level resets nothing";
+		if(player.superCluster.gte(12))html += "<br>Automatically gain Transcension Level";
+		if(player.superCluster.gte(13))html += "<br>Add "+format(SUPERNOVA_CLUSTER.effects.eff6())+" to Matter Exponent";
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}
@@ -446,6 +460,14 @@ const SUPERNOVA_CLUSTER = {
 		eff4(){
 			if(player.superCluster.lt(1))return new Decimal(0);
 			return player.superCluster;
+		},
+		eff5(){
+			if(player.superCluster.lt(10))return new Decimal(1);
+			return E(0.7).pow(player.superCluster.pow(0.3));
+		},
+		eff6(){
+			if(player.superCluster.lt(13))return new Decimal(0);
+			return player.superCluster.div(100);
 		},
 	},
 }

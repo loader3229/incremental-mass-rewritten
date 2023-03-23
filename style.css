@@ -540,6 +540,33 @@ button {
 	color: black;
 }
 
+.elements.bought.cancharge.ext
+ {
+	border-color: #fc3;
+	background-color: #c90;
+	cursor: pointer;
+}
+
+.elements.bought.ch.ext
+ {
+	border-color: #fc3;
+	background-color: #f90;
+	color: black;
+}
+.elements.bought.cancharge.ext.et
+ {
+	border-color: #c0c;
+	background-color: #808;
+	cursor: pointer;
+}
+
+.elements.bought.ch.ext.et
+ {
+	border-color: #c0c;
+	background-color: #a0a;
+	color: black;
+}
+
 .chal_comp {
 	background-color: #00520b;
 }

@@ -335,6 +335,7 @@ function getPlayerData() {
 			rcb: [E(0), E(0), E(0), E(0)],
 			bp: E(0),
 			boosts: [],
+			matters: [],
 			
 			dr: E(0),
 			ds: E(0),
@@ -348,6 +349,7 @@ function getPlayerData() {
 		superCluster: E(0),
     }
     for (let x = 0; x < EXOTIC_BOOST_LENGTH; x++) s.exotic.boosts.push(E(0))
+    for (let x = 0; x < MATTERS_LENGTH; x++) s.exotic.matters.push(E(0))
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
     for (let x = 0; x < AS_LEN; x++) s.ascensions.push(E(0))
     for (let x = 1; x <= UPGS.main.cols; x++) {

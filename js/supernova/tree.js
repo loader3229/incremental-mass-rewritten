@@ -4,6 +4,7 @@ const TREE_TAB = [
     {title: "Challenge"},
     {title: "Post-Supernova", unl() { return player.supernova.post_10 } },
     {title: "Quantum", unl() { return quUnl() } },
+    {title: "Quantum+", unl() { return hasChargedElement(118) } },
 ]
 
 const TREE_IDS = [
@@ -13,36 +14,63 @@ const TREE_IDS = [
         ['chal1'],
         ['bs4','bs1','','qf1','','rad1'],
         ['qu0'],
+		['qp17'],
     ],[
         ['s1','m1','rp1','bh1','sn1'],
         ['qol2','qol3','qol4','qu_qol2','qu_qol3','qu_qol4','qu_qol5','qu_qol6'],
         ['chal2','chal4a','chal4b','chal3'],
         ['bs5','bs2','fn1','bs3','qf2','qf3','rad2','rad3'],
         ['prim3a','qu1','qu2','qu3','qc8'],
+        ['qp1','qp10'],
     ],[
         ['s2','m2','t1','d1','bh2','gr1','sn2'],
         ['qol5','qol6','qol7','','qu_qol7a','qu_qol7','',''],
         ['chal4','chal7a'],
         ['fn4','fn3','fn9','fn2','fn5','qf4','rad4','rad5'],
         ['prim3','prim2','prim1','qu4','qc1','qc2','qc3'],
+        ['qp6','qp2','qp3','qp4','qp5'],
     ],[
         ['s3','m3','gr2','sn3'],
         ['qol9','unl1','qol8','unl2','unl3','qu_qol8','qu_qol9','unl4'],
         ['chal5','chal6','chal7','chal8'],
         ['fn12','fn11','fn6','fn10','rad6',''],
         ['prim4','en2','en1','qu5','br1','br2','qc4'],
+        ['qp9','qp7','qp8','qp11'],
     ],[
         ['s4','sn5','sn4'],
         ['','','','qu_qol10','qu_qol11','qu_qol8a','qu_qol13','qu_qol12'],
         ['chal9','chal10','chal11','chal12'],
         ['fn13','fn14','fn7','fn8','pm1',''],
         ['prim5','qu6','qu7','qu8','qu9','qu10','qu11','qc5'],
+        ['qp16','qp14','qp12','qp13','qp15'],
     ],[
         ['s5','sn6'],
         [],
         ['chal13','chal14'],
         ['fn18','fn16','fn17','fn15','pm2','im1'],
         ['prim6','prim7','prim8','qu12','br3','qc7','qc6'],
+        ['qp19','qp18'],
+    ],[
+        [],
+        [],
+        [],
+        [],
+        [],
+        ['qp20'],
+    ],[
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    ],[
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
     ],
 ]
 
@@ -1220,6 +1248,170 @@ const TREE_UPGS = {
             effDesc(x) { return format(x)+"x" },
         },
         */
+		
+		
+        qp1: {
+            unl() { return hasChargedElement(118) },
+            qf: true,
+            desc: `Quantum Foam gain formula is better.`,
+            cost: E('ee33'),
+        },
+        qp2: {
+            qf: true,
+            branch: ["qp1","qp3"],
+            desc: `Alpha Particles boost Exotic Boost 'Rage Boost'`,
+            cost: E('e2e34'),
+            effect() {
+                let x = tmp.prim.eff[1][0].add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.2);
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        qp3: {
+            qf: true,
+            branch: ["qp1"],
+            desc: `Omega Particles boost Exotic Boost 'Dark Matter Boost'`,
+            cost: E('e1e34'),
+            effect() {
+                let x = tmp.prim.eff[2][0].add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.2);
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        qp4: {
+            qf: true,
+            branch: ["qp3"],
+            desc: `Sigma Particles boost Exotic Boost 'Atom Boost'`,
+            cost: E('e1e34'),
+            effect() {
+                let x = tmp.prim.eff[3][0].add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.2);
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        qp5: {
+            qf: true,
+            branch: ["qp4"],
+            desc: `Atom Upgrade 18 is better.`,
+            cost: E('e1.3e34'),
+        },
+        qp6: {
+            qf: true,
+            branch: ["qp2"],
+            desc: `Rage Upgrade 18 is better.`,
+            cost: E('e3e34'),
+        },
+        qp7: {
+            qf: true,
+            branch: ["qp2","qp3"],
+            desc: `Meta-Fermion Tier scaling starts 10x later.`,
+            cost: E('e7e34'),
+        },
+        qp8: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp3","qp4","qp7"],
+            desc: `Meta-Supernova scales 50% weaker.`,
+            cost: E('e5e37'),
+        },
+        qp9: {
+            qf: true,
+            branch: ["qp2","qp6","qp7"],
+            desc: `Meta-Fermion Tier scaling is 90% weaker, Hyper Galactic Fermion Tier scaling starts 1.2x later.`,
+            cost: E('e1e35'),
+        },
+        qp10: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp1","qp3","qp4"],
+            desc: `Matter Exponent +0.3`,
+            cost: E('e5e37'),
+        },
+        qp11: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp4","qp5","qp8"],
+            desc: `Meta-Supernova scales weaker based on Atoms.`,
+            cost: E('e2e39'),
+            effect() {
+                let x = E(0.96).pow(player.atom.points.add(1).log10().add(1).log10().add(1).log10());
+                return x
+            },
+            effDesc(x) { return formatReduction(x)+" weaker" },
+        },
+        qp12: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp7","qp8"],
+            desc: `Meta-Fermion Tier scaling and Meta-Supernova are 50% weaker.`,
+            cost: E('e4e39'),
+        },
+        qp13: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp8","qp11","qp12"],
+            desc: `Neutron Star gain exponent ^1.1`,
+            cost: E('e1e40'),
+        },
+        qp14: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp7","qp9","qp12"],
+            desc: `Boost Galactic Radiation effect.`,
+            cost: E('e1e40'),
+        },
+        qp15: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp11","qp13"],
+            desc: `Supernova Galaxies boost Pink Matter gain.`,
+            cost: E('e1e43'),
+            effect() {
+                let x = player.superGal.add(1)
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        qp16: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp9","qp14"],
+            desc: `Meta-Fermion Tier scaling starts 10x later, and is 90% weaker.`,
+            cost: E('e3e43'),
+        },
+        qp17: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp1","qp10"],
+            desc: `Quantum Foam boost Matter Exponent.`,
+            cost: E('e1e48'),
+            effect() {
+                let x = player.qu.points.add(1).log10().add(1).log10().add(1).log10().add(1).log10();
+                return x
+            },
+            effDesc(x) { return "+"+format(x) },
+        },
+        qp18: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp12","qp13"],
+            desc: `Super Supernova Galaxies starts 15 later.`,
+            cost: E('e2.6e49'),
+        },
+        qp19: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp12","qp14","qp18"],
+            desc: `C20 effect is later.`,
+            cost: E('e1e50'),
+        },
+        qp20: {
+            unl() { return hasElement(486) },
+            qf: true,
+            branch: ["qp18","qp19"],
+            desc: `Collapsed Stars effect is later.`,
+            cost: E('e9e53'),
+        },
     },
 }
 

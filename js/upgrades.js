@@ -69,6 +69,7 @@ const UPGS = {
                 if (player.ranks.rank.gte(3)) step = step.add(RANKS.effect.rank[3]())
                 step = step.mul(tmp.upgs.mass[2]?tmp.upgs.mass[2].eff.eff:1)
                 let ret = step.mul(x.add(tmp.upgs.mass[1].bonus))
+				if(hasAscension(2,1))ret = step.mul(x.add(1).mul(tmp.upgs.mass[1].bonus.add(1)))
 				if(hasElement(174))ret = ret.pow(tmp.elements.effect[174]||1);
                 return {step: step, eff: ret}
             },
@@ -97,6 +98,7 @@ const UPGS = {
 				if (hasElement(472)) step = step.mul(tmp.tickspeedEffect?(tmp.tickspeedEffect.step||E(1)):E(1))
                 step = step.pow(tmp.upgs.mass[3]?tmp.upgs.mass[3].eff.eff:1)
                 let ret = step.mul(x.add(tmp.upgs.mass[2].bonus)).add(1)
+				if(hasAscension(2,1))ret = step.mul(x.add(1).mul(tmp.upgs.mass[2].bonus.add(1))).add(1)
 				if(hasElement(173))ret = ret.pow(tmp.elements.effect[173]||1);
                 return {step: step, eff: ret}
             },
@@ -121,6 +123,7 @@ const UPGS = {
             inc: E(9),
             effect(x) {
                 let xx = x.add(tmp.upgs.mass[3].bonus)
+				if(hasAscension(2,1))xx = x.add(1).mul(tmp.upgs.mass[3].bonus.add(1))
                 if (hasElement(81)) xx = xx.pow(1.1)
                 if (hasChargedElement(81)) xx = xx.pow(2)
                 let ss = E(10)
@@ -159,6 +162,7 @@ const UPGS = {
 				if (hasChargedElement(80))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.997;
 				if (hasChargedElement(85))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.997;
 				if (hasChargedElement(110))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.95;
+				if (hasElement(478))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.986;
 				tmp.strongerOverflow = overflow(ret, "e4e6", tmp.strongerOverflowPower).log(ret);
 				ret = overflow(ret, "e4e6", tmp.strongerOverflowPower);
                 return {step: step, eff: ret, ss: ss}
@@ -183,6 +187,7 @@ const UPGS = {
             inc: E("ee10"),
             effect(x) {
                 let xx = x.add(tmp.upgs.mass[4].bonus)
+				if(hasAscension(2,1))xx = x.add(1).mul(tmp.upgs.mass[4].bonus.add(1)).sub(1)
 				let step = E(0.03)
 				if (player.prestiges[2].gte(165))step = step.add(tmp.prestigeRPEffect)
                 let ss = E(10)
@@ -400,6 +405,7 @@ const UPGS = {
                 let step = player.ascensions[0]
                 step = step.mul(tmp.upgs.ascensionMass[2]?tmp.upgs.ascensionMass[2].eff.eff:1)
                 let ret = step.mul(x).add(1)
+				if(hasAscension(1,16))ret = ret.pow(ascensionEff(1,16));
                 return {step: step, eff: ret}
             },
             effDesc(eff) {
@@ -418,6 +424,7 @@ const UPGS = {
                 let step = player.ascensions[1]
                 step = step.pow(tmp.upgs.ascensionMass[3]?tmp.upgs.ascensionMass[3].eff.eff:1)
                 let ret = step.mul(x).add(1)
+				if(hasAscension(1,18))ret = ret.pow(ascensionEff(1,18));
                 return {step: step, eff: ret}
             },
             effDesc(eff) {
@@ -578,7 +585,8 @@ const UPGS = {
                 cost: E(1e120),
                 effect() {
                     let ret = player.rp.points.max(1).log10().softcap(200,hasUpgrade('rp',23)?0.8:0.75,0).div(1000)
-                    return ret
+                    //if(ret.gte("ee40"))ret = Decimal.pow(10,overflow(ret.log10(),"e40",0.1));
+						return ret;
                 },
                 effDesc(x=this.effect()) {
                     return "+^"+format(x)+(x.gte(0.2)?"<span class='soft'>(softcapped)</span>":"")
@@ -629,6 +637,7 @@ const UPGS = {
                 cost: E('e1e113'),
                 effect() {
                     let ret = player.rp.points.add(1).log10().add(1).log10().sub(111).max(1).log2().add(1);
+					if(hasTree('qp6'))ret = player.rp.points.add(1).log10().add(1).log10().add(1).log10().add(1).pow(3);
                     return ret
                 },
                 effDesc(x=this.effect()) {
@@ -663,7 +672,9 @@ const UPGS = {
                 desc: "Rage Power boost Tickspeed Power.",
                 cost: E('ee1.25e14'),
                 effect() {
-                    let ret = expMult(player.rp.points.add(1e10),player.rp.points.add(1e10).log10().add(1).log10().add(1).log10().div(500).add(0.001));
+                    let ret = expMult(player.rp.points.add(1e10),player.rp.points.add(1e10).log10().add(1).log10().add(1).log10().div(500).add(0.001).min(0.07));
+					if(ret.gte("eee34"))ret = E(10).pow(overflow(ret.log10(),"ee34",0.5));
+					if(ret.gte("eee36"))ret = E(10).pow(overflow(ret.log10(),"ee36",0.5));
                     return ret
                 },
                 effDesc(x=this.effect()) {
@@ -1052,6 +1063,7 @@ const UPGS = {
                 cost: E('e1e101'),
                 effect() {
                     let ret = player.atom.points.add(1).log10().add(1).log10().sub(99).max(1).log2().add(1);
+					if(hasTree('qp5'))ret = player.atom.points.add(1).log10().add(1).log10().add(1).log10().add(1).pow(3);
                     return ret
                 },
                 effDesc(x=this.effect()) {
@@ -1087,7 +1099,7 @@ const UPGS = {
             },
             23: {
                 unl() { return hasUpgrade('exotic',19) },
-                desc: "Atom Upgrade 13 Boost Galactic Quarks.",
+                desc: "Atom Upgrade 18 Boost Galactic Quarks.",
                 cost: E('ee3e11'),
             },
             24: {

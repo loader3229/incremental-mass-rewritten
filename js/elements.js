@@ -318,7 +318,7 @@ function updateMassUpgradesHTML() {
 		if (upg.unl()) {
 			tmp.el["massUpg_scale_"+x].setTxt(getScalingName("massUpg", x))
 			if(x==4)tmp.el["massUpg_scale_"+x].setTxt(getScalingName("massUpg4", x))
-			tmp.el["massUpg_lvl_"+x].setTxt(format(player.massUpg[x]||0,0)+(tmp.upgs.mass[x].bonus.gt(0)?" + "+format(tmp.upgs.mass[x].bonus,0):""))
+			tmp.el["massUpg_lvl_"+x].setTxt(format(player.massUpg[x]||0,0)+(tmp.upgs.mass[x].bonus.gt(0)?(hasAscension(2,1)?" x ":" + ")+format(tmp.upgs.mass[x].bonus,0):""))
 			tmp.el["massUpg_btn_"+x].setClasses({btn: true, locked: player.mass.lt(tmp.upgs.mass[x].cost)})
 			tmp.el["massUpg_cost_"+x].setTxt(formatMass(tmp.upgs.mass[x].cost))
 			tmp.el["massUpg_step_"+x].setTxt(tmp.upgs.mass[x].effDesc.step)
@@ -363,7 +363,7 @@ function updateTickspeedHTML() {
 	if (unl) {
 		let teff = tmp.tickspeedEffect
 		tmp.el.tickspeed_scale.setTxt(getScalingName('tickspeed'))
-		tmp.el.tickspeed_lvl.setTxt(format(player.tickspeed,0)+(teff.bonus.gte(1)?" + "+format(teff.bonus,0):""))
+		tmp.el.tickspeed_lvl.setTxt(format(player.tickspeed,0)+(teff.bonus.gte(1)?(hasAscension(2,1)?" x ":" + ")+format(teff.bonus,0):""))
 		tmp.el.tickspeed_btn.setClasses({btn: true, locked: !FORMS.tickspeed.can()})
 		tmp.el.tickspeed_cost.setTxt(format(tmp.tickspeedCost,0))
 		tmp.el.tickspeed_step.setHTML((teff.step.gte(10)?format(teff.step)+"倍":format(teff.step.sub(1).mul(100))+"%")

@@ -315,13 +315,13 @@ function updateRadiationHTML() {
     let comp = false
     for (let x = 1; x < RAD_LEN; x++) {
         if (x == RAD_LEN-1) comp = true;
-        if (player.supernova.radiation.hz.lt(RADIATION.unls[x]||1/0) || comp) break
+        if (player.supernova.radiation.hz.lt(RADIATION.unls[x]||EINF) || comp) break
         rad_id++
     }
     tmp.el.next_radiation.setTxt()
     tmp.el.nr_div.setDisplay(!comp)
 
-    tmp.el.next_radiation.setTxt(format(RADIATION.unls[rad_id]||1/0))
+    tmp.el.next_radiation.setTxt(format(RADIATION.unls[rad_id]||EINF))
     tmp.el.unl_radiation.setTxt(RADIATION.names[rad_id])
 
     for (let x = 0; x < RAD_LEN; x++) {

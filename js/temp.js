@@ -58,6 +58,7 @@ function resetTemp() {
             maxTier: [[],[],[],[]],
             tiers: [[],[],[],[]],
             effs:  [[],[],[],[]],
+            effs2:  [[],[],[],[]],
             bonuses: [[],[],[],[]],
         },
     

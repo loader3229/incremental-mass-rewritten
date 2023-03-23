@@ -148,6 +148,8 @@ const ETERNITY_LAYER = {
 		let power = E(1)
 		if (hasUpgrade('inf',15))power = power.add(2)
 		if (hasUpgrade('inf',17))power = power.add(3)
+			
+		if(hasElement(486))power = power.add(MATTERS.eff(2));
         x = x.pow(power).sub(1);
 		x = overflow(x,10,2);
 		
@@ -257,6 +259,7 @@ const ETERNITY_LAYER = {
             let pow = E(2)
 			if (hasElement(122)) pow = pow.mul(1.5)
 			if (hasElement(209)) pow = pow.mul(tmp.chal?tmp.chal.eff[19]:1)
+			if (hasChargedElement(122)) pow = pow.pow(1.5)
             let x = pow.pow(player.et.shard_gen)
             return {pow: pow, eff: x}
         },

@@ -11,6 +11,7 @@ const DARK_RUN = {
 		if(hasElement(464))x = x.mul(tmp.elements.effect[464]||1);
 		if (hasPrestige(4,12))x = x.mul(prestigeEff(4,12,E(1)))
 		if (hasAscension(1,14))x = x.mul(ascensionEff(1,14,E(1)))
+		if(hasElement(485))x = x.mul(tmp.elements.effect[485]||1);
 		x = x.mul(SUPERNOVA_GALAXY.effects.em());
 		return x;
     },
@@ -78,7 +79,7 @@ const DARK_RUN = {
             {
                 desc: `Galactic Challenge nerfing is weaker.`,
                 cost(x) { return E(1e13).mul(Decimal.pow(100,x.pow(2))) },
-                maxLvl: 5,
+                maxLvl: 10,
                 bulk() { return player.exotic.dark_run.points.gte(1e13)?player.exotic.dark_run.points.div(1e13).max(1).log10().div(2).pow(1/2).add(1).floor():E(0) },
                 effect(x) {
 					return 1-x.toNumber()/100;
@@ -97,6 +98,7 @@ const DARK_RUN = {
                 maxLvl: 1,
                 bulk() { return player.exotic.dark_run.points.gte(E(5e18))?E(1):E(0) },
                 effect(x) {
+					if(player.exotic.dark_run.upgs[13].gte(1))return Decimal.pow(10,player.md.break.mass.add(1e10).slog().mul(3).sub(4));
 					return Decimal.pow(10,player.md.break.mass.add(1e10).slog());
                 },
                 effDesc(x) { return format(x)+"x"},
@@ -124,7 +126,6 @@ const DARK_RUN = {
             {
                 desc: `Exotic Boosts are stronger.`,
                 cost(x) { return E(10).pow(x.pow(2)).mul(1.619e24) },
-                maxLvl: 5,
                 bulk() { return player.exotic.dark_run.points.gte(1.619e24)?player.exotic.dark_run.points.div(1.619e24).max(1).log10().pow(1/2).add(1).floor():E(0) },
                 effect(x) {
 					return E(1).add(x.sqrt().div(20));
@@ -140,6 +141,33 @@ const DARK_RUN = {
 					return E(0.999).pow(player.exotic.dark_run.points.add(10).log10())
                 },
                 effDesc(x) { return formatReduction(x)+" weaker"},
+            },
+            {
+                desc: `Dark Run Upgrade 9 is better.`,
+                cost(x) { return E(1.989e43) },
+                maxLvl: 1,
+                bulk() { return player.exotic.dark_run.points.gte(E(1.989e43))?E(1):E(0) },
+            },
+            {
+                desc: `Double Dark Ray gain.`,
+                cost(x) { return E(10).pow(x.pow(1.25)).mul(2.9835e45) },
+                bulk() { return player.exotic.dark_run.points.gte(2.9835e45)?player.exotic.dark_run.points.div(2.9835e45).max(1).log10().pow(1/1.25).add(1).floor():E(0) },
+                effect(x) {
+                    let b = 2
+                    return E(b).pow(x)
+                },
+                effDesc(x) { return format(x,0)+"x"},
+            },
+            {
+                desc: `Increase Matter Exponent.`,
+				unl(){ return hasElement(486)},
+                cost(x) { return E(10).pow(x.pow(1.25)).mul(1.5e56) },
+                bulk() { return player.exotic.dark_run.points.gte(1.5e56)?player.exotic.dark_run.points.div(1.5e56).max(1).log10().pow(1/1.25).add(1).floor():E(0) },
+                effect(x) {
+                    let b = 0.1
+                    return E(b).mul(x)
+                },
+                effDesc(x) { return "+"+format(x)},
             },
         ],
     },

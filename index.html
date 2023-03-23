@@ -22,6 +22,7 @@
     <script src="js/saves.js"></script>
     <script src="js/challenges.js"></script>
 	
+    <script src="js/exotic/matters.js"></script>
     <script src="js/exotic/boost.js"></script>
     <script src="js/exotic/exotic.js"></script>
     <script src="js/exotic/dark_run.js"></script>
@@ -799,6 +800,60 @@
                 <div class="table_center">
                     <div id="dr_upg_table" class="table_center" style="width: 1000px;"></div>
                 </div>
+                </div>
+                <div id="stab_frame7_5">
+						Each Matter gain is (10^((slog(previous matter)-1)^<span id="matters_pow"></span>)-10).<br><br>
+                    <div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Exotic Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters_em_amount"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters_em_gain"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+                            <span id="matters_ex">Boost Matter Exponent by <span id="matters_ex_eff"></span></span>
+                        </div>
+                    </div><br><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Dark Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters_dm_amount"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters_dm_gain"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+                            
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Red Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters0_amount" class="red"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters0_gain" class="red"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+                            Multiply Exotic Matter gain by <span id="matters0_eff"></span>
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Pink Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters1_amount" style="color:#ff009d;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters1_gain" style="color:#ff009d;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+                            Meta-Supernova is <span id="matters1_eff"></span> weaker
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Magenta Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters2_amount" class="magenta"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters2_gain" class="magenta"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Add <span id="matters2_eff"></span> to base Eternal Mass gain Exponent
+                        </div>
+                    </div>
                 </div>
         </div><div id="tab_frame8">
             <button class="btn" onclick="save()">Save</button>

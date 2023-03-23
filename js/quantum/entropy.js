@@ -213,6 +213,7 @@ const ENTROPY = {
 				if (i == 7 && hasElement(398)) p = 1
 				if (i == 6 && hasAscension(0, 22)) p = 1
 				if (i == 2 && hasAscension(0, 42)) p = p ** 0.8
+				if (i == 2 && hasAscension(1, 21)) p = p ** 0.8
 				if (i == 2 && hasChargedElement(96)) p = p ** 0.9
 				if (i == 2 && hasChargedElement(106)) p = p ** 0.85
             r = r.scale(rc.scale.s, p, 0)
@@ -252,6 +253,7 @@ const ENTROPY = {
 				if (i == 7 && hasElement(398)) p = 1
 				if (i == 6 && hasAscension(0, 22)) p = 1
 				if (i == 2 && hasAscension(0, 42)) p = p ** 0.8
+				if (i == 2 && hasAscension(1, 21)) p = p ** 0.8
 				if (i == 2 && hasChargedElement(96)) p = p ** 0.9
 				if (i == 2 && hasChargedElement(106)) p = p ** 0.85
                 x = x.scale(rc.scale.s, p, 0, true)

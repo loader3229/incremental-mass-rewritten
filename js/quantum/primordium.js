@@ -2,12 +2,12 @@ const PRIM = {
     unl() { return hasTree('unl2') },
     getTheorems() {
         let b = tmp.prim.t_base
-        let x = player.qu.bp.max(1).log(b).mul(2)
+        let x = player.qu.bp.max(1).log(b).mul(hasChargedElement(131)?2.2:2)
         return x.floor()
     },
     getNextTheorem() {
         let b = tmp.prim.t_base
-        let x = E(b).pow(player.qu.prim.theorems.div(2).add(0.5))
+        let x = E(b).pow(player.qu.prim.theorems.add(1).div(hasChargedElement(131)?2.2:2))
 
         return x
     },
@@ -63,6 +63,7 @@ const PRIM = {
 						y = y.add(100000);
 					}
 				}
+				if(x.gte(1e49))x = Decimal.pow(10,x.log10().sqrt().mul(7));
 				if(hasElement(427)) x = x.mul(10)
                 return x
             },

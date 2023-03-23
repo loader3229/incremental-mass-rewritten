@@ -49,7 +49,7 @@ const FERMIONS = {
     bonus(i,j) {
 		if (i >= 2 || player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3"))return E(0)
         let x = E(0)
-        if (hasTree("prim3")) x = x.add(tmp.prim.eff[5][1].min(j>(hasTree('fn15')?5:hasTree('fn14')?4:2)?4:1/0))
+        if (hasTree("prim3")) x = x.add(tmp.prim.eff[5][1].min(j>(hasTree('fn15')?5:hasTree('fn14')?4:2)?4:EINF))
         return x
     },
     fp() {
@@ -452,8 +452,15 @@ const FERMIONS = {
                     let x = Decimal.pow(1e10,t.pow(3))
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(100)
+                    return x
+                },
                 desc(x) {
                     return `Boost Atomic Powers gain by ^${format(x)}`
+                },
+                desc2(x) {
+                    return `Boost Atomic Powers gain exponent by ^${format(x)}`
                 },
                 inc: "[Up] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Atomic Powers gain is set to log10(Atomic Powers gain).",
@@ -474,10 +481,18 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = Decimal.pow(1e10,t.pow(2))
+					if(hasElement(503))x = x.pow(tmp.fermions.effs2[2][1]||E(1))
+                    return x
+                },
+                eff2(i, t) {
+                    let x = t.max(100).sub(99).pow(2)
                     return x
                 },
                 desc(x) {
                     return `Boost Dilated Mass gain by ^${format(x)}`
+                },
+                desc2(x) {
+                    return `Boost the effect above by ^${format(x)}`
                 },
                 inc: "[Down] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Relativistic Particle gain is set to log10(Relativistic Particle gain).",
@@ -500,8 +515,15 @@ const FERMIONS = {
                     let x = Decimal.pow(1e100,t.pow(3))
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(1000).add(0.9)
+                    return x
+                },
                 desc(x) {
                     return `Boost Mass gain by ^${format(x)}`
+                },
+                desc2(x) {
+                    return `Boost Mass gain exponent by ^${format(x)}`
                 },
                 inc: "[Charm] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenges 13,20.",
@@ -524,8 +546,15 @@ const FERMIONS = {
                     let x = Decimal.pow(1e200,t.pow(3))
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(1000).add(0.9)
+                    return x
+                },
                 desc(x) {
                     return `Boost Rage Power gain by ^${format(x)}`
+                },
+                desc2(x) {
+                    return `Boost Rage Power gain exponent by ^${format(x)}`
                 },
                 inc: "[Strange] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Rage Power gain is set to log10(Rage Power gain).",
@@ -548,8 +577,15 @@ const FERMIONS = {
                     let x = Decimal.pow(100,t)
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(100)
+                    return x
+                },
                 desc(x) {
                     return `Boost Galactic Radiation gain by ${format(x)}x`
+                },
+                desc2(x) {
+                    return `Boost Galactic Radiation gain by ^${format(x)}`
                 },
                 inc: "[Top] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Dilated Mass gain is set to log10(Dilated Mass gain)^10.",
@@ -570,10 +606,18 @@ const FERMIONS = {
                 },
                 eff(i, t) {
                     let x = t.add(1).pow(1.5)
+					if(hasElement(503))x = x.pow(tmp.fermions.effs2[2][5]||E(1))
+                    return x
+                },
+                eff2(i, t) {
+                    let x = t.max(100).div(100)
                     return x
                 },
                 desc(x) {
                     return `Raise [Bottom]'s effect to a power of `+format(x)+`.`
+                },
+                desc2(x) {
+                    return `Boost the effect above by ^${format(x)}`
                 },
                 inc: "[Bottom] Tiers",
                 cons: "First 5 Galactic U-Quarks are applied at once. Also, Tickspeed Power is set to log10(Tickspeed Power).",
@@ -597,8 +641,15 @@ const FERMIONS = {
                     let x = Decimal.pow(1e10,t.pow(3))
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(100)
+                    return x
+                },
                 desc(x) {
                     return `Boost Collapsed Star gain by ^${format(x)}`
+                },
+                desc2(x) {
+                    return `Boost Collapsed Star gain exponent by ^${format(x)}`
                 },
                 inc: "[Electron] Tiers",
                 cons: "You are trapped in all U-Leptons and Challenges 13,16. Quark gain is set to log10(Quark gain).",
@@ -621,8 +672,15 @@ const FERMIONS = {
                     let x = Decimal.pow(1e3,t)
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(100)
+                    return x
+                },
                 desc(x) {
                     return `Boost Galactic Bosons gain by ${format(x)}x`
+                },
+                desc2(x) {
+                    return `Boost Galactic Bosons gain by ^${format(x)}`
                 },
                 inc: "[Muon] Tiers",
                 cons: "You are trapped in all U-Leptons and Challenges 13,16. BH mass gain is set to log10(BH mass gain)^100.",
@@ -644,10 +702,18 @@ const FERMIONS = {
                 eff(i, t) {
                     let x = t.add(1)
 					if(hasElement(320))x=x.pow(1.75)
+					if(hasElement(503))x = x.pow(tmp.fermions.effs2[3][2]||E(1))
+                    return x
+                },
+                eff2(i, t) {
+                    let x = t.max(100).div(100)
                     return x
                 },
                 desc(x) {
                     return `Accelerator effect softcap ^1-^2 starts ${format(x)}x later`
+                },
+                desc2(x) {
+                    return `Boost the effect above by ^${format(x)}`
                 },
                 inc: "[Tau] Tiers",
                 cons: "You are trapped in all U-Leptons and Challenges 13,16. Dark Matter gain is set to log10(Dark Matter gain)^5.",
@@ -671,8 +737,15 @@ const FERMIONS = {
 					if(hasAscension(0,14))x = Decimal.pow(10, t)
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(100)
+                    return x
+                },
                 desc(x) {
                     return `Meta-Pent starts ${format(x)}x later`
+                },
+                desc2(x) {
+                    return `Meta-Hept starts ${format(x)}x later`
                 },
                 inc: "[Neutrino] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Collapsed Star gain is set to log10(Collapsed Star gain).",
@@ -695,8 +768,15 @@ const FERMIONS = {
                     let x = Decimal.pow(hasAscension(1,12)?0.99:0.997,t.pow(hasAscension(1,12)?0.75:0.5));
                     return x
                 },
+                eff2(i, t) {
+                    let x = t.max(100).div(100).pow(-1)
+                    return x
+                },
                 desc(x) {
                     return `Meta-Supernova scaling is ${format(E(100).sub(x.mul(100)))}% weaker`
+                },
+                desc2(x) {
+                    return `Super Supernova Galaxies is ${format(E(100).sub(x.mul(100)))}% weaker`
                 },
                 inc: "[Neut-Muon] Tiers",
                 cons: "You are trapped in all U-Quarks and Challenge 13. Atom gain is set to log10(Atom gain)^3000.",
@@ -719,7 +799,14 @@ const FERMIONS = {
                     let x = overflow(t,11,2).add(1).pow(2)
                     return x
                 },
+                eff2(i, t) {
+                    let x = overflow(t.max(100).sub(100),10,2).add(1).pow(2)
+                    return x
+                },
                 desc(x) {
+                    return `Boost Galactic Quark gain by `+format(x)+"x";
+                },
+                desc2(x) {
                     return `Boost Galactic Quark gain by `+format(x)+"x";
                 },
                 inc: "[Neut-Tau] Tiers",
@@ -796,6 +883,7 @@ function updateFermionsTemp() {
             tf.maxTier[i][x] = typeof f.maxTier == "function" ? f.maxTier() : f.maxTier||1/0
             tf.tiers[i][x] = f.calcTier().min(tf.maxTier[i][x])
             tf.effs[i][x] = f.eff(player.supernova.fermions.points[i],player.supernova.fermions.tiers[i][x])
+            tf.effs2[i][x] = f.eff2(player.supernova.fermions.points[i],player.supernova.fermions.tiers[i][x])
         }
     }
 }
@@ -853,7 +941,7 @@ function updateFermionsHTML() {
                 tmp.el[id+"_nextTier"].setTxt(format(f.nextTierAt(player.supernova.fermions.tiers[i][x]),0))
                 tmp.el[id+"_tier_scale"].setTxt(getScalingName('gfTier', i, x))
                 tmp.el[id+"_tier"].setTxt(format(player.supernova.fermions.tiers[i][x],0)+(tmp.fermions.maxTier[i][x] < Infinity?" / "+format(tmp.fermions.maxTier[i][x],0):"") + (tmp.fermions.bonuses[i][x].gt(0)?" + "+tmp.fermions.bonuses[i][x].format():""))
-                tmp.el[id+"_desc"].setHTML(f.desc(tmp.fermions.effs[i][x]))
+                tmp.el[id+"_desc"].setHTML(f.desc(tmp.fermions.effs[i][x])+(hasElement(503)?"<br>"+f.desc2(tmp.fermions.effs2[i][x]):""))
 
                 tmp.el[id+"_cur"].setDisplay(active)
                 if (active) {
