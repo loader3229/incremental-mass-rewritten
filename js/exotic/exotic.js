@@ -11,6 +11,7 @@ const EXOTIC = {
         if (hasPrestige(4,15)) x = x.mul(prestigeEff(4,15,E(1)));
 		if (player.ranks.oct.gte(34)) x = x.mul(RANKS.effect.oct[34]())
 		if (player.ranks.enne.gte(5)) x = x.mul(RANKS.effect.enne[5]())
+		if (player.ranks.enne.gte(101)) x = x.mul(RANKS.effect.enne[101]())
 		if(hasUpgrade('exotic', 15)){
 			x = x.mul(tmp.ex.dsEff.ex);
 		}
@@ -120,6 +121,9 @@ const EXOTIC = {
         if (hasPrestige(4,8)) x = x.mul(prestigeEff(4,8,E(1)));
 		if(player.exotic.dark_run.upgs[2].gte(1))x = x.mul(tmp.dark_run.upgs[2].eff);
 		if(player.exotic.dark_run.upgs[14].gte(1))x = x.mul(tmp.dark_run.upgs[14].eff);
+        if (hasTree('qp21')) x = x.mul(treeEff('qp21'));
+        if (hasTree('qp22')) x = x.mul(treeEff('qp22'));
+		if(hasElement(486))x = x.mul(MATTERS.eff(12));
 		return x;
     },
     dsGain(){
@@ -147,6 +151,7 @@ const EXOTIC = {
 		if(hasElement(445))x = x.mul(tmp.elements.effect[445]);
 		if(player.superCluster.gte(7))x = x.mul(SUPERNOVA_CLUSTER.effects.eff1());
 		if(player.exotic.dark_run.upgs[9].gte(1))x = x.mul(tmp.dark_run.upgs[9].eff);
+		if(hasElement(486))x = x.mul(MATTERS.eff(11));
 		return x;
     },
     drEff(){
@@ -156,7 +161,10 @@ const EXOTIC = {
 		if(hasElement(456))x.ex = player.exotic.dr.pow(0.4);
 		if(hasElement(480))x.ex = player.exotic.dr.pow(0.55);
 		if(hasElement(504))x.ex = player.exotic.dr.pow(0.7);
+		if(hasElement(514))x.ex = player.exotic.dr.pow(0.85);
+		if(hasElement(518))x.ex = player.exotic.dr;
 		if(hasElement(456))x.gm = player.exotic.dr.add(10).log10();
+		if(hasElement(524))x.me = player.exotic.dr.add(10).log10().div(100);
 		return x;
     },
     dsEff(){
@@ -179,6 +187,7 @@ const EXOTIC = {
 		let x = {ds:player.exotic.ab.add(1).log10().add(1).pow(2),exb:player.exotic.ab.add(1).log10().div(100).add(1).sqrt()};
 		if(hasElement(420))x.csp = player.exotic.ab.add(10).log10().pow(2);
 		if(hasElement(436))x.em = player.exotic.ab.add(1);
+		if(hasElement(512))x.me = player.exotic.ab.add(1e100).log10().div(100).log10();
 		return x;
     },
 }
@@ -288,7 +297,8 @@ function updateExoticHTML(){
 			tmp.el.drEff.setHTML(`
 					Boosts dark shadow gain by <b>x${tmp.ex.drEff.ds.format(3)}</b><br>`+
 					(hasElement(406)?`Boosts exotic matter gain by <b>x${tmp.ex.drEff.ex.format(3)}</b><br>`:"")+
-					(hasElement(456)?`Boosts glyphic mass gain by <b>x${tmp.ex.drEff.gm.format(3)}</b><br>`:"")
+					(hasElement(456)?`Boosts glyphic mass gain by <b>x${tmp.ex.drEff.gm.format(3)}</b><br>`:"")+
+					(hasElement(524)?`Add <b>${tmp.ex.drEff.me.format(3)}</b> to Matter Exponent<br>`:"")
 				);
 			tmp.el.dsEff.setHTML(`
 					Boosts exotic matter gain by <b>x${tmp.ex.dsEff.ex.format(3)}</b><br>
@@ -306,7 +316,8 @@ function updateExoticHTML(){
 					Exotic boosts are <b>x${tmp.ex.abEff.exb.format(3)}</b> stronger<br>`+
 					(hasElement(420)?`Boosts Cosmic String power by <b>x${tmp.ex.abEff.csp.format(3)}</b><br>`:"")+
 					(hasElement(426)?`Boosts dark ray gain by <b>x${tmp.ex.abEff.ds.format(3)}</b><br>`:"")+
-					(hasElement(436)?`Boosts eternal mass gain by <b>x${tmp.ex.abEff.em.format(3)}</b><br>`:"")
+					(hasElement(436)?`Boosts eternal mass gain by <b>x${tmp.ex.abEff.em.format(3)}</b><br>`:"")+
+					(hasElement(512)?`Add <b>${tmp.ex.abEff.me.format(3)}</b> to Matter Exponent<br>`:"")
 				);
         }
         if (tmp.stab[7] == 4) {
@@ -325,9 +336,24 @@ function updateExoticHTML(){
 			}
 			tmp.el.matters0_eff.setTxt(format(MATTERS.eff(0)));
 			tmp.el.matters1_eff.setTxt(formatReduction(MATTERS.eff(1)));
+			tmp.el.matters1_eff2.setTxt(format(MATTERS.eff(1).pow(-1)));
+			if(player.exotic.matters[1].gte("1e200"))tmp.el.matters1_eff2a.changeStyle('display','');
+			else tmp.el.matters1_eff2a.changeStyle('display','none');
+			if(player.exotic.matters[1].gte("1e200"))tmp.el.matters1_eff1a.changeStyle('display','none');
+			else tmp.el.matters1_eff1a.changeStyle('display','');
 			tmp.el.matters2_eff.setTxt(format(MATTERS.eff(2)));
+			tmp.el.matters3_eff.setTxt(format(MATTERS.eff(3)));
+			tmp.el.matters4_eff.setTxt(format(MATTERS.eff(4)));
+			tmp.el.matters5_eff.setTxt(format(MATTERS.eff(5)));
+			tmp.el.matters6_eff.setTxt(format(MATTERS.eff(6)));
+			tmp.el.matters7_eff.setTxt(format(MATTERS.eff(7)));
+			tmp.el.matters8_eff.setTxt(format(MATTERS.eff(8)));
+			tmp.el.matters9_eff.setTxt(format(MATTERS.eff(9)));
+			tmp.el.matters10_eff.setTxt(format(MATTERS.eff(10)));
+			tmp.el.matters11_eff.setTxt(format(MATTERS.eff(11)));
+			tmp.el.matters12_eff.setTxt(format(MATTERS.eff(12)));
 			tmp.el["matters_ex"].changeStyle('display',hasElement(487)?'':'none');
-			tmp.el.matters_ex_eff.setTxt("+"+format(player.exotic.points.add(10).log10().div(100).sub(1).mul(hasElement(495)?2:1)));
+			tmp.el.matters_ex_eff.setTxt("+"+format(MATTERS.exeff()));
         }
 }
 

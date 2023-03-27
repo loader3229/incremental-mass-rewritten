@@ -64,6 +64,7 @@ const QCs = {
 				if(hasPrestige(0,99))i *= 0.92
 				if(hasPrestige(1,28))i *= 0.92
 				if(hasElement(143))i *= 0.95
+				if(hasChargedElement(143))i *= 0.95
 				if(hasPrestige(1,39))i *= 0.95
 				if(hasElement(154))i *= 0.95
 				if(hasElement(172))i *= 0.94

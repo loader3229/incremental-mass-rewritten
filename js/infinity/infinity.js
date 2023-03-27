@@ -14,6 +14,7 @@ const INFINITY_LAYER = {
 		if (hasElement(205))power = power.add(tmp.chal?tmp.chal.eff[18]:0);
 		if (hasAscension(0,9))power = power.add(ascensionEff(0,9));
 		power = power.add(SUPERNOVA_CLUSTER.effects.eff4())
+		if(hasElement(486))power = power.add(MATTERS.eff(10));
 		if (hasElement(146)){
 			let z = player.qu.en.amt.add(1).log(Number.MAX_VALUE);
 			if (z.lt(1)) z=E(1)
@@ -36,6 +37,11 @@ const INFINITY_LAYER = {
 		}
 		if (hasElement(455)){
 			let z = player.galQk.add(1).log(Number.MAX_VALUE).pow(2);
+			if (z.lt(1)) z=E(1)
+			x = x.mul(z)
+		}
+		if (hasChargedElement(146)){
+			let z = player.exotic.points.add(1).log(Number.MAX_VALUE).pow(2);
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
@@ -336,5 +342,6 @@ function calcShardsEffect() {
 	if(hasElement(431))eff = eff.pow(1.2);
 	if(hasElement(437))eff = eff.pow(1.2741059573015495880509654614338);
 	if(hasElement(457))eff = eff.pow(1.125);
+	if(hasChargedElement(148))eff = eff.pow(1.1);
 	return eff;
 }

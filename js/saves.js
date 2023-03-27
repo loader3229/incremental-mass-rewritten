@@ -347,6 +347,7 @@ function getPlayerData() {
 			},
 		},
 		superCluster: E(0),
+		stardust: E(0),
     }
     for (let x = 0; x < EXOTIC_BOOST_LENGTH; x++) s.exotic.boosts.push(E(0))
     for (let x = 0; x < MATTERS_LENGTH; x++) s.exotic.matters.push(E(0))

@@ -163,6 +163,8 @@ const UPGS = {
 				if (hasChargedElement(85))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.997;
 				if (hasChargedElement(110))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.95;
 				if (hasElement(478))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.986;
+				if (hasElement(516))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.75;
+				if (hasElement(521))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.9;
 				tmp.strongerOverflow = overflow(ret, "e4e6", tmp.strongerOverflowPower).log(ret);
 				ret = overflow(ret, "e4e6", tmp.strongerOverflowPower);
                 return {step: step, eff: ret, ss: ss}
@@ -314,7 +316,7 @@ const UPGS = {
                 if (hasPrestige(2,53)) step = step.mul(prestigeEff(2,53))
                 if (hasPrestige(3,11)) step = step.mul(prestigeEff(3,11))
                 step = step.mul(tmp.upgs.prestigeMass[4]?tmp.upgs.prestigeMass[4].eff.eff:1)
-				let ret = step.mul(x).add(1).softcap(2000,0.5,0);
+				let ret = step.mul(x).add(1).softcap(2000,hasAscension(1,35)?0.65:(1,32)?0.6:hasAscension(1,31)?0.55:0.5,0);
                 return {step: step, eff: ret, ss: 2000}
             },
             effDesc(eff) {
@@ -550,10 +552,12 @@ const UPGS = {
                 desc: "Super, Hyper Mass Upgrades scaling is weaker by Rage Points.",
                 cost: E(1e15),
                 effect() {
+					if(hasElement(526))return E(0);
                     let ret = E(0.9).pow(player.rp.points.max(1).log10().max(1).log10().pow(1.25).softcap(2.5,0.5,0))
                     return ret
                 },
                 effDesc(x=this.effect()) {
+					if(hasElement(526))return format(E(1).sub(x).mul(100))+"% weaker";
                     return format(E(1).sub(x).mul(100))+"% weaker"+(x.log(0.9).gte(2.5)?"<span class='soft'>(softcapped)</span>":"")
                 },
             },
@@ -572,10 +576,12 @@ const UPGS = {
                 desc: "Black Hole mass's gain is boosted by Rage Points.",
                 cost: E(1e72),
                 effect() {
+					if(hasElement(526))return player.rp.points.add(1).root(10);
                     let ret = player.rp.points.add(1).root(10).softcap('e4000',0.1,0)
                     return overflow(ret,"ee11000",0.5);
                 },
                 effDesc(x=this.effect()) {
+					if(hasElement(526))return format(x)+"x";
                     return format(x)+"x"+(x.gte("e4000")?"<span class='soft'>(softcapped)</span>":"")
                 },
             },
@@ -584,11 +590,12 @@ const UPGS = {
                 desc: "For every OoM of Rage Powers adds Stronger Power at a reduced rate.",
                 cost: E(1e120),
                 effect() {
+					if(hasElement(526))return player.rp.points.max(1).log10().div(1000);
                     let ret = player.rp.points.max(1).log10().softcap(200,hasUpgrade('rp',23)?0.8:0.75,0).div(1000)
-                    //if(ret.gte("ee40"))ret = Decimal.pow(10,overflow(ret.log10(),"e40",0.1));
-						return ret;
+					return ret;
                 },
                 effDesc(x=this.effect()) {
+					if(hasElement(526))return "+^"+format(x);
                     return "+^"+format(x)+(x.gte(0.2)?"<span class='soft'>(softcapped)</span>":"")
                 },
             },
@@ -673,8 +680,9 @@ const UPGS = {
                 cost: E('ee1.25e14'),
                 effect() {
                     let ret = expMult(player.rp.points.add(1e10),player.rp.points.add(1e10).log10().add(1).log10().add(1).log10().div(500).add(0.001).min(0.07));
-					if(ret.gte("eee34"))ret = E(10).pow(overflow(ret.log10(),"ee34",0.5));
-					if(ret.gte("eee36"))ret = E(10).pow(overflow(ret.log10(),"ee36",0.5));
+					if(!hasElement(526))if(ret.gte("eee34"))ret = E(10).pow(overflow(ret.log10(),"ee34",0.5));
+					if(!hasElement(526))if(ret.gte("eee36"))ret = E(10).pow(overflow(ret.log10(),"ee36",0.5));
+					if(ret.gte("eee55"))ret = overflow(ret,"eee55",0.5);
                     return ret
                 },
                 effDesc(x=this.effect()) {
@@ -1240,9 +1248,10 @@ const UPGS = {
                 effect() {
                     let x = player.qu.rip.amt.add(1).log10().add(1).log10().add(1).pow(1.5);
 					if(hasElement(313))x = expMult(player.qu.rip.amt.add(100),0.75);
+					x = overflow(x,"ee50",0.5);
                     return x
                 },
-                effDesc(x=this.effect()) { return "^"+format(x) },
+                effDesc(x=this.effect()) { return "^"+format(x)+softcapHTML(x,"ee50") },
             },
             21: {
                 unl() { return hasUpgrade('exotic',19) },

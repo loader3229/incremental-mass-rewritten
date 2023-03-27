@@ -101,6 +101,7 @@ const FORMS = {
         if (hasChargedElement(117) && x.gte(10)) x = expMult(x,1.01)
 		
 		if(hasElement(503) && x.gte(10))x = expMult(x,tmp.fermions.effs2[2][2]||E(1))
+		if(hasElement(530))x = expMult(x,tmp.stars.effectExpPower||E(1))
 		
 		if (CHALS.inChal(20)) x = x.add(1).log10()
 		
@@ -386,6 +387,9 @@ const FORMS = {
 			if(hasPrestige(4,20))p2 = p2 ** 0.95
 			if(hasElement(499))p2 = p2 ** 0.9
 			if(hasChargedElement(134))p2 = p2 ** 0.95
+			if(hasChargedElement(137))p2 = p2 ** 0.97
+			if(hasElement(525))p2 = p2 ** 0.95
+			if(hasElement(532))p2 = p2 ** 0.9
 			if(hasChargedElement(102))ss = ss.mul(100)
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
@@ -410,10 +414,13 @@ const FORMS = {
         effect() {
             let t = player.prestigeTickspeed
 			let step = tmp.ascensions.base || E(1);
-			let ss = E("1e1000")
+			let ss = E("1e10000000")
             let p = 0.1
 			
 			if(hasAscension(1,7))step = step.pow(5)
+			if(hasAscension(1,33))step = step.pow(10)
+			if(hasAscension(1,34))step = step.pow(10)
+			if(hasAscension(1,36))step = step.pow(10)
 			
 			step = step.softcap(ss,p,0)
 			let bonus = E(0)

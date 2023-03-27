@@ -1148,7 +1148,7 @@ const ELEMENTS = {
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
-            cdesc: `Each charged element after Oganesson multiplies your Galactic Quarks gain and Exotic Matter gain by 2.`,
+            cdesc: `Each charged element after Oganesson multiplies your Exotic Matter gain by 2.`,
             ccost: uni("3.3333e3333333"),
 			ceffect() {
 				let x = E(1)
@@ -1164,6 +1164,7 @@ const ELEMENTS = {
 				let x = player.inf.points.add(10).log10();
 				if(hasChargedElement(121))x = overflow(x,10,3);
 				if(hasElement(142))x = x.pow(2)
+				if(hasChargedElement(142))x = x.pow(2)
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -1246,6 +1247,8 @@ const ELEMENTS = {
 				if(hasElement(157))x = x.pow(1.2);
 				if(hasElement(221))x = x.pow(1.63);
 				if(hasChargedElement(128))x = x.pow(21.3);
+				if(hasChargedElement(140))x = x.pow(2.5);
+				if(hasChargedElement(147))x = x.pow(1.2);
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -1301,7 +1304,7 @@ const ELEMENTS = {
 			},
 			effDesc(x) { return format(x)+"x to power" },
             cdesc: `This Element is better.`,
-            ccost: uni("e69900"),
+            ccost: uni("e69000"),
 		},
 		{
 			desc: `加速器加成量子之前所有资源获取速度。`,
@@ -1314,17 +1317,19 @@ const ELEMENTS = {
 			},
 			effDesc(x) { return format(x)+"x" },
             cdesc: `This Element is better.`,
-            ccost: uni("e69900"),
+            ccost: uni("e58000"),
 		},
 		{
 			desc: `加速器加成时间速度倍率。`,
 			cost: E("1.9890000001e37"),
             cdesc: `Accelerator Effect Softcap^2 is weaker.`,
-            ccost: uni("e19000000"),
+            ccost: uni("e18888888"),
 		},
 		{
 			desc: `Entropic Condenser^2 is 15% weaker.`,
 			cost: E("1.9890000001e37"),
+            cdesc: `Entropic Evaporation^2 is 15% weaker.`,
+            ccost: uni("e22000000"),
 		},
 		{
 			desc: `永恒次数加成熵获取。`,
@@ -1335,55 +1340,79 @@ const ELEMENTS = {
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
+            cdesc: `Entropic Evaporation^2 is 15% weaker.`,
+            ccost: uni("e88888"),
 		},
 		{
 			desc: `128号元素变得更好。`,
 			cost: E("1.6190000001e21"),
 			et: true,
+            cdesc: `This element is better.`,
+            ccost: uni("e99000"),
 		},
 		{
 			desc: `Entropic Radiation^2 is 20% weaker.`,
 			cost: E("2.98350000001e45"),
+            cdesc: `Entropic Evaporation^2 is 15% weaker.`,
+            ccost: uni("e3e7"),
 		},
 		{
 			desc: `121号元素的效果变为原来的平方。`,
 			cost: E("2.98350000001e45"),
+            cdesc: `Element 121 is squared.`,
+            ccost: uni("e4e7"),
 		},
 		{
 			desc: `QC Modifier 'Intense Catalyst' is 5% weaker.`,
 			cost: E("1.6190000001e26"),
 			et: true,
+            cdesc: `QC Modifier 'Intense Catalyst' is 5% weaker.`,
+            ccost: uni("e144000"),
 		},
 		{
 			desc: `Entropic Condenser^2 is 15% weaker.`,
 			cost: E("1.6190000001e27"),
 			et: true,
+            cdesc: `Entropic Evaporation^2 is 15% weaker.`,
+            ccost: uni("e144000"),
 		},
 		{
 			desc: `获得10倍的转生质量。`,
 			cost: E("2.98350000001e53"),
+            cdesc: `Base Prestige Mass gain ^1.1`,
+            ccost: uni("e56000000"),
 		},
 		{
 			desc: `使高于1.8e308的熵加成基础无限质量获取。`,
 			cost: uni(1),
+            cdesc: `Exotic Matter Post-1.8e308 added to base Infinity Mass gain formula.`,
+            ccost: uni("e56000000"),
 		},
 		{
 			desc: `128号元素的效果变为原来的1.2次方。`,
 			cost: E("5.9720000001e30"),
 			et: true,
+            cdesc: `Element 128's effect ^1.2.`,
+            ccost: uni("e180000"),
 		},
 		{
 			desc: `Timeshard effect is slightly stronger.`,
 			cost: E("5.9720000001e31"),
 			et: true,
+			cdesc: `Timeshard effect is slightly stronger.`,
+            ccost: uni("e181000"),
 		},
 		{
 			desc: `使六重阶层的超级折算弱化5%。`,
 			cost: uni(1e5),
+            cdesc: `Meta-Hept is 5% weaker.`,
+            ccost: uni("e63000000"),
 		},
 		{
 			desc: `降低七重阶层的需求。`,
 			cost: uni(1e7),
+            cdesc: `This element is better.`,
+            ccost: uni("e64000000"),
 		},
 		{
 			desc: `Entropic Condenser^2 is 15% weaker.`,
@@ -2888,7 +2917,7 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Unlock the 21th Challenge.`,
+			desc: `Unlock the 21st Challenge.`,
 			cost: E("3e75"),
 			exotic: true,
 		},
@@ -3107,7 +3136,7 @@ const ELEMENTS = {
 			et: true,
 		},
 		{
-			desc: `Unlock the 22th Challenge.`,
+			desc: `Unlock the 22nd Challenge.`,
 			cost: E("2e124"),
 			exotic: true,
 		},
@@ -3293,8 +3322,139 @@ const ELEMENTS = {
 			galQk: true,
 		},
 		{
-			desc: `Reach the current endgame.`,
+			desc: `Unlock more Neutron Tree upgrades.`,
 			cost: E("2e137"),
+			ds: true,
+		},
+		{
+			desc: `Super Galactic Fermion Tiers Starts 1.25x later`,
+			cost: E("5e621"),
+			galQk: true,
+		},
+		{
+			desc: `Unlock a new effect of Abyssal Blot.`,
+			cost: E("2e142"),
+			ds: true,
+		},
+		{
+			desc: `Eternal Mass boost Magenta Matter gain.`,
+			cost: uni("e61500"),
+			et: true,
+			effect() {
+				let x = player.et.points.add(1).log10().add(1).log10().add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Dark Ray's 2nd effect is better.`,
+			cost: E("1e221"),
+			exotic: true,
+		},
+		{
+			desc: `Collapsed Stars Effect is better.`,
+			cost: uni('e15555555'),
+		},
+		{
+			desc: `Stronger Overflow is weaker.`,
+			cost: E("ee1.5e32"),
+			qk: true,
+		},
+		{
+			desc: `Purple Matter boost Stardust gain.`,
+			cost: E("1e727"),
+			galQk: true,
+		},
+		{
+			desc: `Dark Ray's 2nd effect is better.`,
+			cost: E("2e152"),
+			ds: true,
+		},
+		{
+			desc: `Change the effect of C5.`,
+			cost: uni("e84000"),
+			et: true,
+		},
+		{
+			desc: `Meta-Fermion Tier scales later based on Primordium Theorems.`,
+			cost: E("5e268"),
+			exotic: true,
+			effect() {
+				let x = player.qu.prim.theorems.div(1e7).add(1);
+				return x
+			},
+			effDesc(x) { return format(x)+"x later"; },
+		},
+		{
+			desc: `Stronger Overflow is better.`,
+			cost: uni('e22600000'),
+		},
+		{
+			desc: `Collapsed Stars Effect is better.`,
+			cost: E("ee1.6666e35"),
+			qk: true,
+		},
+		{
+			desc: `Galactic Particles Effect is better.`,
+			cost: E("2e782"),
+			galQk: true,
+		},
+		{
+			desc: `Unlock a new effect of Dark Ray.`,
+			cost: E("5e156"),
+			ds: true,
+		},
+		{
+			desc: `Accelerator Effect Softcap^2 is weaker.`,
+			cost: uni("e100000"),
+			et: true,
+		},
+		{
+			desc: `Remove the softcaps of Rage Power Upgrades 8, 11 and 12. Rage Power Upgrade 22 is better.`,
+			cost: E("4e282"),
+			exotic: true,
+		},
+		{
+			desc: `C20 effect is better.`,
+			cost: uni('e29000000'),
+		},
+		{
+			desc: `Meta-Fermion Tier is weaker based on Primordium Theorems.`,
+			cost: E("ee2e37"),
+			qk: true,
+			effect() {
+				let x = player.qu.prim.theorems.add(1).pow(-1);
+				return x
+			},
+			effDesc(x) { return "Strength of Meta-Fermion Tier scaling /"+format(x.pow(-1)); },
+		},
+		{
+			desc: `Remove a softcap of Beta Particles Effect.`,
+			cost: uni("e110000"),
+			et: true,
+		},
+		{
+			desc: `Collapsed Stars gain a new effect.`,
+			cost: E("4e282"),
+			exotic: true,
+		},
+		{
+			desc: `Increase Collapsed Star's first effect. Collapsed Star's first and second effects are permanently maxed.`,
+			cost: uni('e37500000'),
+		},
+		{
+			desc: `Accelerator Effect Softcap^2 is weaker.`,
+			cost: E("ee1.1111e44"),
+			qk: true,
+		},
+		{
+			desc: `Galactic Particles Effect is better.`,
+			cost: E("1e1085"),
+			galQk: true,
+		},
+		{
+			desc: `Reach the current endgame.`,
+			cost: E("5e173"),
 			ds: true,
 		},
 	],
@@ -3310,7 +3470,8 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
-		if(hasElement(486))return 510;
+		if(hasElement(486)&&player.superCluster.gte(14))return 534;
+		if(hasElement(486))return 516;
 		if(hasElement(476))return 486;
 		if(hasElement(450))return 476;
 		if(hasElement(438))return 450;

@@ -2,12 +2,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Incremental Mass Rewritten (loader3229's NG+) original made by MrRedShark77, modded by loader3229, based on v0.5" />
+    <meta name="description" content="Incremental Mass Rewritten (loader3229's v0.5 NG+) original made by MrRedShark77, modded by loader3229, based on v0.5" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://qq1010903229.github.io/incremental-mass-rewritten/" />
-    <meta property="og:title" content="Incremental Mass Rewritten  (loader3229's NG+)" />
-    <meta property="og:description" content="Incremental Mass Rewritten (loader3229's NG+) original made by MrRedShark77, modded by loader3229, based on v0.5" />
+    <meta property="og:title" content="Incremental Mass Rewritten  (loader3229's v0.5 NG+)" />
+    <meta property="og:description" content="Incremental Mass Rewritten (loader3229's v0.5 NG+) original made by MrRedShark77, modded by loader3229, based on v0.5" />
     <meta property="og:image" content="https://mrredshark77.github.io/incremental-mass-rewritten//images/thumbail.jpg" />
 
     <link rel="image_src" href="images/thumbail.png">
@@ -198,7 +198,7 @@
 			</div>
 			<hr>
 			<span id="galPow6span">You have <span id="galPow6">0</span> Galactic Mass (gain based on Supernova Galaxies), which are boosting Galactic Resources gain in Galaxy Tab by <span id="galPow6_eff">1</span>x<br></span>
-			
+			<span id="stardustspan">You have <span id="stardust">0</span> Stardust (gain based on Supernova), Super Supernova Galaxies starts <span id="stardustEff">1</span> later</span>
         </div>
     </div>
     <div id='app' style='display: none'>
@@ -290,7 +290,7 @@
                     <div id="as_table" class="table_center" style="min-height: 180px;"></div><br>
 					<div id="as_mass">You have  <span id="as_mass2">X</span> Ascension mass (Gain is based on Ascension Base, Ascension Level, Transcension Level<span id="as_mass4"> and Glory</span>)<br>Which are adding Prestige Base Exponent by <span id="as_mass3"></span></div>
                </div>
-                <br><br>
+                <br><br><div id="beyond_ranks"></div><br>
                 <div id="mass_upgs_table"></div><br><br>
                 <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="tickspeed_div">
                     <div style="width: 400px">
@@ -840,8 +840,10 @@
                             <span id="matters1_amount" style="color:#ff009d;"></span>
                         </div><div style="width: 20%; min-width: 300px;">
                             <span id="matters1_gain" style="color:#ff009d;"></span>
-                        </div><div style="width: 40%; min-width: 300px;">
+                        </div><div style="width: 40%; min-width: 300px;" id="matters1_eff1a">
                             Meta-Supernova is <span id="matters1_eff"></span> weaker
+                        </div><div style="width: 40%; min-width: 300px;" id="matters1_eff2a">
+                            Divide the strength of Meta-Supernova scaling by <span id="matters1_eff2"></span>
                         </div>
                     </div><div class="table_center">
                         <div style="width: 20%; min-width: 300px;">
@@ -852,6 +854,106 @@
                             <span id="matters2_gain" class="magenta"></span>
                         </div><div style="width: 40%; min-width: 300px;">
 								Add <span id="matters2_eff"></span> to base Eternal Mass gain Exponent
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Purple Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters3_amount" style="color:#a0f;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters3_gain" style="color:#a0f;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Multiply Galactic Quarks gain by <span id="matters3_eff"></span>
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Violet Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters4_amount" style="color:#70f;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters4_gain" style="color:#70f;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Add <span id="matters4_eff"></span> to Prestige Base Exponent
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Blue Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters5_amount" style="color:#06f;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters5_gain" style="color:#06f;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Exotic Boost 'Atom Boost' is <span id="matters5_eff"></span>x stronger
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Cyan Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters6_amount" style="color:#0ff;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters6_gain" style="color:#0ff;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Exotic Boost 'Supernova Boost' is <span id="matters6_eff"></span>x stronger
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Green Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters7_amount" style="color:#0f0;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters7_gain" style="color:#0f0;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Quantum Foam gain ^<span id="matters7_eff"></span>
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Lime Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters8_amount" style="color:#bf0;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters8_gain" style="color:#bf0;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Add <span id="matters8_eff"></span> to Ascension Base Exponent
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Yellow Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters9_amount" style="color:#ff0;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters9_gain" style="color:#ff0;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Exotic Boost 'Dark Matter Boost' is <span id="matters9_eff"></span>x stronger
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Orange Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters10_amount" style="color:#f80;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters10_gain" style="color:#f80;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Add <span id="matters10_eff"></span> to base Infinity Mass gain Exponent
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            White Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters11_amount" style="color:#fff;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters11_gain" style="color:#fff;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Multiply Abyssal Blot gain by <span id="matters11_eff"></span>
+                        </div>
+                    </div><div class="table_center">
+                        <div style="width: 20%; min-width: 300px;">
+                            Fading Matter
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters12_amount" style="color:#888;"></span>
+                        </div><div style="width: 20%; min-width: 300px;">
+                            <span id="matters12_gain" style="color:#888;"></span>
+                        </div><div style="width: 40%; min-width: 300px;">
+								Multiply Dark Ray gain by <span id="matters12_eff"></span>
                         </div>
                     </div>
                 </div>
@@ -874,8 +976,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's v0.5 NG+, Chinese Version) v0.9.4c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的v0.5 NG+, 汉化版) v0.9.4c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's v0.5 NG+, Chinese Version) v0.9.5c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的v0.5 NG+, 汉化版) v0.9.5c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

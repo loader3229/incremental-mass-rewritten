@@ -37,6 +37,10 @@ const STARS = {
         return p
     },
     effect() {
+		if (hasElement(531)){
+			tmp.stars.effectPower = E("ee45");
+			return E("ee100");
+		}
         let [p, pp] = [E(1), E(1)]
         if (hasElement(48)) p = p.mul(1.1)
         if (player.ranks.hex.gte(48)) p = p.mul(1.1)
@@ -70,13 +74,23 @@ const STARS = {
 		if(!hasTree('qp20'))tmp.stars.effectPower = overflow(tmp.stars.effectPowerRaw,"ee3",hasElement(502)?0.75:hasElement(497)?0.65:hasElement(491)?0.6:hasChargedElement(76)?0.56:hasChargedElement(48)?0.55:0.5);
 		else tmp.stars.effectPower = tmp.stars.effectPowerRaw;
 		if(!hasChargedElement(46))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee8",0.5);
-		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee15",player.ranks.enne.gte(12)?0.7:0.5);
-		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"e5e19",0.5);
-		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee21",0.5);
+		if(!hasElement(515))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee15",player.ranks.enne.gte(12)?0.7:0.5);
+		if(!hasTree('qp28'))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"e5e19",0.5);
+		if(!hasElement(522))tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee21",0.5);
 		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee33",hasAscension(1,25)?0.2:0.1);
+		tmp.stars.effectPower = overflow(tmp.stars.effectPower,"ee39",0.1);
+		tmp.stars.effectPower = tmp.stars.effectPower.min("ee45");
 		tmp.stars.effectRaw = x
 		if(hasPrestige(1,24))return x.min("e1e85");
         return overflow(x.softcap("ee15",0.95,2).softcap("e5e22",0.95,2).softcap("e1e24",0.91,2).softcap("e2e56",0.95,2).softcap("e1e70",0.95,2),"e1e70",0.6).min("e1e75");
+    },
+    effectExpPower() {
+		let ret=E(1);
+        for(let i=0;i<8;i++){
+			ret = ret.mul(player.ranks[RANKS.names[i]].add(1).log10().add(1).log10().add(1).log10().add(1).log10().add(1));
+		}
+		ret = ret.mul(player.stars.points.add(1).log10().add(1).log10().add(1).log10().add(1).log10().pow(2.5));
+		return ret.sqrt().div(400).add(1);
     },
     generators: {
         req: [E(1e225),E(1e280),E('e320'),E('e430'),E('e870')],
@@ -151,6 +165,7 @@ function updateStarsTemp() {
     tmp.stars.softGain = STARS.softGain()
     tmp.stars.gain = STARS.gain()
     tmp.stars.effect = STARS.effect()
+    tmp.stars.effectExpPower = STARS.effectExpPower()
 }
 
 function setupStarsHTML() {
@@ -204,7 +219,7 @@ function updateStarsHTML() {
     if (player.supernova.times.gte(SUPERNOVA_GALAXY.req()) || hasElement(291))tmp.el.stars_Amt.setTxt(format(player.stars.points,2)+formatGain(player.stars.points,tmp.stars.gain.mul(tmp.preQUGlobalSpeed)))
     tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x")
 	if (player.ranks.hex.gte(36))tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x, ^"+format(tmp.stars.effectPower))
-    if (player.ranks.hex.gte(36) && player.superGal.gte(10))tmp.el.stars_Eff.setTxt("^"+format(tmp.stars.effectPower))
+	if (hasElement(530))tmp.el.stars_Eff.setTxt(format(tmp.stars.effect)+"x, ^"+format(tmp.stars.effectPower)+", exponent ^"+format(tmp.stars.effectExpPower,5))
     tmp.el.star_btn.setDisplay(hasTree("s4") || player.stars.unls < 5)
     tmp.el.star_btn.setHTML((player.stars.unls < 5 || !hasTree("s4"))
     ? `Unlock new type of Stars, require ${format(tmp.stars.generator_req)} Quark`

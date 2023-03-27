@@ -26,13 +26,16 @@ const EXOTIC_BOOST = {
 		if(hasElement(494))meta_div-=0.2
 		if(hasElement(500))meta_pow+=0.03
 		if(hasElement(506))meta_pow+=0.07,meta_div-=0.2
-		let ret = (i == 6 && hasElement(390))?player.exotic.boosts[i].pow(meta_pow).div(meta_div):(i == 6)?player.exotic.boosts[i].add(1).log10():player.exotic.boosts[i].add(EXOTIC_BOOST.effect(6)).sqrt().mul(0.01);
+		let ret = (i == 6 && hasElement(390))?player.exotic.boosts[i].pow(meta_pow).div(meta_div):(i == 6)?player.exotic.boosts[i].add(1).log10():player.exotic.boosts[i].add(EXOTIC_BOOST.effect(6)).sqrt().softcap(16.4,0.25,0).mul(0.01);
 		if(hasElement(366))ret = ret.mul(1.2);
 		if(hasElement(384))ret = ret.mul(1.1);
 		if(hasElement(408))ret = ret.mul(1.1);
 		if(hasElement(416) && i == 6)ret = ret.mul(1.5);
 		if(hasElement(432))ret = ret.mul(1.1);
 		if(hasElement(446) && i == 6)ret = ret.mul(1.2);
+		if(hasElement(486) && i == 2)ret = ret.mul(MATTERS.eff(5));
+		if(hasElement(486) && i == 4)ret = ret.mul(MATTERS.eff(6));
+		if(hasElement(486) && i == 1)ret = ret.mul(MATTERS.eff(9));
 			
         if (hasTree("qp2") && i == 0)ret = ret.mul(treeEff("qp2"))
         if (hasTree("qp3") && i == 1)ret = ret.mul(treeEff("qp3"))

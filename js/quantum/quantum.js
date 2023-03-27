@@ -19,6 +19,7 @@ const QUANTUM = {
 			
 		
 		if (hasElement(474)) x = x.pow(EXOTIC.dsEff().qf);
+		if(hasElement(486))x = x.pow(MATTERS.eff(6));
 			if(hasUpgrade('exotic',24) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[5])
 				
         return x.floor()

@@ -445,6 +445,7 @@ const CHALS = {
         title: "移除级别",
         desc: "You cannot rank up.",
         reward() {
+			if(hasElement(519))return `Meta-Hept scaling starts later. Blue chroma affects this effect, but at a reduced rate.`;
 			if(hasElement(421))return `Meta-Hex scaling starts later. Blue chroma affects this effect, but at a reduced rate.`;
 			if(hasElement(348))return `Meta-Pent scaling starts later. Blue chroma affects this effect, but at a reduced rate.`;
 			if(hasElement(265))return `Meta-Tetr scaling starts later.`;
@@ -457,6 +458,7 @@ const CHALS = {
         pow: E(1.25),
         start: E(1.5e136),
         effect(x) {
+			if(hasElement(519))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10().add(10).log10();
 			if(hasElement(421))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10();
 			if(hasElement(348))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(1);
 			if(hasElement(170))return x.pow(hasElement(230)?1:hasElement(199)?0.8:0.6).add(1);
@@ -728,7 +730,7 @@ const CHALS = {
 			if(hasPrestige(2,17))x = x.pow(2);
 			if(hasElement(277))x = x.pow(1.25);
 			if(!hasTree('qp19'))x = x.softcap(1e6,hasElement(489)?0.86:hasElement(465)?0.84:hasElement(433)?0.7:hasElement(429)?0.5:hasElement(417)?0.3:hasElement(409)?0.1:hasElement(397)?0.03:0.01,0);
-			x = x.softcap(1e7,0.1,0);
+			x = x.softcap(hasElement(527)?1.5e7:1e7,hasTree('qp27')?0.85:hasTree('qp25')?0.7:0.1,0);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
 			if(hasElement(334))ret = Decimal.pow(10,Decimal.pow(2.6,x.root(4)));

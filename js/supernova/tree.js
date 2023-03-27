@@ -28,14 +28,14 @@ const TREE_IDS = [
         ['chal4','chal7a'],
         ['fn4','fn3','fn9','fn2','fn5','qf4','rad4','rad5'],
         ['prim3','prim2','prim1','qu4','qc1','qc2','qc3'],
-        ['qp6','qp2','qp3','qp4','qp5'],
+        ['qp21','qp6','qp2','qp3','qp4','qp5','qp22'],
     ],[
         ['s3','m3','gr2','sn3'],
         ['qol9','unl1','qol8','unl2','unl3','qu_qol8','qu_qol9','unl4'],
         ['chal5','chal6','chal7','chal8'],
         ['fn12','fn11','fn6','fn10','rad6',''],
         ['prim4','en2','en1','qu5','br1','br2','qc4'],
-        ['qp9','qp7','qp8','qp11'],
+        ['qp23','qp9','qp7','qp8','qp11','qp24'],
     ],[
         ['s4','sn5','sn4'],
         ['','','','qu_qol10','qu_qol11','qu_qol8a','qu_qol13','qu_qol12'],
@@ -49,14 +49,14 @@ const TREE_IDS = [
         ['chal13','chal14'],
         ['fn18','fn16','fn17','fn15','pm2','im1'],
         ['prim6','prim7','prim8','qu12','br3','qc7','qc6'],
-        ['qp19','qp18'],
+        ['qp25','qp19','qp18','qp26'],
     ],[
         [],
         [],
         [],
         [],
         [],
-        ['qp20'],
+        ['qp27','qp20','qp28'],
     ],[
         [],
         [],
@@ -1368,6 +1368,7 @@ const TREE_UPGS = {
             cost: E('e1e43'),
             effect() {
                 let x = player.superGal.add(1)
+				if(hasTree('qp24'))x = x.pow(2)
                 return x
             },
             effDesc(x) { return "x"+format(x) },
@@ -1402,15 +1403,81 @@ const TREE_UPGS = {
             unl() { return hasElement(486) },
             qf: true,
             branch: ["qp12","qp14","qp18"],
-            desc: `C20 effect is later.`,
+            desc: `C20 effect is better.`,
             cost: E('e1e50'),
         },
         qp20: {
             unl() { return hasElement(486) },
             qf: true,
             branch: ["qp18","qp19"],
-            desc: `Collapsed Stars effect is later.`,
+            desc: `Collapsed Stars effect is better.`,
             cost: E('e9e53'),
+        },
+        qp21: {
+            unl() { return hasElement(510) },
+            qf: true,
+            branch: ["qp6"],
+            desc: `Rage Power boost Dark Ray gain.`,
+            cost: E('e1e55'),
+            effect() {
+                let x = player.rp.points.add(1).log10().add(1).log10().add(1).log10();
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        qp22: {
+            unl() { return hasElement(510) },
+            qf: true,
+            branch: ["qp5"],
+            desc: `Atoms boost Dark Ray gain.`,
+            cost: E('e1e55'),
+            effect() {
+                let x = player.atom.points.add(1).log10().add(1).log10().add(1).log10();
+                return x
+            },
+            effDesc(x) { return "x"+format(x) },
+        },
+        qp23: {
+            unl() { return hasElement(510) },
+            qf: true,
+            branch: ["qp6","qp9","qp16","qp21"],
+            desc: `Meta-Fermion Tier scaling starts 100x later, and is 90% weaker.`,
+            cost: E('e2e56'),
+        },
+        qp24: {
+            unl() { return hasElement(510) },
+            qf: true,
+            branch: ["qp5","qp11","qp15","qp22"],
+            desc: `[qp15] is squared.`,
+            cost: E('e4e57'),
+        },
+        qp25: {
+            unl() { return hasElement(510) },
+            qf: true,
+            branch: ["qp14","qp16","qp19"],
+            desc: `C20 effect is better.`,
+            cost: E('e6e58'),
+        },
+        qp26: {
+            unl() { return player.superCluster.gte(14) },
+            qf: true,
+            branch: ["qp13","qp15","qp18"],
+            desc: `8x Stardust Effect.`,
+            cost: E('e4e59'),
+        },
+        qp27: {
+            unl() { return hasElement(510) },
+            qf: true,
+            branch: ["qp19","qp20","qp25"],
+            desc: `C20 effect is better.`,
+            cost: E('ee63'),
+        },
+        qp28: {
+            unl() { return hasElement(510) },
+            qf: true,
+            branch: ["qp18","qp20","qp26"],
+            desc: `Collapsed Stars effect is better.`,
+            cost: E('ee65'),
         },
     },
 }

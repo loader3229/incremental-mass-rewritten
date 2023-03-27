@@ -168,7 +168,10 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow0_gain(){
 		if(player.superGal.lt(1))return E(0);
-		return player.supernova.stars.add(1).log10().pow(player.superGal).pow(tmp.gc.GSeffect).mul(SUPERNOVA_GALAXY.galPow6_eff());
+		let ret=player.supernova.stars.add(1).log10();
+		ret = overflow(ret,"e2e34",0.1);
+		ret = ret.pow(player.superGal).pow(tmp.gc.GSeffect);
+		return ret.mul(SUPERNOVA_GALAXY.galPow6_eff());
 	},
 	galPow0_eff(){
 		if(player.chal.active == 21)return E(1);
@@ -305,7 +308,7 @@ const SUPERNOVA_GALAXY = {
 		ret = ret.mul(SUPERNOVA_CLUSTER.effects.eff1())
 		if (player.ranks.enne.gte(6)) ret = ret.mul(RANKS.effect.enne[6]())
 		ret = ret.mul(SUPERNOVA_GALAXY.galPow6_eff())
-		if(hasChargedElement(120))x = x.mul(tmp.elements.ceffect[120]);
+		if(hasElement(486))ret = ret.mul(MATTERS.eff(3));
 		return ret;
 	},
 }
@@ -319,6 +322,7 @@ function calcSupernovaGalaxy(dt, dt_offline) {
 	player.galPow[5] = player.galPow[5].add(SUPERNOVA_GALAXY.galPow5_gain().mul(dt));
 	player.galPow[6] = player.galPow[6].add(SUPERNOVA_GALAXY.galPow6_gain().mul(dt));
 	player.galQk = player.galQk.add(SUPERNOVA_GALAXY.galQkGain().mul(dt));
+	player.stardust = player.stardust.add(SUPERNOVA_CLUSTER.stardustGain().mul(dt));
 	if(player.exotic.times.gte(50))player.superGal = player.superGal.max(SUPERNOVA_GALAXY.bulk());
 }
 
@@ -333,6 +337,7 @@ function updateSupernovaGalaxyHTML() {
 	tmp.el.galPow4span.setDisplay(player.superGal.gte(9));
 	tmp.el.galPow5span.setDisplay(player.superGal.gte(9));
 	tmp.el.galPow6span.setDisplay(player.superCluster.gte(9));
+	tmp.el.stardustspan.setDisplay(player.superCluster.gte(14));
 	tmp.el.galQkspan.setDisplay(player.superGal.gte(10));
 	tmp.el.galPowNextspan.setDisplay(true);
 	
@@ -421,6 +426,9 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superCluster.gte(11))html += "<br>Transcension Level resets nothing";
 		if(player.superCluster.gte(12))html += "<br>Automatically gain Transcension Level";
 		if(player.superCluster.gte(13))html += "<br>Add "+format(SUPERNOVA_CLUSTER.effects.eff6())+" to Matter Exponent";
+		if(player.superCluster.gte(14))html += "<br>Unlock Stardust";
+		if(player.superCluster.gte(14))tmp.el.stardust.setTxt(format(player.stardust)+player.stardust.formatGain(SUPERNOVA_CLUSTER.stardustGain()))
+		if(player.superCluster.gte(14))tmp.el.stardustEff.setTxt(format(SUPERNOVA_CLUSTER.stardustEff()))
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}
@@ -469,5 +477,17 @@ const SUPERNOVA_CLUSTER = {
 			if(player.superCluster.lt(13))return new Decimal(0);
 			return player.superCluster.div(100);
 		},
+	},
+	stardustGain(){
+		if(player.superCluster.lt(14))return E(0);
+		let ret=player.supernova.times.add(1).log10().pow(player.superCluster.sqrt());
+		if(hasElement(517))ret = ret.mul(MATTERS.eff(3));
+		return ret;
+	},
+	stardustEff(){
+		if(player.superCluster.lt(14))return E(0);
+		let ret=player.stardust.add(1).log10().div(4);
+		if(hasTree('qp26'))ret = ret.mul(8);
+		return ret;
 	},
 }

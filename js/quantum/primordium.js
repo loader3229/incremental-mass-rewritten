@@ -63,7 +63,7 @@ const PRIM = {
 						y = y.add(100000);
 					}
 				}
-				if(x.gte(1e49))x = Decimal.pow(10,x.log10().sqrt().mul(7));
+				if(x.gte(1e49) && !hasElement(529))x = Decimal.pow(10,x.log10().sqrt().mul(7));
 				if(hasElement(427)) x = x.mul(10)
                 return x
             },

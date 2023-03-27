@@ -409,7 +409,8 @@ function galParticleEffect(x){
 	if(hasElement(501))sc_rate+=0.02;
 	if(hasElement(507))sc_rate+=0.01;
 	if(hasElement(509))sc_rate+=0.01;
+	if(hasElement(523))sc_rate+=0.01;//0.4
 	ret=overflow(ret,1e7,sc_rate);
-	ret=overflow(ret,5.1e9,hasAscension(0,3)?0.5:0.4);
+	ret=overflow(ret,5.1e9,hasElement(533)?0.53:hasElement(523)?0.515:hasAscension(0,3)?0.5:0.4);
 	return ret;
 }
