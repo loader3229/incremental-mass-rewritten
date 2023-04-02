@@ -207,9 +207,9 @@ const ATOM = {
         },
         powerEffect: [
             x=>{
-                let a = hasChargedElement(105) ? x.add(1).log10().add(1).log10().add(1) : hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).pow(3)
+                let a = hasChargedElement(105) ? x.add(1).log10().add(1).log10().add(1) : hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).pow(3).min("eee15");
                 let b = hasElement(29) ? x.add(1).log2().pow(1.25).mul(0.01) : x.add(1).pow(2.5).log2().mul(0.01)
-				if(player.ranks.hex.gte(29))b = x.add(1).log2().pow(2);
+				if(player.ranks.hex.gte(29))b = x.add(1).log2().pow(2);else b = b.min("eee15");
 				if(hasElement(156)){
 					a = a.pow(5);
 					b = a;
@@ -228,7 +228,7 @@ const ATOM = {
                 return {eff1: a, eff2: b}
             },
             x=>{
-                let a = hasChargedElement(105) ? x.add(1).log10().add(1).log10().add(1) : hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).pow(2)
+                let a = hasChargedElement(105) ? x.add(1).log10().add(1).log10().add(1) : hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).pow(2).min("eee15");
                 let b = player.ranks.hex.gte(19)
                 ?player.mass.max(1).log10().add(1).pow(player.rp.points.max(1).log(2).mul(x.max(1).log(2)).root(2.1))
                 :hasElement(19)
@@ -237,7 +237,7 @@ const ATOM = {
 				
 				b = overflow(b,"ee28000000",0.5);
 				if(hasElement(354))a = a.pow(2);
-				if(hasElement(355))b = b.add(1).log10().add(1).log10().add(1);
+				if(hasElement(355))b = b.add(1).log10().add(1).log10().add(1);else b = b.min("eee15");
 				
 				a = a.pow(galParticleEffect(1));
 				b = b.pow(galParticleEffect(1));
@@ -251,9 +251,9 @@ const ATOM = {
                 return {eff1: a, eff2: b}
             },
             x=>{
-                let a = hasChargedElement(105) ? x.add(1).log10().add(1).log10().add(1) : hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1)
+                let a = hasChargedElement(105) ? x.add(1).log10().add(1).log10().add(1) : hasElement(105) ? x.add(1).log10().add(1).log10().root(2).div(10).add(1) : x.add(1).min("eee15");
                 let b = hasElement(30) ? x.add(1).log2().pow(1.2).mul(0.01) : x.add(1).pow(2).log2().mul(0.01)
-				if(player.ranks.hex.gte(30))b = x.add(1).log2().pow(2);
+				if(player.ranks.hex.gte(30))b = x.add(1).log2().pow(2);else b = b.min("eee15");
 				if(hasElement(346))b = a;
 				if(hasElement(354))a = a.pow(2);
 				

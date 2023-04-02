@@ -204,6 +204,7 @@ const EXOTIC = {
 		if(hasElement(414))x.ab = player.exotic.ds.div(hasElement(468)?1:1e60).add(1).pow(2);
 		if(hasElement(474))x.qf = player.exotic.ds.add(1e100).log10().div(100);
 		if(hasElement(492))x.me = player.exotic.ds.add(1e100).log10().div(100).sub(1);
+		else x.me = E(0);
 		if(x.me.gte(1))x.me = x.me.log10().add(1);
 		if(hasElement(496))x.sn = x.sn.pow(2);
 		if(hasElement(498))x.me = x.me.mul(2);
