@@ -333,6 +333,8 @@ function getPlayerData() {
 			points: E(0),
 			times: E(0),
 			rcb: [E(0), E(0), E(0), E(0)],
+			ax: [E(0), E(0), E(0), E(0)],
+			axg: [E(0), E(0), E(0), E(0)],
 			bp: E(0),
 			boosts: [],
 			matters: [],
@@ -340,6 +342,7 @@ function getPlayerData() {
 			dr: E(0),
 			ds: E(0),
 			ab: E(0),
+			fss: E(0),
 			
 			dark_run: {
 				points: E(0),
@@ -348,6 +351,8 @@ function getPlayerData() {
 		},
 		superCluster: E(0),
 		stardust: E(0),
+		stellar: E(0),
+		stellar_gen: E(0),
     }
     for (let x = 0; x < EXOTIC_BOOST_LENGTH; x++) s.exotic.boosts.push(E(0))
     for (let x = 0; x < MATTERS_LENGTH; x++) s.exotic.matters.push(E(0))

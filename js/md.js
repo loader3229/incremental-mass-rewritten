@@ -58,8 +58,8 @@ const MASS_DILATION = {
 		if (!hasElement(158))x = x.softcap(mlt(1e12),0.5,0);
 		if (FERMIONS.onActive("24")) x = x.add(1).log10().pow(10);
 		if (player.gc.active || player.chal.active >= 21 || player.exotic.dark_run.active) x = GCeffect(x)
-		tmp.dmOverflow = overflow(x,"e5e28",hasChargedElement(21)?0.925:hasElement(196)?0.92:hasElement(158)?0.9:0.8).log(x);
-        return overflow(x,"e5e28",hasChargedElement(21)?0.925:hasElement(196)?0.92:hasElement(158)?0.9:0.8);
+		tmp.dmOverflow = overflow(x,"e5e28",hasChargedElement(158)?0.95:hasChargedElement(21)?0.925:hasElement(196)?0.92:hasElement(158)?0.9:0.8).log(x);
+        return overflow(x,"e5e28",hasChargedElement(158)?0.95:hasChargedElement(21)?0.925:hasElement(196)?0.92:hasElement(158)?0.9:0.8);
     },
     mass_req() {
         let x = E(10).pow(player.md.particles.add(1).div(tmp.md.rp_mult_gain).root(tmp.md.rp_exp_gain).add(14).mul(40)).mul(1.50005e56)
@@ -69,6 +69,7 @@ const MASS_DILATION = {
     effect() {
         let x = tmp.md.bd3 ? player.qu.rip.active ? player.md.mass.max(1).log10().max(1).log10().add(1).log10().add(1).root(2) : player.md.mass.max(1).log10().max(1).log10().add(1).root(3) : player.md.mass.max(1).log10().add(1).root(3)
         if(hasElement(160))x = x.pow(6)
+        if(hasChargedElement(160))x = x.pow(6)
 		x = x.mul(tmp.md.upgs[1].eff)
         return x
     },

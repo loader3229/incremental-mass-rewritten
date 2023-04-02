@@ -1249,6 +1249,7 @@ const ELEMENTS = {
 				if(hasChargedElement(128))x = x.pow(21.3);
 				if(hasChargedElement(140))x = x.pow(2.5);
 				if(hasChargedElement(147))x = x.pow(1.2);
+				if(hasChargedElement(157))x = x.pow(1.2);
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
@@ -1418,47 +1419,67 @@ const ELEMENTS = {
 			desc: `Entropic Condenser^2 is 15% weaker.`,
 			cost: E("1.9890000001e34"),
 			et: true,
+			cdesc: `Entropic Condenser is better.`,
+            ccost: uni("e200000"),
 		},
 		{
 			desc: `If you bought [prim8], levels of Epsilon/Theta/Beta Particles is 1 per 1.5 Primordium Theorem, instead of 2.`,
 			cost: E("1.9890000001e34"),
 			et: true,
+			cdesc: `Gain 1.1x more Primordium Theorems.`,
+            ccost: uni("e200000"),
 		},
 		{
 			desc: `削除转生质量效果的第一个软上限。`,
 			cost: E("1.9890000001e36"),
 			et: true,
+			cdesc: `The second softcap of Prestige Mass effect is weaker.`,
+            ccost: uni("e205000"),
 		},
 		{
 			desc: `QC Modifier 'Intense Catalyst' is 5% weaker.`,
 			cost: E("1.9890000001e40"),
 			et: true,
+            cdesc: `QC Modifier 'Intense Catalyst' is 5% weaker.`,
+            ccost: uni("e205000"),
 		},
 		{
 			desc: `Unlock the 13th Challenge.`,
 			cost: uni(1e18),
+            cdesc: `C13 effect softcap is weaker.`,
+            ccost: uni("e66666666"),
 		},
 		{
 			desc: `质子能量的效果变得更好。`,
 			cost: uni(1e21),
+            cdesc: `Effects of Protons Powers is better.`,
+            ccost: uni("e67000000"),
 		},
 		{
 			desc: `128号元素的效果变为原来的1.2次方。`,
 			cost: E("1.9890000001e41").mul(3),
 			et: true,
+            cdesc: `Element 128's effect ^1.2.`,
+            ccost: uni("e220000"),
 		},
 		{
 			desc: `移除膨胀质量获取的软上限，膨胀溢出被削弱。`,
 			cost: E("1.9890000001e41").mul(3),
 			et: true,
+            cdesc: `Dilated Overflow is weaker.`,
+            ccost: uni("e220000"),
 		},
 		{
 			desc: `Unlock the 14th Challenge.`,
 			cost: uni(1e27),
+            cdesc: `C14 effect is squared.`,
+            ccost: uni("e90000000"),
 		},
 		{
 			desc: `膨胀质量的基础效果变为原来的6次方。`,
 			cost: uni(1e29),
+            cdesc: `Base Dilated Mass effect ^6.`,
+            ccost: uni("e90000000"),
 		},
 		{
 			desc: `永恒质量加成时间碎片。`,
@@ -1468,60 +1489,90 @@ const ELEMENTS = {
 				let x = player.et.points.add(1).pow(0.2);
 				if(hasElement(271))x = x.pow(20)
 				if(hasElement(349))x = x.pow(3)
+				if(hasChargedElement(161))x = x.pow(10)
 				return x
 			},
 			effDesc(x) { return format(x)+"x" },
+            cdesc: `This element is better.`,
+            ccost: uni("e280000"),
 		},
 		{
 			desc: `削弱第一个级别坍缩效果。`,
 			cost: E("2.98350000001e45"),
 			et: true,
+            cdesc: `Meta-Hept is 1% weaker.`,
+            ccost: uni("e288888"),
 		},
 		{
 			desc: `使高于1.8e308的转生基础值加成基础无限质量获取。`,
 			cost: uni(6e35),
+            cdesc: `Abyssal Blot Post-1.8e308 added to base Infinity Mass gain formula.`,
+            ccost: uni("e107000000"),
 		},
 		{
 			desc: `Unlock the 15th Challenge.`,
 			cost: uni(5e39),
+            cdesc: `Change C15 effect.`,
+            ccost: uni("e108000000"),
 		},
 		{
             desc: `Entropic Evaporation^2 is 5% weaker.`,
 			cost: E("2.9835e49"),
 			et: true,
+			cdesc: `Entropic Evaporation^2 is 5% weaker.`,
+            ccost: uni("e310000"),
 		},
 		{
             desc: `If you bought [prim8], levels of Epsilon/Theta/Beta Particles is 1 per 1 Primordium Theorem, instead of 1.5.`,
 			cost: uni(1),
 			et: true,
+			cdesc: `Gain 1.1x more Primordium Theorems.`,
+            ccost: uni("e310000"),
 		},
 		{
 			desc: `Entropic Condenser^2 is 15% weaker.`,
 			cost: uni(1e61),
+			cdesc: `Entropic Condenser is better.`,
+            ccost: uni("e1.3e8"),
 		},
 		{
 			desc: `Unlock the 16th Challenge.`,
 			cost: uni(1e100),
+			cdesc: `C16 boost Prestige Muscler Effect.`,
+            ccost: uni("e1.6e8"),
+			ceffect() {
+				let x = player.chal.comps[16].add(10).log10().sqrt();
+				return x
+			},
+			ceffDesc(x) { return "^"+format(x) },
 		},
 		{
             desc: `削弱第一个级别坍缩效果。`,
 			cost: uni(1e21),
 			et: true,
+			cdesc: `Meta-Hex starts 1e100x later.`,
+            ccost: uni("e400000"),
 		},
 		{
             desc: `修改挑战5的效果。挑战15的目标变得更低。`,
 			cost: uni(1e22),
 			et: true,
+            cdesc: `C5 effect is changed. C21 goal is heavily weaken.`,
+            ccost: uni("e400000"),
 		},
 		{
             desc: `削弱第二个级别坍缩效果。`,
 			cost: uni(1e23),
 			et: true,
+			cdesc: `Meta-Hex starts 1e100x later.`,
+            ccost: uni("e444444"),
 		},
 		{
             desc: `QC Modifier 'Intense Catalyst' is 6% weaker.`,
 			cost: uni(1e26),
 			et: true,
+			cdesc: `QC Modifier 'Intense Catalyst' is 6% weaker.`,
+            ccost: uni("e444444"),
 		},
 		{
             desc: `助推器加成自身。`,
@@ -1532,11 +1583,14 @@ const ELEMENTS = {
 				if(hasElement(283))x = overflow(expMult((player.massUpg[2]||E(1)),0.875),"e3500000",0.5);
 				if(hasElement(328))x = expMult((player.massUpg[2]||E(1)),0.875);
 				if(hasElement(360))x = expMult((player.massUpg[2]||E(1)),0.886);
-				if(hasElement(367))x = expMult((player.massUpg[1]||E(1)),0.9);
-				if(hasElement(459))x = expMult((player.massUpg[1]||E(1)),0.95);
+				if(hasElement(367))x = expMult((player.massUpg[2]||E(1)),0.9);
+				if(hasElement(459))x = expMult((player.massUpg[2]||E(1)),0.95);
+				if(hasChargedElement(173))x = expMult((player.massUpg[2]||E(1)),0.96);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
+            cdesc: `This element is better.`,
+            ccost: uni("e2.5e8"),
 		},
 		{
             desc: `锻体器加成自身。`,
@@ -1549,19 +1603,26 @@ const ELEMENTS = {
 				if(hasElement(360))x = expMult((player.massUpg[1]||E(1)),0.886);
 				if(hasElement(367))x = expMult((player.massUpg[1]||E(1)),0.9);
 				if(hasElement(459))x = expMult((player.massUpg[1]||E(1)),0.95);
+				if(hasChargedElement(174))x = expMult((player.massUpg[1]||E(1)),0.96);
 				return x
 			},
 			effDesc(x) { return "^"+format(x) },
+            cdesc: `This element is better.`,
+            ccost: uni("e2.5e8"),
 		},
 		{
             desc: `挑战13和15的次数上限增加100。`,
 			cost: uni(1e27),
 			et: true,
+			cdesc: `Reduce C13 & C15 Goals.`,
+            ccost: uni("e495000"),
 		},
 		{
             desc: `削弱第二个级别坍缩效果。`,
 			cost: uni(1e27),
 			et: true,
+			cdesc: `Meta-Hept starts 2x later.`,
+            ccost: uni("e495000"),
 		},
 		{
             desc: `Entropic Condenser^2 is 15% weaker.`,
@@ -3453,8 +3514,125 @@ const ELEMENTS = {
 			galQk: true,
 		},
 		{
-			desc: `Reach the current endgame.`,
-			cost: E("5e173"),
+			desc: `Unlock X-Axion Generators.`,
+			cost: E("1e174"),
+			ds: true,
+		},
+		{
+			desc: `Pre-Quantum Global Speed boost X-Axion Generators Power.`,
+			cost: uni("e207000"),
+			et: true,
+			effect() {
+				let x = tmp.preQUGlobalSpeed.add(10).log10().add(10).log10();
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Exotic Matter boost X-Axion Generators Power.`,
+			cost: E("1e356"),
+			exotic: true,
+			effect() {
+				let x = player.exotic.points.add(10).log10().sqrt();
+				return x
+			},
+			effDesc(x) { return format(x)+"x"; },
+		},
+		{
+			desc: `Stronger Overflow is weaker.`,
+			cost: uni('e69000000'),
+		},
+		{
+			desc: `C20 effect is better.`,
+			cost: E("ee1e46"),
+			qk: true,
+		},
+		{
+			desc: `Divide Supernova Galaxies Requirement by 125.`,
+			cost: E("1e1127"),
+			galQk: true,
+		},
+		{
+			desc: `Unlock Y-Axion Generators.`,
+			cost: E("2e176"),
+			ds: true,
+		},
+		{
+			desc: `Accelerator Effect Softcap^2 is weaker.`,
+			cost: uni("e270000"),
+			et: true,
+		},
+		{
+			desc: `Unlock Final Star Shards.`,
+			cost: E("5e391"),
+			exotic: true,
+		},
+		{
+			desc: `Accelerator Effect Softcap^2 is weaker.`,
+			cost: uni("e300000"),
+			et: true,
+		},
+		{
+			desc: `Final Star Shards boost Matter Exponent.`,
+			cost: E("1e404"),
+			exotic: true,
+			effect() {
+				let x = player.exotic.fss.div(10);
+				return x
+			},
+			effDesc(x) { return "+"+format(x); },
+		},
+		{
+			desc: `Unlock the 23rd Challenge.`,
+			cost: uni('e123456789'),
+		},
+		{
+			desc: `2nd Black Hole Overflow effect is weaker.`,
+			cost: E("ee7.7777e52"),
+			qk: true,
+		},
+		{
+			desc: `Galactic Particles Effect is better.`,
+			cost: E("1e1440"),
+			galQk: true,
+		},
+		{
+			desc: `Add (next matter)^y to matter gain formula, y is based on FSS.`,
+			cost: E("1e218"),
+			ds: true,
+		},
+		{
+			desc: `Timeshards effect is better.`,
+			cost: uni("e455000"),
+			et: true,
+		},
+		{
+			desc: `Exotic Boosts are stronger based on bought elements, except Meta-Boost. Exotic Meta-Boost is 50% weaker.`,
+			cost: E("1e452"),
+			exotic: true,
+			effect() {
+				let x = player.atom.elements.length/2500+1;
+				return x
+			},
+			effDesc(x) { return format(player.atom.elements.length/25)+"% stronger" },
+		},
+		{
+			desc: `Accelerator Effect Softcap is weaker.`,
+			cost: uni('e2.4e8'),
+		},
+		{
+			desc: `C21 effect is better.`,
+			cost: E('ee3e61'),
+			qk: true,
+		},
+		{
+			desc: `Galactic Particles Effect is better.`,
+			cost: E("1e1675"),
+			galQk: true,
+		},
+		{
+			desc: "Reach the current endgame."/*`FSS boost Glyphic Mass gain. Unlock more Neutron Tree Upgrades.`*/,
+			cost: E("1e226"),
 			ds: true,
 		},
 	],
@@ -3470,6 +3648,9 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
+		if(hasElement(545))return 553;
+		if(hasElement(542))return 545;
+		if(hasElement(534))return 542;
 		if(hasElement(486)&&player.superCluster.gte(14))return 534;
 		if(hasElement(486))return 516;
 		if(hasElement(476))return 486;

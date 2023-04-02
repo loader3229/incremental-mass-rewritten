@@ -150,7 +150,7 @@ const ENTROPY = {
             scale: {s: 5, p: 2.5},
 
             eff(i) {
-                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(hasChargedElement(91)?0.835:0.8))
+                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(hasChargedElement(167)?0.925:hasChargedElement(151)?0.9:hasChargedElement(91)?0.835:0.8))
                 return x
             },
             desc(x) { return `Entropy boosts itself by <b>${x.format(2)}倍</b>.` },
@@ -217,6 +217,10 @@ const ENTROPY = {
 				if (i == 2 && hasChargedElement(96)) p = p ** 0.9
 				if (i == 2 && hasChargedElement(106)) p = p ** 0.85
 				if (i == 2 && hasChargedElement(138)) p = p ** 0.85
+				if (i == 2 && hasChargedElement(139)) p = p ** 0.85
+				if (i == 2 && hasChargedElement(141)) p = p ** 0.85
+				if (i == 2 && hasChargedElement(144)) p = p ** 0.85
+				if (i == 2 && hasChargedElement(165)) p = p ** 0.95
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -261,6 +265,7 @@ const ENTROPY = {
 				if (i == 2 && hasChargedElement(139)) p = p ** 0.85
 				if (i == 2 && hasChargedElement(141)) p = p ** 0.85
 				if (i == 2 && hasChargedElement(144)) p = p ** 0.85
+				if (i == 2 && hasChargedElement(165)) p = p ** 0.95
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()

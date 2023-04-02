@@ -257,6 +257,9 @@
                     </div><div class="resources sml red" id="exotic_div">
                         <div tooltip="奇异物质" t-size="small"><img class="res_img" src="images/exotic.png" onclick="EXOTIC.enter()" onmousemove="FORMS.reset_msg.set('exotic')" onmouseleave="FORMS.reset_msg.reset()" style="cursor: pointer;"></div>
                         <span style="margin-left: 5px; text-align: left;" id="exoticAmt">X</span>
+                    </div><div class="resources sml" id="stardust_div" style="color:#00ffff;">
+                        <div tooltip="Stardust" t-size="small"><img class="res_img" src="images/sd.png"></div>
+                        <span style="margin-left: 5px; text-align: left;" id="stardustAmt">X</span>
                     </div>
                 </div>
             </div>
@@ -444,6 +447,22 @@
                     <div style="margin-left: 5px; text-align: left; width: 400px">
                         碎片产生器倍率：<span id="shard_gen_pow">X</span>倍<br>
                         碎片产生器效果：<span id="shard_gen_eff">X</span>倍
+                    </div>
+                </div>
+            </div><div id="stab_frame0_6">
+                You have <span id="stellarAmt">0</span> Stellar Mass<br>
+                <span class="green">Which multiplies Galactic Quarks by <span id="stellarEff">1</span></span><br><br>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/sdb.png">
+                            <span style="margin-left: 5px; text-align: left;"><span id="stellar_gen_scale"></span>Stellar Generators [<span id="stellar_gen_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="stellar_gen_btn" class="btn" style="width: 200px;" onclick="SUPERNOVA_CLUSTER.stellar_gen.buy()">Cost: <span id="stellar_gen_cost">X</span> Stardust</button>
+                    <button class="btn" style="width: 120px;" onclick="SUPERNOVA_CLUSTER.stellar_gen.buyMax()">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Stellar Generators Power: <span id="stellar_gen_pow">X</span>x<br>
+                        Stellar Generators Effect: <span id="stellar_gen_eff">X</span>x
                     </div>
                 </div>
             </div>
@@ -802,7 +821,7 @@
                 </div>
                 </div>
                 <div id="stab_frame7_5">
-						Each Matter gain is (10^((slog(previous matter)-1)^<span id="matters_pow"></span>)-10).<br><br>
+						Each Matter gain is (10^((slog(previous matter)-1)^<span id="matters_pow"></span>)-10)<span id="matters_extend"></span>.<br><br>
                     <div class="table_center">
                         <div style="width: 20%; min-width: 300px;">
                             Exotic Matter
@@ -955,8 +974,43 @@
                         </div><div style="width: 40%; min-width: 300px;">
 								Multiply Dark Ray gain by <span id="matters12_eff"></span>
                         </div>
+                    </div><br><div id="fss_div">
+                        You have <span id="fss_base"></span> FSS Base (based on matters).<br>
+                        You have <span id="fss_cnt"></span> Final Star Shards, next at <span id="fss_req"></span> FSS Base<br>
+            <button class="btn" onclick="MATTERS.fssReset()">Reset for a Final Star Shard</button><br>
+                        Your Final Star Shards are multiplying Axion Generators Power by <span id="fss_eff"></span> (based on FSS Base)<br>
                     </div>
                 </div>
+            <div id="stab_frame7_6">
+                You have <span id="ax0">0</span> X Axions, which multiply Exotic Matter gain by <span id="ax0b">0</span>.<br>
+                You have <span id="ax1">0</span> Y Axions, which multiply Dark Ray gain by <span id="ax1b">0</span>.<br><br>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/test.png">
+                            <span style="margin-left: 5px; text-align: left;">X Axion Generators [<span id="ax0_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="ax0_btn" class="btn" style="width: 200px;" onclick="EXOTIC.ax.buy(0)">Cost: <span id="ax0_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.ax.buyMax(0)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        X Axion Generators Power: +<span id="ax0_pow">X</span><br>
+                        X Axion Generators Effect: +<span id="ax0_eff">X</span> X Axions/sec
+                    </div>
+                </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="ax1_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/test.png">
+                            <span style="margin-left: 5px; text-align: left;">Y Axion Generators [<span id="ax1_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="ax1_btn" class="btn" style="width: 200px;" onclick="EXOTIC.ax.buy(1)">Cost: <span id="ax1_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.ax.buyMax(1)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Y Axion Generators Power: +<span id="ax1_pow">X</span><br>
+                        Y Axion Generators Effect: +<span id="ax1_eff">X</span> Y Axions/sec
+                    </div>
+                </div>
+            </div>
         </div><div id="tab_frame8">
             <button class="btn" onclick="save()">Save</button>
             <button class="btn" onclick="if (confirm('您想要彻底重置当前的进度，从头开始玩吗？')) {wipe(true)}">Hard Reset</button>
@@ -976,8 +1030,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's v0.5 NG+, Chinese Version) v0.9.5c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的v0.5 NG+, 汉化版) v0.9.5c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's v0.5 NG+, Chinese Version) v0.9.6c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的v0.5 NG+, 汉化版) v0.9.6c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

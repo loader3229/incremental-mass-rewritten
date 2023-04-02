@@ -390,6 +390,9 @@ const FORMS = {
 			if(hasChargedElement(137))p2 = p2 ** 0.97
 			if(hasElement(525))p2 = p2 ** 0.95
 			if(hasElement(532))p2 = p2 ** 0.9
+			if(hasElement(541))p2 = p2 ** 0.96
+			if(hasElement(543))p2 = p2 ** 0.98
+			if(hasElement(551))p = p ** 0.95
 			if(hasChargedElement(102))ss = ss.mul(100)
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
@@ -421,6 +424,7 @@ const FORMS = {
 			if(hasAscension(1,33))step = step.pow(10)
 			if(hasAscension(1,34))step = step.pow(10)
 			if(hasAscension(1,36))step = step.pow(10)
+			if(hasAscension(2,9))step = step.pow(ascensionEff(2,9)||1)
 			
 			step = step.softcap(ss,p,0)
 			let bonus = E(0)
@@ -569,6 +573,8 @@ const FORMS = {
 		 x = x.pow(SUPERNOVA_GALAXY.effects.bh())
 		x = x.pow(SUPERNOVA_GALAXY.galPow2_eff())
 		
+			if(player.ranks.enne.gte(200) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[1])	
+				
             if (player.md.active || CHALS.inChal(10) || CHALS.inChal(14) || CHALS.inChal(19) || FERMIONS.onActive("02") || FERMIONS.onActive("03") || CHALS.inChal(11)) x = expMult(x,tmp.md.pen)
             x = x.softcap(tmp.bh.massSoftGain, tmp.bh.massSoftPower, 0)
 			
@@ -585,7 +591,7 @@ const FORMS = {
 			if(!hasElement(327))x = overflow(x,tmp.bhOverflowStart,CHALS.inChal(19)?0.04:CHALS.inChal(15)?0.05:(hasElement(262)?0.9:hasElement(241)?0.82:hasUpgrade('bh',20)?0.81:0.8));
 			let bhOverflowStart2 = tmp.bhOverflowStart.pow(1e65);
 			if(x.gte(bhOverflowStart2)){
-				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(E(hasChargedElement(89)?0.82:hasUpgrade('bh',23)?0.81:0.8).pow(prestigeDMEffect()).pow(hasElement(476)?tmp.chal.eff[22]:1)).mul(bhOverflowStart2.log10().log10());
+				x = x.log10().log10().div(bhOverflowStart2.log10().log10()).pow(E(hasElement(546)?0.9:hasChargedElement(89)?0.82:hasUpgrade('bh',23)?0.81:0.8).pow(prestigeDMEffect()).pow(hasElement(476)?tmp.chal.eff[22]:1)).mul(bhOverflowStart2.log10().log10());
 				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
 			}
 			if(x.gte("eee10")){

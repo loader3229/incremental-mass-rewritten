@@ -159,7 +159,7 @@ const BOSONS = {
                 cost(x) { return E(1.5).pow(x.pow(1.25)).mul(10) },
                 bulk(x=player.supernova.bosons.gluon) { return x.gte(10) ? x.div(10).max(1).log(1.5).root(1.25).add(1).floor() : E(0) },
                 effect(x) { 
-					if(hasElement(404))return player.supernova.bosons.gluon.add(10).log10().mul(x.mul(tmp.radiation.bs.eff[7])).add(1);
+					if(hasElement(404))return overflow(player.supernova.bosons.gluon.add(10).log10().mul(x.mul(tmp.radiation.bs.eff[7])).add(1),"ee60",0.5);
 					return player.supernova.bosons.gluon.add(1).pow(x.mul(tmp.radiation.bs.eff[7]).pow(0.8).mul(100)) 
 				},
                 effDesc(x) { if(hasElement(404))return "^"+format(x);return format(x)+"倍" },

@@ -122,6 +122,10 @@ function resetTemp() {
         },
         ex: {
 			rcb_cost:{},rcb_can:{},rcb_eff:{},rcb_bulk:{},exb_eff:{},
+			axg_cost:{},axg_can:{},axg_eff:{},axg_bulk:{},
+        },
+        stellar: {
+            
         },
         prevSave: "",
 		rankCollapse: E(1),

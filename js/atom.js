@@ -223,6 +223,8 @@ const ATOM = {
 				b = b.pow(galParticleEffect(0));
 				if(hasChargedElement(29))a = a.pow(2);
 				if(hasChargedElement(29))b = b.pow(2);
+				if(hasChargedElement(156))a = a.pow(2);
+				if(hasChargedElement(156))b = b.pow(2);
                 return {eff1: a, eff2: b}
             },
             x=>{
@@ -410,6 +412,8 @@ function galParticleEffect(x){
 	if(hasElement(507))sc_rate+=0.01;
 	if(hasElement(509))sc_rate+=0.01;
 	if(hasElement(523))sc_rate+=0.01;//0.4
+	if(hasElement(547))sc_rate+=0.01;
+	if(hasElement(553))sc_rate+=0.01;
 	ret=overflow(ret,1e7,sc_rate);
 	ret=overflow(ret,5.1e9,hasElement(533)?0.53:hasElement(523)?0.515:hasAscension(0,3)?0.5:0.4);
 	return ret;

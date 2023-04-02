@@ -445,11 +445,14 @@ function getScalingStart(type, name) {
             if (hasElement(470))start = start.mul(tmp.elements.effect[470])
             if (player.ranks.enne.gte(102))start = start.mul(RANKS.effect.enne[102]())
             if (player.ranks.enne.gte(117))start = start.mul(1e50)
+            if (hasChargedElement(169))start = start.mul(1e100)
+            if (hasChargedElement(171))start = start.mul(1e100)
 		}
 		if (name=="hept") {
             if (player.ranks.enne.gte(15))start = start.mul(7.5)
 			if (hasElement(503))start = start.mul(tmp.fermions.effs2[3][3]||E(1))
             if (hasElement(519))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
+            if (hasChargedElement(176))start = start.mul(2)
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -493,6 +496,11 @@ function getScalingStart(type, name) {
 			if (hasElement(371)) start = start.mul(1.25)
 			if (hasElement(403)) start = start.mul(1.05)
 			if (hasPrestige(4,5)) start = start.mul(2)
+		}
+		if (name=="prestige1") {
+			if (hasAscension(2,12)) start = start.mul(2)
+			if (hasAscension(2,13)) start = start.mul(2)
+			if (hasAscension(2,14)) start = start.mul(2)
 		}
 	}
 	if (type=="exotic") {
@@ -845,7 +853,9 @@ function getScalingPower(type, name) {
 			if (player.ranks.enne.gte(9)) power = power.mul(RANKS.effect.enne[9]())
 			if (hasPrestige(4,13)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
 			if (hasPrestige(4,16)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+			if (hasPrestige(4,47)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(player.prestiges[4].sub(46).min(90).mul(0.01)))
 			if (hasChargedElement(149)) power = power.mul(0.95)
+			if (hasChargedElement(162)) power = power.mul(0.99)
 		}
 		if (name=="tickspeed") {
 			if (hasChargedElement(27)) power = power.mul(0.01)

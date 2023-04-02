@@ -309,6 +309,10 @@ function updateUpperHTML() {
 	tmp.el.exotic_div.setDisplay(unl)
 	if (unl) tmp.el.exoticAmt.setHTML(format(player.exotic.points,0)+"<br>(+"+format(EXOTIC.gain(),0)+")")
 	if (hasChargedElement(24)) tmp.el.exoticAmt.setHTML(format(player.exotic.points,0)+"<br>"+player.exotic.points.formatGain(EXOTIC.gain()),0)
+		
+	unl = player.superCluster.gte(21)
+	tmp.el.stardust_div.setDisplay(unl)
+	if (unl) tmp.el.stardustAmt.setHTML(format(player.stardust,0)+"<br>"+player.stardust.formatGain(SUPERNOVA_CLUSTER.stardustGain(),0))
 }
 
 function updateMassUpgradesHTML() {
@@ -606,6 +610,17 @@ function updateHTML() {
 			}
 			if (tmp.stab[0] == 3) {
 				updateStarsHTML()
+			}
+			if (tmp.stab[0] == 6) {
+				if(player.superCluster.gte(21)){
+					tmp.el.stellarAmt.setHTML(formatMass(player.stellar,0)+player.stellar.formatGain(tmp.stellar.gain,1));
+					tmp.el.stellarEff.setHTML(format(tmp.stellar.eff));
+					tmp.el.stellar_gen_lvl.setTxt(format(player.stellar_gen,0))
+					tmp.el.stellar_gen_btn.setClasses({btn: true, locked: !tmp.stellar.can})
+					tmp.el.stellar_gen_cost.setTxt(format(tmp.stellar.cost,0))
+					tmp.el.stellar_gen_pow.setTxt(format(tmp.stellar.pow))
+					tmp.el.stellar_gen_eff.setHTML(format(tmp.stellar.gen_eff))
+				}
 			}
 		}
 		if (tmp.tab == 1) {

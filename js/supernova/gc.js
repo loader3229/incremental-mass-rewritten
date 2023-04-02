@@ -76,10 +76,11 @@ function updateGCTemp() {
 	if(player.exotic.dark_run.active)tmp.gc.nerf = 1;
 	if(player.chal.active == 21)tmp.gc.nerf = 1.25;
 	if(player.chal.active == 22)tmp.gc.nerf = 1.5;
+	if(player.chal.active == 23)tmp.gc.nerf = 1.75;
 	if(player.exotic.dark_run.upgs[6].gte(1))tmp.gc.nerf *= tmp.dark_run?(tmp.dark_run.upgs[6].eff || 1):1;
 	tmp.gc.shards = E(0);
 	if(player.supernova.times.gte(GC.goal()) && !(player.chal.active >= 21) && !player.exotic.dark_run.active){
-		tmp.gc.shards = player.supernova.times.log10().sub(E(GC.goal()).log10()).mul(10**(player.gc.depth*0.9+1.1)).add(1).pow(player.gc.depth);
+		tmp.gc.shards = player.supernova.times.min(1e100).log10().sub(E(GC.goal()).log10()).mul(10**(player.gc.depth*0.9+1.1)).add(1).pow(player.gc.depth);
 		if(hasElement(484)){
 			if(tmp.gc.shards.gte(1e10))tmp.gc.shards = tmp.gc.shards.log10().pow(10);
 		}else if(player.exotic.dark_run.upgs[7].gte(1)){

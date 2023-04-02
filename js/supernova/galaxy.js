@@ -12,6 +12,7 @@ const SUPERNOVA_GALAXY = {
 		let ret=1e6;
 		if(hasElement(467))ret /= 40;
 		if(hasAscension(1,19))ret /= 2;
+		if(hasElement(539))ret /= 125;
 		return ret;
 	},
 	req(){
@@ -262,7 +263,9 @@ const SUPERNOVA_GALAXY = {
 	},
 	galPow6_gain(){
 		if(player.superCluster.lt(9))return E(0);
-		let ret=player.superGal.pow(player.superCluster.div(3).sub(2));
+		let ret=player.superGal.pow(player.superCluster);
+		if(player.superCluster.lt(22))ret=player.superGal.pow(player.superCluster.div(3).sub(2));
+		if(hasAscension(2,11))ret = ret.mul(ascensionEff(2,11));
 		return ret;
 	},
 	galPow6_eff(){
@@ -309,6 +312,7 @@ const SUPERNOVA_GALAXY = {
 		if (player.ranks.enne.gte(6)) ret = ret.mul(RANKS.effect.enne[6]())
 		ret = ret.mul(SUPERNOVA_GALAXY.galPow6_eff())
 		if(hasElement(486))ret = ret.mul(MATTERS.eff(3));
+		if(player.superCluster.gte(21))ret = ret.mul(tmp.stellar.eff);
 		return ret;
 	},
 }
@@ -324,6 +328,17 @@ function calcSupernovaGalaxy(dt, dt_offline) {
 	player.galQk = player.galQk.add(SUPERNOVA_GALAXY.galQkGain().mul(dt));
 	player.stardust = player.stardust.add(SUPERNOVA_CLUSTER.stardustGain().mul(dt));
 	if(player.exotic.times.gte(50))player.superGal = player.superGal.max(SUPERNOVA_GALAXY.bulk());
+		
+    tmp.stellar.cost = E(2).pow(player.stellar_gen.add(1)).mul(1e30)
+    tmp.stellar.bulk = player.stardust.div(1e30).max(1).log(2).floor()
+
+    tmp.stellar.can = player.stardust.gte(tmp.stellar.cost)
+    tmp.stellar.pow = SUPERNOVA_CLUSTER.stellar_gen.eff().pow
+    tmp.stellar.gen_eff = SUPERNOVA_CLUSTER.stellar_gen.eff().eff
+    tmp.stellar.gain = SUPERNOVA_CLUSTER.stellarGain()
+    tmp.stellar.eff = SUPERNOVA_CLUSTER.stellarEff()
+	player.stellar = player.stellar.add(tmp.stellar.gain.mul(dt));
+	
 }
 
 function updateSupernovaGalaxyHTML() {
@@ -429,6 +444,12 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superCluster.gte(14))html += "<br>Unlock Stardust";
 		if(player.superCluster.gte(14))tmp.el.stardust.setTxt(format(player.stardust)+player.stardust.formatGain(SUPERNOVA_CLUSTER.stardustGain()))
 		if(player.superCluster.gte(14))tmp.el.stardustEff.setTxt(format(SUPERNOVA_CLUSTER.stardustEff()))
+		if(player.superCluster.gte(20))html += "<br>Recursion resets nothing";
+		if(player.superCluster.gte(20))html += "<br>Automatically gain Recursion";
+		if(player.superCluster.gte(20))html += "<br>Multiply X Axion Generator Power by "+format(SUPERNOVA_CLUSTER.effects.eff7());
+		if(player.superCluster.gte(20))html += "<br>Multiply Y Axion Generator Power by "+format(SUPERNOVA_CLUSTER.effects.eff7());
+		if(player.superCluster.gte(21))html += "<br>Unlock Stellar Mass";
+		if(player.superCluster.gte(21))html += "<br>Unlock a Stardust buyable in Main Tab";
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}
@@ -471,17 +492,22 @@ const SUPERNOVA_CLUSTER = {
 		},
 		eff5(){
 			if(player.superCluster.lt(10))return new Decimal(1);
-			return E(0.7).pow(player.superCluster.pow(0.3));
+			return E(0.7).pow(player.superCluster.pow(player.superCluster.gte(23)?0.9:player.superCluster.gte(21)?0.75:0.3));
 		},
 		eff6(){
 			if(player.superCluster.lt(13))return new Decimal(0);
 			return player.superCluster.div(100);
+		},
+		eff7(){
+			if(player.superCluster.lt(20))return new Decimal(1);
+			return player.superCluster;
 		},
 	},
 	stardustGain(){
 		if(player.superCluster.lt(14))return E(0);
 		let ret=player.supernova.times.add(1).log10().pow(player.superCluster.sqrt());
 		if(hasElement(517))ret = ret.mul(MATTERS.eff(3));
+		if(hasAscension(2,10))ret = ret.mul(ascensionEff(2,10));
 		return ret;
 	},
 	stardustEff(){
@@ -490,4 +516,34 @@ const SUPERNOVA_CLUSTER = {
 		if(hasTree('qp26'))ret = ret.mul(8);
 		return ret;
 	},
+    stellarGain() {
+		if(player.superCluster.lt(21))return E(0);
+        let x = E(1);
+		if(tmp.stellar.gen_eff)x = x.mul(tmp.stellar.gen_eff);
+        return x
+    },
+    stellarEff() {
+		if(player.superCluster.lt(21))return E(1);
+        let x = player.stellar.pow(2).add(1);
+        return x
+    },
+    stellar_gen: {
+        buy() {
+            if (tmp.stellar.can) {
+				player.stardust = player.stardust.sub(tmp.stellar.cost).max(0)
+				player.stellar_gen = player.stellar_gen.add(1)
+			}
+        },
+        buyMax() {
+            if (tmp.stellar.can) {
+				player.stellar_gen = tmp.stellar.bulk
+				player.stardust = player.stardust.sub(tmp.stellar.cost).max(0)
+			}
+        },
+        eff() {
+            let pow = E(2)
+            let x = pow.pow(player.stellar_gen)
+            return {pow: pow, eff: x}
+        },
+    },
 }

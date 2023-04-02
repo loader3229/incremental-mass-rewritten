@@ -1,7 +1,7 @@
 const INFINITY_LAYER = {
     gain() {
-        let x = player.qu.points.add(1).log(Number.MAX_VALUE);
-        let y = player.qu.rip.amt.add(1).log(Number.MAX_VALUE);
+        let x = player.qu.points.add(1).log(Number.MAX_VALUE).min(Number.MAX_VALUE);
+        let y = player.qu.rip.amt.add(1).log(Number.MAX_VALUE).min(Number.MAX_VALUE);
         if (x.lt(1) || CHALS.inChal(18) || CHALS.inChal(19) || player.supernova.fermions.choosed.startsWith("2") || player.supernova.fermions.choosed.startsWith("3")) return E(0)
         if (y.lt(1)) y=E(1)
 		if (hasUpgrade('inf',20))y = y.pow(2)
@@ -21,7 +21,7 @@ const INFINITY_LAYER = {
 			x = x.mul(z)
 		}
 		if (hasElement(163)){
-			let z = ((tmp.prestiges?tmp.prestiges.base:E(1))||E(1)).add(1).log(Number.MAX_VALUE);
+			let z = ((tmp.prestiges?tmp.prestiges.base:E(1))||E(1)).add(1).log(Number.MAX_VALUE).min(Number.MAX_VALUE);
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
@@ -42,6 +42,11 @@ const INFINITY_LAYER = {
 		}
 		if (hasChargedElement(146)){
 			let z = player.exotic.points.add(1).log(Number.MAX_VALUE).pow(2);
+			if (z.lt(1)) z=E(1)
+			x = x.mul(z)
+		}
+		if (hasChargedElement(163)){
+			let z = player.exotic.ab.add(1).log(Number.MAX_VALUE).pow(2);
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}
@@ -343,5 +348,6 @@ function calcShardsEffect() {
 	if(hasElement(437))eff = eff.pow(1.2741059573015495880509654614338);
 	if(hasElement(457))eff = eff.pow(1.125);
 	if(hasChargedElement(148))eff = eff.pow(1.1);
+	if(hasElement(549))eff = eff.pow(1.1);
 	return eff;
 }

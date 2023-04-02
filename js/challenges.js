@@ -42,6 +42,7 @@ function updateChalHTML() {
 			if(player.chal.choosed == 5)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
 			if(player.chal.choosed == 7)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
 			if(player.chal.choosed == 14)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
+			if(player.chal.choosed == 15)tmp.el.chal_ch_reward.setHTML("Reward: "+chal.reward())
             tmp.el.chal_ch_eff.setHTML("Currently: "+chal.effDesc(tmp.chal.eff[player.chal.choosed]))
         }
     }
@@ -280,6 +281,7 @@ const CHALS = {
         let lvl = r.lt(0)?player.chal.comps[x]:r
         let chal = this[x]
 		if(hasElement(170)&&x==15)chal.inc = E(2);
+		if(hasChargedElement(170)&&x==21)chal.inc = E(2);
         let fp = 1
         if (QCs.active() && x <= 12) fp /= tmp.qu.qc_eff[5]
         let s1 = x > 8 ? 10 : 75
@@ -294,6 +296,8 @@ const CHALS = {
         if (hasChargedElement(10) && x==20) pow = pow.mul(0.95)
 		if (hasElement(453) && x==21) pow = pow.mul(0.8)
 		if (hasElement(477) && x==21) pow = pow.mul(0.79)
+		if(hasChargedElement(175)&&x==13) pow = pow.mul(0.5)
+		if(hasChargedElement(175)&&x==15) pow = pow.mul(0.5)
 		let start = chal.start
         chal.pow = chal.pow.max(1)
         let goal = chal.inc.pow(lvl.div(fp).pow(pow)).mul(chal.start)
@@ -458,6 +462,7 @@ const CHALS = {
         pow: E(1.25),
         start: E(1.5e136),
         effect(x) {
+			if(hasChargedElement(170))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10().sqrt();
 			if(hasElement(519))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10().add(10).log10();
 			if(hasElement(421))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10();
 			if(hasElement(348))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(1);
@@ -604,7 +609,9 @@ const CHALS = {
         start: E('ee40'),
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
-			if(hasChargedElement(39)){
+			if(hasChargedElement(155)){
+				if(x.gte(10000))x=x.log10().mul(2500);
+			}else if(hasChargedElement(39)){
 				if(x.gte(200))x=x.div(2).log10().mul(100);
 			}else if(hasChargedElement(8)){
 				if(x.gte(100))x=x.log10().mul(50);
@@ -631,6 +638,7 @@ const CHALS = {
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
 			if(hasUpgrade('br',22)){
+				if(hasChargedElement(159))return x.add(1e10).log10().div(10).pow(2);
 				return x.add(1e10).log10().div(10);
 			}
             let ret = E(0.97).pow(x.root(2).softcap(25,0.56,0).softcap(42,0.1,0))
@@ -642,7 +650,10 @@ const CHALS = {
         unl() { return hasElement(164) },
         title: "超级溢出",
         desc: "质量溢出在10克开始并且增强12倍。黑洞溢出在10克开始并且被增强。",
-        reward: `质量溢出延迟出现。`,
+        reward() {
+			if(hasChargedElement(164))return `Stronger Overflow starts later.`;
+			return `质量溢出延迟出现。`
+		},
         max: E(100),
         inc: E('e1e14'),
         pow: E(5),
@@ -652,7 +663,7 @@ const CHALS = {
             let ret = x.add(1)
             return ret
         },
-        effDesc(x) { return "^"+format(x) },
+        effDesc(x) { if(hasChargedElement(164))return "^"+format(x.add(9).log10()); return "^"+format(x) },
     },
     16: {
         unl() { return hasElement(168) },
@@ -727,10 +738,11 @@ const CHALS = {
         start: E("1e3149"),
         effect(x) {
 			if(player.chal.active == 22)return E(1);
+			if(player.chal.active == 23)return E(1);
 			if(hasPrestige(2,17))x = x.pow(2);
 			if(hasElement(277))x = x.pow(1.25);
 			if(!hasTree('qp19'))x = x.softcap(1e6,hasElement(489)?0.86:hasElement(465)?0.84:hasElement(433)?0.7:hasElement(429)?0.5:hasElement(417)?0.3:hasElement(409)?0.1:hasElement(397)?0.03:0.01,0);
-			x = x.softcap(hasElement(527)?1.5e7:1e7,hasTree('qp27')?0.85:hasTree('qp25')?0.7:0.1,0);
+			if(!hasElement(538))x = x.softcap(hasElement(527)?1.5e7:1e7,hasTree('qp27')?0.85:hasTree('qp25')?0.7:0.1,0);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
 			if(hasElement(334))ret = Decimal.pow(10,Decimal.pow(2.6,x.root(4)));
@@ -750,7 +762,9 @@ const CHALS = {
 		pow: E(10),
         start: E("4e18493813"),
         effect(x) {
-			let ret = x.mul(12).min(x.mul(2).add(10));
+			if(x.lt(1))return E(0);
+			let ret = x.mul(2).add(10);
+			if(hasElement(552))ret = ret.max(x.mul(3));
 			return ret
         },
         effDesc(x) { return "+"+format(x)+" later" },
@@ -770,7 +784,22 @@ const CHALS = {
         },
         effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
     },
-    cols: 22,
+    23: {
+        unl() { return hasElement(545) },
+        title: "No Matters",
+        desc: "Matters has no effect. Also You're trapped in Galactic Challenge Difficulty 14, and C20 has no effect.",
+        reward: `Add Matter Exponent.`,
+		max: E(100),
+		inc: E(1e10),
+		pow: E(2),
+        start: E("1e7900"),
+        effect(x) {
+            let ret = x.div(100);
+            return ret
+        },
+        effDesc(x) { return "+"+format(x) },
+    },
+    cols: 23,
 }
 
 /*

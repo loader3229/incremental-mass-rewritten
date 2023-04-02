@@ -39,6 +39,7 @@ const EXOTIC = {
 		x = x.mul(SUPERNOVA_GALAXY.effects.em());
 		if(hasChargedElement(120))x = x.mul(tmp.elements.ceffect[120]);
 		if(hasElement(486))x = x.mul(MATTERS.eff(0));
+		if(hasElement(534))x = x.mul(player.exotic.ax[0].add(1));
         return x.floor()
     },
     gainTimes() {
@@ -106,6 +107,29 @@ const EXOTIC = {
             return {pow: pow, eff: x}
         },
     },
+    ax: {
+        buy(i) {
+            if (tmp.ex.axg_can[i]) {
+				player.exotic.axg[i] = player.exotic.axg[i].add(1)
+				player.exotic.points = player.exotic.points.sub(tmp.ex.axg_cost[i]).max(0)
+			}
+        },
+        buyMax(i) {
+            if (tmp.ex.axg_can[i]) {
+				player.exotic.axg[i] = tmp.ex.axg_bulk[i]
+				player.exotic.points = player.exotic.points.sub(tmp.ex.axg_cost[i]).max(0)
+			}
+        },
+        eff(i) {
+            let pow = E(player.exotic.axg[i].add(1))
+			if (hasElement(535) && i==0) pow = pow.mul(tmp.elements.effect[535]);
+			if (hasElement(536) && i==0) pow = pow.mul(tmp.elements.effect[536]);
+			if(player.superCluster.gte(20) && i<=1)pow = pow.mul(SUPERNOVA_CLUSTER.effects.eff7());
+			if(hasElement(542)) pow = pow.mul(MATTERS.fssEff());
+            let x = pow.mul(player.exotic.axg[i])
+            return {pow: pow, eff: x}
+        },
+    },
     drGain(){
         let x = E(1);
 		if(hasUpgrade('exotic', 15)){
@@ -124,6 +148,7 @@ const EXOTIC = {
         if (hasTree('qp21')) x = x.mul(treeEff('qp21'));
         if (hasTree('qp22')) x = x.mul(treeEff('qp22'));
 		if(hasElement(486))x = x.mul(MATTERS.eff(12));
+		if(hasElement(540))x = x.mul(player.exotic.ax[1].add(1));
 		return x;
     },
     dsGain(){
@@ -179,6 +204,7 @@ const EXOTIC = {
 		if(hasElement(414))x.ab = player.exotic.ds.div(hasElement(468)?1:1e60).add(1).pow(2);
 		if(hasElement(474))x.qf = player.exotic.ds.add(1e100).log10().div(100);
 		if(hasElement(492))x.me = player.exotic.ds.add(1e100).log10().div(100).sub(1);
+		if(x.me.gte(1))x.me = x.me.log10().add(1);
 		if(hasElement(496))x.sn = x.sn.pow(2);
 		if(hasElement(498))x.me = x.me.mul(2);
 		return x;
@@ -207,6 +233,12 @@ function updateExoticTemp() {
 
 		tmp.ex.rcb_can[i] = player.exotic.points.gte(tmp.ex.rcb_cost[i])
 		tmp.ex.rcb_eff[i] = EXOTIC.rcb.eff(i)
+		
+		tmp.ex.axg_cost[i] = E(2+i).pow(player.exotic.axg[i].scaleEvery("ex_axg").add(1)).mul(E(2+i).pow([1023,728][i]));
+		tmp.ex.axg_bulk[i] = player.exotic.points.div(E(2+i).pow([1023,728][i])).max(1).log(2+i).scaleEvery("ex_axg",true).floor()
+
+		tmp.ex.axg_can[i] = player.exotic.points.gte(tmp.ex.axg_cost[i])
+		tmp.ex.axg_eff[i] = EXOTIC.ax.eff(i)
 		
 		if(hasChargedElement(43)&&(i<=hasElement(402)?3:2))player.exotic.rcb[i] = player.exotic.rcb[i].max(tmp.ex.rcb_bulk[i]);
 	}
@@ -249,6 +281,12 @@ function calcExotic(dt) {
 		for(var i=0;i<MATTERS_LENGTH;i++){
 			player.exotic.matters[i]=player.exotic.matters[i].add(MATTERS.gain(i).mul(dt));
 		}
+	}
+	if(hasElement(534)){
+		player.exotic.ax[0]=player.exotic.ax[0].add(tmp.ex.axg_eff[0].eff.mul(dt));
+	}
+	if(hasElement(540)){
+		player.exotic.ax[1]=player.exotic.ax[1].add(tmp.ex.axg_eff[1].eff.mul(dt));
 	}
 }
 
@@ -354,6 +392,34 @@ function updateExoticHTML(){
 			tmp.el.matters12_eff.setTxt(format(MATTERS.eff(12)));
 			tmp.el["matters_ex"].changeStyle('display',hasElement(487)?'':'none');
 			tmp.el.matters_ex_eff.setTxt("+"+format(MATTERS.exeff()));
+			if(hasElement(542)){
+				tmp.el.fss_div.changeStyle('display','');
+				tmp.el.fss_base.setTxt(format(MATTERS.fssBase()));
+				tmp.el.fss_cnt.setTxt(format(player.exotic.fss,0));
+				tmp.el.fss_req.setTxt(format(MATTERS.fssReq()));
+				tmp.el.fss_eff.setTxt(format(MATTERS.fssEff()));
+			}else{
+				tmp.el.fss_div.changeStyle('display','none');
+			}
+			if(hasElement(548)){
+				tmp.el.matters_extend.changeStyle('display','');
+				tmp.el.matters_extend.setTxt("*((next matter+1)^"+MATTERS.extendPow()+")");
+			}else{
+				tmp.el.matters_extend.changeStyle('display','none');
+			}
+        }
+        if (tmp.stab[7] == 6) {
+            for(let i=0;i<=1;i++){
+				tmp.el["ax"+i].setTxt(format(player.exotic.ax[i],0))
+				tmp.el["ax"+i+"_lvl"].setTxt(format(player.exotic.axg[i],0))
+				tmp.el["ax"+i+"_btn"].setClasses({btn: true, locked: !tmp.ex.axg_can[i]})
+				tmp.el["ax"+i+"_cost"].setTxt(format(tmp.ex.axg_cost[i],0))
+				tmp.el["ax"+i+"_pow"].setTxt(format(tmp.ex.axg_eff[i].pow))
+				tmp.el["ax"+i+"_eff"].setTxt(format(tmp.ex.axg_eff[i].eff))
+			}
+			tmp.el.ax0b.setTxt(format(player.exotic.ax[0].add(1),0))
+			tmp.el.ax1b.setTxt(format(player.exotic.ax[1].add(1),0))
+			tmp.el.ax1_div.changeStyle('display',hasElement(540)?'':'none');
         }
 }
 

@@ -29,6 +29,7 @@ const TABS = {
             { id: "Stars", unl() { return STARS.unlocked() } },
             { id: "Indescribable Matter", unl() { return quUnl() } },
             { id: "永恒", unl() { return player.et.times.gt(0) } },
+            { id: "Stellar", unl() { return player.superCluster.gte(21) } },
         ],
         1: [
             { id: "Ranks Rewards" },
@@ -72,6 +73,7 @@ const TABS = {
             { id: "Darkness", unl() { return hasUpgrade("exotic",15) } },
             { id: "Dark Run", unl() { return hasElement(450) } },
             { id: "The Matters", unl() { return hasElement(486) } },
+            { id: "Axions", unl() { return hasElement(534) } },
         ],
     },
 }
