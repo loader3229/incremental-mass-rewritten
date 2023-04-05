@@ -346,8 +346,9 @@ function getPlayerData() {
 			
 			dark_run: {
 				points: E(0),
-            upgs: [],
+            	upgs: [],
 			},
+            tree: [],
 		},
 		superCluster: E(0),
 		stardust: E(0),

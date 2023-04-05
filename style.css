@@ -409,6 +409,11 @@ button {
 	box-shadow: 0px 0px 10px 0px #39ff4a7e;
 }
 
+.btn_tree.ax_tree.bought {
+	border-color: #ff0000 !important;
+	box-shadow: 0px 0px 10px 0px #ff00007e;
+}
+
 .elements.final:not(.locked):not(.bought):hover {
 	transform: scale(1.3);
 }

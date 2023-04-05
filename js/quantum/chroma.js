@@ -22,7 +22,7 @@ const CHROMA = {
     eff: [
         i => {
             let x = i.add(1).log10().add(1).root(3)
-			if (player.qu.times.gte('1e900'))x = overflow(i,10,0.82)
+			if (player.qu.times.gte('1e900'))x = overflow(overflow(i,10,0.82),"ee68",0.75)
             if (hasUpgrade('br',10)) x = x.mul(1.1)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)
 			if (player.ranks.hept.gte(40)) x = x.pow(3)
@@ -37,7 +37,7 @@ const CHROMA = {
             if (hasUpgrade('br',7) && player.qu.rip.active) x = x.pow(2)
 			if (hasElement(155) && !player.qu.rip.active) x = x.pow(tmp.chal?tmp.chal.eff[13]:1)
             if (hasElement(180) && !player.qu.rip.active) x = x.pow(1.5)
-			x = overflow(x,"e2.5e24",0.5);
+			x = overflow(x,hasChargedElement(180)?"ee57":"e2.5e24",0.5);
             return x
         },
         i => {

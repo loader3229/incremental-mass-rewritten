@@ -150,7 +150,7 @@ const ENTROPY = {
             scale: {s: 5, p: 2.5},
 
             eff(i) {
-                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(hasChargedElement(167)?0.925:hasChargedElement(151)?0.9:hasChargedElement(91)?0.835:0.8))
+                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(hasChargedElement(177)?0.95:hasChargedElement(167)?0.925:hasChargedElement(151)?0.9:hasChargedElement(91)?0.835:0.8))
                 return x
             },
             desc(x) { return `Entropy boosts itself by <b>${x.format(2)}倍</b>.` },

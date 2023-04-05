@@ -12,6 +12,7 @@ const STARS = {
 			if(hasUpgrade('exotic',18) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[3])
 				if(hasChargedElement(36) && x.gte(10))x = expMult(x,1.1)
 				
+				if(hasTree('qp31') && x.gte(10))x = expMult(x,treeEff('qp31'))
 		if(hasElement(503) && x.gte(10))x = expMult(x,tmp.fermions.effs2[3][0]||E(1))	
 				
 				
@@ -128,6 +129,7 @@ const STARS = {
 				if(hasChargedElement(50)) x = expMult(x,1.02)
 			if(hasElement(444) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[3])
             if (QCs.active()) x = expMult(x,tmp.qu.qc_eff[0][0])
+				if(hasTree('qp33') && x.gte(10))x = expMult(x,treeEff('qp31'))
             return x
         },
     },

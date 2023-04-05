@@ -313,6 +313,8 @@ const RANKS = {
             '117': "Meta-Hex starts 1e50x later.",
             '140': "Remove a softcap from Pent 2.",
             '200': "Exotic Boost 'Dark Matter Boost' affects Mass of Black Hole.",
+            '250': "Dec Boost Dark Ray gain.",
+            '300': "Dec Boost Stardust gain.",
 		},
     },
     effect: {
@@ -438,6 +440,8 @@ const RANKS = {
             },
             '126'() {
                 let ret = player.ranks.hex.div(100);
+				if(ret.gte("1e600"))ret = ret.log10().div(60).pow(600);
+				ret = ret.softcap("1e1000",0.5,0);
                 return ret
             },
             '127'() {
@@ -557,6 +561,14 @@ const RANKS = {
                 let ret = E(10).pow(player.ranks.enne);
                 return ret
             },
+            '250'() {
+                let ret = beyondRankTier(9).add(1).pow(2);
+                return ret
+            },
+            '300'() {
+                let ret = beyondRankTier(9).add(1).pow(2);
+                return ret
+            },
 		},
     },
     effDesc: {
@@ -626,6 +638,8 @@ const RANKS = {
             14(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
             101(x) { return format(x)+"x" },
             102(x) { return format(x)+"x later" },
+            250(x) { return format(x)+"x" },
+            300(x) { return format(x)+"x" },
 		},
     },
     fp: {
@@ -968,6 +982,7 @@ const PRESTIGES = {
             "35": `Reduce Hex-Oct Requirements.`,
 			"39": `Renown 24 & 28 effects are better.`,
             "47": `Add +1% to Valor 13's effectiveness for each Valor after 47th (90% max).`,
+            "51": `Meta-Tickspeeds stars ^2 later for each Valor after 51st.`,
 		},
     ],
     rewardEff: [
@@ -1251,6 +1266,10 @@ const PRESTIGES = {
 				if(hasPrestige(4,34))x = x.pow(2);
                 return x
             },x=>"x"+x.format()],
+            "51": [_=>{
+                let x = E(2).pow(player.prestiges[4].sub(50).max(0));
+                return x
+            },x=>"^"+x.format()+" later"],
 		},
     ],
     reset(i) {
@@ -1418,12 +1437,13 @@ const ASCENSIONS = {
             "6": `Recursion is added to Ascension Mass formula.`,
             "7": `Transcension Level 16 effect is better.`,
             "8": `Remove Super Renown scaling.`,
-			"9": `Boost Prestige Tickspeeds Power.`,
+			"9": `Recursion boost Prestige Tickspeeds Power.`,
 			"10": `Recursion boost Stardust gain.`,
 			"11": `Recursion boost Galactic Mass gain.`,
 			"12": `Meta-Honor starts 2x later.`,
 			"13": `Meta-Honor starts 2x later.`,
 			"14": `Meta-Honor starts 2x later.`,
+			"15": `Recursion boost Axion Generators Power.`,
 		},
     ],
     rewardEff: [
@@ -1551,6 +1571,12 @@ const ASCENSIONS = {
             }],
             "11": [_=>{
                 let x = player.ascensions[2].add(1).pow(2);
+                return x
+            },x=>{
+                return x.format()+"x"
+            }],
+            "15": [_=>{
+                let x = player.ascensions[2].add(1);
                 return x
             },x=>{
                 return x.format()+"x"

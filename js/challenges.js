@@ -240,6 +240,7 @@ const CHALS = {
 		if (hasElement(258) && (i==17||i==18||i==19))  x = x.add(250)
 		if (hasElement(277) && (i==20))  x = x.add(100)
 		if (hasElement(280) && (i==17||i==18||i==19))  x = x.add(500)
+		if (hasTree('qp32') && (i==21||i==22||i==23))  x = x.add(100)
         return x.floor()
     },
     getScaleName(i) {
@@ -280,8 +281,10 @@ const CHALS = {
         let res = this.getResource(x,y)
         let lvl = r.lt(0)?player.chal.comps[x]:r
         let chal = this[x]
-		if(hasElement(170)&&x==15)chal.inc = E(2);
-		if(hasChargedElement(170)&&x==21)chal.inc = E(2);
+		let inc = chal.inc
+		if(hasElement(170)&&x==15)inc = E(2);
+		if(hasChargedElement(170)&&x==21)inc = E(2);
+		if(hasTree('qp29')&&x<=23)inc = E(2);
         let fp = 1
         if (QCs.active() && x <= 12) fp /= tmp.qu.qc_eff[5]
         let s1 = x > 8 ? 10 : 75
@@ -298,22 +301,30 @@ const CHALS = {
 		if (hasElement(477) && x==21) pow = pow.mul(0.79)
 		if(hasChargedElement(175)&&x==13) pow = pow.mul(0.5)
 		if(hasChargedElement(175)&&x==15) pow = pow.mul(0.5)
-		let start = chal.start
+		if(hasTree('qp29')&&x<=19)pow = E(1);
+		if(hasTree('qp29')&&x==20)pow = E(1.15);
+		if(hasTree('qp29')&&x==21)pow = E(6);
+		if(hasTree('qp30')&&x==21)pow = E(5.7);
+		if(hasTree('qp32')&&x==21)pow = E(5);
+		if(hasTree('qp32')&&x==22)pow = E(1);
+		if(hasTree('qp32')&&x==23)pow = E(1.5);
+		let st = chal.start
+		if(hasTree('qp30')&&x<=19)st = E(1);
         chal.pow = chal.pow.max(1)
-        let goal = chal.inc.pow(lvl.div(fp).pow(pow)).mul(chal.start)
-        let bulk = res.div(chal.start).max(1).log(chal.inc).root(pow).mul(fp).add(1).floor()
-        if (res.lt(chal.start)) bulk = E(0)
+        let goal = inc.pow(lvl.div(fp).pow(pow)).mul(st)
+        let bulk = res.div(st).max(1).log(inc).root(pow).mul(fp).add(1).floor()
+        if (res.lt(st)) bulk = E(0)
         if (lvl.max(bulk).gte(s1)) {
             let start = E(s1);
             let exp = E(3).pow(this.getPower(x));
             goal =
-            chal.inc.pow(
+            inc.pow(
                     lvl.div(fp).pow(exp).div(start.pow(exp.sub(1))).pow(pow)
-                ).mul(chal.start)
+                ).mul(st)
             bulk = res
-                .div(chal.start)
+                .div(st)
                 .max(1)
-                .log(chal.inc)
+                .log(inc)
                 .root(pow)
                 .times(start.pow(exp.sub(1)))
                 .root(exp).mul(fp)
@@ -326,13 +337,13 @@ const CHALS = {
             let start2 = E(s2);
             let exp2 = E(4.5).pow(this.getPower2(x))
             goal =
-            chal.inc.pow(
+            inc.pow(
                     lvl.div(fp).pow(exp2).div(start2.pow(exp2.sub(1))).pow(exp).div(start.pow(exp.sub(1))).pow(pow)
-                ).mul(chal.start)
+                ).mul(st)
             bulk = res
-                .div(chal.start)
+                .div(st)
                 .max(1)
-                .log(chal.inc)
+                .log(inc)
                 .root(pow)
                 .times(start.pow(exp.sub(1)))
                 .root(exp)
@@ -349,14 +360,14 @@ const CHALS = {
             let start3 = E(s3);
             let exp3 = E(1.001).pow(this.getPower3(x))
             goal =
-            chal.inc.pow(
+            inc.pow(
                     exp3.pow(lvl.div(fp).sub(start3)).mul(start3)
                     .pow(exp2).div(start2.pow(exp2.sub(1))).pow(exp).div(start.pow(exp.sub(1))).pow(pow)
-                ).mul(chal.start)
+                ).mul(st)
             bulk = res
-                .div(chal.start)
+                .div(st)
                 .max(1)
-                .log(chal.inc)
+                .log(inc)
                 .root(pow)
                 .times(start.pow(exp.sub(1)))
                 .root(exp)
@@ -609,7 +620,11 @@ const CHALS = {
         start: E('ee40'),
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
-			if(hasChargedElement(155)){
+			if(hasChargedElement(190)){
+				if(x.gte(10000))x=x.log10().pow(1.5).mul(1250);
+			}else if(hasChargedElement(182)){
+				if(x.gte(10000))x=x.log10().pow(1.25).mul(1250).mul(2**0.5);
+			}else if(hasChargedElement(155)){
 				if(x.gte(10000))x=x.log10().mul(2500);
 			}else if(hasChargedElement(39)){
 				if(x.gte(200))x=x.div(2).log10().mul(100);
@@ -661,6 +676,7 @@ const CHALS = {
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
             let ret = x.add(1)
+			if(hasChargedElement(186))ret = overflow(ret,10,3);
             return ret
         },
         effDesc(x) { if(hasChargedElement(164))return "^"+format(x.add(9).log10()); return "^"+format(x) },

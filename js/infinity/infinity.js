@@ -27,6 +27,7 @@ const INFINITY_LAYER = {
 		}
 		if (hasElement(189)){
 			let z = player.inf.points.add(1).log(Number.MAX_VALUE);
+			if (hasChargedElement(189))z = z.pow(2);
 			if (z.lt(1)) z=E(1)
 			x = x.mul(z)
 		}

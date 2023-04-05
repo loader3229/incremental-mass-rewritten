@@ -277,6 +277,7 @@ function updateScalingTemp() {
 	let sqc8 = []
 	if (player.mainUpg.br.includes(2)) sqc8.push("massUpg","rank","tier","tetr","pent")
 	if (player.md.break.active) sqc8.push("bh_condenser","gamma_ray")
+	if (hasElement(555)) sqc8.push("supernova")
 	tmp.scaling_qc8 = sqc8
 }
 
@@ -447,12 +448,17 @@ function getScalingStart(type, name) {
             if (player.ranks.enne.gte(117))start = start.mul(1e50)
             if (hasChargedElement(169))start = start.mul(1e100)
             if (hasChargedElement(171))start = start.mul(1e100)
+            if (hasChargedElement(191))start = start.pow(2)
 		}
 		if (name=="hept") {
             if (player.ranks.enne.gte(15))start = start.mul(7.5)
 			if (hasElement(503))start = start.mul(tmp.fermions.effs2[3][3]||E(1))
             if (hasElement(519))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
             if (hasChargedElement(176))start = start.mul(2)
+            if (hasChargedElement(181))start = start.mul(2)
+            if (hasChargedElement(183))start = start.mul(2)
+            if (hasChargedElement(184))start = start.mul(2)
+            if (hasChargedElement(188))start = start.mul(tmp.bd.upgs[4].eff.add(10).log10().add(10).log10())
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -468,6 +474,8 @@ function getScalingStart(type, name) {
 			if (hasChargedElement(68)) start = start.pow(2)
 			if (hasElement(418)) start = start.pow(10)
 			if (hasChargedElement(88)) start = start.pow(2)
+			if (hasChargedElement(178)) start = start.pow(2)
+			if (hasPrestige(3,51)) start = start.pow(prestigeEff(4,51,E(1)))
 		}
 		if (name=="bh_condenser" || name=="gamma_ray") {
 			start = start.mul(getEnRewardEff(0))

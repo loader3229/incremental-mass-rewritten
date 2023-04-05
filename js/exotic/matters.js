@@ -18,6 +18,7 @@ const MATTERS = {
 		}
 		if(i==1){
 			let x = base.add(1).log10();
+			if(hasTree("qp34"))x = x.pow(1.5);
 			if(x.gte(100))x = x.log10().mul(50);
 			return E(0.9).pow(x);
 		}
@@ -39,9 +40,10 @@ const MATTERS = {
 		}
     },
     exeff() {
-		if(player.exotic.points.gte('1e360'))return player.exotic.points.add(10).log10().div(10).sqrt().mul(0.6).min(5).mul(hasElement(495)?2:1);
-		if(player.exotic.points.gte('1e260'))return player.exotic.points.add(10).log10().div(50).sub(3.6).min(5).mul(hasElement(495)?2:1);
-		return player.exotic.points.add(10).log10().div(100).sub(1).min(5).mul(hasElement(495)?2:1);
+		//player.exotic.points.add(1e10).log10().sqrt().div(2.635).log10().mul(10)
+		if(player.exotic.points.gte('1e360'))return player.exotic.points.add(10).log10().div(10).sqrt().mul(0.6).min(5).mul(hasElement(495)?2:1).min(10);
+		if(player.exotic.points.gte('1e260'))return player.exotic.points.add(10).log10().div(50).sub(3.6).min(5).mul(hasElement(495)?2:1).min(10);
+		return player.exotic.points.add(10).log10().div(100).sub(1).min(5).mul(hasElement(495)?2:1).min(10);
     },
     pow() {
 		let x = E(1)
@@ -56,6 +58,7 @@ const MATTERS = {
 		if (hasElement(544)) x = x.add(tmp.elements.effect[544]||0)
 		if (hasElement(545)) x = x.add(tmp.chal.eff[23]||0)
 		if (hasTree('qp17')) x = x.add(treeEff('qp17',0))
+		if (hasTree('ax5')) x = x.add(treeEff('ax5',0))
 		if(player.superCluster.gte(13))x = x.add(SUPERNOVA_CLUSTER.effects.eff6());
 		if(player.exotic.dark_run.upgs[15].gte(1))x = x.add(tmp.dark_run.upgs[15].eff);
 		return x

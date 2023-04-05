@@ -76,6 +76,7 @@ const SUPERNOVA = {
 		
 			if(hasUpgrade('exotic',20) && x.gte(10))x = expMult(x,tmp.ex.exb_eff[4])
 			if(hasTree('qp13') && x.gte(10))x = expMult(x,1.1)
+				if(hasTree('qp33') && x.gte(10))x = expMult(x,treeEff('qp31'))
 	
 	if(player.gc.active || player.chal.active >= 21 || player.exotic.dark_run.active)x = GCeffect(x)
         return x
@@ -83,8 +84,13 @@ const SUPERNOVA = {
     req(x=player.supernova.times) {
         ml_fp = E(1).mul(tmp.bosons.upgs.gluon[3].effect)
         maxlimit = E(1e20).pow(x.scaleEvery('supernova').div(ml_fp).pow(1.25)).mul(1e90)
+		if(hasElement(555))maxlimit = E(1.1).pow(x.scaleEvery('supernova').div(ml_fp)).mul(100)
         bulk = E(0)
         if (player.stars.points.div(1e90).gte(1)) bulk = player.stars.points.div(1e90).max(1).log(1e20).max(0).root(1.25).mul(ml_fp).scaleEvery('supernova',true).add(1).floor().min(hasElement(291)?EINF:SUPERNOVA_GALAXY.req())
+		if(hasElement(555)){
+			bulk = E(0)
+            if (player.stars.points.div(100).gte(1)) bulk = player.stars.points.div(100).max(1).log(1.1).max(0).mul(ml_fp).scaleEvery('supernova',true).add(1).floor()
+		}
         return {maxlimit: maxlimit, bulk: bulk}
     },
 }
@@ -154,7 +160,7 @@ function updateSupernovaTemp() {
             let req = t.req?t.req():true
             if (tmp.qu.mil_reached[1] && NO_REQ_QU.includes(id)) req = true
             if (player.superGal.gte(2)) req = true
-            let can = (t.qf?player.qu.points:player.supernova.stars).gte(t.cost) && !hasTree(id) && req
+            let can = (t.ax?EXOTIC.axsRem():t.qf?player.qu.points:player.supernova.stars).gte(t.cost) && !hasTree(id) && req
             if (branch != "") for (let x = 0; x < branch.length; x++) if (!hasTree(branch[x])) {
                 unl = false
                 can = false
@@ -194,7 +200,6 @@ function updateSupernovaEndingHTML() {
         tmp.el.supernova_next.setTxt("Next Supernova at "+format(tmp.supernova.maxlimit,2)+" stars")
 		if (player.supernova.times.gte(SUPERNOVA_GALAXY.req()) && !hasElement(291)) tmp.el.supernova_next.setTxt("You reached the maximum Supernova limit!")
         if (tmp.stab[5] == 0) {
-            tmp.el.neutronStar.setTxt(format(player.supernova.stars,2)+formatGain(player.supernova.stars,tmp.supernova.star_gain.mul(tmp.preQUGlobalSpeed)))
             updateTreeHTML()
         }
         if (tmp.stab[5] == 1) updateBosonsHTML()

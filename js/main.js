@@ -318,7 +318,7 @@ const FORMS = {
 				eff = eff.pow(tmp.accelEffect.eff.mul(0.1));
 				eff_bottom = eff_bottom.pow(tmp.accelEffect.eff);
 				if (player.ranks.tetr.gte(3)) eff = eff.pow(1.05),eff_bottom = eff_bottom.pow(1.05);
-			}
+			}else eff = eff.min("eee15")
 			
             return {step: step, eff: eff, bonus: bonus, ss: ss, eff_bottom: eff_bottom}
         },

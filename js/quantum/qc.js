@@ -70,12 +70,12 @@ const QCs = {
 				if(hasChargedElement(154))i *= 0.95
 				if(hasElement(172))i *= 0.94
 				if(hasChargedElement(172))i *= 0.94
+				if(hasChargedElement(185))return 0.8**(i**1.25)
 				//if(i>=30)return 0
 				if(i>=21&&hasElement(185))return 0.8**(i**5.25/40000)
 				if(i>=21)return 0.8**(i**6.25/800000)
 				if(i>=11)return 0.8**(i**3.25/100)
-                let x = 0.8**(i**1.25)
-                return x
+                return 0.8**(i**1.25)
             },
             effDesc(x) { return `^${format(x)} to multiplier from pre-Supernova resources, except All-Stars resources.` },
         },{

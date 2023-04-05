@@ -5,6 +5,7 @@ const TREE_TAB = [
     {title: "Post-Supernova", unl() { return player.supernova.post_10 } },
     {title: "Quantum", unl() { return quUnl() } },
     {title: "Quantum+", unl() { return hasChargedElement(118) } },
+    {title: "Axionic", unl() { return hasElement(556) } },
 ]
 
 const TREE_IDS = [
@@ -15,6 +16,7 @@ const TREE_IDS = [
         ['bs4','bs1','','qf1','','rad1'],
         ['qu0'],
 		['qp17'],
+		['ax4','ax2','ax1','ax3','ax5'],
     ],[
         ['s1','m1','rp1','bh1','sn1'],
         ['qol2','qol3','qol4','qu_qol2','qu_qol3','qu_qol4','qu_qol5','qu_qol6'],
@@ -22,6 +24,7 @@ const TREE_IDS = [
         ['bs5','bs2','fn1','bs3','qf2','qf3','rad2','rad3'],
         ['prim3a','qu1','qu2','qu3','qc8'],
         ['qp1','qp10'],
+		[],
     ],[
         ['s2','m2','t1','d1','bh2','gr1','sn2'],
         ['qol5','qol6','qol7','','qu_qol7a','qu_qol7','',''],
@@ -29,6 +32,7 @@ const TREE_IDS = [
         ['fn4','fn3','fn9','fn2','fn5','qf4','rad4','rad5'],
         ['prim3','prim2','prim1','qu4','qc1','qc2','qc3'],
         ['qp21','qp6','qp2','qp3','qp4','qp5','qp22'],
+		[],
     ],[
         ['s3','m3','gr2','sn3'],
         ['qol9','unl1','qol8','unl2','unl3','qu_qol8','qu_qol9','unl4'],
@@ -36,6 +40,7 @@ const TREE_IDS = [
         ['fn12','fn11','fn6','fn10','rad6',''],
         ['prim4','en2','en1','qu5','br1','br2','qc4'],
         ['qp23','qp9','qp7','qp8','qp11','qp24'],
+		[],
     ],[
         ['s4','sn5','sn4'],
         ['','','','qu_qol10','qu_qol11','qu_qol8a','qu_qol13','qu_qol12'],
@@ -43,20 +48,23 @@ const TREE_IDS = [
         ['fn13','fn14','fn7','fn8','pm1',''],
         ['prim5','qu6','qu7','qu8','qu9','qu10','qu11','qc5'],
         ['qp16','qp14','qp12','qp13','qp15'],
+		[],
     ],[
         ['s5','sn6'],
         [],
         ['chal13','chal14'],
         ['fn18','fn16','fn17','fn15','pm2','im1'],
         ['prim6','prim7','prim8','qu12','br3','qc7','qc6'],
-        ['qp25','qp19','qp18','qp26'],
+        ['qp30','qp25','qp19','qp18','qp26','qp33'],
+		[],
     ],[
         [],
         [],
         [],
         [],
         [],
-        ['qp27','qp20','qp28'],
+        ['qp32','qp29','qp27','qp20','qp28','qp31','qp34'],
+		[],
     ],[
         [],
         [],
@@ -64,6 +72,7 @@ const TREE_IDS = [
         [],
         [],
         [],
+		[],
     ],[
         [],
         [],
@@ -71,6 +80,7 @@ const TREE_IDS = [
         [],
         [],
         [],
+		[],
     ],
 ]
 
@@ -85,6 +95,16 @@ const NO_REQ_QU = ['qol1','qol2','qol3','qol4','qol5',
 
 const TREE_UPGS = {
     buy(x, auto=false) {
+		if(this.ids[x].ax){
+			if(auto)return;
+			if(hasTree(x))return;
+			if(tmp.supernova.tree_choosed != x)return;
+			if (EXOTIC.axsRem().gte(this.ids[x].cost)){
+				player.exotic.tree.push(x)
+			}
+			return;
+		}
+		
         if ((tmp.supernova.tree_choosed == x || auto) && tmp.supernova.tree_afford[x]) {
             if (this.ids[x].qf) player.qu.points = player.qu.points.sub(this.ids[x].cost).max(0)
             else player.supernova.stars = player.supernova.stars.sub(this.ids[x].cost).max(0)
@@ -766,6 +786,7 @@ const TREE_UPGS = {
             cost: E(1e3),
             effect() {
                 let x = player.qu.times.add(1).log10().add(1)
+				if(hasChargedElement(187))x = x.pow(2)
                 return x
             },
             effDesc(x) { return format(x)+"倍" },
@@ -812,7 +833,7 @@ const TREE_UPGS = {
             desc: `Higgs Boson's effect is increased by 3.3% for every OoM of Blueprint Particles.`,
             cost: E(1e32),
             effect() {
-                let x = E(1.0333).pow(player.qu.bp.add(1).log10().softcap(70,0.5,0))
+                let x = E(1.0333).pow(overflow(player.qu.bp.add(1).log10().softcap(70,0.5,0),1e74,0.5))
                 return x
             },
             effDesc(x) { return format(x)+"倍" },
@@ -1479,10 +1500,108 @@ const TREE_UPGS = {
             desc: `Collapsed Stars effect is better.`,
             cost: E('ee65'),
         },
+        qp29: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp25","qp27"],
+            desc: `Reduce C1-C23 Goals.`,
+            cost: E('ee127'),
+        },
+        qp30: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp16","qp25","qp29"],
+            desc: `Reduce C1-C22 Goals.`,
+            cost: E('e2e128'),
+        },
+        qp31: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp26","qp28"],
+            desc: `Stardust boost Collapsed Star gain.`,
+            cost: E('e2e137'),
+            effect() {
+                let x = player.stardust.log10().div(100).add(1);
+                return x
+            },
+            effDesc(x) { return "exponent ^"+format(x) },
+        },
+        qp32: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp29","qp30"],
+            desc: `Add 100 C21-C23 completions. Reduce C21-C23 Goals.`,
+            cost: E('ee153'),
+        },
+        qp33: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp15","qp26","qp31"],
+            desc: `[qp31] affects Neutron Stars and Star Generators.`,
+            cost: E('e2e163'),
+        },
+        qp34: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp31","qp33"],
+            desc: `Pink Matter effect is better.`,
+            cost: E('e2e166'),
+        },
+		
+		
+		
+        ax1: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: [],
+            desc: `Axionic Space effect boost Axion Generators Power.`,
+            cost: E(3000),
+            effect() {
+                let x = EXOTIC.axsEff();
+                return x
+            },
+            effDesc(x) { return format(x)+"x" },
+        },
+        ax2: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: ["ax1"],
+            desc: `First 5 Exotic Boosts are 20% stronger.`,
+            cost: E(1500),
+        },
+        ax3: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: ["ax1"],
+            desc: `Axionic Space effect is better.`,
+            cost: E(2500),
+        },
+        ax4: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: ["ax2"],
+            desc: `Last 2 Exotic Boosts are 2% stronger.`,
+            cost: E(3500),
+        },
+        ax5: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: ["ax3"],
+            desc: `Axionic Space add to Matter Exponent.`,
+            cost: E(3500),
+            effect() {
+                let x = EXOTIC.axsVal().add(1).log10().div(10);
+                return x
+            },
+            effDesc(x) { return "+"+format(x) },
+        },
     },
 }
 
-function hasTree(id) { return player.supernova.tree.includes(id) }
+function hasTree(id) { 
+	if(TREE_UPGS.ids[id].ax)return player.exotic.tree.includes(id)
+	return player.supernova.tree.includes(id)
+}
 
 function treeEff(id,def=1) { return tmp.supernova.tree_eff[id]||E(def) }
 
@@ -1573,7 +1692,7 @@ function drawTreeBranch(num1, num2) {
     var y2 = end.top + (end.height / 2) - (window.innerHeight-tree_canvas.height);
     tree_ctx.lineWidth=10;
     tree_ctx.beginPath();
-    let color = TREE_UPGS.ids[num2].qf?"#39FF49":"#00520b"
+    let color = TREE_UPGS.ids[num2].ax?"#dd0000":TREE_UPGS.ids[num2].qf?"#39FF49":"#00520b"
     let color2 = TREE_UPGS.ids[num2].qf?"#009C15":"#fff"
     tree_ctx.strokeStyle = hasTree(num2)?color:tmp.supernova.tree_afford[num2]?"#fff":"#333";
     tree_ctx.moveTo(x1, y1);
@@ -1604,6 +1723,8 @@ function changeTreeAnimation() {
 }
 
 function updateTreeHTML() {
+    tmp.el.neutronStar.setTxt(format(player.supernova.stars,2)+" "+formatGain(player.supernova.stars,tmp.supernova.star_gain.mul(tmp.preQUGlobalSpeed)))
+    tmp.el.treeResName.setTxt("Neutron star")
     let req = ""
     let t_ch = TREE_UPGS.ids[tmp.supernova.tree_choosed]
     if (tmp.supernova.tree_choosed != "") req = t_ch.req?`<span class="${t_ch.req()?"green":"red"}">${t_ch.reqDesc?"需满足："+(typeof t_ch.reqDesc == "function"?t_ch.reqDesc():t_ch.reqDesc):""}</span>`:""
@@ -1611,7 +1732,7 @@ function updateTreeHTML() {
         tmp.supernova.tree_choosed == "" ? `<div style="font-size: 12px; font-weight: bold;"><span class="gray">(click any tree upgrade to show)</span></div>`
         : `<div style="font-size: 12px; font-weight: bold;"><span class="gray">(click again to buy if affordable)</span>${req}</div>
         <span class="sky"><b>[${tmp.supernova.tree_choosed}]</b>${t_ch.desc}</span><br>
-        <span>Cost: ${format(t_ch.cost,2)} ${t_ch.qf?'Quantum foam':'Neutron star'}</span><br>
+        <span>Cost: ${t_ch.ax?formatSpace(t_ch.cost):format(t_ch.cost,2)} ${t_ch.ax?'Axionic Space':t_ch.qf?'Quantum foam':'Neutron star'}</span><br>
         <span class="green">${t_ch.effDesc?"目前效果："+t_ch.effDesc(tmp.supernova.tree_eff[tmp.supernova.tree_choosed]):""}</span>
         `
     )
@@ -1624,7 +1745,16 @@ function updateTreeHTML() {
             let id = tmp.supernova.tree_had2[i][x]
             let unl = tmp.supernova.tree_unlocked[id]
             tmp.el["treeUpg_"+id].setVisible(unl)
-            if (unl) tmp.el["treeUpg_"+id].setClasses({btn_tree: true, qu_tree: TREE_UPGS.ids[id].qf, locked: !tmp.supernova.tree_afford[id], bought: hasTree(id), choosed: id == tmp.supernova.tree_choosed})
+            if (unl) tmp.el["treeUpg_"+id].setClasses({btn_tree: true, ax_tree: TREE_UPGS.ids[id].ax, qu_tree: TREE_UPGS.ids[id].qf, locked: !tmp.supernova.tree_afford[id], bought: hasTree(id), choosed: id == tmp.supernova.tree_choosed})
         }
     }
+	if (tmp.tree_tab == 4 || tmp.tree_tab == 5){
+        tmp.el.neutronStar.setTxt(format(player.qu.points,2))
+        tmp.el.treeResName.setTxt("Quantum foam")
+	}
+	if (tmp.tree_tab == 6){
+        tmp.el.neutronStar.setHTML(formatSpace(EXOTIC.axsRem())+" / "+formatSpace(EXOTIC.axsVal()))
+        tmp.el.treeResName.setTxt("Axionic Space")
+        tmp.el.resetAxionicTree.setDisplay(true)
+	}else tmp.el.resetAxionicTree.setDisplay(false)
 }

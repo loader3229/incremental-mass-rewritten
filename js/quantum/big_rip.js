@@ -42,6 +42,7 @@ const BIG_RIP = {
 		}
 		if(hasChargedElement(90)) x = x.pow(tmp.elements.ceffect[90]||1)
 		if(hasChargedElement(130)) x = x.pow(2)
+		if(hasChargedElement(179)) x = x.pow(2.5)
 		if (!hasUpgrade('br',21)) x = overflow(x,Number.MAX_VALUE,E(hasUpgrade('inf',20)?0.35:hasUpgrade('inf',19)?0.3:0.25).pow(hasElement(159)?(tmp.chal?tmp.chal.eff[14]:1):1));
         return x.floor()
     },

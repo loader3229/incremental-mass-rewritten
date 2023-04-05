@@ -12,6 +12,7 @@ const DARK_RUN = {
 		if (hasPrestige(4,12))x = x.mul(prestigeEff(4,12,E(1)))
 		if (hasAscension(1,14))x = x.mul(ascensionEff(1,14,E(1)))
 		if(hasElement(485))x = x.mul(tmp.elements.effect[485]||1);
+		if(hasElement(554))x = x.mul(EXOTIC.axsEff());
 		x = x.mul(SUPERNOVA_GALAXY.effects.em());
 		return x;
     },
@@ -33,7 +34,10 @@ const DARK_RUN = {
                 maxLvl: 1,
                 bulk() { return player.exotic.dark_run.points.gte(E(10))?E(1):E(0) },
                 effect(x) {
-					if(player.exotic.dark_run.upgs[3].gte(1))return player.supernova.times.add(1);
+					if(player.exotic.dark_run.upgs[3].gte(1)){
+						if(player.supernova.times.gte(1e25))return E(4e23).mul(player.supernova.times.log10());
+						return player.supernova.times.add(1);
+					}
 					return player.supernova.times.add(10).log10().pow(2);
                 },
                 effDesc(x) { return format(x)+"x"},

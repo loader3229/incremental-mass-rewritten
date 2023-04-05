@@ -104,8 +104,9 @@
         <div style="width: 100%; border-bottom: solid 2px white; height: 5px; margin-bottom: 13px;"></div>
         <div id="sn_stabs" style="min-height: 40px;"></div><br>
         <div id="stab_frame5_0">
-            <div style="height: 130px;">
-                You have <span id="neutronStar">X</span> Neutron star.<br>
+            <div style="min-height: 130px;">
+                You have <span id="neutronStar">X</span> <span id="treeResName">Neutron star</span>.<br>
+            <span id="resetAxionicTree"><button class="btn" onclick="EXOTIC.resetTree()">Respec Axionic Tree</button><br></span>
                 <div id="tree_desc" style="margin-top: 3px;">
     
                 </div>
@@ -821,7 +822,7 @@
                 </div>
                 </div>
                 <div id="stab_frame7_5">
-						Each Matter gain is (10^((slog(previous matter)-1)^<span id="matters_pow"></span>)-10)<span id="matters_extend"></span>.<br><br>
+						Each Matter gain is (10<sup>(slog(previous matter)-1)<sup id="matters_pow"></sup></sup>-10)<span id="matters_extend"></span>.<br><br>
                     <div class="table_center">
                         <div style="width: 20%; min-width: 300px;">
                             Exotic Matter
@@ -982,8 +983,9 @@
                     </div>
                 </div>
             <div id="stab_frame7_6">
-                You have <span id="ax0">0</span> X Axions, which multiply Exotic Matter gain by <span id="ax0b">0</span>.<br>
-                You have <span id="ax1">0</span> Y Axions, which multiply Dark Ray gain by <span id="ax1b">0</span>.<br><br>
+                <span id="ax0_span">You have <span id="ax0">0</span> X Axions, which multiply Exotic Matter gain by <span id="ax0b">0</span>.</span><br>
+                <span id="ax1_span">You have <span id="ax1">0</span> Y Axions, which multiply Dark Ray gain by <span id="ax1b">0</span>.</span><br>
+                <span id="ax2_span">You have <span id="ax2">0</span> Z Axions, which multiply Stardust gain by <span id="ax2b">0</span>.</span><br><br>
                 <div style="width: 100%; margin-bottom: 5px;" class="table_center">
                     <div style="width: 400px">
                         <div class="resources">
@@ -1010,6 +1012,22 @@
                         Y Axion Generators Effect: +<span id="ax1_eff">X</span> Y Axions/sec
                     </div>
                 </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="ax2_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/test.png">
+                            <span style="margin-left: 5px; text-align: left;">Z Axion Generators [<span id="ax2_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="ax2_btn" class="btn" style="width: 200px;" onclick="EXOTIC.ax.buy(2)">Cost: <span id="ax2_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.ax.buyMax(2)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        Z Axion Generators Power: +<span id="ax2_pow">X</span><br>
+                        Z Axion Generators Effect: +<span id="ax2_eff">X</span> Z Axions/sec
+                    </div>
+                </div><br>
+                <span id="axs_span">
+                    You have <span id="axs_val"></span> of Axionic Space (based on X,Y,Z Axions), which are multiplying Glyphic Mass gain by <span id="axs_eff"></span>.
+                </span>
             </div>
         </div><div id="tab_frame8">
             <button class="btn" onclick="save()">Save</button>
@@ -1030,8 +1048,8 @@
             <h2>Confirmation Settings</h2><br>
             <div id="confirm_table" class="table_center"></div>
             <br><br>
-            Incremental Mass Rewritten (loader3229's v0.5 NG+, Chinese Version) v0.9.6c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
-            质量增量重制版 (loader3229的v0.5 NG+, 汉化版) v0.9.6c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
+            Incremental Mass Rewritten (loader3229's v0.5 NG+, Chinese Version) v0.9.7c - original made by MrRedShark77, modded by loader3229, based on v0.5.4.8<br>
+            质量增量重制版 (loader3229的v0.5 NG+, 汉化版) v0.9.7c - 原作者为MrRedShark77, MOD由loader3229制作, 基于v0.5.4.8<br>
 			Chinese Translation by by22dgb and loader3229, translate is not completed<br>
 			汉化由by22dgb和loader3229完成，MOD新增内容尚未汉化完成<br>
             The game is inspired by Distance Incremental & Synergism<br><br><br>

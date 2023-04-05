@@ -492,7 +492,7 @@ const SUPERNOVA_CLUSTER = {
 		},
 		eff5(){
 			if(player.superCluster.lt(10))return new Decimal(1);
-			return E(0.7).pow(player.superCluster.pow(player.superCluster.gte(23)?0.9:player.superCluster.gte(21)?0.75:0.3));
+			return E(0.7).pow(player.superCluster.pow(player.superCluster.gte(21)?player.superCluster.div(10).sub(1.4):0.3));
 		},
 		eff6(){
 			if(player.superCluster.lt(13))return new Decimal(0);
@@ -505,9 +505,11 @@ const SUPERNOVA_CLUSTER = {
 	},
 	stardustGain(){
 		if(player.superCluster.lt(14))return E(0);
-		let ret=player.supernova.times.add(1).log10().pow(player.superCluster.sqrt());
+		let ret=player.supernova.times.add(1).log10().pow(player.superCluster.pow(player.superCluster.gte(24)?0.6:0.5));
 		if(hasElement(517))ret = ret.mul(MATTERS.eff(3));
 		if(hasAscension(2,10))ret = ret.mul(ascensionEff(2,10));
+		if(hasElement(554))ret = ret.mul(player.exotic.ax[2].add(1));
+		if (player.ranks.enne.gte(300)) ret = ret.mul(RANKS.effect.enne[300]())
 		return ret;
 	},
 	stardustEff(){
