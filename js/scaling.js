@@ -350,6 +350,7 @@ function getScalingStart(type, name) {
 			start = start.add(tmp.chal?tmp.chal.eff[21]:0)
 			if (hasTree('qp18')) start = start.add(15)
 			if(player.superCluster.gte(14))start = start.add(SUPERNOVA_CLUSTER.stardustEff())
+			if (hasTree('ax14')) start = start.add(treeEff('ax14')||0)
 		}
 		if (name=="massUpg4") {
 			if (hasPrestige(2,162)) start = start.mul(10/9)
@@ -448,7 +449,9 @@ function getScalingStart(type, name) {
             if (player.ranks.enne.gte(117))start = start.mul(1e50)
             if (hasChargedElement(169))start = start.mul(1e100)
             if (hasChargedElement(171))start = start.mul(1e100)
+			if (hasChargedElement(202))start = start.mul(tmp.elements.ceffect[202]||1);
             if (hasChargedElement(191))start = start.pow(2)
+			if (hasAscension(2,19))start = start.pow(2)
 		}
 		if (name=="hept") {
             if (player.ranks.enne.gte(15))start = start.mul(7.5)
@@ -459,6 +462,7 @@ function getScalingStart(type, name) {
             if (hasChargedElement(183))start = start.mul(2)
             if (hasChargedElement(184))start = start.mul(2)
             if (hasChargedElement(188))start = start.mul(tmp.bd.upgs[4].eff.add(10).log10().add(10).log10())
+			if (hasChargedElement(193))start = start.mul(tmp.elements.ceffect[193]||1);
 		}
 		if (name=="tickspeed") {
 			if (hasElement(68)) start = start.mul(2)
@@ -509,6 +513,8 @@ function getScalingStart(type, name) {
 			if (hasAscension(2,12)) start = start.mul(2)
 			if (hasAscension(2,13)) start = start.mul(2)
 			if (hasAscension(2,14)) start = start.mul(2)
+			if (hasAscension(2,17)) start = start.mul(2)
+			if (hasAscension(2,18)) start = start.mul(2)
 		}
 	}
 	if (type=="exotic") {
@@ -720,6 +726,9 @@ function getScalingPower(type, name) {
 		if (name=="prestige2") {
 			if (hasElement(259)) power = power.mul(tmp.prestigeMassEffect)
 		}
+		if (name=="prestige3") {
+			if (hasPrestige(4,57)) power = power.mul((tmp.prestigeMassEffect||E(1)).pow(0.05))
+		}
 		if (name=="fTier") {
 			if (hasPrestige(0,1000)) power = power.mul(tmp.prestigeMassEffect)
 		}
@@ -827,6 +836,7 @@ function getScalingPower(type, name) {
 			if (player.superCluster.gte(10)) power = power.mul(SUPERNOVA_CLUSTER.effects.eff5())
 			if(hasElement(486))power = power.mul(MATTERS.eff(1));
 			if (hasTree('qp11')) power = power.mul(treeEff('qp11'))
+			if (player.ranks.enne.gte(666)) power = power.mul(0.0001)
 		}
 		if (name=="rank") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)

@@ -294,6 +294,7 @@ const FORMS = {
                
 		   
 			step = step.pow(SUPERNOVA_GALAXY.effects.ts())
+		if (hasChargedElement(213)) step = step.pow(tmp.chal.eff[20])
             let ss = E(1e50).mul(tmp.radiation.bs.eff[13])
             let p = 0.1
             if (hasElement(86)) {
@@ -393,6 +394,7 @@ const FORMS = {
 			if(hasElement(541))p2 = p2 ** 0.96
 			if(hasElement(543))p2 = p2 ** 0.98
 			if(hasElement(551))p = p ** 0.95
+			if(hasTree('qp37'))p2 = p2 ** 0.89
 			if(hasChargedElement(102))ss = ss.mul(100)
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
@@ -417,7 +419,7 @@ const FORMS = {
         effect() {
             let t = player.prestigeTickspeed
 			let step = tmp.ascensions.base || E(1);
-			let ss = E("1e10000000")
+			let ss = E("1e1000000000")
             let p = 0.1
 			
 			if(hasAscension(1,7))step = step.pow(5)

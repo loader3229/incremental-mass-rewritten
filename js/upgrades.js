@@ -167,6 +167,7 @@ const UPGS = {
 				if (hasElement(516))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.75;
 				if (hasElement(521))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.9;
 				if (hasElement(537))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.85;
+				if (hasElement(557))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.75;
 				if (hasChargedElement(164))tmp.strongerOverflowStart = tmp.strongerOverflowStart.pow(tmp.chal?(tmp.chal.eff[15].add(9).log10()||1):1)
 				tmp.strongerOverflow = overflow(ret, tmp.strongerOverflowStart, tmp.strongerOverflowPower).log(ret);
 				ret = overflow(ret, tmp.strongerOverflowStart, tmp.strongerOverflowPower);
@@ -459,12 +460,12 @@ const UPGS = {
             },
         },
         4: {
-            unl() { return false },
+            unl() { return hasAscension(2,16) },
             title: "Ascension Overpower",
-            start: E(1e-4),
+            start: E(2e-5),
             inc: E(1.0005),
             effect(x) {
-                let step = E(0.001)
+                let step = E(0.0001)
 				let ret = step.mul(x).add(1);
                 return {step: step, eff: ret}
             },
@@ -1326,11 +1327,12 @@ const UPGS = {
                 desc: `无限时保留升级和量子碎片。无限时初始拥有200量子次数。无限质量加成死寂碎片获取速度。`,
                 cost: E(1),
                 effect() {
+					if(hasChargedElement(211))return player.inf.points.add(1).log10().add(1).log10().add(1);
 					if(hasElement(308))return player.inf.points.add(1).pow(2);
                     let x = overflow(player.inf.points.add(1).pow(2),1e10,hasUpgrade('inf',18)?0.6:0.5);
                     return x
                 },
-                effDesc(x=this.effect()) { return "x"+format(x)+(x.gte(1e10)&&!hasElement(308)?" <span class='soft'>(softcapped)</span>":"") },
+                effDesc(x=this.effect()) { return hasChargedElement(211)?("^"+format(x)):("x"+format(x)+(x.gte(1e10)&&!hasElement(308)?" <span class='soft'>(softcapped)</span>":"")) },
             },
             4: {
                 desc: `无限次数加成无限质量获取。`,

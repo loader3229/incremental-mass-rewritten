@@ -315,6 +315,7 @@ const RANKS = {
             '200': "Exotic Boost 'Dark Matter Boost' affects Mass of Black Hole.",
             '250': "Dec Boost Dark Ray gain.",
             '300': "Dec Boost Stardust gain.",
+            '666': "Meta-Supernova is 99.99% weaker.",
 		},
     },
     effect: {
@@ -983,6 +984,7 @@ const PRESTIGES = {
 			"39": `Renown 24 & 28 effects are better.`,
             "47": `Add +1% to Valor 13's effectiveness for each Valor after 47th (90% max).`,
             "51": `Meta-Tickspeeds stars ^2 later for each Valor after 51st.`,
+			"57": `Prestige Mass Effect is applied to Hyper Renown scaling at reduced rate.`,
 		},
     ],
     rewardEff: [
@@ -1070,6 +1072,8 @@ const PRESTIGES = {
 				if(hasPrestige(3,29))x = x.mul(prestigeEff(3,29));
 				if(hasAscension(0,80))x = x.mul(ascensionEff(0,80));
 				if(hasAscension(0,170))x = x.pow(ascensionEff(0,170));
+				if(hasChargedElement(212))x = x.pow(1.35);
+				if(hasChargedElement(215))x = x.pow(1.05);
                 return x
             },x=>"+"+x.format()],
             "11": [_=>{
@@ -1270,6 +1274,10 @@ const PRESTIGES = {
                 let x = E(2).pow(player.prestiges[4].sub(50).max(0));
                 return x
             },x=>"^"+x.format()+" later"],
+            "57": [_=>{
+                let x = 5;
+                return x
+            },x=>x+"% effectiveness"],
 		},
     ],
     reset(i) {
@@ -1444,6 +1452,10 @@ const ASCENSIONS = {
 			"13": `Meta-Honor starts 2x later.`,
 			"14": `Meta-Honor starts 2x later.`,
 			"15": `Recursion boost Axion Generators Power.`,
+			"16": `Unlock Ascension Overpower.`,
+			"17": `Meta-Honor starts 2x later.`,
+			"18": `Meta-Honor starts 2x later.`,
+			"19": `Meta-Hex starts ^2 later.`,
 		},
     ],
     rewardEff: [

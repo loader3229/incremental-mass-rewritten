@@ -2,12 +2,12 @@ const PRIM = {
     unl() { return hasTree('unl2') },
     getTheorems() {
         let b = tmp.prim.t_base
-        let x = player.qu.bp.max(1).log(b).mul(hasChargedElement(166)?2.662:hasChargedElement(152)?2.42:hasChargedElement(131)?2.2:2)
+        let x = player.qu.bp.max(1).log(b).mul(hasChargedElement(200)?2.9282:hasChargedElement(166)?2.662:hasChargedElement(152)?2.42:hasChargedElement(131)?2.2:2)
         return x.floor()
     },
     getNextTheorem() {
         let b = tmp.prim.t_base
-        let x = E(b).pow(player.qu.prim.theorems.add(1).div(hasChargedElement(166)?2.662:hasChargedElement(152)?2.42:hasChargedElement(131)?2.2:2))
+        let x = E(b).pow(player.qu.prim.theorems.add(1).div(hasChargedElement(200)?2.9282:hasChargedElement(166)?2.662:hasChargedElement(152)?2.42:hasChargedElement(131)?2.2:2))
 
         return x
     },

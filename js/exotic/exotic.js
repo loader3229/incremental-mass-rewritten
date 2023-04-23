@@ -125,8 +125,11 @@ const EXOTIC = {
 			if (hasElement(535) && i==0) pow = pow.mul(tmp.elements.effect[535]);
 			if (hasElement(536) && i==0) pow = pow.mul(tmp.elements.effect[536]);
 			if(player.superCluster.gte(20) && i<=1)pow = pow.mul(SUPERNOVA_CLUSTER.effects.eff7());
+			if(player.superCluster.gte(27) && i==2)pow = pow.mul(SUPERNOVA_CLUSTER.effects.eff7());
 			if(hasElement(542)) pow = pow.mul(MATTERS.fssEff());
 			if(hasTree("ax1")) pow = pow.mul(treeEff("ax1"));
+			if(hasTree("ax6") && i<=1) pow = pow.mul(10);
+			if(hasTree("ax11")) pow = pow.mul(player.exotic.axg[i]);
 			if(hasAscension(2,15)) pow = pow.mul(ascensionEff(2,15));
             let x = pow.mul(player.exotic.axg[i])
             return {pow: pow, eff: x}
@@ -224,6 +227,7 @@ const EXOTIC = {
 		let x = player.exotic.ax[0].add(10).log10();
 		x = x.mul(player.exotic.ax[1].add(10).log10());
 		x = x.mul(player.exotic.ax[2].add(10).log10());
+		if(hasTree('ax6'))x = x.mul(hasTree('ax18')?2:hasTree('ax12')?1.7:1.26);
 		return x;
     },
     axsRem(){
@@ -232,9 +236,7 @@ const EXOTIC = {
 		return x;
     },
     axsEff(){
-		let x = player.exotic.ax[0].add(10).log10();
-		x = x.mul(player.exotic.ax[1].add(10).log10());
-		x = x.mul(player.exotic.ax[2].add(10).log10());
+		let x = EXOTIC.axsVal();
 		if(hasTree('ax3'))return x.add(1);
 		return x.sqrt().add(1);
     },
@@ -398,6 +400,7 @@ function updateExoticHTML(){
             tmp.el.matters_dm_amount.setTxt(format(player.bh.dm));
             tmp.el.matters_dm_gain.setTxt(player.bh.dm.formatGain(tmp.bh.dm_gain));
             tmp.el.matters_pow.setTxt(format(MATTERS.pow()));
+			if(hasTree('ax16'))tmp.el.matters_pow.setTxt(format(MATTERS.pow())+"max(slog(previous matter)/3,1))");
 			for(var i=0;i<MATTERS_LENGTH;i++){
 				tmp.el["matters"+i+"_amount"].setTxt(format(player.exotic.matters[i]));
 				tmp.el["matters"+i+"_gain"].setTxt(player.exotic.matters[i].formatGain(MATTERS.gain(i)));

@@ -44,6 +44,7 @@ const EXOTIC_BOOST = {
         if (hasTree("qp4") && i == 2)ret = ret.mul(treeEff("qp4"))
 		if(hasTree("ax2") && i <= 4)ret = ret.mul(1.2);
 		if(hasTree("ax4") && i >= 5)ret = ret.mul(1.02);
+		if(hasTree("ax10"))ret = ret.mul(treeEff("ax10"))
 		if(player.exotic.dark_run.upgs[11].gte(1))ret = ret.mul(tmp.dark_run?(tmp.dark_run.upgs[11].eff||1):1);
 		ret = ret.mul(EXOTIC.abEff().exb);
 		if(player.gc.active && player.gc.noeb)ret = new Decimal(0);

@@ -162,6 +162,7 @@ const ETERNITY_LAYER = {
 		if (hasUpgrade('inf',17))power = power.add(3)
 			
 		if(hasElement(486))power = power.add(MATTERS.eff(2));
+		if (hasChargedElement(195))power = power.add(1)
         x = x.pow(power).sub(1);
 		x = overflow(x,10,2);
 		

@@ -123,6 +123,7 @@ const STARS = {
             if(hasElement(404))x = x.pow(tmp.bosons.upgs.photon[3].effect);else x = x.mul(tmp.bosons.upgs.photon[3].effect)
             if (hasPrestige(1,1)) x = x.pow(2)
 
+		if (hasTree('qp36')) x = x.pow(tmp.chal?(tmp.chal.eff[20]||1):1)
 				
 				if(hasUpgrade('atom',22)) x = expMult(x,1.005)
 				if(hasChargedElement(49)) x = expMult(x,1.02)

@@ -2,7 +2,7 @@ const MATTERS = {
     gain(i) {
 		let base=(i==0)?player.bh.dm : player.exotic.matters[i-1]
 		if(base.slog().lt(2))return E(0)
-		let x = Decimal.pow(10,base.slog().sub(1).pow(MATTERS.pow())).sub(10);
+		let x = Decimal.pow(10,base.slog().sub(1).pow(MATTERS.pow().mul(hasTree('ax16')?base.slog().div(3).max(1):1))).sub(10);
 		if(i==1 && hasTree('qp15'))x = x.mul(treeEff('qp15'));
 		if(i==2 && hasElement(513))x = x.mul(tmp.elements.effect[513]||1);
 		if(i<MATTERS_LENGTH-1 && hasElement(548))x = x.mul(player.exotic.matters[i+1].add(1).pow(MATTERS.extendPow()));
@@ -40,7 +40,7 @@ const MATTERS = {
 		}
     },
     exeff() {
-		//player.exotic.points.add(1e10).log10().sqrt().div(2.635).log10().mul(10)
+		if(hasTree('ax9'))return player.exotic.points.add(1e10).log10().sqrt().div(2.63).log10().mul(10)
 		if(player.exotic.points.gte('1e360'))return player.exotic.points.add(10).log10().div(10).sqrt().mul(0.6).min(5).mul(hasElement(495)?2:1).min(10);
 		if(player.exotic.points.gte('1e260'))return player.exotic.points.add(10).log10().div(50).sub(3.6).min(5).mul(hasElement(495)?2:1).min(10);
 		return player.exotic.points.add(10).log10().div(100).sub(1).min(5).mul(hasElement(495)?2:1).min(10);
@@ -79,7 +79,9 @@ const MATTERS = {
 		return E(40).mul(Decimal.pow(1.1,player.exotic.fss));
 	},
 	fssEff(){
-		return MATTERS.fssBase().pow(player.exotic.fss).sqrt();
+		let x = MATTERS.fssBase().pow(player.exotic.fss).sqrt();
+		if(hasTree('ax7'))x = x.pow(treeEff('ax7')||1);
+			return x;
 	},
 	fssReset(force=false){
 		if(!force)if(MATTERS.fssBase().lt(MATTERS.fssReq()))return;

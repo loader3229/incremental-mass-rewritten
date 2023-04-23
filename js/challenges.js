@@ -257,6 +257,7 @@ const CHALS = {
 		if (player.ranks.hex.gte(2)) x = x.mul(0.75)
 		if (i >= 16 && i!=19) x = x.mul(30);
 		if (i <= 12) x = x.mul(tmp.chal.eff[17]||1);
+		if (hasChargedElement(192) && i==20) x = x.mul(tmp.elements.ceffect[192]||1);
 		if (hasPrestige(1,122)) x = x.mul(0.9)
         return x
     },
@@ -473,6 +474,7 @@ const CHALS = {
         pow: E(1.25),
         start: E(1.5e136),
         effect(x) {
+			if(hasChargedElement(199))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10().pow(0.6);
 			if(hasChargedElement(170))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10().sqrt();
 			if(hasElement(519))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10().add(10).log10();
 			if(hasElement(421))return x.add(1).log10().mul(player.chal.comps[5]).pow(hasAscension(0,23)?1:1/3).add(10).log10();
@@ -620,7 +622,11 @@ const CHALS = {
         start: E('ee40'),
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
-			if(hasChargedElement(190)){
+			if(hasChargedElement(204)){
+				if(x.gte(100000))x=x.log10().pow(0.9).mul(20000).mul(5**0.1).max(x.log10().pow(1.5).mul(1250));
+			}else if(hasChargedElement(194)){
+				if(x.gte(100000))x=x.log10().pow(0.85).mul(20000).mul(5**0.15).max(x.log10().pow(1.5).mul(1250));
+			}else if(hasChargedElement(190)){
 				if(x.gte(10000))x=x.log10().pow(1.5).mul(1250);
 			}else if(hasChargedElement(182)){
 				if(x.gte(10000))x=x.log10().pow(1.25).mul(1250).mul(2**0.5);
@@ -653,6 +659,8 @@ const CHALS = {
         effect(x) {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
 			if(hasUpgrade('br',22)){
+				if(hasChargedElement(210))return x.add(1e10).log10().div(10).pow(4);
+				if(hasChargedElement(206))return x.add(1e10).log10().div(10).pow(3);
 				if(hasChargedElement(159))return x.add(1e10).log10().div(10).pow(2);
 				return x.add(1e10).log10().div(10);
 			}
@@ -677,6 +685,7 @@ const CHALS = {
 			if(CHALS.inChal(17) || CHALS.inChal(19))return E(1)
             let ret = x.add(1)
 			if(hasChargedElement(186))ret = overflow(ret,10,3);
+			if(hasChargedElement(214))ret = overflow(ret,10,3);
             return ret
         },
         effDesc(x) { if(hasChargedElement(164))return "^"+format(x.add(9).log10()); return "^"+format(x) },
@@ -722,6 +731,7 @@ const CHALS = {
         pow: E(9),
         start: E('ee2683'),
         effect(x) {
+			if(hasChargedElement(205))return x.add(1).log10().add(1).log10().mul(1.8).pow(2);
 			if(hasElement(351))return x.add(1).log10().add(1).log10().mul(1.75).pow(2);
             let ret = x.add(1).log10().add(1).log10().add(1).log10().softcap(0.09,hasElement(233)?1:0.25,0).mul(hasElement(233)?4.2:1);
             return ret
@@ -739,7 +749,8 @@ const CHALS = {
         start: E("1e191"),
         effect(x) {
             let ret = x.div(4).add(1);
-            return ret
+			if(hasChargedElement(209))ret = x.add(1).pow(2);
+			return ret
         },
         effDesc(x) { return format(x)+"x" },
     },

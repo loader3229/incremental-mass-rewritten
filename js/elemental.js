@@ -1724,46 +1724,76 @@ const ELEMENTS = {
 			desc: `Unlock the 17th Challenge.`,
 			cost: uni(1e61),
 			et: true,
+            cdesc: `Hardened Challenge scaling of C20 is weaker based on C17 completions.`,
+            ccost: uni("e1.1e6"),
+			ceffect() {
+				let x = E(0.99).pow(player.chal.comps[17].add(1).log10());
+				return x
+			},
+			ceffDesc(x) { return formatReduction(x)+" weaker" },
 		},
 		{
 			desc: `移除辐射波加成“级别元折算加成”的3个软上限。`,
 			cost: uni(1e301),
+            cdesc: `Radiation Booster 'Meta-Rank Boost' affects Meta-Hept at a reduced rate.`,
+            ccost: uni("e7.24e8"),
+			ceffect() {
+				let x = tmp.radiation.bs.eff[14].add(1).log10().add(1).log10().add(1).log10().add(1).log10().add(1).pow(0.5);
+				return x
+			},
+			ceffDesc(x) { return format(x)+"x later"; },
 		},
 		{
 			desc: `挑战13的次数上限增加200。`,
 			cost: E("3e393"),
+            cdesc: `C13 effect is better.`,
+            ccost: uni("e7.25e8"),
 		},
 		{
 			desc: `每秒获得永恒质量和永恒次数，数量为重置时获取量的100%。`,
 			cost: uni(1e71),
 			et: true,
+            cdesc: `Eternal Mass gain formula is better.`,
+            ccost: uni("e1.15e6"),
 		},
 		{
 			desc: `膨胀溢出被削弱。`,
 			cost: uni(1e75),
 			et: true,
+            cdesc: `Dilated Overflow is weaker.`,
+            ccost: uni("e1.35e6"),
 		},
 		{
 			desc: `Entropic Condenser^2 is 15% weaker.`,
 			cost: E("1.5e461"),
+            cdesc: `Entropic Condenser is better.`,
+            ccost: uni("e7.7e8"),
 		},
 		{
 			desc: `Entropic Evaporation^2 is 10% weaker.`,
 			cost: E("1e500"),
+            cdesc: `Entropic Evaporation^2 is 10% weaker.`,
+            ccost: uni("e7.7e8"),
 		},
 		{
 			desc: `修改挑战5的效果。`,
 			cost: E("3e144"),
 			et: true,
+			cdesc: `C5 effect is changed.`,
+			ccost: uni("e1440000"),
 		},
 		{
 			desc: `如果你不在大撕裂或量子挑战中，艾普西隆[Ε]粒子的第二个效果更好。`,
 			cost: E("3e152"),
 			et: true,
+			cdesc: `Gain 1.1x more Primordium Theorems.`,
+            ccost: uni("e1.5e6"),
 		},
 		{
 			desc: `Entropic Radiation^2 is 25% weaker.`,
 			cost: E("1.5e523"),
+            cdesc: `Entropic Evaporation^2 is 25% weaker.`,
+            ccost: uni("e8.5e8"),
 		},
 		{
 			desc: `移除级别的元折算。辐射波加成“级别元折算加成”以较低的效果影响阶层的元折算。`,
@@ -1773,73 +1803,110 @@ const ELEMENTS = {
 				return x
 			},
 			effDesc(x) { return format(x)+"x later"; },
+            cdesc: `Radiation Booster 'Meta-Rank Boost' affects Meta-Hex at a reduced rate.`,
+            ccost: uni("e8.7e8"),
+			ceffect() {
+				let x = tmp.radiation.bs.eff[14].add(1).log10().add(1).log10();
+				if(hasChargedElement(207))x = x.pow(10);
+				return x
+			},
+			ceffDesc(x) { return format(x)+"x later"; },
 		},
 		{
 			desc: `'70%' in Neutron Tree Upgrade [br3] is now 60%.`,
 			cost: E("1.5e634"),
+            cdesc: `Death Shards gain is squared`,
+            ccost: uni("e8.8e8"),
 		},
 		{
 			desc: `挑战13的次数上限增加1000。`,
 			cost: E("1.5e674"),
+            cdesc: `C13 effect is better.`,
+            ccost: uni("e9.4e8"),
 		},
 		{
 			desc: `Unlock the 18th Challenge.`,
 			cost: uni(2e123),
 			et: true,
+			cdesc: `C18 effect is better.`,
+			ccost: uni("e1530000"),
 		},
 		{
 			desc: `挑战14和16的次数上限增加100。`,
 			cost: E("7.5e193"),
 			et: true,
+			cdesc: `C14 effect is better.`,
+			ccost: uni("e1590000"),
 		},
 		{
 			desc: `移除辐射波加成“级别元折算加成”的1个软上限。`,
 			cost: E("6e832"),
+            cdesc: `Charged Effect of Element 202 ^10`,
+            ccost: uni("e9.6e8"),
 		},
 		{
 			desc: `Entropic Radiation^2 is 50% weaker.`,
 			cost: E("6e852"),
+            cdesc: `Entropy Cap is multiplied by ee35.`,
+            ccost: uni("e9.7e8"),
 		},
 		{
 			desc: `Unlock the 19th Challenge.`,
 			cost: uni(1e158),
 			et: true,
+			cdesc: `C19 effect is better.`,
+			ccost: uni("e1650000"),
 		},
 		{
 			desc: `挑战14和17的次数上限增加100。`,
 			cost: E("9e224"),
 			et: true,
+			cdesc: `C14 effect is better.`,
+			ccost: uni("e1660000"),
 		},
 		{
 			desc: `无限升级3的效果变为原来的1.2次方。`,
 			cost: E("1.5e955"),
+			cdesc: `Infinity Upgrade 3 effect is better.`,
+			ccost: mlt(1.155),
 		},
 		{
 			desc: `荣耀9的效果变为原来的2倍。`,
 			cost: E("1.5e1099"),
+			cdesc: `Raise Honor 9 Effect by 1.35`,
+			ccost: mlt(1.169),
 		},
 		{
 			desc: `Unlock the 20th Challenge.`,
 			cost: uni(1e197),
 			et: true,
+			cdesc: `C20 effect boost Tickspeed Power.`,
+			ccost: uni("e1940000"),
 		},
 		{
 			desc: `挑战15和16的次数上限增加200。`,
 			cost: uni(2e198),
 			et: true,
+			cdesc: `C15 effect is better.`,
+			ccost: uni("e1960000"),
 		},
 		{
 			desc: `荣耀9的效果变为原来的2倍。`,
 			cost: E("1.5e1145"),
+			cdesc: `Raise Honor 9 Effect by 1.05`,
+			ccost: mlt(1.31),
 		},
 		{
 			desc: `永恒次数加成量子次数。`,
 			cost: E("1.5e1157"),
 			effect() {
 				let x = player.et.times.add(1);
+				if(hasChargedElement(216))x = x.pow(2);
 				return x
 			},
 			effDesc(x) { return format(x)+"x"; },
+            cdesc: `This element is better.`,
+            ccost: mlt(1.5),
 		},
 		{
 			desc: `永恒质量加成永恒次数。`,
@@ -1847,14 +1914,19 @@ const ELEMENTS = {
 			et: true,
 			effect() {
 				let x = player.et.points.add(1).log10();
+				if(hasChargedElement(217))x = overflow(x,10,2.5);
 				return x
 			},
 			effDesc(x) { return format(x)+"x"; },
+            cdesc: `This element is better.`,
+			ccost: uni("e2150000"),
 		},
 		{
 			desc: `在超新星选项卡中解锁超新星星系。`,
 			cost: uni(1e210),
 			et: true,
+            cdesc: `Reduce Supernova Galaxies Requirements.`,
+			ccost: uni("e2160000"),
 		},
 		
 		// extended element II
@@ -3674,6 +3746,10 @@ const ELEMENTS = {
 			cost: E("1e500"),
 			exotic: true,
 		},
+		{
+			desc: `Stronger Overflow is weaker.`,
+			cost: mlt('1.91'),
+		},
 	],
     /*
     {
@@ -3687,7 +3763,7 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
-		if(hasElement(545))return 556;
+		if(hasElement(545))return 557;
 		if(hasElement(542))return 545;
 		if(hasElement(534))return 542;
 		if(hasElement(486)&&player.superCluster.gte(14))return 534;

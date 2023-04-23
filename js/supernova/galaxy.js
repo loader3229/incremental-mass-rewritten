@@ -6,6 +6,7 @@ const SUPERNOVA_GALAXY = {
 		if(hasUpgrade('inf',21))ret -= 0.01;
 		if(hasElement(396))ret -= 0.01;
 		if(hasElement(422))ret -= 0.01;
+		if(hasChargedElement(218))ret -= 0.02;
 		return ret;
 	},
 	req_start(){
@@ -271,6 +272,7 @@ const SUPERNOVA_GALAXY = {
 	galPow6_eff(){
 		if(player.chal.active == 21)return E(1);
 		let ret=player.galPow[6].add(1).sqrt();
+		if(player.superCluster.gte(30))ret = ret.pow(2);
 		return ret;
 	},
 	galQkGain(){
@@ -448,8 +450,11 @@ function updateSupernovaGalaxyHTML() {
 		if(player.superCluster.gte(20))html += "<br>Automatically gain Recursion";
 		if(player.superCluster.gte(20))html += "<br>Multiply X Axion Generator Power by "+format(SUPERNOVA_CLUSTER.effects.eff7());
 		if(player.superCluster.gte(20))html += "<br>Multiply Y Axion Generator Power by "+format(SUPERNOVA_CLUSTER.effects.eff7());
+		if(player.superCluster.gte(27))html += "<br>Multiply Z Axion Generator Power by "+format(SUPERNOVA_CLUSTER.effects.eff7());
 		if(player.superCluster.gte(21))html += "<br>Unlock Stellar Mass";
 		if(player.superCluster.gte(21))html += "<br>Unlock a Stardust buyable in Main Tab";
+		if(player.superCluster.gte(28))html += "<br>Multiply Entropy gain by "+format(SUPERNOVA_CLUSTER.effects.eff8());
+		if(player.superCluster.gte(30))html += "<br>Multiply Entropy cap by "+format(SUPERNOVA_CLUSTER.effects.eff8());
 		
 		tmp.el.superClusterEff.setHTML(html)
 	}
@@ -492,7 +497,7 @@ const SUPERNOVA_CLUSTER = {
 		},
 		eff5(){
 			if(player.superCluster.lt(10))return new Decimal(1);
-			return E(0.7).pow(player.superCluster.pow(player.superCluster.gte(21)?player.superCluster.div(10).sub(1.4):0.3));
+			return E(0.7).pow(player.superCluster.pow(player.superCluster.gte(21)?player.superCluster.div(10).sub(1.4).min(1.6):0.3));
 		},
 		eff6(){
 			if(player.superCluster.lt(13))return new Decimal(0);
@@ -500,7 +505,13 @@ const SUPERNOVA_CLUSTER = {
 		},
 		eff7(){
 			if(player.superCluster.lt(20))return new Decimal(1);
+			if(hasTree('ax19'))return player.superCluster.pow(4);
+			if(hasTree('ax13'))return player.superCluster.pow(2);
 			return player.superCluster;
+		},
+		eff8(){
+			if(player.superCluster.lt(28))return new Decimal(1);
+			return E(10).pow(E(10).pow(player.superCluster.mul(1.25)));
 		},
 	},
 	stardustGain(){

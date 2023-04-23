@@ -16,7 +16,7 @@ const TREE_IDS = [
         ['bs4','bs1','','qf1','','rad1'],
         ['qu0'],
 		['qp17'],
-		['ax4','ax2','ax1','ax3','ax5'],
+		['ax15','ax8','ax4','ax2','ax1','ax3','ax5','ax7','ax14'],
     ],[
         ['s1','m1','rp1','bh1','sn1'],
         ['qol2','qol3','qol4','qu_qol2','qu_qol3','qu_qol4','qu_qol5','qu_qol6'],
@@ -24,7 +24,7 @@ const TREE_IDS = [
         ['bs5','bs2','fn1','bs3','qf2','qf3','rad2','rad3'],
         ['prim3a','qu1','qu2','qu3','qc8'],
         ['qp1','qp10'],
-		[],
+		['ax17','ax10','ax6','ax9','ax16'],
     ],[
         ['s2','m2','t1','d1','bh2','gr1','sn2'],
         ['qol5','qol6','qol7','','qu_qol7a','qu_qol7','',''],
@@ -32,7 +32,7 @@ const TREE_IDS = [
         ['fn4','fn3','fn9','fn2','fn5','qf4','rad4','rad5'],
         ['prim3','prim2','prim1','qu4','qc1','qc2','qc3'],
         ['qp21','qp6','qp2','qp3','qp4','qp5','qp22'],
-		[],
+		['ax18','ax12','ax11','ax13','ax19'],
     ],[
         ['s3','m3','gr2','sn3'],
         ['qol9','unl1','qol8','unl2','unl3','qu_qol8','qu_qol9','unl4'],
@@ -40,7 +40,7 @@ const TREE_IDS = [
         ['fn12','fn11','fn6','fn10','rad6',''],
         ['prim4','en2','en1','qu5','br1','br2','qc4'],
         ['qp23','qp9','qp7','qp8','qp11','qp24'],
-		[],
+		['ax20'],
     ],[
         ['s4','sn5','sn4'],
         ['','','','qu_qol10','qu_qol11','qu_qol8a','qu_qol13','qu_qol12'],
@@ -71,7 +71,7 @@ const TREE_IDS = [
         [],
         [],
         [],
-        [],
+        ['qp36','qp35'],
 		[],
     ],[
         [],
@@ -79,7 +79,7 @@ const TREE_IDS = [
         [],
         [],
         [],
-        [],
+        ['qp37'],
 		[],
     ],
 ]
@@ -1547,6 +1547,27 @@ const TREE_UPGS = {
             desc: `Pink Matter effect is better.`,
             cost: E('e2e166'),
         },
+        qp35: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp20","qp28"],
+            desc: `Galactic Particles effect is better.`,
+            cost: E('ee179'),
+        },
+        qp36: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp20","qp27","qp35"],
+            desc: `C20 boost Star Generators.`,
+            cost: E('ee186'),
+        },
+        qp37: {
+            unl() { return hasElement(554) },
+            qf: true,
+            branch: ["qp35","qp36"],
+            desc: `Accelerator Effect Softcap^2 is weaker.`,
+            cost: E('ee187'),
+        },
 		
 		
 		
@@ -1594,6 +1615,160 @@ const TREE_UPGS = {
                 return x
             },
             effDesc(x) { return "+"+format(x) },
+        },
+        ax6: {
+            unl() { return (hasTree('ax2')&&hasTree('ax5')) || (hasTree('ax3')&&hasTree('ax4')) },
+            ax: true,
+            branch: ["ax1"],
+            req() { return (hasTree('ax2')&&hasTree('ax5')) || (hasTree('ax3')&&hasTree('ax4')) },
+            reqDesc() { return `Buy 4 Row 1 Axionic Tree Upgrades.` },
+            desc: `Gain 26% more Axionic Space. Multiply X & Y Axion Generators Power by 10.`,
+            cost: E(2500),
+        },
+        ax7: {
+            unl() { return hasTree('ax4')&&hasTree('ax5')&&hasTree('ax6') },
+            ax: true,
+            branch: ["ax5"],
+            req() { return hasTree('ax4')&&hasTree('ax5')&&hasTree('ax6') },
+            reqDesc() { return `Buy 5 Row 1 Axionic Tree Upgrades and a Row 2 Axionic Tree Upgrade.` },
+            desc: `FSS effect is stronger based on Axionic Space (Max: 100% stronger)`,
+            cost: E(1500),
+            effect() {
+                let x = E(2).sub(EXOTIC.axsVal().add(1).pow(-0.01));
+                return x
+            },
+            effDesc(x) { return format(x.sub(1).mul(100))+"% stronger" },
+        },
+        ax8: {
+            unl() { return hasTree('ax4')&&hasTree('ax5')&&hasTree('ax6') },
+            ax: true,
+            branch: ["ax4"],
+            req() { return hasTree('ax4')&&hasTree('ax5')&&hasTree('ax6') },
+            reqDesc() { return `Buy 5 Row 1 Axionic Tree Upgrades and a Row 2 Axionic Tree Upgrade.` },
+            desc: `FSS boost Glyphic Mass`,
+            cost: E(3000),
+            effect() {
+                let x = E(hasTree('ax15')?3:2).pow(player.exotic.fss);
+                return x
+            },
+            effDesc(x) { return format(x)+"x" },
+        },
+        ax9: {
+            unl() { return hasTree('ax7')||hasTree('ax8') },
+            ax: true,
+            branch: ["ax6"],
+            req() { return hasTree('ax7')||hasTree('ax8') },
+            reqDesc() { return `Buy 6 Row 1 Axionic Tree Upgrades.` },
+            desc: `Exotic Matter's effect in 'The Matters' tab is better.`,
+            cost: E(2000),
+        },
+        ax10: {
+            unl() { return hasTree('ax7')||hasTree('ax8') },
+            ax: true,
+            branch: ["ax6"],
+            req() { return hasTree('ax7')||hasTree('ax8') },
+            reqDesc() { return `Buy 6 Row 1 Axionic Tree Upgrades.` },
+            desc: `Exotic Boosts are stronger based on Axionic Space (Max: 100% stronger)`,
+            cost: E(2500),
+            effect() {
+                let x = E(2).sub(EXOTIC.axsVal().add(1).pow(-0.001));
+                return x
+            },
+            effDesc(x) { return format(x.sub(1).mul(100))+"% stronger" },
+        },
+        ax11: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: ["ax6"],
+            desc: `Each type of Axion Generators multiply its power equals to its amount.`,
+            cost: E(10000),
+        },
+        ax12: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: ["ax11"],
+            desc: `'26%' in [ax6] is now 70%.`,
+            cost: E(7500),
+        },
+        ax13: {
+            unl() { return hasElement(556) },
+            ax: true,
+            branch: ["ax11"],
+            desc: `Supernova Cluster's Axion Generators Power boost effect is squared.`,
+            cost: E(7500),
+        },
+        ax14: {
+            unl() { return player.exotic.tree.length>=13 },
+            ax: true,
+            branch: ["ax7"],
+            req() { return player.exotic.tree.length>=13 },
+            reqDesc() { return `Buy 13 Axionic Tree Upgrades.` },
+            desc: `Axionic Space makes Super Supernova Galaxies starts later.`,
+            cost: E(2500),
+            effect() {
+                let x = EXOTIC.axsVal().add(1).log10().pow(2).mul(4);
+                return x
+            },
+            effDesc(x) { return "+"+format(x)+" later" },
+        },
+        ax15: {
+            unl() { return player.exotic.tree.length>=13 },
+            ax: true,
+            branch: ["ax8"],
+            req() { return player.exotic.tree.length>=13 },
+            reqDesc() { return `Buy 13 Axionic Tree Upgrades.` },
+            desc: `[ax8] is better.`,
+            cost: E(4000),
+        },
+        ax16: {
+            unl() { return player.exotic.tree.length>=14 },
+            ax: true,
+            branch: ["ax9"],
+            req() { return player.exotic.tree.length>=14 },
+            reqDesc() { return `Buy 14 Axionic Tree Upgrades.` },
+            desc: `Matters gain formula is better.`,
+            cost: E(5800),
+        },
+        ax17: {
+            unl() { return player.exotic.tree.length>=14 },
+            ax: true,
+            branch: ["ax6"],
+            req() { return player.exotic.tree.length>=14 },
+            reqDesc() { return `Buy 14 Axionic Tree Upgrades.` },
+            desc: `Exotic Meta-Boost affects Glyphic Mass gain.`,
+            cost: E(11000),
+            effect() {
+                let x = EXOTIC_BOOST.effect(6).add(1);
+                return x
+            },
+            effDesc(x) { return format(x)+"x" },
+        },
+        ax18: {
+            unl() { return player.exotic.tree.length>=16 },
+            ax: true,
+            branch: ["ax12"],
+            req() { return player.exotic.tree.length>=16 },
+            reqDesc() { return `Buy 16 Axionic Tree Upgrades.` },
+            desc: `'70%' in [ax6] is now 100%.`,
+            cost: E(4200),
+        },
+        ax19: {
+            unl() { return player.exotic.tree.length>=16 },
+            ax: true,
+            branch: ["ax13"],
+            req() { return player.exotic.tree.length>=16 },
+            reqDesc() { return `Buy 16 Axionic Tree Upgrades.` },
+            desc: `Supernova Cluster's Axion Generators Power boost effect is squared again.`,
+            cost: E(16500),
+        },
+        ax20: {
+            unl() { return player.exotic.tree.length>=19 },
+            ax: true,
+            branch: ["ax11"],
+            req() { return player.exotic.tree.length>=19 },
+            reqDesc() { return `Buy 19 Axionic Tree Upgrades.` },
+            desc: `Reach the current endgame.`,
+            cost: E(10000),
         },
     },
 }

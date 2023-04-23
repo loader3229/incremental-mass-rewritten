@@ -32,6 +32,7 @@ const ENTROPY = {
 		if(hasElement(394)) x = x.mul(EXOTIC.dsEff().en)
         if (hasChargedElement(109)) x = x.mul(tmp.elements.ceffect[109]||1)
         if (hasChargedElement(114)) x = x.mul(tmp.elements.ceffect[114]||1)
+		if(player.superCluster.gte(28))x = x.mul(SUPERNOVA_CLUSTER.effects.eff8());
 	
         return x
     },
@@ -39,6 +40,8 @@ const ENTROPY = {
         let x = tmp.en.eff.hr
         if (hasUpgrade('inf',2)) x = x.mul(upgEffect(5,2))
 		x = x.mul(SUPERNOVA_GALAXY.effects.entropy())
+		if (hasChargedElement(207)) x = x.add(1).mul("ee35");
+		if(player.superCluster.gte(30))x = x.mul(SUPERNOVA_CLUSTER.effects.eff8());
         return x
     },
     evaPow(i) {
@@ -150,7 +153,7 @@ const ENTROPY = {
             scale: {s: 5, p: 2.5},
 
             eff(i) {
-                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(hasChargedElement(177)?0.95:hasChargedElement(167)?0.925:hasChargedElement(151)?0.9:hasChargedElement(91)?0.835:0.8))
+                let x = player.qu.en.amt.add(1).log10().mul(2).add(1).pow(i.pow(hasChargedElement(197)?0.951:hasChargedElement(177)?0.95:hasChargedElement(167)?0.925:hasChargedElement(151)?0.9:hasChargedElement(91)?0.835:0.8))
                 return x
             },
             desc(x) { return `Entropy boosts itself by <b>${x.format(2)}倍</b>.` },
@@ -221,6 +224,8 @@ const ENTROPY = {
 				if (i == 2 && hasChargedElement(141)) p = p ** 0.85
 				if (i == 2 && hasChargedElement(144)) p = p ** 0.85
 				if (i == 2 && hasChargedElement(165)) p = p ** 0.95
+				if (i == 2 && hasChargedElement(198)) p = p ** 0.9
+				if (i == 2 && hasChargedElement(201)) p = p ** 0.75
             r = r.scale(rc.scale.s, p, 0)
         }
         let x = rc.inc.pow(r).mul(rc.start)
@@ -266,6 +271,8 @@ const ENTROPY = {
 				if (i == 2 && hasChargedElement(141)) p = p ** 0.85
 				if (i == 2 && hasChargedElement(144)) p = p ** 0.85
 				if (i == 2 && hasChargedElement(165)) p = p ** 0.95
+				if (i == 2 && hasChargedElement(198)) p = p ** 0.9
+				if (i == 2 && hasChargedElement(201)) p = p ** 0.75
                 x = x.scale(rc.scale.s, p, 0, true)
             }
             x = x.add(1).floor()
