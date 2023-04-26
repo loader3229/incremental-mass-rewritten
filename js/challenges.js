@@ -757,7 +757,7 @@ const CHALS = {
     20: {
         unl() { return hasElement(213) },
         title: "质量对数",
-        desc: "质量获取变为log10(质量获取)",
+        desc: "质量获取变为log10(质量获取)，量子之前所有资源获取速度如果高于ee50将会设定为ee50。",
         reward: `使质量获取速度随着完成次数变为原来的一个指数。`,
 		max: E(100),
 		inc: E(10),
