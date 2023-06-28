@@ -316,6 +316,7 @@ const RANKS = {
             '250': "Dec Boost Dark Ray gain.",
             '300': "Dec Boost Stardust gain.",
             '666': "Meta-Supernova is 99.99% weaker.",
+            '1580': "Enne 7,9,14 effects are better.",
 		},
     },
     effect: {
@@ -540,10 +541,12 @@ const RANKS = {
             },
             '7'() {
                 let ret = E(0.99).pow(player.ranks.enne.softcap(75,0.5,0)).max(1/3);
+				if(player.ranks.enne.gte(1580))ret = E(1).div(player.ranks.enne.log10().add(1));
                 return ret
             },
             '9'() {
                 let ret = E(0.99).pow(player.ranks.enne.softcap(75,0.5,0)).max(1/3);
+				if(player.ranks.enne.gte(1580))ret = E(1).div(player.ranks.enne.log10().add(1));
                 return ret
             },
             '10'() {
@@ -552,6 +555,7 @@ const RANKS = {
             },
             '14'() {
                 let ret = E(0.99).pow(player.ranks.enne.softcap(75,0.5,0)).max(1/3);
+				if(player.ranks.enne.gte(1580))ret = E(1).div(player.ranks.enne.log10().add(1));
                 return ret
             },
             '101'() {
@@ -1456,6 +1460,7 @@ const ASCENSIONS = {
 			"17": `Meta-Honor starts 2x later.`,
 			"18": `Meta-Honor starts 2x later.`,
 			"19": `Meta-Hex starts ^2 later.`,
+			"20": `Remove Meta-Honor scaling.`,
 		},
     ],
     rewardEff: [

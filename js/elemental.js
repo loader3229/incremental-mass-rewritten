@@ -3750,6 +3750,11 @@ const ELEMENTS = {
 			desc: `Stronger Overflow is weaker.`,
 			cost: mlt('1.91'),
 		},
+		{
+			desc: `Remove Pre-Quantum Global Speed cap in C20. Auto-Completions of C20 is better.`,
+			cost: E('eee82'),
+			qk: true,
+		},
 	],
     /*
     {
@@ -3763,7 +3768,7 @@ const ELEMENTS = {
     },
     */
     getUnlLength() {
-		if(hasElement(545))return 557;
+		if(hasElement(545))return 558;
 		if(hasElement(542))return 545;
 		if(hasElement(534))return 542;
 		if(hasElement(486)&&player.superCluster.gte(14))return 534;

@@ -131,6 +131,8 @@ const EXOTIC = {
 			if(hasTree("ax6") && i<=1) pow = pow.mul(10);
 			if(hasTree("ax11")) pow = pow.mul(player.exotic.axg[i]);
 			if(hasAscension(2,15)) pow = pow.mul(ascensionEff(2,15));
+			if(i==3)pow = pow.mul(3.2e-25);
+			if(i==3&&hasTree("ax21"))pow = pow.mul(12.5);
             let x = pow.mul(player.exotic.axg[i])
             return {pow: pow, eff: x}
         },
@@ -227,6 +229,7 @@ const EXOTIC = {
 		let x = player.exotic.ax[0].add(10).log10();
 		x = x.mul(player.exotic.ax[1].add(10).log10());
 		x = x.mul(player.exotic.ax[2].add(10).log10());
+		x = x.mul(player.exotic.ax[3].add(10).log10());
 		if(hasTree('ax6'))x = x.mul(hasTree('ax18')?2:hasTree('ax12')?1.7:1.26);
 		return x;
     },
@@ -242,7 +245,8 @@ const EXOTIC = {
     },
 	resetTree(){
 		if((confirm("Are you sure to reset Axionic Tree? It will force an Exotic Reset!")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
-		player.exotic.tree = [];
+		if(hasTree('ax20'))player.exotic.tree = ['ax1','ax2','ax3','ax4','ax5','ax6','ax7','ax8','ax9','ax10','ax11','ax12','ax13','ax14','ax15','ax16','ax17','ax18','ax19','ax20'];
+		else player.exotic.tree = [];
 		EXOTIC.doReset(true);
 	}
 }
@@ -263,8 +267,8 @@ function updateExoticTemp() {
 		tmp.ex.rcb_can[i] = player.exotic.points.gte(tmp.ex.rcb_cost[i])
 		tmp.ex.rcb_eff[i] = EXOTIC.rcb.eff(i)
 		
-		tmp.ex.axg_cost[i] = E(2+i).pow(player.exotic.axg[i].scaleEvery("ex_axg").add(1)).mul(E(2+i).pow([1023,728,767][i]));
-		tmp.ex.axg_bulk[i] = player.exotic.points.div(E(2+i).pow([1023,728,767][i])).max(1).log(2+i).scaleEvery("ex_axg",true).floor()
+		tmp.ex.axg_cost[i] = E(2+i).pow(player.exotic.axg[i].scaleEvery("ex_axg").add(1)).mul(E(2+i).pow([1023,728,767,999][i]));
+		tmp.ex.axg_bulk[i] = player.exotic.points.div(E(2+i).pow([1023,728,767,999][i])).max(1).log(2+i).scaleEvery("ex_axg",true).floor()
 
 		tmp.ex.axg_can[i] = player.exotic.points.gte(tmp.ex.axg_cost[i])
 		tmp.ex.axg_eff[i] = EXOTIC.ax.eff(i)
@@ -319,6 +323,9 @@ function calcExotic(dt) {
 	}
 	if(hasElement(554)){
 		player.exotic.ax[2]=player.exotic.ax[2].add(tmp.ex.axg_eff[2].eff.mul(dt));
+	}
+	if(hasTree('ax20')){
+		player.exotic.ax[3]=player.exotic.ax[3].add(tmp.ex.axg_eff[3].eff.mul(dt));
 	}
 }
 
@@ -442,7 +449,7 @@ function updateExoticHTML(){
 			}
         }
         if (tmp.stab[7] == 6) {
-            for(let i=0;i<=2;i++){
+            for(let i=0;i<=3;i++){
 				tmp.el["ax"+i].setTxt(format(player.exotic.ax[i],0))
 				tmp.el["ax"+i+"_lvl"].setTxt(format(player.exotic.axg[i],0))
 				tmp.el["ax"+i+"_btn"].setClasses({btn: true, locked: !tmp.ex.axg_can[i]})
@@ -453,11 +460,15 @@ function updateExoticHTML(){
 			tmp.el.ax0b.setTxt(format(player.exotic.ax[0].add(1),0))
 			tmp.el.ax1b.setTxt(format(player.exotic.ax[1].add(1),0))
 			tmp.el.ax2b.setTxt(format(player.exotic.ax[2].add(1),0))
+			tmp.el.ax3b.setTxt(format(player.exotic.ax[3].add(1),0))
 			tmp.el.ax1_span.changeStyle('display',hasElement(540)?'':'none');
 			tmp.el.ax2_span.changeStyle('display',hasElement(554)?'':'none');
+			tmp.el.ax3_span.changeStyle('display',hasTree('ax20')?'':'none');
 			tmp.el.ax1_div.changeStyle('display',hasElement(540)?'':'none');
 			tmp.el.ax2_div.changeStyle('display',hasElement(554)?'':'none');
+			tmp.el.ax3_div.changeStyle('display',hasTree('ax20')?'':'none');
 			tmp.el.axs_span.changeStyle('display',hasElement(554)?'':'none');
+			tmp.el.axs_add.setTxt(hasTree('ax20')?',W':'')
 			if(hasElement(554)){
 				if(EXOTIC.axsVal().gte(1e27))tmp.el.axs_val.setHTML(format(EXOTIC.axsVal().div(1e27))+" fm<sup>3</sup>");
 				else if(EXOTIC.axsVal().gte(1e18))tmp.el.axs_val.setHTML(format(EXOTIC.axsVal().div(1e18))+" am<sup>3</sup>");

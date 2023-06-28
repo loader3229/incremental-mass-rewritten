@@ -38,7 +38,7 @@ const FORMS = {
 			
 		if((player.gc.active || player.chal.active >= 21) && hasElement(423))x = x.add(1)
 			
-		if (CHALS.inChal(20)) x = x.min("ee50")
+		if (CHALS.inChal(20) && !hasElement(558)) x = x.min("ee50")
 		return x
     },
     massGain() {

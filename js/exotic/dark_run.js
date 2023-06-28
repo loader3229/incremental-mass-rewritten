@@ -15,6 +15,7 @@ const DARK_RUN = {
 		if(hasElement(554))x = x.mul(EXOTIC.axsEff());
 		if(hasTree('ax8'))x = x.mul(treeEff('ax8')||1);
 		if(hasTree('ax17'))x = x.mul(treeEff('ax17')||1);
+		if(hasTree('ax20'))x = x.mul(player.exotic.ax[3].add(1));
 		x = x.mul(SUPERNOVA_GALAXY.effects.em());
 		return x;
     },

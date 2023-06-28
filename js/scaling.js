@@ -79,6 +79,7 @@ const SCALE_START = {
 	},
 	exotic: {
 		prestige0: E(558000),
+		prestige1: E(11000000),
 	},
 }
 
@@ -163,6 +164,7 @@ const SCALE_POWER= {
 	},
 	exotic: {
 		prestige0: 1e125,
+		prestige1: 1e5,
 	},
 }
 
@@ -307,6 +309,7 @@ function getScalingStart(type, name) {
 	if (name=="pent") if (hasElement(452))return EINF;
 	if (name=="tier" && type!="meta") if (hasElement(178))return EINF;
 	if (name=="prestige0" && type=="meta") if (hasPrestige(4,6))return EINF;
+	if (name=="prestige1" && type=="meta") if (hasAscension(2,20))return EINF;
 		
 	let start = E(SCALE_START[type][name])
 	if (type=="super") {

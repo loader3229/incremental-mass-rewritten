@@ -984,7 +984,8 @@
             <div id="stab_frame7_6">
                 <span id="ax0_span">You have <span id="ax0">0</span> X Axions, which multiply Exotic Matter gain by <span id="ax0b">0</span>.</span><br>
                 <span id="ax1_span">You have <span id="ax1">0</span> Y Axions, which multiply Dark Ray gain by <span id="ax1b">0</span>.</span><br>
-                <span id="ax2_span">You have <span id="ax2">0</span> Z Axions, which multiply Stardust gain by <span id="ax2b">0</span>.</span><br><br>
+                <span id="ax2_span">You have <span id="ax2">0</span> Z Axions, which multiply Stardust gain by <span id="ax2b">0</span>.</span><br>
+                <span id="ax3_span">You have <span id="ax3">0</span> W Axions, which multiply Glyphic Mass gain by <span id="ax3b">0</span>.</span><br>
                 <div style="width: 100%; margin-bottom: 5px;" class="table_center">
                     <div style="width: 400px">
                         <div class="resources">
@@ -1023,9 +1024,22 @@
                         Z Axion Generators Power: +<span id="ax2_pow">X</span><br>
                         Z Axion Generators Effect: +<span id="ax2_eff">X</span> Z Axions/sec
                     </div>
+                </div>
+                <div style="width: 100%; margin-bottom: 5px;" class="table_center" id="ax3_div">
+                    <div style="width: 400px">
+                        <div class="resources">
+                            <img src="images/test.png">
+                            <span style="margin-left: 5px; text-align: left;">W Axion Generators [<span id="ax3_lvl">X</span>]</span>
+                        </div>
+                    </div><button id="ax3_btn" class="btn" style="width: 200px;" onclick="EXOTIC.ax.buy(3)">Cost: <span id="ax3_cost">X</span> Exotic Matter</button>
+                    <button class="btn" style="width: 120px;" onclick="EXOTIC.ax.buyMax(3)">Buy Max</button>
+                    <div style="margin-left: 5px; text-align: left; width: 400px">
+                        W Axion Generators Power: +<span id="ax3_pow">X</span><br>
+                        W Axion Generators Effect: +<span id="ax3_eff">X</span> W Axions/sec
+                    </div>
                 </div><br>
                 <span id="axs_span">
-                    You have <span id="axs_val"></span> of Axionic Space (based on X,Y,Z Axions), which are multiplying Glyphic Mass gain by <span id="axs_eff"></span>.
+                    You have <span id="axs_val"></span> of Axionic Space (based on X,Y,Z<span id="axs_add"></span> Axions), which are multiplying Glyphic Mass gain by <span id="axs_eff"></span>.
                 </span>
             </div>
         </div><div id="tab_frame8">
@@ -1042,7 +1056,7 @@
             <button class="btn" onclick="turnMassDisplay()">Mass Display: <span id="mass_display"></span></button>
             <button class="btn" onclick="turnShowSupernova()">Supernova Star: <span id="show_supernova"></span></button>
             <button class="btn" id="tree_anim_btn" onclick="changeTreeAnimation()">Tree Animation: <span id="tree_anim">ON</span></button>
-            <button class="btn" onclick="javascript:document.location.replace('/incremental-mass-rewritten-1/')">中文版</button>
+            <button class="btn" onclick="javascript:document.location.replace('/incremental-mass-rewritten-1/')">中文版</button><br>
             <button class="btn" onclick="javascript:document.location.replace('https://ko-fi.com/loader3229')">Buy me a coffee (Donate me)</button>
             <br><br>
             <h2>Confirmation Settings</h2><br>
