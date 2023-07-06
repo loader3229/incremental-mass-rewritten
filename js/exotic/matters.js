@@ -59,6 +59,7 @@ const MATTERS = {
 		if (hasElement(545)) x = x.add(tmp.chal.eff[23]||0)
 		if (hasTree('qp17')) x = x.add(treeEff('qp17',0))
 		if (hasTree('ax5')) x = x.add(treeEff('ax5',0))
+		if (hasTree('ax22')) x = x.add(0.1)
 		if(player.superCluster.gte(13))x = x.add(SUPERNOVA_CLUSTER.effects.eff6());
 		if(player.exotic.dark_run.upgs[15].gte(1))x = x.add(tmp.dark_run.upgs[15].eff);
 		return x

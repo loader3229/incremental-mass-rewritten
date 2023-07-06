@@ -316,6 +316,10 @@ const RANKS = {
             '250': "Dec Boost Dark Ray gain.",
             '300': "Dec Boost Stardust gain.",
             '666': "Meta-Supernova is 99.99% weaker.",
+            '1580': "Enne 7,9,14 effects are better.",
+            '2400': "'50%' in Element 550 is now 40%.",
+            '2440': "Enne 14 effect is better.",
+            '2500': "Meta-Hept starts 2x later.",
 		},
     },
     effect: {
@@ -540,10 +544,12 @@ const RANKS = {
             },
             '7'() {
                 let ret = E(0.99).pow(player.ranks.enne.softcap(75,0.5,0)).max(1/3);
+				if(player.ranks.enne.gte(1580))ret = E(1).div(player.ranks.enne.log10().add(1));
                 return ret
             },
             '9'() {
                 let ret = E(0.99).pow(player.ranks.enne.softcap(75,0.5,0)).max(1/3);
+				if(player.ranks.enne.gte(1580))ret = E(1).div(player.ranks.enne.log10().add(1));
                 return ret
             },
             '10'() {
@@ -552,6 +558,8 @@ const RANKS = {
             },
             '14'() {
                 let ret = E(0.99).pow(player.ranks.enne.softcap(75,0.5,0)).max(1/3);
+				if(player.ranks.enne.gte(1580))ret = E(1).div(player.ranks.enne.log10().add(1));
+				if(player.ranks.enne.gte(2440))ret = E(0.9).pow(player.ranks.enne);
                 return ret
             },
             '101'() {
@@ -1435,6 +1443,7 @@ const ASCENSIONS = {
             "35": `Prestige Stronger Softcap is weaker.`,
 			"36": `Raise Prestige Tickspeeds Power by 10.`,
             "50": `Transcension Level 18 effect is better.`,
+            "146": `Accelerator Effect Softcap^2 is weaker.`,
         },
 		{
 			"1": `Free Mass Upgrades and Tickspeeds uses multiplication instead of add to amount.`,
@@ -1456,6 +1465,7 @@ const ASCENSIONS = {
 			"17": `Meta-Honor starts 2x later.`,
 			"18": `Meta-Honor starts 2x later.`,
 			"19": `Meta-Hex starts ^2 later.`,
+			"20": `Remove Meta-Honor scaling.`,
 		},
     ],
     rewardEff: [

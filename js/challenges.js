@@ -155,6 +155,7 @@ const CHALS = {
         }
     },
     getResource(x, y) {
+		if (x == 20 && y == 1 && hasElement(558)) return player.mass.add(1).log10().mul(FORMS.getPreQUGlobalSpeed().add(1))
 		if (x == 20 && y == 1) return player.mass.add(1).log10()
         if (x < 5 || x > 8) return player.mass
         return player.bh.mass
@@ -770,6 +771,7 @@ const CHALS = {
 			if(hasElement(277))x = x.pow(1.25);
 			if(!hasTree('qp19'))x = x.softcap(1e6,hasElement(489)?0.86:hasElement(465)?0.84:hasElement(433)?0.7:hasElement(429)?0.5:hasElement(417)?0.3:hasElement(409)?0.1:hasElement(397)?0.03:0.01,0);
 			if(!hasElement(538))x = x.softcap(hasElement(527)?1.5e7:1e7,hasTree('qp27')?0.85:hasTree('qp25')?0.7:0.1,0);
+			x = x.softcap(2.1e8,hasTree('ax31')?0.15:hasTree('ax24')?0.12:0.1,0);
             let ret = E(2).pow(x);
 			if(hasElement(229))ret = ret.pow(3);
 			if(hasElement(334))ret = Decimal.pow(10,Decimal.pow(2.6,x.root(4)));
