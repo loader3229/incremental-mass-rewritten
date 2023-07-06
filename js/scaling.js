@@ -458,6 +458,7 @@ function getScalingStart(type, name) {
 		}
 		if (name=="hept") {
             if (player.ranks.enne.gte(15))start = start.mul(7.5)
+            if (player.ranks.enne.gte(2500))start = start.mul(2)
 			if (hasElement(503))start = start.mul(tmp.fermions.effs2[3][3]||E(1))
             if (hasElement(519))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
             if (hasChargedElement(176))start = start.mul(2)
@@ -889,6 +890,9 @@ function getScalingPower(type, name) {
 			if (hasElement(448)) power = power.mul(tmp.elements.effect[448]||1)
 			if(player.exotic.dark_run.upgs[12].gte(1))power = power.mul(tmp.dark_run.upgs[12].eff);
 			if (hasPrestige(4,11)) power = power.mul(prestigeEff(4,11,E(1)))
+		}
+		if (name=="prestige1") {
+			if (hasTree('ax28')) power = power.mul(0.75)
 		}
 	}
 	if (name=="rank" && hasPrestige(0,58)) power = power.mul(0.5)

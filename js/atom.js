@@ -416,6 +416,6 @@ function galParticleEffect(x){
 	if(hasElement(553))sc_rate+=0.01;
 	if(hasTree('qp35'))sc_rate+=0.01;
 	ret=overflow(ret,1e7,sc_rate);
-	ret=overflow(ret,5.1e9,hasTree('ax23')?0.533:hasElement(533)?0.53:hasElement(523)?0.515:hasAscension(0,3)?0.5:0.4);
+	ret=overflow(ret,5.1e9,hasTree('ax32')?8/15:hasTree('ax23')?0.533:hasElement(533)?0.53:hasElement(523)?0.515:hasAscension(0,3)?0.5:0.4);
 	return ret;
 }

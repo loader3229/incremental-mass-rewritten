@@ -398,6 +398,7 @@ const FORMS = {
 			if(hasElement(551))p = p ** 0.95
 			if(hasTree('qp37'))p2 = p2 ** 0.89
 			if(hasChargedElement(102))ss = ss.mul(100)
+			if(hasAscension(1,146))p2 = p2 ** 0.95
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}

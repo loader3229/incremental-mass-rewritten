@@ -24,7 +24,7 @@ const TREE_IDS = [
         ['bs5','bs2','fn1','bs3','qf2','qf3','rad2','rad3'],
         ['prim3a','qu1','qu2','qu3','qc8'],
         ['qp1','qp10'],
-		['ax21','ax17','ax10','ax6','ax9','ax16','ax22'],
+		['ax25','ax21','ax17','ax10','ax6','ax9','ax16','ax22','ax26'],
     ],[
         ['s2','m2','t1','d1','bh2','gr1','sn2'],
         ['qol5','qol6','qol7','','qu_qol7a','qu_qol7','',''],
@@ -32,7 +32,7 @@ const TREE_IDS = [
         ['fn4','fn3','fn9','fn2','fn5','qf4','rad4','rad5'],
         ['prim3','prim2','prim1','qu4','qc1','qc2','qc3'],
         ['qp21','qp6','qp2','qp3','qp4','qp5','qp22'],
-		['ax18','ax12','ax11','ax13','ax19'],
+		['ax29','ax27','ax18','ax12','ax11','ax13','ax19','ax28','ax30'],
     ],[
         ['s3','m3','gr2','sn3'],
         ['qol9','unl1','qol8','unl2','unl3','qu_qol8','qu_qol9','unl4'],
@@ -40,7 +40,7 @@ const TREE_IDS = [
         ['fn12','fn11','fn6','fn10','rad6',''],
         ['prim4','en2','en1','qu5','br1','br2','qc4'],
         ['qp23','qp9','qp7','qp8','qp11','qp24'],
-		['ax23','ax20','ax24'],
+		['ax32','ax23','ax20','ax24','ax31'],
     ],[
         ['s4','sn5','sn4'],
         ['','','','qu_qol10','qu_qol11','qu_qol8a','qu_qol13','qu_qol12'],
@@ -1648,7 +1648,7 @@ const TREE_UPGS = {
             desc: `FSS boost Glyphic Mass`,
             cost: E(3000),
             effect() {
-                let x = E(hasTree('ax15')?3:2).pow(player.exotic.fss);
+                let x = E(hasTree('ax25')?5:hasTree('ax15')?3:2).pow(player.exotic.fss);
                 return x
             },
             effDesc(x) { return format(x)+"x" },
@@ -1706,7 +1706,7 @@ const TREE_UPGS = {
             desc: `Axionic Space makes Super Supernova Galaxies starts later.`,
             cost: E(2500),
             effect() {
-                let x = EXOTIC.axsVal().add(1).log10().pow(2).mul(4);
+                let x = EXOTIC.axsVal().add(1).log10().pow(2).mul(hasTree('ax26')?8.5:4);
                 return x
             },
             effDesc(x) { return "+"+format(x)+" later" },
@@ -1805,6 +1805,78 @@ const TREE_UPGS = {
             reqDesc() { return `Buy 20 Axionic Tree Upgrades.` },
             desc: `C20 Effect is better.`,
             cost: E(600000),
+        },
+        ax25: {
+            unl() { return player.exotic.tree.length>=22 },
+            ax: true,
+            branch: ["ax15","ax21"],
+            req() { return player.exotic.tree.length>=22 },
+            reqDesc() { return `Buy 22 Axionic Tree Upgrades.` },
+            desc: `[ax15] is better.`,
+            cost: E(300000),
+        },
+        ax26: {
+            unl() { return player.exotic.tree.length>=22 },
+            ax: true,
+            branch: ["ax14","ax22"],
+            req() { return player.exotic.tree.length>=22 },
+            reqDesc() { return `Buy 22 Axionic Tree Upgrades.` },
+            desc: `[ax14] is better.`,
+            cost: E(350000),
+        },
+        ax27: {
+            unl() { return player.exotic.tree.length>=23 },
+            ax: true,
+            branch: ["ax18"],
+            req() { return player.exotic.tree.length>=23 },
+            reqDesc() { return `Buy 23 Axionic Tree Upgrades.` },
+            desc: `'100%' in [ax6] is now 175%.`,
+            cost: E(100000),
+        },
+        ax28: {
+            unl() { return player.exotic.tree.length>=23 },
+            ax: true,
+            branch: ["ax19"],
+            req() { return player.exotic.tree.length>=23 },
+            reqDesc() { return `Buy 23 Axionic Tree Upgrades.` },
+            desc: `Exotic Honor scaling is 25% weaker.`,
+            cost: E(100000),
+        },
+        ax29: {
+            unl() { return player.exotic.tree.length>=26 },
+            ax: true,
+            branch: ["ax25","ax27"],
+            req() { return player.exotic.tree.length>=26 },
+            reqDesc() { return `Buy 26 Axionic Tree Upgrades.` },
+            desc: `'175%' in [ax6] is now 300%.`,
+            cost: E(100000),
+        },
+        ax30: {
+            unl() { return player.exotic.tree.length>=26 },
+            ax: true,
+            branch: ["ax26","ax28"],
+            req() { return player.exotic.tree.length>=26 },
+            reqDesc() { return `Buy 26 Axionic Tree Upgrades.` },
+            desc: `Each type of Axion Generators multiply its power equals to its amount again.`,
+            cost: E(750000),
+        },
+        ax31: {
+            unl() { return player.exotic.tree.length>=30 },
+            ax: true,
+            branch: ["ax24"],
+            req() { return player.exotic.tree.length>=30 },
+            reqDesc() { return `Buy 30 Axionic Tree Upgrades.` },
+            desc: `C20 Effect is better.`,
+            cost: E(100000),
+        },
+        ax32: {
+            unl() { return player.exotic.tree.length>=30 },
+            ax: true,
+            branch: ["ax23"],
+            req() { return player.exotic.tree.length>=30 },
+            reqDesc() { return `Buy 30 Axionic Tree Upgrades.` },
+            desc: `Galactic Particles Effect is better.`,
+            cost: E(100000),
         },
     },
 }

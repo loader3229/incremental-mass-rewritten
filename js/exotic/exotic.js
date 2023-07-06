@@ -130,6 +130,7 @@ const EXOTIC = {
 			if(hasTree("ax1")) pow = pow.mul(treeEff("ax1"));
 			if(hasTree("ax6") && i<=1) pow = pow.mul(10);
 			if(hasTree("ax11")) pow = pow.mul(player.exotic.axg[i]);
+			if(hasTree("ax30")) pow = pow.mul(player.exotic.axg[i]);
 			if(hasAscension(2,15)) pow = pow.mul(ascensionEff(2,15));
 			if(i==3)pow = pow.mul(3.2e-25);
 			if(i==3&&hasTree("ax21"))pow = pow.mul(12.5);
@@ -230,7 +231,7 @@ const EXOTIC = {
 		x = x.mul(player.exotic.ax[1].add(10).log10());
 		x = x.mul(player.exotic.ax[2].add(10).log10());
 		x = x.mul(player.exotic.ax[3].add(10).log10());
-		if(hasTree('ax6'))x = x.mul(hasTree('ax18')?2:hasTree('ax12')?1.7:1.26);
+		if(hasTree('ax6'))x = x.mul(hasTree('ax29')?4:hasTree('ax27')?2.75:hasTree('ax18')?2:hasTree('ax12')?1.7:1.26);
 		return x;
     },
     axsRem(){
