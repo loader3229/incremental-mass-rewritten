@@ -320,6 +320,18 @@ const RANKS = {
             '2400': "'50%' in Element 550 is now 40%.",
             '2440': "Enne 14 effect is better.",
             '2500': "Meta-Hept starts 2x later.",
+            '2650': "Meta-Hept starts 2x later.",
+            '2800': "Meta-Hept starts 2x later.",
+            '3340': "Meta-Hept starts 2x later.",
+            '3690': "Meta-Supernova is 99.99% weaker.",
+            '3720': "Meta-Hept starts 2x later.",
+            '4360': "Stronger Overflow is weaker.",
+            '4480': "Meta-Supernova is 99.9% weaker.",
+            '4570': "Stronger Overflow is weaker.",
+            '5740': "Meta-Hex starts later based on its starting point.",
+            '7360': "The previous Enne effect is better.",
+            '9590': "Enne 14 effect is better.",
+            '11280': "Meta-Hept starts 2x later.",
 		},
     },
     effect: {
@@ -559,7 +571,9 @@ const RANKS = {
             '14'() {
                 let ret = E(0.99).pow(player.ranks.enne.softcap(75,0.5,0)).max(1/3);
 				if(player.ranks.enne.gte(1580))ret = E(1).div(player.ranks.enne.log10().add(1));
-				if(player.ranks.enne.gte(2440))ret = E(0.9).pow(player.ranks.enne);
+				if(player.ranks.enne.gte(2440))ret = E(0.9).pow(player.ranks.enne.pow(player.ranks.enne.gte(9590)?1.1:1));
+				if(hasPrestige(4,74))ret = E(0.5).pow(player.ranks.enne.pow(player.ranks.enne.gte(9590)?1.1:1));
+				if(hasAscension(2,24))ret = E(0.1).pow(player.ranks.enne.pow(player.ranks.enne.gte(9590)?1.1:1));
                 return ret
             },
             '101'() {
@@ -993,6 +1007,8 @@ const PRESTIGES = {
             "47": `Add +1% to Valor 13's effectiveness for each Valor after 47th (90% max).`,
             "51": `Meta-Tickspeeds stars ^2 later for each Valor after 51st.`,
 			"57": `Prestige Mass Effect is applied to Hyper Renown scaling at reduced rate.`,
+            "73": "Valor 11 effect is better.",
+            "74": "Enne 14 effect is better.",
 		},
     ],
     rewardEff: [
@@ -1260,6 +1276,7 @@ const PRESTIGES = {
             },x=>"x"+x.format()],
             "11": [_=>{
                 let x = E(0.999).pow(player.prestiges[4]);
+				if(hasPrestige(4,73))x = x.pow(2);
                 return x
             },x=>formatReduction(x)+" weaker"],
             "12": [_=>{
@@ -1444,6 +1461,11 @@ const ASCENSIONS = {
 			"36": `Raise Prestige Tickspeeds Power by 10.`,
             "50": `Transcension Level 18 effect is better.`,
             "146": `Accelerator Effect Softcap^2 is weaker.`,
+            "149": `Ascension Mass Effect is multiplied by 10`,
+            "154": `Prestige Stronger Softcap is weaker.`,
+            "160": `Dark Run Upgrade 10 is better.`,
+            "190": `Dark Run Upgrade 10 is better.`,
+            "191": `'50%' in Element 550 is now 10%.`,
         },
 		{
 			"1": `Free Mass Upgrades and Tickspeeds uses multiplication instead of add to amount.`,
@@ -1466,6 +1488,12 @@ const ASCENSIONS = {
 			"18": `Meta-Honor starts 2x later.`,
 			"19": `Meta-Hex starts ^2 later.`,
 			"20": `Remove Meta-Honor scaling.`,
+			"21": `Recursion 15 effect is squared.`,
+			"22": `Exotic Prestige Level scaling is 25% weaker.`,
+            "23": `Dark Run Upgrade 13 is better.`,
+            "24": `Enne 14 is better.`,
+            "25": `Galactic Particles is better.`,
+            "26": `Accelerator Effect Softcap^2 is weaker.`,
 		},
     ],
     rewardEff: [
@@ -1599,6 +1627,7 @@ const ASCENSIONS = {
             }],
             "15": [_=>{
                 let x = player.ascensions[2].add(1);
+				if(hasAscension(2,21))x = x.pow(2);
                 return x
             },x=>{
                 return x.format()+"x"
@@ -2061,6 +2090,7 @@ function ascensionMassEffect(){
 	if(hasAscension(0,13))p = p.mul(2);
 	if(hasAscension(0,15))p = p.mul(2);
 	if(hasAscension(0,16))p = p.mul(2);
+	if(hasAscension(1,149))p = p.mul(10);
 	return p;
 }
 

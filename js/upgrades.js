@@ -168,6 +168,8 @@ const UPGS = {
 				if (hasElement(521))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.9;
 				if (hasElement(537))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.85;
 				if (hasElement(557))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.75;
+				if (player.ranks.enne.gte(4360))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.95;
+				if (player.ranks.enne.gte(4570))tmp.strongerOverflowPower = tmp.strongerOverflowPower ** 0.9;
 				if (hasChargedElement(164))tmp.strongerOverflowStart = tmp.strongerOverflowStart.pow(tmp.chal?(tmp.chal.eff[15].add(9).log10()||1):1)
 				tmp.strongerOverflow = overflow(ret, tmp.strongerOverflowStart, tmp.strongerOverflowPower).log(ret);
 				ret = overflow(ret, tmp.strongerOverflowStart, tmp.strongerOverflowPower);
@@ -321,7 +323,7 @@ const UPGS = {
                 if (hasPrestige(2,53)) step = step.mul(prestigeEff(2,53))
                 if (hasPrestige(3,11)) step = step.mul(prestigeEff(3,11))
                 step = step.mul(tmp.upgs.prestigeMass[4]?tmp.upgs.prestigeMass[4].eff.eff:1)
-				let ret = step.mul(x).add(1).softcap(2000,hasAscension(1,35)?0.65:(1,32)?0.6:hasAscension(1,31)?0.55:0.5,0);
+				let ret = step.mul(x).add(1).softcap(2000,hasAscension(1,154)?0.675:hasAscension(1,35)?0.65:hasAscension(1,32)?0.6:hasAscension(1,31)?0.55:0.5,0);
                 return {step: step, eff: ret, ss: 2000}
             },
             effDesc(eff) {

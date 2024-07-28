@@ -125,7 +125,8 @@ const FORMS = {
 		if (!hasUpgrade('exotic',1))x = overflow(x,tmp.massOverflowStart,tmp.massOverflowPower);
 			
 		if((player.gc.active || player.chal.active >= 21) && hasElement(423))x = x.add(1)
-        return x
+		
+        return x.min("eee100")
     },
     massSoftGain() {
         let s = E(1.5e156)
@@ -399,6 +400,7 @@ const FORMS = {
 			if(hasTree('qp37'))p2 = p2 ** 0.89
 			if(hasChargedElement(102))ss = ss.mul(100)
 			if(hasAscension(1,146))p2 = p2 ** 0.95
+			if(hasAscension(2,26))p2 = p2 ** 0.81
 			x = overflow(overflow(x,ss,p),ss2,p2)
 			
 			return {step: step, eff: x,  ss: ss}
@@ -600,7 +602,7 @@ const FORMS = {
 				x = Decimal.pow(10,x);x = Decimal.pow(10,x);
 			}
 			if(x.gte("eee10")){
-				x = Decimal.tetrate(10,x.slog().sub(4).div(1.1).add(4));
+				x = Decimal.tetrate(10,x.slog().sub(hasTree('ax34')?4.2:4).div(hasTree('qp39')?1.05:1.1).add(hasTree('ax34')?4.2:4));
 			}
 			tmp.bhOverflow = x.log(x_original);
 		    if(hasElement(327))tmp.bhOverflow = x.add(100).log10().log(x_original.add(100).log10());

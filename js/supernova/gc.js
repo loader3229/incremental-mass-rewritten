@@ -77,6 +77,7 @@ function updateGCTemp() {
 	if(player.chal.active == 21)tmp.gc.nerf = 1.25;
 	if(player.chal.active == 22)tmp.gc.nerf = 1.5;
 	if(player.chal.active == 23)tmp.gc.nerf = 1.75;
+	if(player.chal.active == 24)tmp.gc.nerf = 2.5;
 	if(player.exotic.dark_run.upgs[6].gte(1))tmp.gc.nerf *= tmp.dark_run?(tmp.dark_run.upgs[6].eff || 1):1;
 	tmp.gc.shards = E(0);
 	if(player.supernova.times.gte(GC.goal()) && !(player.chal.active >= 21) && !player.exotic.dark_run.active){

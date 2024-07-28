@@ -2,7 +2,8 @@ const EXOTIC = {
     gain() {
 		let x = player.mass.max(1).log10().max(1).log10().div(1e12)
         if (x.lt(1)) return E(0)
-        x = x.max(0).pow(hasUpgrade('exotic',22)?3:2)
+        x = x.max(0).pow((tmp.chal?(tmp.chal.eff[24]||E(0)):E(0)).add(hasUpgrade('exotic',22)?3:2))
+		
 		if (player.qu.times.gte(1e255) && player.exotic.times.gte(1))x = x.mul(3)
 		if (player.qu.times.gte(1e295) && player.exotic.times.gte(1))x = x.mul(5)
         if (hasPrestige(2,141)) x = x.mul(prestigeEff(2,141,E(1)));
@@ -134,6 +135,8 @@ const EXOTIC = {
 			if(hasAscension(2,15)) pow = pow.mul(ascensionEff(2,15));
 			if(i==3)pow = pow.mul(3.2e-25);
 			if(i==3&&hasTree("ax21"))pow = pow.mul(12.5);
+			if(i==3&&hasTree("ax37"))pow = pow.mul(250);
+			if(i==0&&hasTree("ax41"))pow = pow.mul(1000);
             let x = pow.mul(player.exotic.axg[i])
             return {pow: pow, eff: x}
         },
@@ -231,7 +234,7 @@ const EXOTIC = {
 		x = x.mul(player.exotic.ax[1].add(10).log10());
 		x = x.mul(player.exotic.ax[2].add(10).log10());
 		x = x.mul(player.exotic.ax[3].add(10).log10());
-		if(hasTree('ax6'))x = x.mul(hasTree('ax29')?4:hasTree('ax27')?2.75:hasTree('ax18')?2:hasTree('ax12')?1.7:1.26);
+		if(hasTree('ax6'))x = x.mul(hasTree('ax39')?4.5:hasTree('ax29')?4:hasTree('ax27')?2.75:hasTree('ax18')?2:hasTree('ax12')?1.7:1.26);
 		return x;
     },
     axsRem(){
@@ -246,7 +249,9 @@ const EXOTIC = {
     },
 	resetTree(){
 		if((confirm("Are you sure to reset Axionic Tree? It will force an Exotic Reset!")?!confirm("ARE YOU SURE ABOUT IT???"):true)) return
-		if(hasTree('ax20'))player.exotic.tree = ['ax1','ax2','ax3','ax4','ax5','ax6','ax7','ax8','ax9','ax10','ax11','ax12','ax13','ax14','ax15','ax16','ax17','ax18','ax19','ax20'];
+		if(hasTree('ax42'))player.exotic.tree = ['ax1','ax2','ax3','ax4','ax5','ax6','ax7','ax8','ax9','ax10','ax11','ax12','ax13','ax14','ax15','ax16','ax17','ax18','ax19','ax20','ax21','ax22','ax23','ax24','ax25','ax26','ax27','ax28','ax29','ax30','ax31','ax32','ax33','ax34','ax35','ax36','ax37','ax38','ax39','ax40','ax41','ax42'];
+		else if(hasTree('ax33'))player.exotic.tree = ['ax1','ax2','ax3','ax4','ax5','ax6','ax7','ax8','ax9','ax10','ax11','ax12','ax13','ax14','ax15','ax16','ax17','ax18','ax19','ax20','ax21','ax22','ax23','ax24','ax25','ax26','ax27','ax28','ax29','ax30','ax31','ax32','ax33'];
+		else if(hasTree('ax20'))player.exotic.tree = ['ax1','ax2','ax3','ax4','ax5','ax6','ax7','ax8','ax9','ax10','ax11','ax12','ax13','ax14','ax15','ax16','ax17','ax18','ax19','ax20'];
 		else player.exotic.tree = [];
 		EXOTIC.doReset(true);
 	}

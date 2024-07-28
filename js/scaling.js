@@ -354,6 +354,7 @@ function getScalingStart(type, name) {
 			if (hasTree('qp18')) start = start.add(15)
 			if(player.superCluster.gte(14))start = start.add(SUPERNOVA_CLUSTER.stardustEff())
 			if (hasTree('ax14')) start = start.add(treeEff('ax14')||0)
+			if (hasTree('ax40')) start = start.add(50)
 		}
 		if (name=="massUpg4") {
 			if (hasPrestige(2,162)) start = start.mul(10/9)
@@ -459,6 +460,11 @@ function getScalingStart(type, name) {
 		if (name=="hept") {
             if (player.ranks.enne.gte(15))start = start.mul(7.5)
             if (player.ranks.enne.gte(2500))start = start.mul(2)
+            if (player.ranks.enne.gte(2650))start = start.mul(2)
+            if (player.ranks.enne.gte(2800))start = start.mul(2)
+            if (player.ranks.enne.gte(3340))start = start.mul(2)
+            if (player.ranks.enne.gte(3720))start = start.mul(2)
+            if (player.ranks.enne.gte(11280))start = start.mul(2)
 			if (hasElement(503))start = start.mul(tmp.fermions.effs2[3][3]||E(1))
             if (hasElement(519))start = start.mul(CHALS[5].effect(FERMIONS.onActive("05")?E(0):player.chal.comps[5].mul(tmp.qu.chroma_eff[2])))
             if (hasChargedElement(176))start = start.mul(2)
@@ -841,6 +847,8 @@ function getScalingPower(type, name) {
 			if(hasElement(486))power = power.mul(MATTERS.eff(1));
 			if (hasTree('qp11')) power = power.mul(treeEff('qp11'))
 			if (player.ranks.enne.gte(666)) power = power.mul(0.0001)
+			if (player.ranks.enne.gte(3690)) power = power.mul(0.0001)
+			if (player.ranks.enne.gte(4480)) power = power.mul(0.001)
 		}
 		if (name=="rank") {
 			if (hasPrestige(0,77)) power = power.mul(tmp.prestigeMassEffect)
@@ -870,6 +878,8 @@ function getScalingPower(type, name) {
 			if (hasChargedElement(37)) power = power.mul(tmp.elements.ceffect[37]||1)
 			if (hasChargedElement(58)) power = power.mul(tmp.elements.ceffect[58]||1)
 			if (player.ranks.enne.gte(14)) power = power.mul(RANKS.effect.enne[14]())
+			if (player.ranks.enne.gte(7360)) power = power.div(getScalingStart("meta","hex"));
+			else if (player.ranks.enne.gte(5740)) power = power.div(getScalingStart("meta","hex").pow(0.5));
 		}
 		if (name=="hept") {
 			if (player.ranks.enne.gte(9)) power = power.mul(RANKS.effect.enne[9]())
@@ -890,9 +900,12 @@ function getScalingPower(type, name) {
 			if (hasElement(448)) power = power.mul(tmp.elements.effect[448]||1)
 			if(player.exotic.dark_run.upgs[12].gte(1))power = power.mul(tmp.dark_run.upgs[12].eff);
 			if (hasPrestige(4,11)) power = power.mul(prestigeEff(4,11,E(1)))
+			if (hasTree('ax33')) power = power.mul(treeEff('ax33'));
+			if (hasAscension(2,22)) power = power.mul(0.75)
 		}
 		if (name=="prestige1") {
 			if (hasTree('ax28')) power = power.mul(0.75)
+			if (hasTree('ax36')) power = power.mul(treeEff('ax36'));
 		}
 	}
 	if (name=="rank" && hasPrestige(0,58)) power = power.mul(0.5)

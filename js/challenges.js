@@ -828,7 +828,22 @@ const CHALS = {
         },
         effDesc(x) { return "+"+format(x) },
     },
-    cols: 23,
+    24: {
+        unl() { return hasTree('qp40') },
+        title: "The Hardest Difficulty",
+        desc: "This challenge is just Galactic Challenge Difficulty 20.",
+        reward: `Exotic Matter gain is better.`,
+		max: E(100),
+		inc: E(1e10),
+		pow: E(2),
+        start: E("1e17"),
+        effect(x) {
+            let ret = x.div(20);
+            return ret
+        },
+        effDesc(x) { return "+"+format(x) },
+    },
+    cols: 24,
 }
 
 /*
