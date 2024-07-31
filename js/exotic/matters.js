@@ -17,8 +17,9 @@ const MATTERS = {
 			return x;
 		}
 		if(i==1){
-			let x = base.add(1).log10();
+			let x = base.add(1).log10().softcap(1e9,2,0);
 			if(hasTree("qp34"))x = x.pow(1.5);
+			if(hasTree("qp41"))x = x.pow(1.5);
 			if(x.gte(100))x = x.log10().mul(50);
 			return E(0.9).pow(x);
 		}
@@ -26,7 +27,7 @@ const MATTERS = {
 			return base.add(1).log10().add(1).log10();
 		}
 		if(i==4){
-			return base.add(1).log10().add(1).log10().pow(2).mul(50000);
+			return base.add(1).log10().add(1).log10().pow(2).mul(50000).softcap(2500000,2,0);
 		}
 		if(i==5||i==6||i==7||i==9){
 			return base.add(1).log10().add(1).log10().add(1).log10().add(1);
@@ -60,6 +61,8 @@ const MATTERS = {
 		if (hasTree('qp17')) x = x.add(treeEff('qp17',0))
 		if (hasTree('ax5')) x = x.add(treeEff('ax5',0))
 		if (hasTree('ax22')) x = x.add(0.1)
+		if (hasTree('ax35')) x = x.add(0.1)
+		if (hasTree('ax38')) x = x.add(0.1)
 		if(player.superCluster.gte(13))x = x.add(SUPERNOVA_CLUSTER.effects.eff6());
 		if(player.exotic.dark_run.upgs[15].gte(1))x = x.add(tmp.dark_run.upgs[15].eff);
 		return x

@@ -86,7 +86,7 @@ const DARK_RUN = {
             {
                 desc: `Galactic Challenge nerfing is weaker.`,
                 cost(x) { return E(1e13).mul(Decimal.pow(100,x.pow(2))) },
-                maxLvl: 10,
+                maxLvl: 15,
                 bulk() { return player.exotic.dark_run.points.gte(1e13)?player.exotic.dark_run.points.div(1e13).max(1).log10().div(2).pow(1/2).add(1).floor():E(0) },
                 effect(x) {
 					return 1-x.toNumber()/100;
@@ -116,6 +116,8 @@ const DARK_RUN = {
                 maxLvl: 1,
                 bulk() { return player.exotic.dark_run.points.gte(E(3.238e21))?E(1):E(0) },
                 effect(x) {
+					if(hasAscension(1,190))return player.exotic.dark_run.points.add(1);
+					if(hasAscension(1,160))return player.exotic.dark_run.points.add(1).pow(0.4);
 					return player.exotic.dark_run.points.add(10).log10().pow(2);
                 },
                 effDesc(x) { return format(x)+"x"},
@@ -145,6 +147,7 @@ const DARK_RUN = {
                 maxLvl: 1,
                 bulk() { return player.exotic.dark_run.points.gte(E(5.972e27))?E(1):E(0) },
                 effect(x) {
+					if(hasAscension(2,23))return E(0.999).pow(player.exotic.dark_run.points.add(10).log10().add(player.exotic.dark_run.points.add(10).log10().pow(2).div(200)))
 					return E(0.999).pow(player.exotic.dark_run.points.add(10).log10())
                 },
                 effDesc(x) { return formatReduction(x)+" weaker"},
