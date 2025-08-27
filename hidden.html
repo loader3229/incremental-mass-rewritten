@@ -1,7 +1,33 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>Secret Invasion</title>
-<script src="sha512.js"></script>
+<meta charset=utf-8>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=1250">
+<title>Hidden Page</title><script>zhtitle='秘密页';</script>
+<link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+<style id="lang-style"></style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="/">loader3229</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto">
+<li class="nav-item"><a class="nav-link" id="nav1"></a></li>
+<li class="nav-item"><a class="nav-link" id="nav2"></a></li>
+<li class="nav-item"><a class="nav-link" id="nav3"></a></li>
+<li class="nav-item"><a class="nav-link" id="nav4"></a></li>
+</ul>
+<a class="nav-link" id="discord">Discord</a>
+<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">语言/Language</a>
+<div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="javascript:change_language(1);">简体中文</a><a class="dropdown-item" href="javascript:change_language(0);">English</a></div>
+</div>
+</div>
+</nav>
+<noscript>Please Enable Javascript.</noscript>
 <script>
 setInterval(function(){
 var t = Math.floor(Date.now()/3600000)
@@ -17,29 +43,52 @@ function confirm(){
 	check("answer3","7b2759c3930836bee3986c34781b8a1bc861e05e52c334322f07c2c16f5ebe1c") && 
 	(check("answer4","a171b6df0210c62ef553b49d47deb5387957fa6e4fedaf5399240bfa03ce580d") || check("answer4","8ea3d781589eefab9ba3a8555735c08033b7f7fc9014e64b4654a14903714edb")) &&
 	check("answer5",answer5)){
-		alert("Congretulations! You unlocked the Omega Badge in Incremental Mass Rewritten - loader3229's NG+!")
+		alert(["Congratulations! You unlocked the Omega Badge in Incremental Mass Rewritten - loader3229's NG+, and you got 500 points in Incremental Mass Rewritten - loader3229's NG+!","答案正确！恭喜您在质量增量重制版 - loader3229的NG+里解锁了欧米伽徽章，并且您的质量增量重制版 - loader3229的NG+的分数增加了500！"][localStorage.lang])
 		localStorage.imr_secret_badge1="1";
 	}else{
-		alert("Try Again!")
+		alert(["Your answer is wrong, please try again!","答案错误，请再试一次！"][localStorage.lang])
 	}
 }
 </script>
-</head>
-<body>
-<a href="/incremental-mass-rewritten">Back To Incremental Mass Rewritten - loader3229's NG+</a><br>
-<a href="/">My Homepage</a><br>
-<a href="/incrementalgames">My Incremental Games</a><br>
-<a href=https://afdian.com/@loader3229/plan target=_blank>Afdian.com Donation</a><br>
-Question 1: There is an incremental game by me which a layer contains more than 200 milestones. Answer is the name of the game.<br>
-Question 2: Use the way you input "Secret Invasion" to input the name of a game which is one of my favorite Music Game.<br>
-Question 3: The name of the 4th tree in The Multitree.<br>
-Question 4: The English name of the character in my Homepage.<br>
-Question 5: The Secret Code in "Secret Invasion".<br>
-Answer 1:<input id="answer1"><br>
-Answer 2:<input id="answer2"><br>
-Answer 3:<input id="answer3"><br>
-Answer 4:<input id="answer4"><br>
-Answer 5:<input id="answer5"><br>
-<a href="javascript:confirm();">Confirm</a><br>
+
+<div class='container'>
+<h1><span class=en>Welcome to hidden page!</span><span class=zh>欢迎进入秘密页！</span></h1>
+<a href="/incremental-mass-rewritten-1" class=en>Back To Incremental Mass Rewritten - loader3229's NG+</a><a href="/incremental-mass-rewritten-1" class=zh>返回至质量增量重制版 - loader3229的NG+</a><br>
+<a href="/" class=en>loader3229's Homepage</a><a href="/" class=zh>loader3229的主页</a><br>
+<a href="/incrementalgames" class=en>loader3229's Incremental Games</a><a href="/incrementalgames" class=zh>loader3229的增量游戏表</a><br>
+<a href=https://afdian.com/@loader3229/plan target=_blank class=en>Afdian.com Donation</a><a href=https://afdian.com/@loader3229/plan target=_blank class=zh>用爱发电</a><br>
+<span class=en>Question 1: There is an incremental game by me which a layer contains more than 200 milestones. Answer is the name of the game.</span><span class=zh>问题1：我有一个增量游戏，其中有一个节点有超过200个里程碑。答案是这个游戏的英文名。</span><br>
+<span class=en>Question 2: Use the way you input "Secret Invasion" to input the name of a game which is one of my favorite Music Game.</span><span class=zh>问题2：使用你输入"Secret Invasion"的方法输入我喜欢的某一个音游名称。</span><br>
+<span class=en>Question 3: The name of the 4th tree in The Multitree.</span><span class=zh>问题3：在我的多重树里面，第四棵树叫什么名字？ (答案是三个英文单词)</span><br>
+<span class=en>Question 4: The English name of the character in my Homepage.</span><span class=zh>问题4：我的主页右下角的角色的英文名。</span><br>
+<span class=en>Question 5: The Secret Code imported when you entered this page.</span><span class=zh>问题5：当你进入这个页面的时候，你在导入存档框里输入的神秘代码。</span><br>
+<span class=en>Answer 1: </span><span class=zh>答案1：</span><input id="answer1"><br>
+<span class=en>Answer 2: </span><span class=zh>答案2：</span><input id="answer2"><br>
+<span class=en>Answer 3: </span><span class=zh>答案3：</span><input id="answer3"><br>
+<span class=en>Answer 4: </span><span class=zh>答案4：</span><input id="answer4"><br>
+<span class=en>Answer 5: </span><span class=zh>答案5：</span><input id="answer5"><br>
+<a href="javascript:confirm();" class=en>Confirm</a><a href="javascript:confirm();" class=zh>确认</a><br>
+</div>
+
+
+<script src="/sha512.js"></script><script src="/jquery.min.js"></script><script src="/jquery-ui.min.js"></script><script src="/live2d.js"></script>
+<script src="/bootstrap/bootstrap.min.js"></script>
+<script src="/break_eternity.js"></script>
+<script src="/expantanum.js"></script>
+<script src="/lz-string.js"></script>
+<script src="/index.js"></script>
+<link rel="stylesheet" type="text/css" href="/l2d.css"/>
+<div class="waifu">
+        <div class="waifu-tips"></div>
+<canvas id="live2d" class="live2d"></canvas>
+        <div class="waifu-tool">
+            <span class="fui-chat"></span>
+            <span class="fui-star"></span>
+            <span class="fui-folder"></span>
+            <!--span class="fui-video"></span-->
+            <!--span class="fui-gear"></span-->
+            <span class="fui-info-circle"></span>
+            <span class="fui-cmd"></span>
+        </div>
 </body>
 </html>
