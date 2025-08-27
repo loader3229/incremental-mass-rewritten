@@ -34,15 +34,15 @@ var t = Math.floor(Date.now()/3600000)
 var c = Math.floor(t**(2*(Math.sin(t**3/Math.PI)+1))).toString(36)
 window.answer5 = sha512_256(c.replace(/\s/g, '').toUpperCase())
 },100);
-function check(a,b){
+function check_answer(a,b){
 	return sha512_256(document.getElementById(a).value.replace(/\s/g, '').toUpperCase()) == b;
 }
-function confirm(){
-	if(check("answer1","0e72e97ea635a6ea1d0ff3d91bb25dd35acacd28ee0490285d081de38165f164") && 
-	check("answer2","46ed09ab3e583bb39051bdeb0661510cc035d5f2dfe243b94a16fb274ef31045") && 
-	check("answer3","7b2759c3930836bee3986c34781b8a1bc861e05e52c334322f07c2c16f5ebe1c") && 
-	(check("answer4","a171b6df0210c62ef553b49d47deb5387957fa6e4fedaf5399240bfa03ce580d") || check("answer4","8ea3d781589eefab9ba3a8555735c08033b7f7fc9014e64b4654a14903714edb")) &&
-	check("answer5",answer5)){
+function confirm_answer(){
+	if(check_answer("answer1","0e72e97ea635a6ea1d0ff3d91bb25dd35acacd28ee0490285d081de38165f164") && 
+	check_answer("answer2","46ed09ab3e583bb39051bdeb0661510cc035d5f2dfe243b94a16fb274ef31045") && 
+	check_answer("answer3","7b2759c3930836bee3986c34781b8a1bc861e05e52c334322f07c2c16f5ebe1c") && 
+	(check_answer("answer4","a171b6df0210c62ef553b49d47deb5387957fa6e4fedaf5399240bfa03ce580d") || check_answer("answer4","8ea3d781589eefab9ba3a8555735c08033b7f7fc9014e64b4654a14903714edb")) &&
+	check_answer("answer5",answer5)){
 		alert(["Congratulations! You unlocked the Omega Badge in Incremental Mass Rewritten - loader3229's NG+, and you got 500 points in Incremental Mass Rewritten - loader3229's NG+!","答案正确！恭喜您在质量增量重制版 - loader3229的NG+里解锁了欧米伽徽章，并且您的质量增量重制版 - loader3229的NG+的分数增加了500！"][localStorage.lang])
 		localStorage.imr_secret_badge1="1";
 	}else{
@@ -67,7 +67,7 @@ function confirm(){
 <span class=en>Answer 3: </span><span class=zh>答案3：</span><input id="answer3"><br>
 <span class=en>Answer 4: </span><span class=zh>答案4：</span><input id="answer4"><br>
 <span class=en>Answer 5: </span><span class=zh>答案5：</span><input id="answer5"><br>
-<a href="javascript:confirm();" class=en>Confirm</a><a href="javascript:confirm();" class=zh>确认</a><br>
+<a href="javascript:confirm_answer();" class=en>Confirm</a><a href="javascript:confirm_answer();" class=zh>确认</a><br>
 </div>
 
 
